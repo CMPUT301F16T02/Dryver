@@ -1,8 +1,8 @@
-package com.example.adam.ubertapp;
+package com.ubertapp;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.ubertapp.Request;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

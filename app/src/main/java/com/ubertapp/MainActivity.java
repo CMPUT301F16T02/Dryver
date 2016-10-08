@@ -1,7 +1,9 @@
-package com.example.adam.ubertapp;
+package com.ubertapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.example.adam.ubertapp.R;
 
 public class MainActivity extends Activity
 {

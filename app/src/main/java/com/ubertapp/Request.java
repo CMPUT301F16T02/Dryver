@@ -1,4 +1,4 @@
-package com.example.adam.ubertapp;
+package com.ubertapp;
 
 /**
  * Created by Adam on 10/8/2016.
