@@ -1,0 +1,34 @@
+This is meant to be a general outline of some basic codestyling guidlines for UberTapp.
+
+1. Spaces > Tabs:
+    All "tabs" should be four spaces. Do not use tabs!
+  
+2. Open Curly Braces '{' on Same Line
+
+    Class Example {
+        public Example() {
+            if(1) {
+                try {
+                    //try stuff
+                } catch (e) {
+                    //throw stuff (maybe)
+                }
+            } else if(2) {
+                //do other stuff
+            } else {
+                //do some even more othery stuff
+            }
+        }
+    }
+
+3. If you have multiple conditions that are quite long, move to a new line, but put the logical operator on the next line. Same goes for 
+  string contatenation
+  
+    if (this.getThing().getStuff().toString().Equals(other.getThing().getStuff().toString()
+        && aThirdThing.getStuff() == soeStuff) {
+        //do something
+    }
+      
+  String this = "asfasdfeasdfasdf" + that.toString() + "asdfasdfkjbjhbjhwbejrskjdhfkjhsdkjfh" 
+                + "nskjdhfiuhihkjhskjdfhuiw" + these.getThing2(thing1).toString();
+    
