@@ -1,8 +1,6 @@
-package com.ubertapp;
+package com.ubertapp.Models;
 
-/**
- * Created by Adam on 10/8/2016.
- */
+
 public class Request
 {
     private final double cost;

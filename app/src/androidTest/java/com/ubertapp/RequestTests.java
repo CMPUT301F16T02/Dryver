@@ -2,7 +2,7 @@ package com.ubertapp;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.ubertapp.Request;
+import com.ubertapp.Models.Request;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.ubertapp;
+package com.ubertapp.Views;
 
 import android.app.Activity;
 import android.os.Bundle;
