@@ -31,4 +31,19 @@ This is meant to be a general outline of some basic codestyling guidlines for Ub
       
   String this = "asfasdfeasdfasdf" + that.toString() + "asdfasdfkjbjhbjhwbejrskjdhfkjhsdkjfh" 
                 + "nskjdhfiuhihkjhskjdfhuiw" + these.getThing2(thing1).toString();
+
+4. Make the code more readable by naming with full names or shortened names which are still easily readable. Ie:
+	- default_c    	=> 	default_cost 
+	- default_rid	=> 	default_riderId
+
+5. Give thought to naming variables. They don't have to be elaborate but they should be descriptive enough to make sense in their context. Ie:
+	- private ArrayList<Driver> list 	
+			=> private ArrayList<Driver> driverList/ currentDrivers/ acceptedDrivers
+
+6 Naming convention is lower case word first followed by capitalized first letter of any following words.
+	- private String thisIsAString;
+
+7 If you are declaring contant variables that aren't going to change, capitalize the words and seperate them with underscores:
+	- private final String THIS_STRING_WONT_CHANGE;
+
     
