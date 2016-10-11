@@ -13,7 +13,7 @@ public class DriverTests {
 
     @Test
     public void testGetId() {
-        Driver rider = new Driver(DEFAULT_DRIVER_ID);
-        assertEquals(DEFAULT_DRIVER_ID, rider.getUserId());
+        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+        assertEquals(DEFAULT_DRIVER_ID, driver.getUserId());
     }
 }

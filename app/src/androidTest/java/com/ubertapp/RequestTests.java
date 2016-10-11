@@ -30,6 +30,8 @@ public class RequestTests {
         assertEquals(DEFAULT_RIDER_ID, request.getRiderId());
         // test driver list.
         assertEquals(0, request.getDrivers().size());
+        //test getRider
+        assertEquals(DEFAULT_RIDER, request.getRider());
     }
 
     @Test
