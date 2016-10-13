@@ -13,7 +13,9 @@ import java.util.Collection;
 public class Request {
     private Rider rider;
     private Collection<Driver> drivers;
+    private Driver acceptedDriver;
     private String offeringDriverID;
+
 
     private final double cost;
     private final String riderId;
@@ -23,20 +25,12 @@ public class Request {
         this.rider = rider;
         this.riderId = rider.getUserId();
         this.drivers = new ArrayList<Driver>();
+        this.acceptedDriver = null;
     }
-
-//    public Request(double cost, String riderId) {
-//        this.cost = cost;
-//        this.riderId = riderId;
-//    }
 
     public double getCost() {
         return cost;
     }
-
-//    public String getDriverId() {
-//        return driverId;
-//    }
 
     public Collection<Driver> getDrivers() {
         return this.drivers;
@@ -54,6 +48,10 @@ public class Request {
         return offeringDriverID;
     }
 
+    public Driver getAcceptedDriver() {
+        return acceptedDriver;
+    }
+
     /**
      * Adds a driver to the list of drivers.
      * @param driver
@@ -68,8 +66,7 @@ public class Request {
      * @param driver
      */
     public void offerRide(Driver driver){
-        if(drivers.contains(driver))
-        {
+        if(drivers.contains(driver)) {
             offeringDriverID = driver.getUserId();
         }
         //TODO: do some shenanigans to inform the user they are being offered a ride. (ACCEPT / DECLINE)
@@ -78,9 +75,11 @@ public class Request {
     /**
      *
      */
-    public void acceptOffer()
-    {
-        //Creates a ride instance(???) using the rider id, and the id of the driver whom the rider
-        //accepted the offer from
+    public void acceptOffer(Driver driver) {
+        if (drivers.contains(driver)) {
+            this.acceptedDriver = driver;
+        } else { // if somehow the driver is not in the collection...
+            this.acceptedDriver = null;
+        }
     }
 }

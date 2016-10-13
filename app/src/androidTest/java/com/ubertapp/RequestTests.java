@@ -19,6 +19,7 @@ public class RequestTests {
     private double DEFAULT_COST = 1.00;
 
     private final String DEFAULT_DRIVER_ID = "a5d32d2s_21se2s2";
+    private final String DEFAULT_DRIVER_ID2 = "a5d32d2s_21se2s3";
     private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
 
     private final Rider DEFAULT_RIDER = new Rider(DEFAULT_RIDER_ID);
@@ -67,8 +68,7 @@ public class RequestTests {
      * TODO: other verification to ensure offer happened.
      */
     @Test
-    public void testOfferRide()
-    {
+    public void testOfferRide() {
         Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
 
@@ -87,33 +87,27 @@ public class RequestTests {
     }
 
     @Test
-    public void testAcceptOffer()
-    {
-        //not quite sure how to test this yet
+    public void testAcceptOffer() {
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+        Driver driver2 = new Driver(DEFAULT_DRIVER_ID2);
+
+        request.addDriver(driver);
+        request.addDriver(driver2);
+
+        request.acceptOffer(driver2);
+
+        assertEquals(driver2.getUserId(), request.getAcceptedDriver().getUserId());
+
     }
 
-//    @Test
-//    public void testGetCost() {
-//        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
-////        Request r = new Request(10005.40, default_did, default_rid);
-//        assertEquals(10005.40, request.getCost(), 0.001);
-//    }
+    @Test
+    public void testCancelOffer() {
 
-//    @Test
-//    public void testGetaDriver() {
-//        String did = "fg2swd";
-//
-//        Request r = new Request(10005.50, did, default_rid);
-//
-//        assertEquals("fg2swd", r.getDriverId());
-//    }
+    }
 
-//    @Test
-//    public void testGetRider() {
-//        String rid = "fg2swd";
-//
-//        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
-//
-//        assertEquals("fg2swd", r.getRiderId());
-//    }
+    @Test
+    public void testGetToLocation() {
+
+    }
 }
