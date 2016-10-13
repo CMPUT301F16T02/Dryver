@@ -12,6 +12,9 @@ import android.location.Location;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The type Request.
+ */
 public class Request {
     private Rider rider;
     private Collection<Driver> drivers;
@@ -23,6 +26,12 @@ public class Request {
     private final double cost;
     private final String riderId;
 
+    /**
+     * Instantiates a new Request.
+     *
+     * @param cost  the cost
+     * @param rider the rider
+     */
     public Request(double cost, Rider rider) {
         this.cost = cost;
         this.rider = rider;
@@ -31,36 +40,64 @@ public class Request {
         this.acceptedDriver = null;
     }
 
+    /**
+     * Gets cost.
+     *
+     * @return the cost
+     */
     public double getCost() {
         return cost;
     }
 
+    /**
+     * Gets drivers.
+     *
+     * @return the drivers
+     */
     public Collection<Driver> getDrivers() {
         return this.drivers;
     }
 
+    /**
+     * Gets rider.
+     *
+     * @return the rider
+     */
     public Rider getRider() {
         return this.rider;
     }
 
+    /**
+     * Gets rider id.
+     *
+     * @return the rider id
+     */
     public String getRiderId() {
         return rider.getUserId();
     }
 
+    /**
+     * Gets accepted driver.
+     *
+     * @return the accepted driver
+     */
     public Driver getAcceptedDriver() {
         return acceptedDriver;
     }
 
     /**
      * Adds a driver to the list of drivers.
-     * @param driver
+     *
+     * @param driver the driver
      */
     public void addDriver(Driver driver) {
         drivers.add(driver);
     }
 
     /**
+     * Accept driver offer to give rider a ride.
      *
+     * @param driver the driver
      */
     public void acceptOffer(Driver driver) {
         if (drivers.contains(driver)) {
@@ -68,6 +105,13 @@ public class Request {
         } else { // if somehow the driver is not in the collection...
             this.acceptedDriver = null;
         }
+    }
+
+    /**
+     * Cancel rider's offer to driver.
+     */
+    public void cancelOffer() {
+        this.acceptedDriver = null;
     }
 
     // ================= LOCATION SERVICES. ====================

@@ -23,22 +23,6 @@ public class UserTests {
         assertEquals(DEFAULT_USER_ID, user.getUserId());
     }
 
-    /**
-     * Test to-location's getters and setters.
-     */
-    @Test
-    public void testToLocation() {
-        // TODO write to-location test
-    }
-
-    /**
-     * Test from-location's getters and setters.
-     */
-    @Test
-    public void testFromLocation() {
-        // TODO write from-location test
-    }
-
 
 }
 

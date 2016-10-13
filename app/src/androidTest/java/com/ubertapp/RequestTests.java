@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 /**
  * All Tests for the Request Class.
  */
-
 @RunWith(AndroidJUnit4.class)
 public class RequestTests {
 
@@ -62,6 +61,9 @@ public class RequestTests {
         assertEquals(2, request.getDrivers().size());
     }
 
+    /**
+     * Test accept offer.
+     */
     @Test
     public void testAcceptOffer() {
         Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
@@ -74,16 +76,29 @@ public class RequestTests {
         request.acceptOffer(driver2);
 
         assertEquals(driver2.getUserId(), request.getAcceptedDriver().getUserId());
-
     }
 
+    /**
+     * Test cancelling offer.
+     */
     @Test
     public void testCancelOffer() {
-
+        // TODO write cancel offer test
     }
 
+    /**
+     * Test to-location's getters and setters.
+     */
     @Test
-    public void testGetToLocation() {
+    public void testToLocation() {
+        // TODO write to-location test
+    }
 
+    /**
+     * Test from-location's getters and setters.
+     */
+    @Test
+    public void testFromLocation() {
+        // TODO write from-location test
     }
 }
