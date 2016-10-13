@@ -1,6 +1,7 @@
 package com.ubertapp;
 
 
+import android.location.Location;
 import android.support.test.runner.AndroidJUnit4;
 import com.ubertapp.Models.Driver;
 import com.ubertapp.Models.Request;
@@ -83,22 +84,31 @@ public class RequestTests {
      */
     @Test
     public void testCancelOffer() {
-        // TODO write cancel offer test
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+
+        request.addDriver(driver);
+        request.acceptOffer(driver);
+        request.cancelOffer();
+
+        assertEquals(null, request.getAcceptedDriver());
     }
 
     /**
-     * Test to-location's getters and setters.
+     * Test to/from-location's getters and setters.
      */
     @Test
-    public void testToLocation() {
-        // TODO write to-location test
-    }
+    public void testToFromLocations() {
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
 
-    /**
-     * Test from-location's getters and setters.
-     */
-    @Test
-    public void testFromLocation() {
-        // TODO write from-location test
+        Location someLocation = new Location("");
+        someLocation.setLatitude(12.0);
+        someLocation.setLongitude(12.0);
+
+        request.setToLocation(someLocation);
+        request.setFromLocation(someLocation);
+
+        assertEquals(someLocation, request.getToLocation());
+        assertEquals(someLocation, request.getFromLocation());
     }
 }

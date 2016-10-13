@@ -14,7 +14,7 @@ public class User {
     private String phoneNumber;
     private String userBio;
     // TODO: anything else for user info?
-    
+
     /**
      * Instantiates a new User with unique id.
      *
