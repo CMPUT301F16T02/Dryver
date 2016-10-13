@@ -62,30 +62,6 @@ public class RequestTests {
         assertEquals(2, request.getDrivers().size());
     }
 
-    /**
-     * Tests offering a ride to the user. Essentially verifies that the driver's id is added
-     * properly to the request
-     * TODO: other verification to ensure offer happened.
-     */
-    @Test
-    public void testOfferRide() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
-        Driver driver = new Driver(DEFAULT_DRIVER_ID);
-
-        assertEquals(0, request.getDrivers().size());
-
-        // check driver in list
-        request.addDriver(driver);
-        assertTrue(request.getDrivers().contains(driver));
-
-        // check list count
-        request.addDriver(driver);
-        assertEquals(2, request.getDrivers().size());
-
-        request.offerRide(driver);
-        assertEquals(driver.getUserId(), request.getOfferingDriverID());
-    }
-
     @Test
     public void testAcceptOffer() {
         Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);

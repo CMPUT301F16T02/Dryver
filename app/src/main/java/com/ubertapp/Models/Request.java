@@ -7,6 +7,8 @@ package com.ubertapp.Models;
  * information such as ride cost etc...
  */
 
+import android.location.Location;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,8 +16,9 @@ public class Request {
     private Rider rider;
     private Collection<Driver> drivers;
     private Driver acceptedDriver;
-    private String offeringDriverID;
 
+    private Location fromLocation;
+    private Location toLocation;
 
     private final double cost;
     private final String riderId;
@@ -44,10 +47,6 @@ public class Request {
         return rider.getUserId();
     }
 
-    public String getOfferingDriverID() {
-        return offeringDriverID;
-    }
-
     public Driver getAcceptedDriver() {
         return acceptedDriver;
     }
@@ -61,18 +60,6 @@ public class Request {
     }
 
     /**
-     * Allows a driver to offer a ride to the rider who this request belongs to. Driver must be
-     * in the list.
-     * @param driver
-     */
-    public void offerRide(Driver driver){
-        if(drivers.contains(driver)) {
-            offeringDriverID = driver.getUserId();
-        }
-        //TODO: do some shenanigans to inform the user they are being offered a ride. (ACCEPT / DECLINE)
-    }
-
-    /**
      *
      */
     public void acceptOffer(Driver driver) {
@@ -81,5 +68,43 @@ public class Request {
         } else { // if somehow the driver is not in the collection...
             this.acceptedDriver = null;
         }
+    }
+
+    // ================= LOCATION SERVICES. ====================
+
+    /**
+     * Gets user's to-location.
+     *
+     * @return the to-location
+     */
+    public Location getToLocation() {
+        return toLocation;
+    }
+
+    /**
+     * Gets user's from-location.
+     *
+     * @return the from-location
+     */
+    public Location getFromLocation() {
+        return fromLocation;
+    }
+
+    /**
+     * Sets user's from-location.
+     *
+     * @param fromLocation the from location
+     */
+    public void setFromLocation(Location fromLocation) {
+        this.fromLocation = fromLocation;
+    }
+
+    /**
+     * Sets user's to-location.
+     *
+     * @param toLocation the to location
+     */
+    public void setToLocation(Location toLocation) {
+        this.toLocation = toLocation;
     }
 }

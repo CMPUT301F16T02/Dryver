@@ -6,10 +6,7 @@ package com.ubertapp.Models;
  * and a Rider.
  */
 public class User {
-    // We might need the following for each user:
-    // - email string
-    // - first/last name
-
+    // TODO: First name, Last name, email string?... anything else?
     private String userId;
 
     /**
@@ -29,5 +26,4 @@ public class User {
     public String getUserId() {
         return userId;
     }
-
 }
