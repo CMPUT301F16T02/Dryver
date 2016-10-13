@@ -3,7 +3,7 @@ package com.ubertapp.Models;
 
 /**
  * User class. General class for any user of the UberTapp app. Note: a User can be both a Driver
- *  and a Rider.
+ * and a Rider.
  */
 public class User {
     // We might need the following for each user:

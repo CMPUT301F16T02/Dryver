@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 
 /**
- * All User class tests.
+ * Test Suite for the User Class.
  */
 public class UserTests {
 
