@@ -23,6 +23,50 @@ public class UserTests {
         assertEquals(DEFAULT_USER_ID, user.getUserId());
     }
 
+    /**
+     * Test first last name.
+     */
+    @Test
+    public void testFirstLastName() {
+        String first = "John";
+        String last = "Smith";
+        User user = new User(DEFAULT_USER_ID, first, last);
+        assertEquals(first, user.getFirstName());
+        assertEquals(last, user.getLastName());
+    }
+
+    /**
+     * Test email.
+     */
+    @Test
+    public void testEmail() {
+        User user = new User(DEFAULT_USER_ID);
+        String email = "testing@gmail.com";
+        user.setEmail(email);
+        assertEquals(email, user.getEmail());
+    }
+
+    /**
+     * Test phone number.
+     */
+    @Test
+    public void testPhoneNumber() {
+        User user = new User(DEFAULT_USER_ID);
+        String phone = "5879895565";
+        user.setPhoneNumber(phone);
+        assertEquals(phone, user.getPhoneNumber());
+    }
+
+    /**
+     * Test user biography.
+     */
+    @Test
+    public void testUserBio() {
+        User user = new User(DEFAULT_USER_ID);
+        String bio = "User sample bio text.";
+        user.setUserBio(bio);
+        assertEquals(bio, user.getUserBio());
+    }
 
 }
 

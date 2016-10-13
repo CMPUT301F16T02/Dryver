@@ -19,6 +19,7 @@ public class Request {
     private Rider rider;
     private Collection<Driver> drivers;
     private Driver acceptedDriver;
+    private String description;
 
     private Location fromLocation;
     private Location toLocation;
@@ -38,6 +39,25 @@ public class Request {
         this.riderId = rider.getUserId();
         this.drivers = new ArrayList<Driver>();
         this.acceptedDriver = null;
+    }
+
+
+    /**
+     * Gets description for a ride.
+     *
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets description for a ride.
+     *
+     * @param description the description
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -151,4 +171,5 @@ public class Request {
     public void setToLocation(Location toLocation) {
         this.toLocation = toLocation;
     }
+
 }
