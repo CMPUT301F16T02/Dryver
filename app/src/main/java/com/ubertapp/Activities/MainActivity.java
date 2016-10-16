@@ -1,10 +1,19 @@
-package com.ubertapp.Views;
+package com.ubertapp.Activities;
+
 
 import android.app.Activity;
 import android.os.Bundle;
+<<<<<<< Updated upstream:app/src/main/java/com/ubertapp/Views/MainActivity.java
 import com.ubertapp.R;
 
 public class MainActivity extends Activity {
+=======
+import com.example.adam.ubertapp.R;
+
+
+public class MainActivity extends Activity
+{
+>>>>>>> Stashed changes:app/src/main/java/com/ubertapp/Activities/MainActivity.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
