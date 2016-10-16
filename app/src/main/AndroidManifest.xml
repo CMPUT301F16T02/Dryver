@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< Updated upstream
     package="com.ubertapp">
+=======
+    package="com.example.adam.ubertapp">
+>>>>>>> Stashed changes
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name="com.ubertapp.Views.MainActivity">
+        <activity android:name="com.ubertapp.Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
         <activity android:name="com.ubertapp.Views.ActivityOpeningPage"></activity>
+=======
+        <activity android:name="com.ubertapp.Activities.ActivityOpeningPage"></activity>
+>>>>>>> Stashed changes
     </application>
 
 </manifest>
