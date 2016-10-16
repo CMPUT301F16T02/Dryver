@@ -2,7 +2,7 @@ package com.ubertapp.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.example.adam.ubertapp.R;
+import com.ubertapp.R;
 
 public class ActivityOpeningPage extends Activity {
 
