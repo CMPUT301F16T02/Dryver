@@ -41,4 +41,5 @@ public class ActivityLogin extends Activity {
     }
 
     // TODO: 2016-10-16 Generate error handling when database is integrated.
+
 }
