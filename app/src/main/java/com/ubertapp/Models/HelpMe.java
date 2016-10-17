@@ -1,8 +1,6 @@
 package com.ubertapp.Models;
 
 import android.app.Activity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,9 +20,9 @@ public class HelpMe extends Activity {
     static public boolean isEmptyTextField(EditText editText) {
         if (editText.getText().toString().equals("")) {
             editText.setError("This field is required.");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     static public void configureHeader(Activity activity, TextView header) {
