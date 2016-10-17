@@ -36,9 +36,8 @@ public class ActivityOpeningPage extends Activity {
         getStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity);
-//                ActivityOpeningPage.this.startActivity(nextActivity);
-
+                Intent intent = new Intent(ActivityOpeningPage.this, ActivityRegistration.class);
+                ActivityOpeningPage.this.startActivity(intent);
             }
         });
     }
