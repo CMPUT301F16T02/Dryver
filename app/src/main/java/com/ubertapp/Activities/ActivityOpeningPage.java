@@ -2,6 +2,7 @@ package com.ubertapp.Activities;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +28,8 @@ public class ActivityOpeningPage extends Activity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity);
-//                ActivityOpeningPage.this.startActivity(nextActivity);
+                Intent intent = new Intent(ActivityOpeningPage.this, ActivityLogin.class);
+                ActivityOpeningPage.this.startActivity(intent);
             }
         });
 

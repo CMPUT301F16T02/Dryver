@@ -27,14 +27,14 @@ public class ActivityLogin extends Activity {
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
         passwordEditText = (EditText) findViewById(R.id.password_edittext);
 
-        loginButton = (Button) findViewById(R.id.signin_button);
+        loginButton = (Button) findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (HelperMethods.isEmpty(usernameEditText) || HelperMethods.isEmpty(passwordEditText)) {
-//                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity);
-//                ActivityOpeningPage.this.startActivity(nextActivity);
+                if (!HelperMethods.isEmptyTextField(usernameEditText) && !HelperMethods.isEmptyTextField(passwordEditText)) {
+//                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity.class);
+//                ActivityOpeningPage.this.startActivity(intent);
                 }
             }
         });

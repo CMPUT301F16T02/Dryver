@@ -13,7 +13,7 @@ public class HelperMethods {
      * @param editText the edit text
      * @return the boolean
      */
-    static public boolean isEmpty(EditText editText) {
+    static public boolean isEmptyTextField(EditText editText) {
         if (editText.getText().toString().equals("")) {
             editText.setError("This field is required.");
             return false;
