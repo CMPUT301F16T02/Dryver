@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:weightSum="1"
+    android:background="@android:color/black"
+    android:layout_height="50dp">
+
+    <!--<Button-->
+        <!--android:text="Back"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/back_button"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginTop="5dp" />-->
+
+    <TextView
+        android:text="UberTapp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/header_textview"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:includeFontPadding="false"
+        android:textSize="30sp" />
+
+    <!--<Button-->
+        <!--android:text="Save"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/save_button"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginTop="5dp" />-->
+</LinearLayout>
