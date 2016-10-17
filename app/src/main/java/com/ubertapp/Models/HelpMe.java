@@ -3,9 +3,9 @@ package com.ubertapp.Models;
 import android.widget.EditText;
 
 /**
- * Global helper functions for the ubertapp app.
+ * Global helper methods for the ubertapp app. HelpMe stands for Helper Methods.
  */
-public class HelperMethods {
+public class HelpMe {
 
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.

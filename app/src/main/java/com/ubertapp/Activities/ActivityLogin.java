@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.ubertapp.Models.HelperMethods;
+import com.ubertapp.Models.HelpMe;
 import com.ubertapp.R;
 
 
@@ -32,7 +32,7 @@ public class ActivityLogin extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!HelperMethods.isEmptyTextField(usernameEditText) && !HelperMethods.isEmptyTextField(passwordEditText)) {
+                if (!HelpMe.isEmptyTextField(usernameEditText) && !HelpMe.isEmptyTextField(passwordEditText)) {
 //                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity.class);
 //                ActivityOpeningPage.this.startActivity(intent);
                 }
