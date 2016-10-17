@@ -2,6 +2,7 @@ package com.ubertapp.Activities;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,8 +44,8 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(emailEditText)
                         && !HelpMe.isEmptyTextField(passwordEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
-//                Intent intent = new Intent(ActivityOpeningPage.this, nextActivity.class);
-//                ActivityOpeningPage.this.startActivity(intent);
+                    Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                    ActivityRegistration.this.startActivity(intent);
                 }
             }
         });
