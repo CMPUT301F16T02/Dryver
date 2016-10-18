@@ -1,7 +1,9 @@
 package com.ubertapp.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.ubertapp.R;
@@ -20,6 +22,21 @@ public class ActivitySelection extends Activity {
         setContentView(R.layout.activity_selection);
 
         driverButton = (Button) findViewById(R.id.driver_button);
+        driverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivitySelection.this, ActivityDriver.class);
+                ActivitySelection.this.startActivity(intent);
+            }
+        });
+
         requestButton = (Button) findViewById(R.id.request_button);
+        requestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivitySelection.this, ActivityRiderRequest.class);
+                ActivitySelection.this.startActivity(intent);
+            }
+        });
     }
 }
