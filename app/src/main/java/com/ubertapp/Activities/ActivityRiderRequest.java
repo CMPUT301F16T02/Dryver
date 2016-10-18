@@ -1,10 +1,10 @@
 package com.ubertapp.Activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import com.ubertapp.R;
 
-public class ActivityRiderRequest extends ActionBarActivity {
+public class ActivityRiderRequest extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

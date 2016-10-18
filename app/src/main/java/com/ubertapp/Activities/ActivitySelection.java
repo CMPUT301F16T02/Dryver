@@ -22,6 +22,8 @@ public class ActivitySelection extends Activity {
         setContentView(R.layout.activity_selection);
 
         driverButton = (Button) findViewById(R.id.driver_button);
+        requestButton = (Button) findViewById(R.id.request_button);
+
         driverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -30,7 +32,6 @@ public class ActivitySelection extends Activity {
             }
         });
 
-        requestButton = (Button) findViewById(R.id.request_button);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
