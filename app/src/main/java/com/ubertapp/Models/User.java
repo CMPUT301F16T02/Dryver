@@ -1,6 +1,8 @@
 package com.ubertapp.Models;
 
 
+import io.searchbox.annotations.JestId;
+
 /**
  * User class. General class for any user of the UberTapp app. Note: a User can be both a Driver
  * and a Rider.
@@ -13,6 +15,8 @@ public class User {
     // TODO: Implement phoneNumber correctly. Remember to change the test for it when you fix this.
     private String phoneNumber;
     private String userBio;
+    @JestId
+    private String id;
     // TODO: anything else for user info?
 
     /**
@@ -135,5 +139,23 @@ public class User {
      */
     public void setUserBio(String personalBio) {
         this.userBio = personalBio;
+    }
+
+    /**
+     * Returns the ElasticSearch ID of the user
+     *
+     * @return String
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the users id to the elastic search id created from adding user.
+     *
+     * @param id
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 }
