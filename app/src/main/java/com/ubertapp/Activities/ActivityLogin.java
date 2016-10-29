@@ -43,4 +43,5 @@ public class ActivityLogin extends Activity {
 
     // TODO: 2016-10-16 Generate error handling when database is integrated.
 
+    // TODO: 2016-10-29 Remove password field and verify user exists etc
 }

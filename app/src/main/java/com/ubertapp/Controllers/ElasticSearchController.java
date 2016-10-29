@@ -89,7 +89,7 @@ public class ElasticSearchController {
     public void addUser(User user) {
         verifySettings();
 
-        Index index = new Index.Builder(user).index(INDEX).type("tweet").build();
+        Index index = new Index.Builder(user).index(INDEX).type("user").build();
 
         try {
             DocumentResult result = client.execute(index);

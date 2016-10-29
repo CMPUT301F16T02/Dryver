@@ -1,11 +1,13 @@
 package com.ubertapp.Controllers;
 
 import com.ubertapp.Models.Request;
+import com.ubertapp.Models.Rider;
+import com.ubertapp.Models.User;
 
 import java.util.ArrayList;
 
 /**
- * Created by drei on 2016-10-08.
+ * Request Singleton. Deals from providing request information to the caller.
  */
 public class RequestSingleton {
     private static RequestSingleton ourInstance = new RequestSingleton();
@@ -21,4 +23,11 @@ public class RequestSingleton {
     public static ArrayList<Request> getRequests() {
         return requests;
     }
+
+    public void addRequest(Double cost, Rider rider) {
+        Request request = new Request(cost, rider);
+        
+    }
+
+    // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

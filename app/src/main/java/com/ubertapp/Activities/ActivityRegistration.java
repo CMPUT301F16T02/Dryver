@@ -52,5 +52,4 @@ public class ActivityRegistration extends Activity {
     }
 
     // TODO: 2016-10-16 check if user name is unique
-    // TODO: 2016-10-16 verify email hasn't been used
 }
