@@ -111,7 +111,7 @@ public class ElasticSearchController {
      * @return User
      * @see User
      */
-    public User getUser(String id) {
+    public User getUserByID(String id) {
         verifySettings();
 
         Get get = new Get.Builder(INDEX, id).type("user").build();

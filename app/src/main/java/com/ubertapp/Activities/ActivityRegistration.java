@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.HelpMe;
+import com.ubertapp.Models.User;
 import com.ubertapp.R;
 
 
@@ -22,6 +25,7 @@ public class ActivityRegistration extends Activity {
     // TODO: 2016-10-16 payment info
 
     private Button doneButton;
+    private ElasticSearchController ES = new ElasticSearchController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,17 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(firstlastnameEditText)
                         && !HelpMe.isEmptyTextField(emailEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
-                    Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
-                    ActivityRegistration.this.startActivity(intent);
+
+                    User user = new User(usernameEditText.getText().toString());
+                    if (ES.getUserByID(user.getId()) == null) {
+                        ES.addUser(user);
+                        Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                        ActivityRegistration.this.startActivity(intent);
+                    } else {
+                        usernameEditText.setError("Username is taken. Try something else.");
+                    }
+
+                    // TODO: 2016-10-29 add the rest of the user info to the database.
                 }
             }
         });
