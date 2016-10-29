@@ -18,7 +18,6 @@ public class ActivityRegistration extends Activity {
     private EditText usernameEditText;
     private EditText firstlastnameEditText;
     private EditText emailEditText;
-    private EditText passwordEditText;
     private EditText addressEditText;
     // TODO: 2016-10-16 payment info
 
@@ -32,7 +31,6 @@ public class ActivityRegistration extends Activity {
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
         firstlastnameEditText = (EditText) findViewById(R.id.firstlastname_edittext);
         emailEditText = (EditText) findViewById(R.id.email_edittext);
-        passwordEditText = (EditText) findViewById(R.id.password_edittext);
         addressEditText = (EditText) findViewById(R.id.address_edittext);
 
         doneButton = (Button) findViewById(R.id.done_button);
@@ -42,7 +40,6 @@ public class ActivityRegistration extends Activity {
                 if (!HelpMe.isEmptyTextField(usernameEditText)
                         && !HelpMe.isEmptyTextField(firstlastnameEditText)
                         && !HelpMe.isEmptyTextField(emailEditText)
-                        && !HelpMe.isEmptyTextField(passwordEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
                     Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                     ActivityRegistration.this.startActivity(intent);

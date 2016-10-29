@@ -17,7 +17,6 @@ import com.ubertapp.R;
 public class ActivityLogin extends Activity {
 
     private EditText usernameEditText;
-    private EditText passwordEditText;
     private Button loginButton;
 
     @Override
@@ -26,14 +25,13 @@ public class ActivityLogin extends Activity {
         setContentView(R.layout.activity_login);
 
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
-        passwordEditText = (EditText) findViewById(R.id.password_edittext);
 
         loginButton = (Button) findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!HelpMe.isEmptyTextField(usernameEditText) && !HelpMe.isEmptyTextField(passwordEditText)) {
+                if (!HelpMe.isEmptyTextField(usernameEditText)) {
                     Intent intent = new Intent(ActivityLogin.this, ActivitySelection.class);
                     ActivityLogin.this.startActivity(intent);
                 }
@@ -41,7 +39,13 @@ public class ActivityLogin extends Activity {
         });
     }
 
+
+
+
+
+
+
     // TODO: 2016-10-16 Generate error handling when database is integrated.
 
-    // TODO: 2016-10-29 Remove password field and verify user exists etc
+    // TODO: 2016-10-29 verify user exists
 }

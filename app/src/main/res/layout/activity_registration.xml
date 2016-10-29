@@ -25,28 +25,6 @@
         android:id="@+id/firstlastname_edittext"
         android:hint="First/Last name" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/email_edittext"
-        android:layout_alignEnd="@+id/email_edittext"
-        android:layout_marginTop="28dp"
-        android:id="@+id/password_edittext"
-        android:hint="Password" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/password_edittext"
-        android:layout_alignEnd="@+id/password_edittext"
-        android:layout_marginTop="30dp"
-        android:id="@+id/address_edittext"
-        android:hint="Address" />
-
     <Button
         android:text="Done"
         android:layout_width="wrap_content"
@@ -87,4 +65,15 @@
         android:hint="Email"
         android:layout_below="@+id/firstlastname_edittext"
         android:layout_alignStart="@+id/firstlastname_edittext" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="41dp"
+        android:id="@+id/address_edittext"
+        android:hint="Address"
+        android:layout_below="@+id/email_edittext"
+        android:layout_alignStart="@+id/email_edittext" />
 </RelativeLayout>
