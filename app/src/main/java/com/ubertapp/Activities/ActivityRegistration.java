@@ -46,7 +46,7 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(emailEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
-                    User user = new User(usernameEditText.getText().toString());
+                    User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
                     if (ES.getUserByID(user.getId()) == null) {
                         ES.addUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);

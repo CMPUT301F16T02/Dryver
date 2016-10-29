@@ -19,14 +19,10 @@ package com.ubertapp;
 
 
 import android.util.Log;
-
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.User;
-
 import org.junit.Test;
-
 import java.util.ArrayList;
-
 import static com.ubertapp.Controllers.ElasticSearchController.GetUsersTask;
 
 
@@ -43,7 +39,7 @@ public class ElasticSearchTests {
         ElasticSearchController elasticSearch = new ElasticSearchController();
         elasticSearch.addUser(user);
 
-        User result = elasticSearch.getUser(user.getId());
+        User result = elasticSearch.getUserByID(user.getId());
         assert (result.equals(user));
     }
 
