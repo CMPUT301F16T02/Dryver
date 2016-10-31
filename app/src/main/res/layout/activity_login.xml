@@ -22,21 +22,11 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/password_edittext"
-        android:hint="password" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_above="@+id/password_edittext"
-        android:layout_alignEnd="@+id/password_edittext"
-        android:layout_marginBottom="15dp"
         android:id="@+id/username_edittext"
-        android:hint="username" />
+        android:hint="username"
+        android:layout_above="@+id/login_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="97dp" />
 </RelativeLayout>

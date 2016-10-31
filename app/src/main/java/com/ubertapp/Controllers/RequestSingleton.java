@@ -26,7 +26,7 @@ public class RequestSingleton {
 
     public void addRequest(Double cost, Rider rider) {
         Request request = new Request(cost, rider);
-        
+
     }
 
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
