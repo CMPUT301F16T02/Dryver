@@ -15,7 +15,7 @@ import com.ubertapp.R;
 
 
 /**
- * User registration screen. User is able to register
+ * User registration screen. User is able to register.
  */
 public class ActivityRegistration extends Activity {
     private EditText usernameEditText;

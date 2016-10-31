@@ -39,6 +39,7 @@ import io.searchbox.indices.CreateIndex;
 
 /**
  * Used to communicate with the Elasticsearch server
+ * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
  */
 
 public class ElasticSearchController {
@@ -54,7 +55,7 @@ public class ElasticSearchController {
      * The primary index name
      */
     private static String INDEX = "cmput301f16t02";
-
+    private static String USER = "user";
 
     /**
      * Called to verify the connection to the server. Creates a connection if it doesn't exist.
@@ -72,7 +73,7 @@ public class ElasticSearchController {
 
 
         try {
-            client.execute(new CreateIndex.Builder("cmput301f16t02").build());
+            client.execute(new CreateIndex.Builder(INDEX).build());
         } catch (IOException e) {
             Log.d("ERROR", "Could not create index.");
             e.printStackTrace();
@@ -89,7 +90,7 @@ public class ElasticSearchController {
     public void addUser(User user) {
         verifySettings();
 
-        Index index = new Index.Builder(user).index(INDEX).type("user").build();
+        Index index = new Index.Builder(user).index(INDEX).type(USER).build();
 
         try {
             DocumentResult result = client.execute(index);
@@ -114,7 +115,7 @@ public class ElasticSearchController {
     public User getUserByID(String id) {
         verifySettings();
 
-        Get get = new Get.Builder(INDEX, id).type("user").build();
+        Get get = new Get.Builder(INDEX, id).type(USER).build();
 
         User user = null;
         try {
@@ -136,7 +137,7 @@ public class ElasticSearchController {
             verifySettings();
             ArrayList<User> users = new ArrayList<User>();
 
-            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType("user").build();
+            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType(USER).build();
 
             try {
                 SearchResult result = client.execute(search);
