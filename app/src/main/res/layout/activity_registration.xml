@@ -61,7 +61,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:layout_marginTop="25dp"
-        android:id="@+id/email_edittext"
+        android:id="@+id/email_editText"
         android:hint="Email"
         android:layout_below="@+id/firstlastname_edittext"
         android:layout_alignStart="@+id/firstlastname_edittext" />
@@ -74,6 +74,6 @@
         android:layout_marginTop="41dp"
         android:id="@+id/address_edittext"
         android:hint="Address"
-        android:layout_below="@+id/email_edittext"
-        android:layout_alignStart="@+id/email_edittext" />
+        android:layout_below="@+id/email_editText"
+        android:layout_alignStart="@+id/email_editText" />
 </RelativeLayout>
