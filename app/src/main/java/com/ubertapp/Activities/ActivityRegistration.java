@@ -34,7 +34,7 @@ public class ActivityRegistration extends Activity {
 
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
         firstlastnameEditText = (EditText) findViewById(R.id.firstlastname_edittext);
-        emailEditText = (EditText) findViewById(R.id.email_edittext);
+        emailEditText = (EditText) findViewById(R.id.email_editText);
         addressEditText = (EditText) findViewById(R.id.address_edittext);
 
         doneButton = (Button) findViewById(R.id.done_button);
