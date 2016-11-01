@@ -4,6 +4,7 @@ package com.ubertapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,10 @@ public class ActivityRegistration extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        // Need this to run thread-safe networking calls.
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
         firstlastnameEditText = (EditText) findViewById(R.id.firstlastname_edittext);
         emailEditText = (EditText) findViewById(R.id.email_editText);
@@ -46,9 +51,7 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
                     User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
-                    ES.addUser(user);
-                    User fetchedUser = ES.getUserByID(user.getId());
-                    if (fetchedUser == null) {
+                    if (ES.getUserByID(user.getId()) == null) {
                         ES.addUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
