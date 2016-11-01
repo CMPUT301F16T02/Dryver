@@ -40,6 +40,7 @@ import io.searchbox.indices.CreateIndex;
 /**
  * Used to communicate with the Elasticsearch server
  * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
+ * @see <a href="http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/_search?pretty=true&q=*:*">list of users</a>
  */
 
 public class ElasticSearchController {
@@ -71,7 +72,6 @@ public class ElasticSearchController {
             client = (JestDroidClient) factory.getObject();
         }
 
-
         try {
             client.execute(new CreateIndex.Builder(INDEX).build());
         } catch (IOException e) {
@@ -88,6 +88,7 @@ public class ElasticSearchController {
      * @see User
      */
     public void addUser(User user) {
+        // TODO: 2016-10-31 should return true if user created and false if user already exists.
         verifySettings();
 
         Index index = new Index.Builder(user).index(INDEX).type(USER).build();

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.HelpMe;
 import com.ubertapp.Models.User;
@@ -47,7 +46,9 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
                     User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
-                    if (ES.getUserByID(user.getId()) == null) {
+                    ES.addUser(user);
+                    User fetchedUser = ES.getUserByID(user.getId());
+                    if (fetchedUser == null) {
                         ES.addUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
