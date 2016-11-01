@@ -37,10 +37,14 @@ public class ElasticSearchTests {
         // and comapares the user in the db to the original
         User user = new User("123", "Cole", "Mackenzie");
         ElasticSearchController elasticSearch = new ElasticSearchController();
-        elasticSearch.addUser(user);
 
         User result = elasticSearch.getUserByID(user.getId());
-        assert (result.equals(user));
+        assert(result.equals(user));
+
+        elasticSearch.addUser(user);
+
+        result = elasticSearch.getUserByID(user.getId());
+        assert(result.equals(user));
     }
 
     @Test

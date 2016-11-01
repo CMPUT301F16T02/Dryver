@@ -39,6 +39,8 @@ import io.searchbox.indices.CreateIndex;
 
 /**
  * Used to communicate with the Elasticsearch server
+ * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
+ * @see <a href="http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/_search?pretty=true&q=*:*">list of users</a>
  */
 
 public class ElasticSearchController {
@@ -54,7 +56,7 @@ public class ElasticSearchController {
      * The primary index name
      */
     private static String INDEX = "cmput301f16t02";
-
+    private static String USER = "user";
 
     /**
      * Called to verify the connection to the server. Creates a connection if it doesn't exist.
@@ -70,9 +72,8 @@ public class ElasticSearchController {
             client = (JestDroidClient) factory.getObject();
         }
 
-
         try {
-            client.execute(new CreateIndex.Builder("cmput301f16t02").build());
+            client.execute(new CreateIndex.Builder(INDEX).build());
         } catch (IOException e) {
             Log.d("ERROR", "Could not create index.");
             e.printStackTrace();
@@ -87,9 +88,10 @@ public class ElasticSearchController {
      * @see User
      */
     public void addUser(User user) {
+        // TODO: 2016-10-31 should return true if user created and false if user already exists.
         verifySettings();
 
-        Index index = new Index.Builder(user).index(INDEX).type("user").build();
+        Index index = new Index.Builder(user).index(INDEX).type(USER).build();
 
         try {
             DocumentResult result = client.execute(index);
@@ -114,7 +116,7 @@ public class ElasticSearchController {
     public User getUserByID(String id) {
         verifySettings();
 
-        Get get = new Get.Builder(INDEX, id).type("user").build();
+        Get get = new Get.Builder(INDEX, id).type(USER).build();
 
         User user = null;
         try {
@@ -136,7 +138,7 @@ public class ElasticSearchController {
             verifySettings();
             ArrayList<User> users = new ArrayList<User>();
 
-            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType("user").build();
+            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType(USER).build();
 
             try {
                 SearchResult result = client.execute(search);

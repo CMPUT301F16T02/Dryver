@@ -4,10 +4,10 @@ package com.ubertapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.HelpMe;
 import com.ubertapp.Models.User;
@@ -15,7 +15,7 @@ import com.ubertapp.R;
 
 
 /**
- * User registration screen. User is able to register
+ * User registration screen. User is able to register.
  */
 public class ActivityRegistration extends Activity {
     private EditText usernameEditText;
@@ -31,6 +31,10 @@ public class ActivityRegistration extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        // Need this to run thread-safe networking calls.
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
         firstlastnameEditText = (EditText) findViewById(R.id.firstlastname_edittext);
