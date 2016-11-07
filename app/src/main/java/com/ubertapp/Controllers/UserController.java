@@ -12,6 +12,7 @@ import com.ubertapp.Models.User;
  */
 public class UserController {
     private static UserController instance = new UserController();
+    private ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
 
     private User activeUser;
     private User viewedUser;
@@ -45,7 +46,8 @@ public class UserController {
 
     public User login(String userid)
     {
-        return new ElasticSearchController().getUserByID(userid);
+        activeUser =  elasticSearchController.getUserByID(userid);
+        return activeUser;
     }
 
     public void logout()

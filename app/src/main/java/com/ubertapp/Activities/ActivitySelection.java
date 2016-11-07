@@ -8,12 +8,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.ubertapp.Controllers.UserController;
+import com.ubertapp.Models.User;
 import com.ubertapp.R;
 
 /**
  * Selection screen which provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
 public class ActivitySelection extends Activity {
+
+    private UserController userController = UserController.getInstance();
 
     private Button driverButton;
     private Button requestButton;
@@ -30,8 +35,7 @@ public class ActivitySelection extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.viewMyProfile:
-                Intent intent = new Intent(ActivitySelection.this, ActivityUserProfile.class);
-                ActivitySelection.this.startActivity(intent);
+                userController.viewActiveUserProfile(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -25,7 +25,7 @@ public class ActivityRegistration extends Activity {
     // TODO: 2016-10-16 payment info
 
     private Button doneButton;
-    private ElasticSearchController ES = new ElasticSearchController();
+    private ElasticSearchController ES = ElasticSearchController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

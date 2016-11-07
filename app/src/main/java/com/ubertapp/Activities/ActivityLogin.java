@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ubertapp.Controllers.ElasticSearchController;
-//import com.ubertapp.Controllers.UserController;
+import com.ubertapp.Controllers.UserController;
 import com.ubertapp.Models.HelpMe;
 import com.ubertapp.Models.User;
 import com.ubertapp.R;
@@ -23,7 +23,7 @@ public class ActivityLogin extends Activity {
 
     private EditText usernameEditText;
     private Button loginButton;
-    private ElasticSearchController ES = new ElasticSearchController();
+    private UserController userController = UserController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class ActivityLogin extends Activity {
             @Override
             public void onClick(View view) {
                 if (!HelpMe.isEmptyTextField(usernameEditText)) {
-                    User user = ES.getUserByID(usernameEditText.getText().toString());
+                    User user = userController.login(usernameEditText.getText().toString());
                     if (user != null) {
                         // TODO: 2016-11-01 assign the user model the current user.
 

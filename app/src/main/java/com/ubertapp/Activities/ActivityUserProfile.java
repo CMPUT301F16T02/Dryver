@@ -22,6 +22,8 @@ public class ActivityUserProfile extends Activity {
 
     //TODO: Contacting a driver via email or phone. (should that be here?)
 
+    private UserController userController = UserController.getInstance();
+
     private User user;
     private EditText userNameEditText;
     private EditText emailEditText;
@@ -29,9 +31,10 @@ public class ActivityUserProfile extends Activity {
     private TextView paymentMethodText;
     private Spinner paymentMethodSpinner;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        user = UserController.getInstance().getViewedUser();
+        user = userController.getViewedUser();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_user_profile);
@@ -43,7 +46,7 @@ public class ActivityUserProfile extends Activity {
         this.paymentMethodSpinner = (Spinner)findViewById(R.id.payment_spinner);
 
         //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
-        if(user.equals(UserController.getInstance().getActiveUser())){
+        if(user.equals(userController.getActiveUser())){
             userNameEditText.setEnabled(true);
             emailEditText.setEnabled(true);
             phoneNumberEditText.setEnabled(true);
