@@ -20,7 +20,6 @@ public class ActivityLogin extends Activity {
 
     private EditText usernameEditText;
     private Button loginButton;
-    private UserController userController = UserController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,6 @@ public class ActivityLogin extends Activity {
             @Override
             public void onClick(View view) {
                 if (!HelpMe.isEmptyTextField(usernameEditText)) {
-                    userController.login(usernameEditText.getText().toString());
                     Intent intent = new Intent(ActivityLogin.this, ActivitySelection.class);
                     ActivityLogin.this.startActivity(intent);
                 }
