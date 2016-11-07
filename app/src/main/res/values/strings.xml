@@ -2,6 +2,7 @@
     <string name="app_name">UberTapp</string>
     <string name="title_activity_activity_user_profile">ActivityUserProfile</string>
     <string name="title_activity_activity_request_selection">ActivityRequestSelection</string>
+    <string name="view_profile">View Profile</string>
 
     <!--TODO: Verify Reasonable Payment Methods-->
     <string-array

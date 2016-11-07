@@ -11,16 +11,20 @@ import com.ubertapp.Models.User;
  * Follows the Singleton design pattern, allows user to view ActivityUserProfile.
  */
 public class UserController {
-    private static UserController ourInstance = new UserController();
+    private static UserController instance = new UserController();
 
     private User activeUser;
     private User viewedUser;
 
     public static UserController getInstance() {
-        return ourInstance;
+        return instance;
     }
 
     private UserController() {
+    }
+
+    public User getActiveUser() {
+        return activeUser;
     }
 
     public User getViewedUser() {
@@ -37,6 +41,11 @@ public class UserController {
         viewedUser = user;
         Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
         currentActivity.startActivity(intent);
+    }
+
+    public User login(String userid)
+    {
+        return new ElasticSearchController().getUserByID(userid);
     }
 
     public void logout()

@@ -2,38 +2,66 @@ package com.ubertapp.Activities;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ubertapp.Controllers.UserController;
 import com.ubertapp.Models.User;
 import com.ubertapp.R;
+
+/**
+ * This is the activity that is responsible for displaying both the active user's profile infomation
+ * and the viewed user's information. This means that the active user (the one using the app) will
+ * be able to edit there information here, and also that this activity will be displayed when they
+ * select to view a driver or rider's profile (that is not their own). ****May be responsible for
+ * at least calling the methods responsible for contacting the driver****
+ */
 public class ActivityUserProfile extends Activity {
 
-    //TODO: Should these be edit texts? What if it isnt their profile? How to dynamically change
-    //type of text view to regular textview if it is another's profile?
+    //TODO: Contacting a driver via email or phone. (should that be here?)
 
-    private User user = UserController.getInstance().getViewedUser();
+    private User user;
     private EditText userNameEditText;
     private EditText emailEditText;
     private EditText phoneNumberEditText;
+    private TextView paymentMethodText;
     private Spinner paymentMethodSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        user = UserController.getInstance().getViewedUser();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_user_profile);
 
         this.userNameEditText = (EditText)findViewById(R.id.userName_editText);
         this.emailEditText = (EditText)findViewById(R.id.email_editText);
         this.phoneNumberEditText = (EditText)findViewById(R.id.phone_editText);
+        this.paymentMethodText = (TextView)findViewById(R.id.payment_Text);
         this.paymentMethodSpinner = (Spinner)findViewById(R.id.payment_spinner);
+
+        //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
+        if(user.equals(UserController.getInstance().getActiveUser())){
+            userNameEditText.setEnabled(true);
+            emailEditText.setEnabled(true);
+            phoneNumberEditText.setEnabled(true);
+            paymentMethodText.setVisibility(View.GONE);
+            paymentMethodSpinner.setVisibility(View.GONE);
+        }
+        else
+        {
+            userNameEditText.setEnabled(false);
+            emailEditText.setEnabled(false);
+            phoneNumberEditText.setEnabled(false);
+            paymentMethodText.setVisibility(View.VISIBLE);
+            paymentMethodSpinner.setVisibility(View.VISIBLE);
+        }
 
         userNameEditText.setText(user.getUserId());
         emailEditText.setText(user.getEmail());
         phoneNumberEditText.setText(user.getPhoneNumber());
     }
-
-
 
 }

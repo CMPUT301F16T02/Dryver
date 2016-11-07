@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ubertapp.Controllers.ElasticSearchController;
+//import com.ubertapp.Controllers.UserController;
 import com.ubertapp.Models.HelpMe;
 import com.ubertapp.Models.User;
 import com.ubertapp.R;
@@ -53,11 +54,6 @@ public class ActivityLogin extends Activity {
             }
         });
     }
-
-
-
-
-
 
 
     // TODO: 2016-10-16 Generate error handling when database is integrated.

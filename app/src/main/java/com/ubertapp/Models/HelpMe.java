@@ -30,7 +30,7 @@ public class HelpMe extends Activity {
     static public void configureHeader(Activity activity, TextView header) {
 //        back = (Button) activity.findViewById(R.id.back_button);
 //        save = (Button) activity.findViewById(R.id.save_button);
-        header = (TextView) activity.findViewById(R.id.header_textview);
+        //header = (TextView) activity.findViewById(R.id.header_textview);
     }
 
     static public void dateToString(Date date) {

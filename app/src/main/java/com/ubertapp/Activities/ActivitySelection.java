@@ -3,9 +3,11 @@ package com.ubertapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
 import com.ubertapp.R;
 
 /**
@@ -15,6 +17,26 @@ public class ActivitySelection extends Activity {
 
     private Button driverButton;
     private Button requestButton;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.hamburgler_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.viewMyProfile:
+                Intent intent = new Intent(ActivitySelection.this, ActivityUserProfile.class);
+                ActivitySelection.this.startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
