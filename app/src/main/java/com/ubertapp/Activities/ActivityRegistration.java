@@ -49,7 +49,7 @@ public class ActivityRegistration extends Activity {
             public void onClick(View view) {
                 if (!HelpMe.isEmptyTextField(usernameEditText)
                         && !HelpMe.isEmptyTextField(firstlastnameEditText)
-                        && !HelpMe.isEmptyTextField(emailEditText)
+                        && HelpMe.isValidEmail(emailEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
                     User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
@@ -58,11 +58,16 @@ public class ActivityRegistration extends Activity {
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
-                    } else {
+                    }
+                    else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
 
                     // TODO: 2016-10-29 add the rest of the user info to the database.
+                }
+                else if(!HelpMe.isValidEmail(emailEditText))
+                {
+                    emailEditText.setError("Invalid email. Must be of form name@domain.extension");
                 }
             }
         });

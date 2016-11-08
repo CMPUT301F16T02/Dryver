@@ -66,5 +66,4 @@ public class ActivityUserProfile extends Activity {
         emailEditText.setText(user.getEmail());
         phoneNumberEditText.setText(user.getPhoneNumber());
     }
-
 }
