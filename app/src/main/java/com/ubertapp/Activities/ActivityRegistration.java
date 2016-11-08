@@ -64,8 +64,7 @@ public class ActivityRegistration extends Activity {
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    if (ES.getUserByID(user.getId()) == null) {
-                        ES.addUser(user);
+                    if (ES.addUser(user)) {
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);

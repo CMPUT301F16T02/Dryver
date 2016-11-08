@@ -99,9 +99,13 @@ public class ElasticSearchController {
      * @param user
      * @see User
      */
-    public void addUser(User user) {
-        // TODO: 2016-10-31 should return true if user created and false if user already exists.
+    public boolean addUser(User user) {
         verifySettings();
+
+        if(getUserByID(user.getUserId()) != null)
+        {
+            return false;
+        }
 
         Index index = new Index.Builder(user).index(INDEX).type(USER).build();
 
@@ -109,17 +113,18 @@ public class ElasticSearchController {
             DocumentResult result = client.execute(index);
             if (result.isSucceeded()) {
                 user.setId(result.getId());
+                return true;
             } else {
                 Log.i("Error", "Elastic search was not able to add the user.");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
     /**
-     * Gets a user based on the users Elasticsearch id http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/user/_search?q=userId:a
+     * Gets a user based on the users' user id
      *
      * @param id
      * @return User
@@ -148,7 +153,6 @@ public class ElasticSearchController {
         }
         return user;
     }
-
     /**
      * Used to get a list of users.
      */
