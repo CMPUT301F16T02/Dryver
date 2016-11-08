@@ -9,32 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ubertapp.Activities.ActivityUserProfile">
 
-    <TextView
-        android:text="User Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView6"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/textView6"
-        android:layout_alignParentStart="true"
-        android:id="@+id/userName_editText"
-        android:layout_toStartOf="@+id/editUserName"/>
-
-    <TextView
-        android:text="E-Mail Address:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/userName_editText"
-        android:layout_alignParentStart="true"/>
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,5 +51,40 @@
         android:id="@+id/payment_spinner"
         android:layout_below="@+id/payment_Text"
         android:layout_alignParentStart="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/userName_editText"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:text="E-Mail Address:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/userName_editText"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:text="User Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="53dp"/>
+
+    <TextView
+        android:text="User Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView2"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"/>
 
 </RelativeLayout>

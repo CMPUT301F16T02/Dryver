@@ -58,6 +58,7 @@ public class ActivityRegistration extends Activity {
                         && HelpMe.isValidEmail(emailEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
+                    //TODO: Is Address really necessary?
                     User user = new User(usernameEditText.getText().toString(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
@@ -72,8 +73,6 @@ public class ActivityRegistration extends Activity {
                     else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
-
-                    // TODO: 2016-10-29 add the rest of the user info to the database.
                 }
                 else if(!HelpMe.isValidEmail(emailEditText))
                 {
@@ -86,6 +85,4 @@ public class ActivityRegistration extends Activity {
             }
         });
     }
-
-    // TODO: 2016-10-16 check if user name is unique
 }
