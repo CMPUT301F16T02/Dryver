@@ -2,6 +2,7 @@ package com.ubertapp.Activities;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,7 +19,7 @@ import com.ubertapp.R;
  * select to view a driver or rider's profile (that is not their own). ****May be responsible for
  * at least calling the methods responsible for contacting the driver****
  */
-public class ActivityUserProfile extends Activity {
+public class ActivityUserProfile extends AppCompatActivity {
 
     //TODO: Contacting a driver via email or phone. (should that be here?)
 

@@ -3,6 +3,7 @@ package com.ubertapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import com.ubertapp.R;
 /**
  * Selection screen which provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
-public class ActivitySelection extends Activity {
+public class ActivitySelection extends AppCompatActivity {
 
     private UserController userController = UserController.getInstance();
 

@@ -4,6 +4,7 @@ package com.ubertapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import com.ubertapp.R;
@@ -12,7 +13,7 @@ import com.ubertapp.R;
 /**
  * The initial Opening Page of the ubertapp app.
  */
-public class ActivityOpeningPage extends Activity {
+public class ActivityOpeningPage extends AppCompatActivity {
 
     private Button signinButton;
     private Button getStartedButton;

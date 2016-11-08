@@ -46,7 +46,7 @@ import io.searchbox.indices.CreateIndex;
 public class ElasticSearchController {
     private static ElasticSearchController instance = new ElasticSearchController();
 
-    private ElasticSearchController(){
+    public ElasticSearchController(){
     }
 
     public static ElasticSearchController getInstance(){

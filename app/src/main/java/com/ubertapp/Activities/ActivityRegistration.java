@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ import com.ubertapp.R;
 /**
  * User registration screen. User is able to register.
  */
-public class ActivityRegistration extends Activity {
+public class ActivityRegistration extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText firstlastnameEditText;
     private EditText emailEditText;
