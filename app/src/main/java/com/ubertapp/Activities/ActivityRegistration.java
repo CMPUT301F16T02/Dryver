@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.ubertapp.Controllers.ElasticSearchController;
+import com.ubertapp.Controllers.UserController;
 import com.ubertapp.Models.HelpMe;
 import com.ubertapp.Models.User;
 import com.ubertapp.R;
@@ -26,6 +27,7 @@ public class ActivityRegistration extends Activity {
 
     private Button doneButton;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
+    private UserController userController = UserController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ActivityRegistration extends Activity {
                     User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
                     if (ES.getUserByID(user.getId()) == null) {
                         ES.addUser(user);
+                        userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
                     } else {

@@ -50,16 +50,16 @@ public class ActivityUserProfile extends Activity {
             userNameEditText.setEnabled(true);
             emailEditText.setEnabled(true);
             phoneNumberEditText.setEnabled(true);
-            paymentMethodText.setVisibility(View.GONE);
-            paymentMethodSpinner.setVisibility(View.GONE);
+            paymentMethodText.setVisibility(View.VISIBLE);
+            paymentMethodSpinner.setVisibility(View.VISIBLE);
         }
         else
         {
             userNameEditText.setEnabled(false);
             emailEditText.setEnabled(false);
             phoneNumberEditText.setEnabled(false);
-            paymentMethodText.setVisibility(View.VISIBLE);
-            paymentMethodSpinner.setVisibility(View.VISIBLE);
+            paymentMethodText.setVisibility(View.GONE);
+            paymentMethodSpinner.setVisibility(View.GONE);
         }
 
         userNameEditText.setText(user.getUserId());

@@ -32,6 +32,10 @@ public class UserController {
         return viewedUser;
     }
 
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
+    }
+
     public void viewActiveUserProfile(Activity currentActivity)
     {
         viewUserProfile(currentActivity, activeUser);
