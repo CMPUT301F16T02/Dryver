@@ -19,7 +19,6 @@ import com.ubertapp.R;
  * at least calling the methods responsible for contacting the driver****
  */
 public class ActivityUserProfile extends Activity {
-
     //TODO: Contacting a driver via email or phone. (should that be here?)
 
     private UserController userController = UserController.getInstance();
@@ -40,8 +39,8 @@ public class ActivityUserProfile extends Activity {
         setContentView(R.layout.activity_activity_user_profile);
 
         this.userNameEditText = (EditText)findViewById(R.id.userName_editText);
-        this.emailEditText = (EditText)findViewById(R.id.email_editText);
-        this.phoneNumberEditText = (EditText)findViewById(R.id.phone_editText);
+        this.emailEditText = (EditText)findViewById(R.id.email_edittext);
+        this.phoneNumberEditText = (EditText)findViewById(R.id.phone_edittext);
         this.paymentMethodText = (TextView)findViewById(R.id.payment_Text);
         this.paymentMethodSpinner = (Spinner)findViewById(R.id.payment_spinner);
 
@@ -52,9 +51,7 @@ public class ActivityUserProfile extends Activity {
             phoneNumberEditText.setEnabled(true);
             paymentMethodText.setVisibility(View.VISIBLE);
             paymentMethodSpinner.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             userNameEditText.setEnabled(false);
             emailEditText.setEnabled(false);
             phoneNumberEditText.setEnabled(false);

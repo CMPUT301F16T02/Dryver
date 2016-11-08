@@ -36,26 +36,22 @@ public class UserController {
         this.activeUser = activeUser;
     }
 
-    public void viewActiveUserProfile(Activity currentActivity)
-    {
+    public void viewActiveUserProfile(Activity currentActivity) {
         viewUserProfile(currentActivity, activeUser);
     }
 
-    public void viewUserProfile(Activity currentActivity, User user)
-    {
+    public void viewUserProfile(Activity currentActivity, User user) {
         viewedUser = user;
         Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
         currentActivity.startActivity(intent);
     }
 
-    public User login(String userid)
-    {
+    public User login(String userid) {
         activeUser =  elasticSearchController.getUserByID(userid);
         return activeUser;
     }
 
-    public void logout()
-    {
+    public void logout() {
         activeUser = null;
         viewedUser = null;
     }

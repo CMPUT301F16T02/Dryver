@@ -60,12 +60,15 @@ public class ElasticSearchController {
     /**
      * String URL pointing to the server
      */
-    private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080";
+    private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
     /**
      * The primary index name
      */
-    private static String INDEX = "cmput301f16t02";
-    private static String USER = "user";
+    private static final String INDEX = "cmput301f16t02";
+    private static final String USER = "user";
+    private static final String SEARCH_UID = "/user/_search?q=userId:";
+
+
 
     /**
      * Called to verify the connection to the server. Creates a connection if it doesn't exist.
@@ -116,19 +119,31 @@ public class ElasticSearchController {
     }
 
     /**
-     * Gets a user based on the users Elasticsearch id
+     * Gets a user based on the users Elasticsearch id http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/user/_search?q=userId:a
      *
      * @param id
      * @return User
      * @see User
      */
     public User getUserByID(String id) {
-        verifySettings();
+        Log.i("Info", "logging in with user id: " + id);
 
-        Get get = new Get.Builder(INDEX, id).type(USER).build();
+        //TODO: add the dependency for the  SearchSourceBuilder of  figure out how tf to make the query correctly
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        searchSourceBuilder.query(QueryBuilders.matchQuery("userId", id));
+//
+//        verifySettings();
+//        Search search = new Search.Builder(searchSourceBuilder.toString())
+//                .addIndex(INDEX)
+//                .addType(USER)
+//                .build();
+        Get get = new Get.Builder(DATABASE_URL + INDEX , id).type(USER).build();
+
+        //Log.i("info", "Searching using " + search.toString());
 
         User user = null;
         try {
+            //JestResult result = client.execute(search);
             JestResult result = client.execute(get);
             user = result.getSourceAsObject(User.class);
             return user;

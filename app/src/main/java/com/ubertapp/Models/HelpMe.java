@@ -14,11 +14,6 @@ import java.util.regex.Pattern;
  * Global helper methods for the ubertapp app. HelpMe stands for Helper Methods.
  */
 public class HelpMe extends Activity {
-
-    //http://stackoverflow.com/questions/8204680/java-regex-email
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -35,13 +30,12 @@ public class HelpMe extends Activity {
 
     static public boolean isValidEmail(EditText editText)
     {
-        if(isEmptyTextField(editText))
-        {
-            return false;
-        }
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
+    }
 
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(editText.getText().toString());
-        return matcher.find();
+    static public boolean isValidPhone(EditText editText)
+    {
+        return android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
     }
 
     static public void configureHeader(Activity activity, TextView header) {

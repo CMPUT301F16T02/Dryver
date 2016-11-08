@@ -20,12 +20,8 @@
         <activity android:name=".Activities.ActivitySelection" />
         <activity android:name=".Activities.ActivityDriver" />
         <activity android:name=".Activities.ActivityRiderRequest" />
-        <activity
-            android:name=".Activities.ActivityUserProfile"
-            android:label="@string/title_activity_activity_user_profile" />
-        <activity
-            android:name=".Activities.ActivityRequestSelection"
-            android:label="@string/title_activity_activity_request_selection"></activity>
+        <activity android:name=".Activities.ActivityUserProfile" />
+        <activity android:name=".Activities.ActivityRequestSelection" />
     </application>
 
 </manifest>

@@ -20,7 +20,9 @@ import com.ubertapp.R;
  */
 public class ActivityRegistration extends Activity {
     private EditText usernameEditText;
-    private EditText firstlastnameEditText;
+    private EditText firstnameEditText;
+    private EditText lastnameEditText;
+    private EditText phoneEditText;
     private EditText emailEditText;
     private EditText addressEditText;
     // TODO: 2016-10-16 payment info
@@ -39,8 +41,10 @@ public class ActivityRegistration extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
-        firstlastnameEditText = (EditText) findViewById(R.id.firstlastname_edittext);
-        emailEditText = (EditText) findViewById(R.id.email_editText);
+        lastnameEditText = (EditText) findViewById(R.id.lastname_edittext);
+        firstnameEditText = (EditText) findViewById(R.id.firstname_edittext);
+        phoneEditText = (EditText) findViewById(R.id.phone_edittext);
+        emailEditText = (EditText) findViewById(R.id.email_edittext);
         addressEditText = (EditText) findViewById(R.id.address_edittext);
 
         doneButton = (Button) findViewById(R.id.done_button);
@@ -48,11 +52,18 @@ public class ActivityRegistration extends Activity {
             @Override
             public void onClick(View view) {
                 if (!HelpMe.isEmptyTextField(usernameEditText)
-                        && !HelpMe.isEmptyTextField(firstlastnameEditText)
+                        && !HelpMe.isEmptyTextField(firstnameEditText)
+                        && !HelpMe.isEmptyTextField(lastnameEditText)
+                        && HelpMe.isValidPhone(phoneEditText)
                         && HelpMe.isValidEmail(emailEditText)
                         && !HelpMe.isEmptyTextField(addressEditText)) {
 
-                    User user = new User(usernameEditText.getText().toString(), "drei", "usenka");
+                    User user = new User(usernameEditText.getText().toString(),
+                            firstnameEditText.getText().toString(),
+                            lastnameEditText.getText().toString(),
+                            phoneEditText.getText().toString(),
+                            emailEditText.getText().toString());
+
                     if (ES.getUserByID(user.getId()) == null) {
                         ES.addUser(user);
                         userController.setActiveUser(user);
@@ -68,6 +79,10 @@ public class ActivityRegistration extends Activity {
                 else if(!HelpMe.isValidEmail(emailEditText))
                 {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
+                }
+                else if(!HelpMe.isValidPhone(phoneEditText))
+                {
+                    emailEditText.setError("Invalid phone number.");
                 }
             }
         });

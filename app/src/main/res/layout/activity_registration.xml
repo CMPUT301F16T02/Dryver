@@ -12,17 +12,6 @@
     tools:context="com.ubertapp.Activities.ActivityRegistration">
 
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/username_edittext"
-        android:layout_alignStart="@+id/username_edittext"
-        android:layout_marginTop="22dp"
-        android:id="@+id/firstlastname_edittext"
-        android:hint="First/Last name" />
-
     <Button
         android:text="Done"
         android:layout_width="wrap_content"
@@ -49,20 +38,9 @@
         android:ems="10"
         android:layout_marginTop="19dp"
         android:id="@+id/username_edittext"
-        android:hint="username"
+        android:hint="Username"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_marginTop="25dp"
-        android:id="@+id/email_editText"
-        android:hint="Email"
-        android:layout_below="@+id/firstlastname_edittext"
-        android:layout_alignStart="@+id/firstlastname_edittext" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,6 +50,48 @@
         android:layout_marginTop="41dp"
         android:id="@+id/address_edittext"
         android:hint="Address"
-        android:layout_below="@+id/email_editText"
-        android:layout_alignStart="@+id/email_editText" />
+        android:layout_below="@+id/email_edittext"
+        android:layout_alignStart="@+id/email_edittext" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="22dp"
+        android:id="@+id/firstname_edittext"
+        android:hint="First Name"
+        android:layout_below="@+id/username_edittext"
+        android:layout_alignStart="@+id/username_edittext"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/lastname_edittext"
+        android:hint="Last Name"
+        android:layout_below="@+id/firstname_edittext"
+        android:layout_alignStart="@+id/firstname_edittext"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_marginTop="25dp"
+        android:id="@+id/email_edittext"
+        android:hint="Email"
+        android:layout_below="@+id/lastname_edittext"
+        android:layout_alignStart="@+id/lastname_edittext"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_below="@+id/email_edittext"
+        android:layout_alignStart="@+id/address_edittext"
+        android:id="@+id/phone_edittext"
+        android:inputType="phone"
+        android:hint="Phone"/>
 </RelativeLayout>

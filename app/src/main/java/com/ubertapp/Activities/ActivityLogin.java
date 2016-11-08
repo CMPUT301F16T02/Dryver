@@ -20,7 +20,6 @@ import com.ubertapp.R;
  * User login screen.
  */
 public class ActivityLogin extends Activity {
-
     private EditText usernameEditText;
     private Button loginButton;
     private UserController userController = UserController.getInstance();

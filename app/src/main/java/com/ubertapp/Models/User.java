@@ -35,10 +35,12 @@ public class User {
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public User(String userId, String firstName, String lastName) {
+    public User(String userId, String firstName, String lastName,String phoneNumber, String email) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     /**
