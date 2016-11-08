@@ -128,23 +128,19 @@ public class ElasticSearchController {
     public User getUserByID(String id) {
         Log.i("Info", "logging in with user id: " + id);
 
-        //TODO: add the dependency for the  SearchSourceBuilder of  figure out how tf to make the query correctly
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//        searchSourceBuilder.query(QueryBuilders.matchQuery("userId", id));
-//
-//        verifySettings();
-//        Search search = new Search.Builder(searchSourceBuilder.toString())
-//                .addIndex(INDEX)
-//                .addType(USER)
-//                .build();
-        Get get = new Get.Builder(DATABASE_URL + INDEX , id).type(USER).build();
+        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + id + "\"}}}";
 
-        //Log.i("info", "Searching using " + search.toString());
+        verifySettings();
+        Search search = new Search.Builder(search_string)
+                .addIndex(INDEX)
+                .addType(USER)
+                .build();
+
+        Log.i("info", "Searching using " + search.toString());
 
         User user = null;
         try {
-            //JestResult result = client.execute(search);
-            JestResult result = client.execute(get);
+            JestResult result = client.execute(search);
             user = result.getSourceAsObject(User.class);
             return user;
         } catch (IOException e) {
