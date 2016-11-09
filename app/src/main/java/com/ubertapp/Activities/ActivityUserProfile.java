@@ -38,11 +38,11 @@ public class ActivityUserProfile extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_user_profile);
 
-        this.userNameEditText = (EditText)findViewById(R.id.userName_editText);
-        this.emailEditText = (EditText)findViewById(R.id.email_edittext);
-        this.phoneNumberEditText = (EditText)findViewById(R.id.phone_edittext);
-        this.paymentMethodText = (TextView)findViewById(R.id.payment_Text);
-        this.paymentMethodSpinner = (Spinner)findViewById(R.id.payment_spinner);
+        this.userNameEditText = (EditText)findViewById(R.id.profileEditTextUserName);
+        this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
+        this.phoneNumberEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
+        this.paymentMethodText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
+        this.paymentMethodSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
 
         //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
         if(user.equals(userController.getActiveUser())){
