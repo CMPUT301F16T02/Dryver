@@ -9,45 +9,5 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ubertapp.Activities.ActivityRequestSelection">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonLinearLayout">
-        <Button
-            android:text="@string/activity_activity_request_selection_Profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonProfile"/>
-        <Button
-            android:text="@string/activity_activity_request_selection_Request"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonRequest"/>
-        <Button
-            android:text="@string/activity_activity_request_selection_Status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonStatus"/>
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonLinearLayout">
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/requestListViewRequest">
 
-        </ListView>
-        <Button
-            android:text="@string/title_activity_activity_request_selection_NewRequest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"/>
-    </RelativeLayout>
 </RelativeLayout>

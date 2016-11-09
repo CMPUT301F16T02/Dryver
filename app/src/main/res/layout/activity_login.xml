@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/username_edittext"
         android:hint="@string/activity_Login_Username"
         android:layout_above="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="97dp" />
+        android:layout_marginBottom="97dp"
+        android:id="@+id/username_edittext"/>
 </RelativeLayout>
