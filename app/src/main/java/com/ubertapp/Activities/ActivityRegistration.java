@@ -28,11 +28,22 @@ public class ActivityRegistration extends Activity {
     // TODO: 2016-10-16 payment info
 
     private Button doneButton;
-    private ElasticSearchController ES = ElasticSearchController.getInstance();
+    private ElasticSearchController ES;
     private UserController userController = UserController.getInstance();
+
+    //This allows mock ESController to be used for testing
+    public void setES(ElasticSearchController ES) {
+        if (ES == null)
+        {
+            ElasticSearchController.getInstance();
+        } else {
+            this.ES = ES;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setES(null);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 

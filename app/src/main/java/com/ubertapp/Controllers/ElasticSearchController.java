@@ -46,7 +46,7 @@ import io.searchbox.indices.CreateIndex;
 public class ElasticSearchController {
     private static ElasticSearchController instance = new ElasticSearchController();
 
-    private ElasticSearchController(){
+    protected ElasticSearchController(){
     }
 
     public static ElasticSearchController getInstance(){
@@ -66,9 +66,6 @@ public class ElasticSearchController {
      */
     private static final String INDEX = "cmput301f16t02";
     private static final String USER = "user";
-    private static final String SEARCH_UID = "/user/_search?q=userId:";
-
-
 
     /**
      * Called to verify the connection to the server. Creates a connection if it doesn't exist.
