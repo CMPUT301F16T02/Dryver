@@ -83,7 +83,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/textView8"
-        android:textAppearance="@android:style/TextAppearance.Holo.Light.Large"/>
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
 
     <TextView
         android:text="Please fill all fields."
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:layout_marginTop="43dp"
-        android:textAppearance="@android:style/TextAppearance.Holo.Light.Medium"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_below="@+id/textView8"
         android:layout_alignStart="@+id/username_edittext"/>
 

@@ -30,7 +30,9 @@ public class UserTests {
     public void testFirstLastName() {
         String first = "John";
         String last = "Smith";
-        User user = new User(DEFAULT_USER_ID, first, last);
+        String phone = "5555555555";
+        String email = "jsmith@gmail.com";
+        User user = new User(DEFAULT_USER_ID, first, last, phone, email);
         assertEquals(first, user.getFirstName());
         assertEquals(last, user.getLastName());
     }

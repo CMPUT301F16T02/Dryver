@@ -3,13 +3,6 @@
     <string name="title_activity_activity_user_profile">ActivityUserProfile</string>
     <string name="title_activity_activity_request_selection">ActivityRequestSelection</string>
     <string name="view_profile">View Profile</string>
-
-    <!--TODO: Verify Reasonable Payment Methods-->
-    <string-array
-        name="payment_methods">
-        <item>Cash</item>
-        <item>PayPal</item>
-        <item>Credit</item>
-        <item>BitCoin</item>
-    </string-array>
+    <string name="register">Get Started</string>
+    <string name="login">Sign In</string>
 </resources>

@@ -35,8 +35,8 @@ public class ElasticSearchTests {
     public void testAddUser() {
         // Add user to database, then gets the user from the new elastic search id
         // and comapares the user in the db to the original
-        User user = new User("123", "Cole", "Mackenzie");
-        ElasticSearchController elasticSearch = new ElasticSearchController();
+        User user = new User("123", "Cole", "Mackenzie", "7805555555", "123@gmail.com");
+        ElasticSearchController elasticSearch = ElasticSearchController.getInstance();
 
         User result = elasticSearch.getUserByID(user.getId());
         assert(result.equals(user));
