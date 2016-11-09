@@ -11,7 +11,7 @@
     tools:context="com.ubertapp.Activities.ActivityLogin">
 
     <Button
-        android:text="Login"
+        android:text="@string/activity_Login_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -25,7 +25,7 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/username_edittext"
-        android:hint="username"
+        android:hint="@string/activity_Login_Username"
         android:layout_above="@+id/login_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="97dp" />

@@ -12,28 +12,28 @@
     tools:context="com.ubertapp.Activities.ActivityOpeningPage">
 
     <Button
-        android:text="Get Started"
+        android:text="@string/activity_opening_page_GetStarted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/getstarted_button"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:id="@+id/getstarted_button"/>
 
     <TextView
-        android:text="already have an account?"
+        android:text="@string/activity_opening_page_AlreadyHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
-        android:id="@+id/description_textview"
         android:layout_below="@+id/getstarted_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:id="@+id/description_textview"/>
 
     <Button
-        android:text="Sign In"
+        android:text="@string/activity_opening_page_SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signin_button"
         android:layout_below="@+id/description_textview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:id="@+id/signin_button"/>
 </RelativeLayout>

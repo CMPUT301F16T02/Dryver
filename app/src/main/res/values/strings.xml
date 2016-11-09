@@ -3,6 +3,19 @@
     <string name="title_activity_activity_user_profile">ActivityUserProfile</string>
     <string name="title_activity_activity_request_selection">ActivityRequestSelection</string>
     <string name="view_profile">View Profile</string>
+    <string name="activity_Login_Login">Login</string>
+    <string name="activity_Login_Username">Username</string>
+    <string name="activity_activity_request_selection_Profile">Profile</string>
+    <string name="activity_activity_request_selection_Request">Request</string>
+    <string name="activity_activity_request_selection_Status">Status</string>
+    <string name="activity_opening_page_AlreadyHaveAccount">already have an account?</string>
+    <string name="activity_opening_page_GetStarted">Get Started</string>
+    <string name="activity_opening_page_SignIn">Sign In</string>
+    <string name="activity_activity_user_profile_UserName">Username</string>
+    <string name="activity_activity_user_profile_Email">Email</string>
+    <string name="activity_activity_user_profile_PhoneNumber">Phone Number</string>
+    <string name="activity_activity_user_profile_PaymentMethod">Payment Method</string>
+    <string name="title_activity_activity_request_selection_NewRequest">New Request</string>
 
     <!--TODO: Verify Reasonable Payment Methods-->
     <string-array
