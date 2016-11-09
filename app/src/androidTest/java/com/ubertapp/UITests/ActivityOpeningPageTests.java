@@ -1,4 +1,4 @@
-package com.ubertapp;
+package com.ubertapp.UITests;
 
 /**
  * Created by Adam on 11/8/2016.
@@ -32,7 +32,7 @@ public class ActivityOpeningPageTests{
     public void TestSelectRegistration() {
         onView(withText("New user?")).check(ViewAssertions.matches(isDisplayed()));
 
-        onView(withText("Get Started")).perform(click());
+        onView(withText("Sign Up")).perform(click());
 
         intended(hasComponent(new ComponentName(getTargetContext(), ActivityRegistration.class)));
     }

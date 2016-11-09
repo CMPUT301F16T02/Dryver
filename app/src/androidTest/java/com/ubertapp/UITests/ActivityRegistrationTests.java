@@ -1,13 +1,15 @@
-package com.ubertapp;
+package com.ubertapp.UITests;
 
 import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.espresso.matcher.ViewMatchers;
 
 import com.ubertapp.Activities.ActivityRegistration;
 import com.ubertapp.Activities.ActivitySelection;
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Mock.MockElasticSeachController;
+import com.ubertapp.R;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,7 +53,7 @@ public class ActivityRegistrationTests {
     public void TestInputFields() {
         onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
 
-        onView(withId(R.id.username_edittext)).perform(typeText(username));
+        onView(ViewMatchers.withId(R.id.username_edittext)).perform(typeText(username));
         onView(withText(username)).check(ViewAssertions.matches(isDisplayed()));
 
         onView(withId(R.id.firstname_edittext)).perform(typeText(firstname));
