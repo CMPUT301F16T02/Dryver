@@ -49,6 +49,11 @@ public class ElasticSearchController {
     protected ElasticSearchController(){
     }
 
+    //used for setting the mock controller for testing purposes
+    public static void setMock(ElasticSearchController ES){
+        instance = ES;
+    }
+
     public static ElasticSearchController getInstance(){
         return instance;
     }
