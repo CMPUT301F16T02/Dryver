@@ -15,19 +15,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonLinearLayout">
         <Button
-            android:text="@string/activity_activity_request_selection_Profile"
+            android:text="@string/activity_request_selection_Profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/requestButtonProfile"/>
         <Button
-            android:text="@string/activity_activity_request_selection_Request"
+            android:text="@string/activity_request_selection_Request"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/requestButtonRequest"/>
         <Button
-            android:text="@string/activity_activity_request_selection_Status"
+            android:text="@string/activity_request_selection_Status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

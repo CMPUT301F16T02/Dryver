@@ -10,23 +10,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ubertapp.Activities.ActivityLogin">
 
-    <Button
-        android:text="@string/activity_Login_Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="133dp"
-        android:id="@+id/login_button" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:hint="@string/activity_Login_Username"
-        android:layout_above="@+id/login_button"
+        android:hint="@string/activity_login_username"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="97dp"
         android:id="@+id/username_edittext"/>
+
+    <Button
+        android:text="@string/activity_login_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_button"
+        android:layout_below="@+id/username_edittext"
+        android:layout_alignStart="@+id/username_edittext"
+        android:layout_alignEnd="@+id/username_edittext"/>
 </RelativeLayout>

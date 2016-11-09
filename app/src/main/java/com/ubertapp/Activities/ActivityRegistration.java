@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,6 @@ public class ActivityRegistration extends Activity {
     private EditText lastnameEditText;
     private EditText phoneEditText;
     private EditText emailEditText;
-    private EditText addressEditText;
     // TODO: 2016-10-16 payment info
 
     private Button doneButton;
@@ -45,7 +45,6 @@ public class ActivityRegistration extends Activity {
         firstnameEditText = (EditText) findViewById(R.id.firstname_edittext);
         phoneEditText = (EditText) findViewById(R.id.phone_edittext);
         emailEditText = (EditText) findViewById(R.id.email_edittext);
-        addressEditText = (EditText) findViewById(R.id.address_edittext);
 
         doneButton = (Button) findViewById(R.id.done_button);
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -55,9 +54,9 @@ public class ActivityRegistration extends Activity {
                         && !HelpMe.isEmptyTextField(firstnameEditText)
                         && !HelpMe.isEmptyTextField(lastnameEditText)
                         && HelpMe.isValidPhone(phoneEditText)
-                        && HelpMe.isValidEmail(emailEditText)
-                        && !HelpMe.isEmptyTextField(addressEditText)) {
+                        && HelpMe.isValidEmail(emailEditText)) {
 
+                    //TODO: Is Address really necessary?
                     User user = new User(usernameEditText.getText().toString(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
@@ -65,6 +64,7 @@ public class ActivityRegistration extends Activity {
                             emailEditText.getText().toString());
 
                     if (ES.addUser(user)) {
+                        Log.i("Info", "User added succesfully via ElasticSearch Controller");
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
@@ -72,8 +72,6 @@ public class ActivityRegistration extends Activity {
                     else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
-
-                    // TODO: 2016-10-29 add the rest of the user info to the database.
                 }
                 else if(!HelpMe.isValidEmail(emailEditText))
                 {
@@ -86,6 +84,4 @@ public class ActivityRegistration extends Activity {
             }
         });
     }
-
-    // TODO: 2016-10-16 check if user name is unique
 }

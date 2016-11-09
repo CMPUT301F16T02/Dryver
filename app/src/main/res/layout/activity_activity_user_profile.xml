@@ -10,12 +10,13 @@
     tools:context="com.ubertapp.Activities.ActivityUserProfile">
 
     <TextView
-        android:text="@string/activity_activity_user_profile_UserName"
+        android:text="@string/activity_user_profile_UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/profileTextViewUserName"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/profileTextViewUserName"/>
+        android:layout_marginTop="35dp"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -27,12 +28,13 @@
         android:id="@+id/profileEditTextUserName" />
 
     <TextView
-        android:text="@string/activity_activity_user_profile_Email"
+        android:text="@string/activity_user_profile_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileEditTextUserName"
         android:layout_alignParentStart="true"
         android:id="@+id/profileTextViewEmail"/>
+
 
     <EditText
         android:layout_width="wrap_content"
@@ -44,7 +46,7 @@
         android:id="@+id/profileEditTextEmail"/>
 
     <TextView
-        android:text="@string/activity_activity_user_profile_PhoneNumber"
+        android:text="@string/activity_user_profile_PhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileEditTextEmail"
@@ -61,7 +63,7 @@
         android:id="@+id/profileEditTextPhoneNumber"/>
 
     <TextView
-        android:text="@string/activity_activity_user_profile_PaymentMethod"
+        android:text="@string/activity_user_profile_PaymentMethod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileEditTextPhoneNumber"
@@ -74,5 +76,15 @@
         android:layout_below="@+id/profileTextViewPaymentMethod"
         android:layout_alignParentStart="true"
         android:id="@+id/profileSpinnerPaymentMethod"/>
+
+    <TextView
+        android:text="@string/activity_user_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
 
 </RelativeLayout>

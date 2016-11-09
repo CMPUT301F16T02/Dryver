@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--TODO: Verify Reasonable Payment Methods-->
+    <string-array
+        name="payment_methods">
+        <item>Cash</item>
+        <item>PayPal</item>
+        <item>Credit</item>
+        <item>BitCoin</item>
+    </string-array>
+</resources>
