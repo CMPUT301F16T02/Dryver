@@ -16,7 +16,7 @@ public class User {
     private String phoneNumber;
     private String userBio;
     @JestId
-    private String id;
+    private String id = null;
     // TODO: anything else for user info?
 
     /**
@@ -26,6 +26,7 @@ public class User {
      */
     public User(String userId) {
         this.userId = userId;
+        this.id = null;
     }
 
     /**
