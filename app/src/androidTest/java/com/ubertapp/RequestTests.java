@@ -8,6 +8,9 @@ import com.ubertapp.Models.Request;
 import com.ubertapp.Models.Rider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
+
 import static org.junit.Assert.*;
 
 /**
@@ -21,6 +24,7 @@ public class RequestTests {
     private final String DEFAULT_DRIVER_ID = "a5d32d2s_21se2s2";
     private final String DEFAULT_DRIVER_ID2 = "a5d32d2s_21se2s3";
     private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
+    private final Calendar date = Calendar.getInstance();
 
     private final Rider DEFAULT_RIDER = new Rider(DEFAULT_RIDER_ID);
 
@@ -31,7 +35,7 @@ public class RequestTests {
      */
     @Test
     public void testRequestInit() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER, date);
         // test cost
         assertEquals(DEFAULT_COST, request.getCost(), 0.001);
         // test ids
@@ -48,7 +52,7 @@ public class RequestTests {
      */
     @Test
     public void testAddDriver() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER, date);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
 
         assertEquals(0, request.getDrivers().size());
@@ -67,7 +71,7 @@ public class RequestTests {
      */
     @Test
     public void testAcceptOffer() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER, date);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
         Driver driver2 = new Driver(DEFAULT_DRIVER_ID2);
 
@@ -84,7 +88,7 @@ public class RequestTests {
      */
     @Test
     public void testCancelOffer() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER, date);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
 
         request.addDriver(driver);
@@ -99,7 +103,7 @@ public class RequestTests {
      */
     @Test
     public void testToFromLocations() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER, date);
 
         Location someLocation = new Location("");
         someLocation.setLatitude(12.0);

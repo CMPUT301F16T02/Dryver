@@ -5,6 +5,7 @@ import com.ubertapp.Models.Rider;
 import com.ubertapp.Models.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -24,8 +25,8 @@ public class RequestSingleton {
         return requests;
     }
 
-    public void addRequest(Double cost, Rider rider) {
-        Request request = new Request(cost, rider);
+    public void addRequest(Double cost, Rider rider, Calendar date) {
+        Request request = new Request(cost, rider, date);
 
     }
 

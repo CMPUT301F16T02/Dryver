@@ -10,7 +10,9 @@ package com.ubertapp.Models;
 import android.location.Location;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * The type Request.
@@ -20,6 +22,9 @@ public class Request {
     private Collection<Driver> drivers;
     private Driver acceptedDriver;
     private String description;
+    private Calendar date;
+    //Status: 0 for pending, 1 for accepted, 2 for cancelled
+    private int status;
 
     private Location fromLocation;
     private Location toLocation;
@@ -31,16 +36,17 @@ public class Request {
      * Instantiates a new Request.
      *
      * @param cost  the cost
-     * @param rider the rider
-     */
-    public Request(double cost, Rider rider) {
-        this.cost = cost;
-        this.rider = rider;
-        this.riderId = rider.getUserId();
-        this.drivers = new ArrayList<Driver>();
-        this.acceptedDriver = null;
+        * @param rider the rider
+                */
+        public Request(double cost, Rider rider, Calendar date) {
+            this.cost = cost;
+            this.rider = rider;
+            this.date = date;
+            this.riderId = rider.getUserId();
+            this.drivers = new ArrayList<Driver>();
+            this.acceptedDriver = null;
+            this.status = 0;
     }
-
 
     /**
      * Gets description for a ride.
@@ -172,4 +178,19 @@ public class Request {
         this.toLocation = toLocation;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Calendar getDate() {
+        return this.date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
 }
