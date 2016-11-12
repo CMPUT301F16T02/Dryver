@@ -50,26 +50,6 @@ public class ActivityRegistrationTests {
     }
 
     @Test
-    public void TestInputFields() {
-        onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(ViewMatchers.withId(R.id.username_edittext)).perform(typeText(username));
-        onView(withText(username)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.firstname_edittext)).perform(typeText(firstname));
-        onView(withText(firstname)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.lastname_edittext)).perform(typeText(lastname));
-        onView(withText(lastname)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.phone_edittext)).perform(typeText(phoneNumber));
-        onView(withText(phoneNumber)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.email_edittext)).perform(typeText(email));
-        onView(withText(email)).check(ViewAssertions.matches(isDisplayed()));
-    }
-
-    @Test
     public void TestRegister() {
         ElasticSearchController.setMock(MockElasticSeachController.getInstance());
 
@@ -92,8 +72,10 @@ public class ActivityRegistrationTests {
 
         onView(withText("Done")).perform(click());
 
-        //intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
     }
 
+
+    //TODO: Test Actually adding a user to ES. Duplicates. Etc...
     //TODO: Test Clicking register. Will probably need a teardown that delets the thing from ES, or a **mock
 }
