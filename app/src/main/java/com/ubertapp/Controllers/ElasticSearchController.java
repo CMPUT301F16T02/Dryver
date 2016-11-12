@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
@@ -119,6 +120,25 @@ public class ElasticSearchController {
             } else {
                 Log.i("Error", "Elastic search was not able to add the user.");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Deletes a user in the database based on the user id.
+     * @param user
+     * @see User
+     */
+    public boolean deleteUser(User user) {
+        verifySettings();
+
+        Delete delete = new Delete.Builder(user.getId()).index(INDEX).type(USER).build();
+
+        try {
+            client.execute(delete);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
