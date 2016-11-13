@@ -165,7 +165,7 @@ public class ElasticSearchController {
                 .addType(USER)
                 .build();
 
-        Log.i("info", "Searching using " + search.toString());
+        Log.i("info", "Searching using " + search_string.toString());
 
         User user = null;
         try {
@@ -177,6 +177,50 @@ public class ElasticSearchController {
         }
         return user;
     }
+
+    /**
+     * Gets a user based on their ES ID set by jest-droid
+     * @param id
+     * @see User
+     * @see JestDroidClient
+     */
+    public User getUserByEsID(String id) {
+        Get get = new Get.Builder(INDEX, id).type(USER).build();
+
+        JestResult result = null;
+        try {
+            result = client.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        User user = result.getSourceAsObject(User.class);
+        return user;
+    }
+
+    /**
+     * Updates a existing user profile based on the ES id
+     * @see User
+     * */
+    public boolean updateUser(User user) {
+        verifySettings();
+
+        Index index = new Index.Builder(user).index(INDEX).type(USER).id(user.getId()).build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                user.setId(result.getId());
+                return true;
+            } else {
+                Log.i("Error", "Elastic search was not able to add the user.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * Used to get a list of users.
      */
