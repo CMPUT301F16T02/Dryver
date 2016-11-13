@@ -22,13 +22,20 @@ package com.ubertapp.Controllers;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
+import com.ubertapp.Models.Request;
+import com.ubertapp.Models.Rider;
 import com.ubertapp.Models.User;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
@@ -74,6 +81,7 @@ public class ElasticSearchController {
      */
     private static final String INDEX = "cmput301f16t02";
     private static final String USER = "user";
+    private static final String REQUEST = "request";
 
     /**
      * Called to verify the connection to the server. Creates a connection if it doesn't exist.
@@ -245,6 +253,100 @@ public class ElasticSearchController {
             return true;
         }
     }
+
+    public boolean addRequest(Request request) {
+        verifySettings();
+
+        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                request.setId(result.getId());
+            } else {
+                Log.i("Error", "Elastic search was not able to add the user.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return true;
+        }
+    }
+
+    public boolean deleteRequestByEsID(Request request) {
+        verifySettings();
+        boolean deletable = false;
+
+        if (request == null) {
+            return deletable;
+        }
+
+        Delete delete = new Delete.Builder(request.getId()).index(INDEX).type(REQUEST).build();
+
+        try {
+            DocumentResult result = client.execute(delete);
+            deletable = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return deletable;
+        }
+    }
+
+    public List<Request> getRiderRequests(Rider rider) {
+
+        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + rider.getUserId() + "\"}}}";
+
+        verifySettings();
+        Search search = new Search.Builder(search_string)
+                .addIndex(INDEX)
+                .addType(REQUEST)
+                .build();
+
+        List<Request> requests = new ArrayList<Request>();
+        try {
+            JestResult result = client.execute(search);
+            requests = result.getSourceAsObjectList(Request.class);
+            JsonObject resultObj = result.getJsonObject();
+            JsonArray hitsArray =  resultObj
+                    .get("hits")
+                    .getAsJsonObject()
+                    .get("hits")
+                    .getAsJsonArray();
+
+            for (int i = 0; i < hitsArray.size(); i++) {
+                requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
+            }
+
+
+            return requests;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+//    public boolean updateRequest(Request request) throws InterruptedException {
+//        verifySettings();
+//
+//        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).id(request.getId()).build();
+//
+//        try {
+//            DocumentResult result = client.execute(index);
+//            if (result.isSucceeded()) {
+//                request.setId(result.getId());
+//                return true;
+//            } else {
+//                Log.i("Error", "Elastic search was not able to add the user.");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            return true;
+//        }
+//    }
+
+    //TODO: getDriverRequests
 
     /**
      * Used to get a list of users.

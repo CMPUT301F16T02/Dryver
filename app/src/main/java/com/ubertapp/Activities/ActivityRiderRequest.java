@@ -40,6 +40,7 @@ import com.ubertapp.Models.Rider;
 
 import com.ubertapp.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -49,7 +50,6 @@ public class ActivityRiderRequest extends Activity {
     private ListView requestListView;
     private RequestListAdapter requestListAdapter;
 
-    private ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
@@ -67,7 +67,8 @@ public class ActivityRiderRequest extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_request);
 
-        rider = new Rider(userController.getActiveUser().getUserId());
+        rider = new Rider(userController.getActiveUser());
+        userController.setActiveUser(rider);
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
@@ -114,5 +115,11 @@ public class ActivityRiderRequest extends Activity {
                 requestListAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestListAdapter.notifyDataSetChanged();
     }
 }

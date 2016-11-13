@@ -52,8 +52,7 @@ public class ActivityRequestSelection extends Activity {
     private Request request;
     private Location fromLocation;
     private Location toLocation;
-    private Rider rider;
-    private String statusString;
+    private Rider rider;;
     private int status;
     private int position;
     private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
@@ -75,7 +74,7 @@ public class ActivityRequestSelection extends Activity {
         request = requestSingleton.getRequests().get(position);
         status = request.getStatus();
 
-        rider = new Rider(userController.getActiveUser().getUserId());
+        rider = new Rider(userController.getActiveUser());
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
@@ -96,14 +95,12 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
 
-        requestSelectionStatus.setText("Status: " + statusString);
+        requestSelectionStatus.setText("Status: " + request.statusCodeToString());
 
         requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnData = new Intent();
-                returnData.putExtra(RETURN_REQUEST_DELETE, position);
-                setResult(RESULT_OK, returnData);
+                requestSingleton.removeRequest(request);
                 finish();
             }
         });

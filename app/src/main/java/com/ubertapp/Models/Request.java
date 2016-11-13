@@ -46,6 +46,7 @@ public class Request implements Serializable {
     private Calendar date;
     //Status: 0 for pending, 1 for accepted, 2 for cancelled
     private int status;
+    private String id;
 
     private Location fromLocation;
     private Location toLocation;
@@ -64,7 +65,7 @@ public class Request implements Serializable {
      * @param fromLocation location of the rider
      * @param toLocation  destination of the rider
      */
-        public Request(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public Request(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
             this.rider = rider;
             this.date = date;
             this.fromLocation = fromLocation;
@@ -75,6 +76,14 @@ public class Request implements Serializable {
             this.acceptedDriver = null;
             this.status = 1;
             generateCost(rate);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -258,5 +267,74 @@ public class Request implements Serializable {
         else {
             return "Unknown Status String";
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Request request = (Request) o;
+
+        if (status != request.status) {
+            return false;
+        }
+        if (Double.compare(request.cost, cost) != 0) {
+            return false;
+        }
+        if (Double.compare(request.rate, rate) != 0) {
+            return false;
+        }
+        if (rider != null ? !rider.equals(request.rider) : request.rider != null) {
+            return false;
+        }
+        if (drivers != null ? !drivers.equals(request.drivers) : request.drivers != null) {
+            return false;
+        }
+        if (acceptedDriver != null ? !acceptedDriver.equals(request.acceptedDriver) : request.acceptedDriver != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(request.description) : request.description != null) {
+            return false;
+        }
+        if (date != null ? !date.equals(request.date) : request.date != null) {
+            return false;
+        }
+        if (id != null ? !id.equals(request.id) : request.id != null) {
+            return false;
+        }
+        if (fromLocation != null ? !fromLocation.equals(request.fromLocation) : request.fromLocation != null) {
+            return false;
+        }
+        if (toLocation != null ? !toLocation.equals(request.toLocation) : request.toLocation != null) {
+            return false;
+        }
+        return riderId != null ? riderId.equals(request.riderId) : request.riderId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = rider != null ? rider.hashCode() : 0;
+        result = 31 * result + (drivers != null ? drivers.hashCode() : 0);
+        result = 31 * result + (acceptedDriver != null ? acceptedDriver.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + status;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (fromLocation != null ? fromLocation.hashCode() : 0);
+        result = 31 * result + (toLocation != null ? toLocation.hashCode() : 0);
+        temp = Double.doubleToLongBits(cost);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(rate);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (riderId != null ? riderId.hashCode() : 0);
+        return result;
     }
 }

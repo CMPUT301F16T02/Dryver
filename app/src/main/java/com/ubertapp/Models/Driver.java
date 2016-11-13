@@ -26,8 +26,12 @@ package com.ubertapp.Models;
 
 public class Driver extends User {
 
-    public Driver(String userId) {
-        super(userId);
+    public Driver(User user) {
+        super(user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getEmail());
     }
 
 }

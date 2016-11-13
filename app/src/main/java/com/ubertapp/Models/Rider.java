@@ -26,7 +26,11 @@ package com.ubertapp.Models;
 
 public class Rider extends User {
 
-    public Rider(String userId) {
-        super(userId);
+    public Rider(User user) {
+        super(user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getEmail());
     }
 }
