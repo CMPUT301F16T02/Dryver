@@ -24,6 +24,7 @@ import android.util.Log;
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.User;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import static com.ubertapp.Controllers.ElasticSearchController.GetUsersTask;
 
@@ -49,6 +50,23 @@ public class ElasticSearchTests {
         assert(result.equals(user));
     }
 
+    @Test
+    public void testDeleteUser() {
+        User user = new User("321", "NotCole", "SomeLastName", "780555555","notarealemail@noreply.com");
+        ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
+        User result = elasticSearchController.getUserByID(user.getId());
+        assert(result.equals(user));
+        elasticSearchController.addUser(user);
+
+        result = elasticSearchController.getUserByID(user.getId());
+        assert(result.equals(user));
+
+        // User has been added, now delete them.
+
+        elasticSearchController.deleteUser(user); // Send delete request
+        result = elasticSearchController.getUserByID(user.getId()); //
+        assertNull("User was not null", result);
+    }
     @Test
     public void testGetUsers() {
         ArrayList<User> userList = new ArrayList<User>();
