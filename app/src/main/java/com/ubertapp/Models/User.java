@@ -20,13 +20,15 @@
 package com.ubertapp.Models;
 
 
+import java.io.Serializable;
+
 import io.searchbox.annotations.JestId;
 
 /**
  * User class. General class for any user of the UberTapp app. Note: a User can be both a Driver
  * and a Rider.
  */
-public class User {
+public class User implements Serializable {
     private String userId;
     private String firstName;
     private String lastName;

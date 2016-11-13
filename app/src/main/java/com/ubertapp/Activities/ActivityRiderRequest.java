@@ -20,11 +20,16 @@
 package com.ubertapp.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Controllers.RequestListAdapter;
@@ -43,37 +48,49 @@ public class ActivityRiderRequest extends Activity {
     private Button mAddRequest;
     private ListView requestListView;
     private RequestListAdapter requestListAdapter;
+
     private ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
+
     private Rider rider;
-    private Request request;
+    private Location testFromLocation = new Location("from");
+    private Location testToLocation = new Location("to");
 
-    private Address testFromAddress;
-    private Address testToAddress;
-
+    private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
+    private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
+    private static final int REQUEST_VIEW_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_request);
+
         rider = new Rider(userController.getActiveUser().getUserId());
-
-        testFromAddress = new Address(Locale.CANADA);
-        testFromAddress.setLatitude(53.523869);
-        testFromAddress.setLongitude(-113.526146);
-        testToAddress = new Address(Locale.CANADA);
-        testToAddress.setLatitude(53.548623);
-        testToAddress.setLongitude(-113.506537);
-
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
+
+        testFromLocation.setLatitude(53.523869);
+        testFromLocation.setLongitude(-113.526146);
+        testToLocation.setLatitude(53.548623);
+        testToLocation.setLongitude(-113.506537);
 
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.addRequest(rider, Calendar.getInstance(), testFromAddress, testToAddress, 0.5);
+                requestSingleton.addRequest(rider, Calendar.getInstance(), testFromLocation, testToLocation, 0.5);
                 requestListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
+                intent.putExtra(RETURN_VIEW_REQUEST, position);
+                startActivityForResult(intent, REQUEST_VIEW_REQUEST);
+                return true;
             }
         });
     }
@@ -83,5 +100,16 @@ public class ActivityRiderRequest extends Activity {
         super.onStart();
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestListAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_VIEW_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                int position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
+                requestSingleton.getRequests().remove(position);
+                requestListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@
 package com.ubertapp.Controllers;
 
 import android.location.Address;
+import android.location.Location;
 
 import com.ubertapp.Models.Request;
 import com.ubertapp.Models.Rider;
@@ -42,15 +43,14 @@ public class RequestSingleton {
     private RequestSingleton() {
     }
 
-    public static ArrayList<Request> getRequests() {
+    public ArrayList<Request> getRequests() {
         return requests;
     }
 
-    public void addRequest(Rider rider, Calendar date, Address fromLocation, Address toLocation, double rate) {
+    public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Request request = new Request(rider, Calendar.getInstance(), fromLocation, toLocation, rate);
         requests.add(request);
-
-}
+    }
 
         // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

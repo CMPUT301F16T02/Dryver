@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
   ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~
@@ -16,12 +15,12 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ubertapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +40,7 @@
         <activity android:name=".Activities.ActivityRiderRequest" />
         <activity android:name=".Activities.ActivityUserProfile" />
         <activity android:name=".Activities.ActivityRequestSelection" />
+        <activity android:name=".Activities.ActivityRequestMap"></activity>
     </application>
 
 </manifest>

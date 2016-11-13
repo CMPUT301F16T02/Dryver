@@ -47,8 +47,8 @@ public class RequestTests {
     private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
     private final double rate = 0.5;
 
-    private Address DEFAULT_TO_ADDRESS = new Address(Locale.CANADA);
-    private Address DEFAULT_FROM_ADDRESS = new Address(Locale.CANADA);
+    private Location DEFAULT_TO_ADDRESS = new Location("from");
+    private Location DEFAULT_FROM_ADDRESS = new Location("to");
 
     private final Calendar date = Calendar.getInstance();
 
@@ -135,7 +135,7 @@ public class RequestTests {
     public void testToFromLocations() {
         Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
 
-        Address someLocation = new Address(Locale.CANADA);
+        Location someLocation = new Location("test");
         someLocation.setLatitude(12.0);
         someLocation.setLongitude(12.0);
 
