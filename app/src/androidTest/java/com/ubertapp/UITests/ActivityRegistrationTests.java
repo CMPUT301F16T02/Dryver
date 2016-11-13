@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2016
+ * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.ubertapp.UITests;
 
 import android.content.ComponentName;
@@ -50,26 +69,6 @@ public class ActivityRegistrationTests {
     }
 
     @Test
-    public void TestInputFields() {
-        onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(ViewMatchers.withId(R.id.username_edittext)).perform(typeText(username));
-        onView(withText(username)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.firstname_edittext)).perform(typeText(firstname));
-        onView(withText(firstname)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.lastname_edittext)).perform(typeText(lastname));
-        onView(withText(lastname)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.phone_edittext)).perform(typeText(phoneNumber));
-        onView(withText(phoneNumber)).check(ViewAssertions.matches(isDisplayed()));
-
-        onView(withId(R.id.email_edittext)).perform(typeText(email));
-        onView(withText(email)).check(ViewAssertions.matches(isDisplayed()));
-    }
-
-    @Test
     public void TestRegister() {
         ElasticSearchController.setMock(MockElasticSeachController.getInstance());
 
@@ -92,8 +91,10 @@ public class ActivityRegistrationTests {
 
         onView(withText("Done")).perform(click());
 
-        //intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
     }
 
+
+    //TODO: Test Actually adding a user to ES. Duplicates. Etc...
     //TODO: Test Clicking register. Will probably need a teardown that delets the thing from ES, or a **mock
 }

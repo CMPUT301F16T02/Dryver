@@ -87,9 +87,11 @@ public class ActivityRiderRequest extends Activity {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
                 requestPosition = position;
                 Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
                 intent.putExtra(RETURN_VIEW_REQUEST, requestPosition);
+
                 startActivityForResult(intent, REQUEST_VIEW_REQUEST);
                 return true;
             }
@@ -107,7 +109,8 @@ public class ActivityRiderRequest extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_VIEW_REQUEST) {
             if (resultCode == RESULT_OK) {
-                requestSingleton.getRequests().remove(requestPosition);
+                int position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
+                requestSingleton.getRequests().remove(position);
                 requestListAdapter.notifyDataSetChanged();
             }
         }

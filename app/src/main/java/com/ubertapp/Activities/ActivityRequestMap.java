@@ -19,15 +19,16 @@
 
 package com.ubertapp.Activities;
 
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+
 import com.ubertapp.R;
 
-public class ActivityDriver extends Activity {
+public class ActivityRequestMap extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver);
+        setContentView(R.layout.activity_activity_request_map);
     }
 }

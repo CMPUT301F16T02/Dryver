@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2016
+ * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
@@ -126,6 +129,25 @@ public class ElasticSearchController {
     }
 
     /**
+     * Deletes a user in the database based on the user id.
+     * @param user
+     * @see User
+     */
+    public boolean deleteUser(User user) {
+        verifySettings();
+
+        Delete delete = new Delete.Builder(user.getId()).index(INDEX).type(USER).build();
+
+        try {
+            client.execute(delete);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Gets a user based on the users' user id
      *
      * @param id
@@ -143,7 +165,7 @@ public class ElasticSearchController {
                 .addType(USER)
                 .build();
 
-        Log.i("info", "Searching using " + search.toString());
+        Log.i("info", "Searching using " + search_string.toString());
 
         User user = null;
         try {
@@ -155,6 +177,50 @@ public class ElasticSearchController {
         }
         return user;
     }
+
+    /**
+     * Gets a user based on their ES ID set by jest-droid
+     * @param id
+     * @see User
+     * @see JestDroidClient
+     */
+    public User getUserByEsID(String id) {
+        Get get = new Get.Builder(INDEX, id).type(USER).build();
+
+        JestResult result = null;
+        try {
+            result = client.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        User user = result.getSourceAsObject(User.class);
+        return user;
+    }
+
+    /**
+     * Updates a existing user profile based on the ES id
+     * @see User
+     * */
+    public boolean updateUser(User user) {
+        verifySettings();
+
+        Index index = new Index.Builder(user).index(INDEX).type(USER).id(user.getId()).build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                user.setId(result.getId());
+                return true;
+            } else {
+                Log.i("Error", "Elastic search was not able to add the user.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * Used to get a list of users.
      */

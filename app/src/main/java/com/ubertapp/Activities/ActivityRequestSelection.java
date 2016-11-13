@@ -20,7 +20,6 @@
 package com.ubertapp.Activities;
 
 import android.content.Intent;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
@@ -60,6 +59,7 @@ public class ActivityRequestSelection extends Activity {
     private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
     private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
+
     private UserController userController = UserController.getInstance();
 
     @Override
@@ -74,6 +74,7 @@ public class ActivityRequestSelection extends Activity {
         position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
         request = requestSingleton.getRequests().get(position);
         status = request.getStatus();
+
         rider = new Rider(userController.getActiveUser().getUserId());
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
@@ -114,6 +115,7 @@ public class ActivityRequestSelection extends Activity {
                 status ^= 1;
                 request.setStatus(status);
                 requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+
             }
         });
 
