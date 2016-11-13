@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2016
+ * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.ubertapp;
 
 
@@ -28,8 +47,8 @@ public class RequestTests {
     private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
     private final double rate = 0.5;
 
-    private Address DEFAULT_TO_ADDRESS = new Address(Locale.CANADA);
-    private Address DEFAULT_FROM_ADDRESS = new Address(Locale.CANADA);
+    private Location DEFAULT_TO_ADDRESS = new Location("from");
+    private Location DEFAULT_FROM_ADDRESS = new Location("to");
 
     private final Calendar date = Calendar.getInstance();
 
@@ -116,7 +135,7 @@ public class RequestTests {
     public void testToFromLocations() {
         Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
 
-        Address someLocation = new Address(Locale.CANADA);
+        Location someLocation = new Location("test");
         someLocation.setLatitude(12.0);
         someLocation.setLongitude(12.0);
 

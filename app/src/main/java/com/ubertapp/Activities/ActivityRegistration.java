@@ -57,7 +57,6 @@ public class ActivityRegistration extends Activity {
                         && HelpMe.isValidEmail(emailEditText)) {
 
                     //TODO: Is Address really necessary?
-
                     User user = new User(usernameEditText.getText().toString(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),

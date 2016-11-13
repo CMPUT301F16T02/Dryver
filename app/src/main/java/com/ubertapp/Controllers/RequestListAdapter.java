@@ -49,22 +49,10 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         TextView requestStatusImage = (TextView) convertView.findViewById(R.id.requestItemStatusImage);
 
         requestName.setText("Ride Request");
-        requestDestination.setText(request.getToLocation().getPremises());
-        if (status == 0) {
-            statusString = "Pending";
-        }
-        else if (status == 1) {
-            statusString = "Accepted";
-        }
-        else if (status == 2) {
-            statusString = "Cancelled";
-        }
-        else {
-            statusString = "Unknown Status String";
-        }
-        requestStatus.setText("Status: " + statusString);
+        requestDestination.setText("Destination: " +request.getToLocation());
+        requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
-        requestStatusImage.setText(statusString);
+        requestStatusImage.setText(request.statusCodeToString());
 
 
         return convertView;

@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2016
+ * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.ubertapp.Models;
 
 /**
@@ -10,6 +29,7 @@ package com.ubertapp.Models;
 import android.location.Address;
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -18,7 +38,7 @@ import java.util.Date;
 /**
  * The type Request.
  */
-public class Request {
+public class Request implements Serializable {
     private Rider rider;
     private Collection<Driver> drivers;
     private Driver acceptedDriver;
@@ -27,8 +47,8 @@ public class Request {
     //Status: 0 for pending, 1 for accepted, 2 for cancelled
     private int status;
 
-    private Address fromLocation;
-    private Address toLocation;
+    private Location fromLocation;
+    private Location toLocation;
 
     private double cost;
 
@@ -44,7 +64,7 @@ public class Request {
      * @param fromLocation location of the rider
      * @param toLocation  destination of the rider
      */
-        public Request(Rider rider, Calendar date, Address fromLocation, Address toLocation, double rate) {
+        public Request(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
             this.rider = rider;
             this.date = date;
             this.fromLocation = fromLocation;
@@ -53,7 +73,7 @@ public class Request {
             this.riderId = rider.getUserId();
             this.drivers = new ArrayList<Driver>();
             this.acceptedDriver = null;
-            this.status = 0;
+            this.status = 1;
             generateCost(rate);
     }
 
@@ -156,7 +176,7 @@ public class Request {
      *
      * @return the to-location
      */
-    public Address getToLocation() {
+    public Location getToLocation() {
         return toLocation;
     }
 
@@ -165,7 +185,7 @@ public class Request {
      *
      * @return the from-location
      */
-    public Address getFromLocation() {
+    public Location getFromLocation() {
         return fromLocation;
     }
 
@@ -174,7 +194,7 @@ public class Request {
      *
      * @param fromLocation the from location
      */
-    public void setFromLocation(Address fromLocation) {
+    public void setFromLocation(Location fromLocation) {
         this.fromLocation = fromLocation;
     }
 
@@ -183,7 +203,7 @@ public class Request {
      *
      * @param toLocation the to location
      */
-    public void setToLocation(Address toLocation) {
+    public void setToLocation(Location toLocation) {
         this.toLocation = toLocation;
     }
 
@@ -223,5 +243,20 @@ public class Request {
 
         double distance = start.distanceTo(destination);
         this.cost = rate * distance;
+    }
+
+    public String statusCodeToString() {
+        if (status == 0) {
+            return "Cancelled";
+        }
+        else if (status == 1) {
+            return "Pending";
+        }
+        else if (status == 2) {
+            return "Accepted";
+        }
+        else {
+            return "Unknown Status String";
+        }
     }
 }

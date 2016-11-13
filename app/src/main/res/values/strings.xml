@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (C) 2016
+  ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
 <resources>
     <string name="app_name">UberTapp</string>
 
@@ -33,11 +52,23 @@
     <string name="activity_user_profile_PaymentMethod">Payment Method</string>
 
 
-
     <string name="title_activity_activity_request_selection_NewRequest">New Request</string>
     <string name="request_item_Name">Request Name</string>
     <string name="request_item_Destination">Destination</string>
     <string name="request_item_StatusName">Status</string>
     <string name="request_item_Date">Date</string>
     <string name="request_item_Placeholder">Placeholder</string>
+    <string name="activity_rider_request_Profile">Profile</string>
+    <string name="activity_rider_request_Request">Request</string>
+    <string name="activity_rider_request_Status">Status</string>
+    <string name="activity_rider_request_NewRequest">New Request</string>
+    <string name="activity_request_selection_RequestDetails">Request Details</string>
+    <string name="activity_request_selection_Name">Rider Name</string>
+    <string name="activity_request_selection_FromLocation">From Location</string>
+    <string name="activity_request_selection_ToLocation">To Location</string>
+    <string name="activity_request_selection_Date">Date Created</string>
+    <string name="activity_request_selection_Delete">Delete Request</string>
+    <string name="activity_request_selection_Edit">Edit Request</string>
+    <string name="activity_request_selection_Cancel">Cancel Request</string>
+    <string name="activity_request_selection_ViewDriver">View Drivers</string>
 </resources>
