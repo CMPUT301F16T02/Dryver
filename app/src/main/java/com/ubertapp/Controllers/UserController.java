@@ -36,6 +36,11 @@ public class UserController {
     private User activeUser;
     private User viewedUser;
 
+    /**
+     * Gets instance of the User.
+     *
+     * @return the instance
+     */
     public static UserController getInstance() {
         return instance;
     }
@@ -43,33 +48,70 @@ public class UserController {
     private UserController() {
     }
 
+    /**
+     * Gets active user.
+     *
+     * @return the active user
+     */
     public User getActiveUser() {
         return activeUser;
     }
 
+    /**
+     * Gets viewed user.
+     *
+     * @return the viewed user
+     */
     public User getViewedUser() {
         return viewedUser;
     }
 
+    /**
+     * Sets active user.
+     *
+     * @param activeUser the active user
+     */
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
     }
 
+    /**
+     * View active user profile.
+     *
+     * @param currentActivity the current activity
+     */
     public void viewActiveUserProfile(Activity currentActivity) {
         viewUserProfile(currentActivity, activeUser);
     }
 
+    /**
+     * View user profile.
+     *
+     * @param currentActivity the current activity
+     * @param user            the user
+     */
     public void viewUserProfile(Activity currentActivity, User user) {
         viewedUser = user;
         Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
         currentActivity.startActivity(intent);
     }
 
-    public User login(String userid) {
-        activeUser =  ES.getUser(userid);
-        return activeUser;
+    /**
+     * Login the user by userid they provide in the text field.
+     *
+     * @param userid the userid
+     * @return the true or false based on login success
+     */
+    public boolean login(String userid) {
+        if ((activeUser=ES.getUser(userid)) != null) {
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Logout the active user.
+     */
     public void logout() {
         activeUser = null;
         viewedUser = null;
