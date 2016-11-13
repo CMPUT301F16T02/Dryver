@@ -49,7 +49,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         TextView requestStatusImage = (TextView) convertView.findViewById(R.id.requestItemStatusImage);
 
         requestName.setText("Ride Request");
-        requestDestination.setText(request.getToLocation().toString());
+        requestDestination.setText(request.getToLocation().getPremises());
         if (status == 0) {
             statusString = "Pending";
         }

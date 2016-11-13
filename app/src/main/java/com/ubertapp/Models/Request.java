@@ -7,6 +7,7 @@ package com.ubertapp.Models;
  * information such as ride cost etc...
  */
 
+import android.location.Address;
 import android.location.Location;
 
 import java.util.ArrayList;
@@ -26,26 +27,34 @@ public class Request {
     //Status: 0 for pending, 1 for accepted, 2 for cancelled
     private int status;
 
-    private Location fromLocation;
-    private Location toLocation;
+    private Address fromLocation;
+    private Address toLocation;
 
-    private final double cost;
+    private double cost;
+
+    private double rate;
     private final String riderId;
 
     /**
      * Instantiates a new Request.
      *
-     * @param cost  the cost
-        * @param rider the rider
-                */
-        public Request(double cost, Rider rider, Calendar date) {
-            this.cost = cost;
+     *
+     * @param rider the rider
+     * @param date  date the request was created
+     * @param fromLocation location of the rider
+     * @param toLocation  destination of the rider
+     */
+        public Request(Rider rider, Calendar date, Address fromLocation, Address toLocation, double rate) {
             this.rider = rider;
             this.date = date;
+            this.fromLocation = fromLocation;
+            this.toLocation = toLocation;
+            this.rate = rate;
             this.riderId = rider.getUserId();
             this.drivers = new ArrayList<Driver>();
             this.acceptedDriver = null;
             this.status = 0;
+            generateCost(rate);
     }
 
     /**
@@ -147,7 +156,7 @@ public class Request {
      *
      * @return the to-location
      */
-    public Location getToLocation() {
+    public Address getToLocation() {
         return toLocation;
     }
 
@@ -156,7 +165,7 @@ public class Request {
      *
      * @return the from-location
      */
-    public Location getFromLocation() {
+    public Address getFromLocation() {
         return fromLocation;
     }
 
@@ -165,7 +174,7 @@ public class Request {
      *
      * @param fromLocation the from location
      */
-    public void setFromLocation(Location fromLocation) {
+    public void setFromLocation(Address fromLocation) {
         this.fromLocation = fromLocation;
     }
 
@@ -174,7 +183,7 @@ public class Request {
      *
      * @param toLocation the to location
      */
-    public void setToLocation(Location toLocation) {
+    public void setToLocation(Address toLocation) {
         this.toLocation = toLocation;
     }
 
@@ -192,5 +201,27 @@ public class Request {
 
     public void setDate(Calendar date) {
         this.date = date;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public void generateCost(double rate) {
+        Location start = new Location("start");
+        Location destination = new Location("Destination");
+
+        start.setLatitude(fromLocation.getLatitude());
+        start.setLongitude(fromLocation.getLongitude());
+
+        destination.setLatitude(toLocation.getLatitude());
+        destination.setLongitude(toLocation.getLongitude());
+
+        double distance = start.distanceTo(destination);
+        this.cost = rate * distance;
     }
 }
