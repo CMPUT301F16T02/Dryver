@@ -20,6 +20,7 @@
 package com.ubertapp;
 
 
+import android.location.Address;
 import android.location.Location;
 import android.support.test.runner.AndroidJUnit4;
 import com.ubertapp.Models.Driver;
@@ -27,6 +28,10 @@ import com.ubertapp.Models.Request;
 import com.ubertapp.Models.Rider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
+import java.util.Locale;
+
 import static org.junit.Assert.*;
 
 /**
@@ -40,6 +45,12 @@ public class RequestTests {
     private final String DEFAULT_DRIVER_ID = "a5d32d2s_21se2s2";
     private final String DEFAULT_DRIVER_ID2 = "a5d32d2s_21se2s3";
     private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
+    private final double rate = 0.5;
+
+    private Address DEFAULT_TO_ADDRESS = new Address(Locale.CANADA);
+    private Address DEFAULT_FROM_ADDRESS = new Address(Locale.CANADA);
+
+    private final Calendar date = Calendar.getInstance();
 
     private final Rider DEFAULT_RIDER = new Rider(DEFAULT_RIDER_ID);
 
@@ -50,7 +61,11 @@ public class RequestTests {
      */
     @Test
     public void testRequestInit() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        DEFAULT_FROM_ADDRESS.setLatitude(53.523869);
+        DEFAULT_FROM_ADDRESS.setLongitude(-113.526146);
+        DEFAULT_TO_ADDRESS.setLatitude(53.548623);
+        DEFAULT_TO_ADDRESS.setLongitude(-113.506537);
+        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         // test cost
         assertEquals(DEFAULT_COST, request.getCost(), 0.001);
         // test ids
@@ -67,7 +82,7 @@ public class RequestTests {
      */
     @Test
     public void testAddDriver() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
 
         assertEquals(0, request.getDrivers().size());
@@ -86,7 +101,7 @@ public class RequestTests {
      */
     @Test
     public void testAcceptOffer() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
         Driver driver2 = new Driver(DEFAULT_DRIVER_ID2);
 
@@ -103,7 +118,7 @@ public class RequestTests {
      */
     @Test
     public void testCancelOffer() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(DEFAULT_DRIVER_ID);
 
         request.addDriver(driver);
@@ -118,9 +133,9 @@ public class RequestTests {
      */
     @Test
     public void testToFromLocations() {
-        Request request = new Request(DEFAULT_COST, DEFAULT_RIDER);
+        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
 
-        Location someLocation = new Location("");
+        Address someLocation = new Address(Locale.CANADA);
         someLocation.setLatitude(12.0);
         someLocation.setLongitude(12.0);
 

@@ -54,4 +54,9 @@
 
 
     <string name="title_activity_activity_request_selection_NewRequest">New Request</string>
+    <string name="request_item_Name">Request Name</string>
+    <string name="request_item_Destination">Destination</string>
+    <string name="request_item_StatusName">Status</string>
+    <string name="request_item_Date">Date</string>
+    <string name="request_item_Placeholder">Placeholder</string>
 </resources>

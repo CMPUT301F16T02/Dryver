@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:longClickable="true">
+
+    <RelativeLayout
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/requestItemTextRelativeLayout">
+
+        <TextView
+            android:id="@+id/requestItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/request_item_Name"/>
+
+        <TextView
+            android:id="@+id/requestItemDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemName"
+            android:text="@string/request_item_Destination"/>
+
+        <TextView
+            android:id="@+id/requestItemStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemDestination"
+            android:text="@string/request_item_StatusName"/>
+
+        <TextView
+            android:id="@+id/requestItemDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemStatus"
+            android:text="@string/request_item_Date"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@+id/requestItemTextRelativeLayout">
+        <TextView
+            android:id="@+id/requestItemStatusImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/request_item_Placeholder"/>
+    </RelativeLayout>
+</RelativeLayout>
