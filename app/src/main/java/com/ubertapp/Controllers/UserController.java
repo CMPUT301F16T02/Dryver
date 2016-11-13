@@ -66,7 +66,7 @@ public class UserController {
     }
 
     public User login(String userid) {
-        activeUser =  ES.getUserByID(userid);
+        activeUser =  ES.getUser(userid);
         return activeUser;
     }
 

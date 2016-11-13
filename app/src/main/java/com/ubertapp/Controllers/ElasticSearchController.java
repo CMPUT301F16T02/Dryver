@@ -107,8 +107,7 @@ public class ElasticSearchController {
     public boolean addUser(User user) {
         verifySettings();
 
-        if(getUserByID(user.getUserId()) != null)
-        {
+        if (getUser(user.getUserId()) != null) {
             return false;
         }
 
@@ -118,14 +117,24 @@ public class ElasticSearchController {
             DocumentResult result = client.execute(index);
             if (result.isSucceeded()) {
                 user.setId(result.getId());
-                return true;
             } else {
                 Log.i("Error", "Elastic search was not able to add the user.");
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            return true;
         }
-        return false;
+    }
+
+    /**
+     * Deletes a user in the database based on the userId.
+     * @param user
+     * @see User
+     */
+    public boolean deleteUser(User user) {
+        User newUser = getUser(user.getUserId());
+        return deleteUserByEsID(newUser);
     }
 
     /**
@@ -133,18 +142,29 @@ public class ElasticSearchController {
      * @param user
      * @see User
      */
-    public boolean deleteUser(User user) {
+    public boolean deleteUserByEsID(User user) {
         verifySettings();
+        boolean deletable = false;
+
+        if (user == null) {
+            return deletable;
+        }
+
+        User internalUser = getUser(user.getUserId());
+        if (internalUser == null || internalUser.getId() == null) {
+            return deletable;
+        }
 
         Delete delete = new Delete.Builder(user.getId()).index(INDEX).type(USER).build();
 
         try {
             client.execute(delete);
-            return true;
+            deletable = true;
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            return deletable;
         }
-        return false;
     }
 
     /**
@@ -154,7 +174,7 @@ public class ElasticSearchController {
      * @return User
      * @see User
      */
-    public User getUserByID(String id) {
+    public User getUser(String id) {
         Log.i("Info", "logging in with user id: " + id);
 
         String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + id + "\"}}}";
@@ -202,8 +222,12 @@ public class ElasticSearchController {
      * Updates a existing user profile based on the ES id
      * @see User
      * */
-    public boolean updateUser(User user) {
+    public boolean updateUser(User user) throws InterruptedException {
         verifySettings();
+
+        if (getUser(user.getUserId()) == null) {
+            return false;
+        }
 
         Index index = new Index.Builder(user).index(INDEX).type(USER).id(user.getId()).build();
 
@@ -217,8 +241,9 @@ public class ElasticSearchController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            return true;
         }
-        return false;
     }
 
     /**
