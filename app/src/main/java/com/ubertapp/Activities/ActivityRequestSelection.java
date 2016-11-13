@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Controllers.RequestSingleton;
 import com.ubertapp.Controllers.UserController;
 import com.ubertapp.Models.Request;
@@ -60,6 +61,7 @@ public class ActivityRequestSelection extends Activity {
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private UserController userController = UserController.getInstance();
+    private ElasticSearchController ES = ElasticSearchController.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,11 +110,18 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status = request.getStatus();
-                status ^= 1;
-                request.setStatus(status);
-                requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+                try {
+                    status = request.getStatus();
+                    status ^= 1;
 
+                    request.setStatus(status);
+                    ES.updateRequest(request);
+
+                    requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

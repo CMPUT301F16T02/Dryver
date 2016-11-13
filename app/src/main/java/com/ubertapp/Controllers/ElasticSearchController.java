@@ -326,25 +326,25 @@ public class ElasticSearchController {
         return requests;
     }
 
-//    public boolean updateRequest(Request request) throws InterruptedException {
-//        verifySettings();
-//
-//        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).id(request.getId()).build();
-//
-//        try {
-//            DocumentResult result = client.execute(index);
-//            if (result.isSucceeded()) {
-//                request.setId(result.getId());
-//                return true;
-//            } else {
-//                Log.i("Error", "Elastic search was not able to add the user.");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            return true;
-//        }
-//    }
+    public boolean updateRequest(Request request) throws InterruptedException {
+        verifySettings();
+
+        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).id(request.getId()).build();
+
+        try {
+            DocumentResult result = client.execute(index);
+            if (result.isSucceeded()) {
+                request.setId(result.getId());
+                return true;
+            } else {
+                Log.i("Error", "Elastic search was not able to add the user.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return true;
+        }
+    }
 
     //TODO: getDriverRequests
 
