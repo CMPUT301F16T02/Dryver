@@ -87,17 +87,14 @@ public class ActivityRegistration extends Activity {
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
                         ActivityRegistration.this.startActivity(intent);
-                    }
-                    else {
+                    } else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
                 }
-                else if(!HelpMe.isValidEmail(emailEditText))
-                {
+                else if(!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
                 }
-                else if(!HelpMe.isValidPhone(phoneEditText))
-                {
+                else if(!HelpMe.isValidPhone(phoneEditText)) {
                     emailEditText.setError("Invalid phone number.");
                 }
             }

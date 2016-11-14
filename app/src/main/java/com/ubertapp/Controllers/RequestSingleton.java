@@ -44,8 +44,7 @@ public class RequestSingleton {
         return ourInstance;
     }
 
-    private RequestSingleton() {
-    }
+    private RequestSingleton() {}
 
     public ArrayList<Request> getRequests() {
         if(userController.getActiveUser() instanceof Rider){
@@ -69,8 +68,7 @@ public class RequestSingleton {
         }
     }
 
-    public void removeRequest(Request request)
-    {
+    public void removeRequest(Request request) {
         if(!requests.contains(request)) {
             Log.i("info", "The request singleton doesn't have this request");
         } else if(ES.deleteRequestByEsID(request)){

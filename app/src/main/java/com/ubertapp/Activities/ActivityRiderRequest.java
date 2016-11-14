@@ -89,7 +89,6 @@ public class ActivityRiderRequest extends Activity {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 requestPosition = position;
                 Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
                 intent.putExtra(RETURN_VIEW_REQUEST, requestPosition);
@@ -110,8 +109,7 @@ public class ActivityRiderRequest extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RETURN_DELETE_CODE) {
             requestListAdapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             requestListAdapter.notifyDataSetChanged();
         }
     }
