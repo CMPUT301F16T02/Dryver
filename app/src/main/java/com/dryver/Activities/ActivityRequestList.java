@@ -48,7 +48,6 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
     private ListView requestListView;
     private RequestListAdapter requestListAdapter;
 
-    private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private Rider rider;
