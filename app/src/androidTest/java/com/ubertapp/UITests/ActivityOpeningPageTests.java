@@ -20,7 +20,8 @@
 package com.ubertapp.UITests;
 
 /**
- * Created by Adam on 11/8/2016.
+ * UI tests for the OpeningPage Activity using Espressp
+ * @see com.ubertapp.Activities.ActivityOpeningPage
  */
 
 import org.junit.Rule;
@@ -47,6 +48,10 @@ public class ActivityOpeningPageTests{
     public IntentsTestRule<ActivityOpeningPage> OPActivityRule = new IntentsTestRule<ActivityOpeningPage>(
             ActivityOpeningPage.class);
 
+    /**
+     * Tests selecting the registration button whcich goes to the registration Activity
+     * @see ActivityRegistration
+     */
     @Test
     public void TestSelectRegistration() {
         onView(withText("New user?")).check(ViewAssertions.matches(isDisplayed()));
@@ -57,7 +62,10 @@ public class ActivityOpeningPageTests{
     }
 
 
-
+    /**
+     * Tests selecting the login button which goes to the Login Activity
+     * @see ActivityLogin
+     */
     @Test
     public void TestSelectLogin() {
         onView(withText("Existing user?")).check(ViewAssertions.matches(isDisplayed()));

@@ -45,7 +45,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by Adam on 11/11/2016.
+ * UI Tests for the Login Acttivity using Espresso
+ * @see com.ubertapp.Activities.ActivityLogin
  */
 
 public class ActivityLoginTests {
@@ -58,6 +59,10 @@ public class ActivityLoginTests {
     public IntentsTestRule<ActivityLogin> OPActivityRule = new IntentsTestRule<ActivityLogin>(
             ActivityLogin.class);
 
+    /**
+     * Tests logging in using a that is added to the database, or not if it is already there, at the
+     * start of the test
+     */
     @Test
     //Note, this actually logs in. It makes a user, then logs in
     public void TestLogin() {

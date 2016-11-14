@@ -48,22 +48,34 @@ import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
 
 /**
- * Used to communicate with the Elasticsearch server
+ * Used to communicate with the Elasticsearch server follows the Songleton design pattern.
  * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
  * @see <a href="http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/_search?pretty=true&q=*:*">list of users</a>
  */
 
 public class ElasticSearchController {
+    /**
+     * The instance of the singleton that is returns and used by everyone.
+     */
     private static ElasticSearchController instance = new ElasticSearchController();
 
     protected ElasticSearchController(){
     }
 
-    //used for setting the mock controller for testing purposes
+    /**
+     * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting
+     * a mock for testing purposes. Hacky workaround for mocking a singleton hehe...
+     * @see com.ubertapp.Mock.MockElasticSeachController
+     * @param ES
+     */
     public static void setMock(ElasticSearchController ES){
         instance = ES;
     }
 
+    /**
+     * gets the Instance of the ElasticSearchController as it is a singleton
+     * @return
+     */
     public static ElasticSearchController getInstance(){
         return instance;
     }
@@ -80,7 +92,13 @@ public class ElasticSearchController {
      * The primary index name
      */
     private static final String INDEX = "cmput301f16t02";
+    /**
+     * User type for server
+     */
     private static final String USER = "user";
+    /**
+     * Request type for the server
+     */
     private static final String REQUEST = "request";
 
     /**

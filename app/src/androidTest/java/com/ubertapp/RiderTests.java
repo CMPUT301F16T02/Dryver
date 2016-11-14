@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 
 /**
  * All Tests for the Rider Class.
+ * @see Rider
  */
 
 public class RiderTests {

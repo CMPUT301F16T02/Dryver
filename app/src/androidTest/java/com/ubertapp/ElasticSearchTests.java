@@ -29,12 +29,20 @@ import java.util.ArrayList;
 
 import static com.ubertapp.Controllers.ElasticSearchController.GetUsersTask;
 
+/**
+ * Various Tests for the ElasticSearchController
+ * @see ElasticSearchController
+ */
 
 public class ElasticSearchTests {
     ElasticSearchController ES = ElasticSearchController.getInstance();
     // TODO: 2016-11-13 remove sleep statements and replace with a wait on condition somehow.
 
 
+    /**
+     * Tests Adding and then deleting a User from the Database
+     * @throws InterruptedException
+     */
     @Test
     public void testAddDeleteUser() throws InterruptedException {
         User user = new User("ESTestUser", "testFirst", "testLast", "7805555555", "test@test.com");
@@ -49,6 +57,10 @@ public class ElasticSearchTests {
         Thread.sleep(3000);
     }
 
+    /**
+     * Tests updating an existing user's values in the database
+     * @throws InterruptedException
+     */
     @Test
     public void testUpdateUser() throws InterruptedException {
         User user =  new User("ESTestUser");
@@ -85,6 +97,9 @@ public class ElasticSearchTests {
         Thread.sleep(3000);
     }
 
+    /**
+     * Tests getting a user from the database
+     */
     @Test
     public void testGetUsers() {
         ArrayList<User> userList = new ArrayList<User>();
@@ -98,11 +113,17 @@ public class ElasticSearchTests {
         }
     }
 
+    /**
+     * Tests getting a request from the database
+     */
     @Test
     public void testFetchRequest() {
         // TODO: test fetching from server
     }
 
+    /**
+     * Tests adding a request to the database
+     */
     @Test
     public void testPushRequest() {
         // TODO: test pushing to server

@@ -45,7 +45,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by Adam on 11/8/2016.
+ * UI Tests for the Registration Activity using Espress
+ * @see ActivityRegistration
  */
 
 public class ActivityRegistrationTests {
@@ -59,6 +60,9 @@ public class ActivityRegistrationTests {
     public IntentsTestRule<ActivityRegistration> OPActivityRule = new IntentsTestRule<ActivityRegistration>(
             ActivityRegistration.class);
 
+    /**
+     * Initializes the input strings for the editTexts available during registration
+     */
     @Before
     public void initValidString() {
         username = "DopeD3aler666";
@@ -68,6 +72,13 @@ public class ActivityRegistrationTests {
         email = "superman@Gmail.com";
     }
 
+    /**
+     * Simply inputs a presumably valid string for all EditTexts and attempts to select register.
+     * Uses the mock ESController, so although the strings are validated, it is not actually pushed
+     * to the ES server. Registration leads to the Selection Activity.
+     * @see MockElasticSeachController
+     * @see ActivitySelection
+     */
     @Test
     public void TestRegister() {
         ElasticSearchController.setMock(MockElasticSeachController.getInstance());

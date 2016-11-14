@@ -23,7 +23,7 @@ import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Models.User;
 
 /**
- * Created by Adam on 11/8/2016.
+ * Essentially a ES controller that fakes adding a user. Used for testing UI without pushing to the Server.
  */
 
 public class MockElasticSeachController extends ElasticSearchController {

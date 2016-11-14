@@ -27,6 +27,7 @@ import static org.junit.Assert.*;
 
 /**
  * Test Suite for the User Class.
+ * @see User
  */
 public class UserTests {
 
