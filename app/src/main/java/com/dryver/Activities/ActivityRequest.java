@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.dryver.Controllers.RequestSingleton;
@@ -29,6 +30,8 @@ public class ActivityRequest extends Activity {
     private TimePicker timePicker;
     private DatePicker datePicker;
     private EditText tripPrice;
+    private TextView fromLocationText;
+    private TextView toLocationText;
 
     private Calendar calendar = Calendar.getInstance();
     private UserController userController = UserController.getInstance();
@@ -49,6 +52,8 @@ public class ActivityRequest extends Activity {
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
+        fromLocationText = (TextView) findViewById(R.id.requestFromLocation);
+        toLocationText = (TextView) findViewById(R.id.requestToLocation);
 
         timePicker = (TimePicker) findViewById(R.id.requestTimePicker);
         timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
@@ -90,5 +95,12 @@ public class ActivityRequest extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fromLocationText.setText("From: Lat: " + testFromLocation.getLatitude() + " Long: " + testFromLocation.getLongitude());
+        toLocationText.setText("To  : Lat: " + testToLocation.getLatitude() + " Long: " + testToLocation.getLongitude());
     }
 }
