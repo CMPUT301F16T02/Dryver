@@ -102,8 +102,13 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.removeRequest(request);
-                finish();
+                Boolean deleted = requestSingleton.removeRequest(request);
+
+                while(deleted == null);
+
+                if(deleted){
+                    finish();
+                }
             }
         });
 

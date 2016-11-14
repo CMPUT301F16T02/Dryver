@@ -273,7 +273,7 @@ public class ElasticSearchController {
         }
     }
 
-    public boolean deleteRequestByEsID(Request request) {
+    public synchronized Boolean deleteRequestByEsID(Request request) {
         verifySettings();
         boolean deletable = false;
 

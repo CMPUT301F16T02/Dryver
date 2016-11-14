@@ -28,6 +28,8 @@ import com.ubertapp.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -46,12 +48,21 @@ public class RequestSingleton {
     }
 
     public ArrayList<Request> getRequests() {
+        return requests;
+    }
+
+    public ArrayList<Request> getUpdatedRequests() {
+        updateRequests();
+        return requests;
+    }
+
+    public void updateRequests() {
         if(userController.getActiveUser() instanceof Rider){
             requests =  new ArrayList<Request>(ES.getRiderRequests((Rider)userController.getActiveUser()));
+            Collections.reverse(requests);
         } else if(userController.getActiveUser() instanceof Driver){
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
-        return requests;
     }
 
     //TODO Correct Times... Why is date passed and not used?
@@ -68,13 +79,24 @@ public class RequestSingleton {
         }
     }
 
-    public void removeRequest(Request request)
+    public synchronized Boolean removeRequest(Request request)
     {
         if(!requests.contains(request)) {
             Log.i("info", "The request singleton doesn't have this request");
-        } else if(ES.deleteRequestByEsID(request)){
-            requests.remove(request);
+            return false;
         }
+
+        Boolean deleted = ES.deleteRequestByEsID(request);
+        while (deleted == null);
+
+        if(deleted) {
+            requests.remove(request);
+            if(!requests.contains(request)){
+                Log.i("info", "Request removed from request list");
+                return deleted;
+            }
+        }
+        return deleted;
     }
 
     // TODO: 2016-10-29 Check for duplicate requests from the same user.

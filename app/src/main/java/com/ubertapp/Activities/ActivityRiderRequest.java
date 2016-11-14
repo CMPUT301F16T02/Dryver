@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -102,8 +103,9 @@ public class ActivityRiderRequest extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
+        requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
+
     }
 
     @Override
@@ -119,7 +121,11 @@ public class ActivityRiderRequest extends Activity {
 
     @Override
     public void onResume() {
+
+        Log.i("Activtiy", "RiderRequest onResume()");
         super.onResume();
         requestListAdapter.notifyDataSetChanged();
     }
+
+
 }
