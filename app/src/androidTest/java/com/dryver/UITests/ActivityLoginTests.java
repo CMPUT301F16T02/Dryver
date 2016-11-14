@@ -29,6 +29,7 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -48,14 +49,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 
 public class ActivityLoginTests {
-
-    private ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
     private String testUserName = "TestyMcTesterton";
     private User testUser = new User(testUserName, "fTest", "lTest", "5555555555", "Test@Test.com");
 
     @Rule
     public IntentsTestRule<ActivityLogin> OPActivityRule = new IntentsTestRule<ActivityLogin>(
             ActivityLogin.class);
+
+    @Before
+    public void addUserToES(){
+            ElasticSearchController ES = ElasticSearchController.getInstance();
+            ES.addUser(testUser);
+    }
 
     /**
      * Tests logging in using a that is added to the database, or not if it is already there, at the
@@ -65,8 +70,6 @@ public class ActivityLoginTests {
     //Note, this actually logs in. It makes a user, then logs in
     public void TestLogin() {
         onView(withText("Login")).check(ViewAssertions.matches(isDisplayed()));
-
-        elasticSearchController.addUser(testUser);
 
         onView(withId(R.id.username_edittext)).perform(typeText(testUserName));
         onView(withText(testUserName)).check(ViewAssertions.matches(isDisplayed()));

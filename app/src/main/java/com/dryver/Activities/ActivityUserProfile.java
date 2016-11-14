@@ -39,6 +39,8 @@ import com.dryver.R;
  */
 public class ActivityUserProfile extends Activity {
     //TODO: Contacting a driver via email or phone. (should that be here?)
+    //TODO: Add field for entering the required payment method info. Could be a popup of some sort or w/e.
+    //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
 
     private UserController userController = UserController.getInstance();
 

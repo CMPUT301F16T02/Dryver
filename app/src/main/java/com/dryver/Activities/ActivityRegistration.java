@@ -83,7 +83,11 @@ public class ActivityRegistration extends Activity {
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    if (ES.addUser(user)) {
+                    Boolean added = ES.addUser(user);
+
+                    while (added == null);
+
+                    if (added) {
                         Log.i("Info", "User added succesfully via ElasticSearch Controller");
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);

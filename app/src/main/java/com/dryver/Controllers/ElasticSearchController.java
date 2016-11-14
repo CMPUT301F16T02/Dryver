@@ -125,8 +125,9 @@ public class ElasticSearchController {
      *
      * @param user
      * @see User
+     * @return Boolean
      */
-    public boolean addUser(User user) {
+    public Boolean addUser(User user) {
         verifySettings();
 
         if (getUser(user.getUserId()) != null) {

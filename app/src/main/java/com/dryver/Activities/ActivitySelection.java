@@ -50,7 +50,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ActivitySelection.this, ActivityDriver.class);
-                ActivitySelection.this.startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -58,7 +58,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ActivitySelection.this, ActivityRequestList.class);
-                ActivitySelection.this.startActivity(intent);
+                startActivity(intent);
             }
         });
     }

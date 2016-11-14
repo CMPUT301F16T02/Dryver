@@ -29,7 +29,7 @@ import com.dryver.Models.User;
 public class MockElasticSeachController extends ElasticSearchController {
 
     @Override
-    public boolean addUser(User user) {
+    public Boolean addUser(User user) {
         return true;
     }
 }
