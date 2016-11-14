@@ -124,8 +124,7 @@ public class ActivityRequestSelection extends Activity {
                     ES.updateRequest(request);
 
                     requestSelectionStatus.setText("Status: " + request.statusCodeToString());
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }

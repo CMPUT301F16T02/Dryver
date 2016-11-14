@@ -42,8 +42,7 @@ public class RequestSingleton {
         return ourInstance;
     }
 
-    private RequestSingleton() {
-    }
+    private RequestSingleton() {}
 
     public ArrayList<Request> getRequests() {
         return requests;

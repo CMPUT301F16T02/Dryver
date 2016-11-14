@@ -92,7 +92,6 @@ public class ActivityRiderRequest extends Activity {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 requestPosition = position;
                 Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
 
@@ -106,7 +105,6 @@ public class ActivityRiderRequest extends Activity {
     public void onStart() {
         Log.i("Activtiy", "RiderRequest onStart()");
         super.onStart();
-
     }
 
     @Override
