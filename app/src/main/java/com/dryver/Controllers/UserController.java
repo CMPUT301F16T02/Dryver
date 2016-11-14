@@ -45,8 +45,7 @@ public class UserController {
         return instance;
     }
 
-    private UserController() {
-    }
+    private UserController() {}
 
     /**
      * Gets active user.

@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import com.dryver.R;
 
+/**
+ * Activity used to get information from the user for a request they are about to make.
+ * Or edit existing requests.
+ */
 public class ActivityRequest extends ActionBarActivity {
 
     @Override

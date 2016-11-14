@@ -34,7 +34,7 @@ import com.dryver.R;
 
 
 /**
- * User login screen.
+ * Activity for user login.
  */
 public class ActivityLogin extends Activity {
     private EditText usernameEditText;

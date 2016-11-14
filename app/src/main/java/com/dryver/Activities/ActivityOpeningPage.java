@@ -30,7 +30,7 @@ import com.dryver.R;
 
 
 /**
- * The initial Opening Page of the ubertapp app.
+ * This activity is the point for application and lets the user login or register.
  */
 public class ActivityOpeningPage extends Activity {
 

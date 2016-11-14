@@ -56,8 +56,7 @@ public class ElasticSearchController {
      */
     private static ElasticSearchController instance = new ElasticSearchController();
 
-    protected ElasticSearchController(){
-    }
+    protected ElasticSearchController(){}
 
     /**
      * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting

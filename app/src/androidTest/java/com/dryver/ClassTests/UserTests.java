@@ -31,7 +31,6 @@ import static org.junit.Assert.*;
  */
 public class UserTests {
 
-    private double DEFAULT_COST = 1.00;
     private final String DEFAULT_USER_ID = "b8sjd9sl_28sjd2u";
 
     /**

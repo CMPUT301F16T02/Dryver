@@ -26,7 +26,6 @@ import android.widget.EditText;
 import java.util.Date;
 
 
-
 /**
  * Global helper methods for the ubertapp app. HelpMe stands for Helper Methods.
  */

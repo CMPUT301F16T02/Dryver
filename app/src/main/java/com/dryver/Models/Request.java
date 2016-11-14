@@ -50,18 +50,17 @@ public class Request implements Serializable {
     private Location toLocation;
 
     private double cost;
-
     private double rate;
     private final String riderId;
 
     /**
      * Instantiates a new Request.
      *
-     *
-     * @param rider the rider
-     * @param date  date the request was created
+     * @param rider        the rider
+     * @param date         date the request was created
      * @param fromLocation location of the rider
-     * @param toLocation  destination of the rider
+     * @param toLocation   destination of the rider
+     * @param rate         the rate
      */
     public Request(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
             this.rider = rider;
@@ -76,10 +75,20 @@ public class Request implements Serializable {
             generateCost(rate);
     }
 
+    /**
+     * Gets elastic search user id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets elastic search user id.
+     *
+     * @param id the id
+     */
     public void setId(String id) {
         this.id = id;
     }
@@ -103,7 +112,7 @@ public class Request implements Serializable {
     }
 
     /**
-     * Gets cost.
+     * Gets cost of the ride.
      *
      * @return the cost
      */
@@ -112,7 +121,7 @@ public class Request implements Serializable {
     }
 
     /**
-     * Gets drivers.
+     * Gets drivers who accepted the ride.
      *
      * @return the drivers
      */
@@ -130,7 +139,7 @@ public class Request implements Serializable {
     }
 
     /**
-     * Gets rider id.
+     * Gets rider userId.
      *
      * @return the rider id
      */
@@ -139,7 +148,7 @@ public class Request implements Serializable {
     }
 
     /**
-     * Gets accepted driver.
+     * Gets driver who was accepted by the rider.
      *
      * @return the accepted driver
      */
@@ -175,8 +184,6 @@ public class Request implements Serializable {
     public void cancelOffer() {
         this.acceptedDriver = null;
     }
-
-    // ================= LOCATION SERVICES. ====================
 
     /**
      * Gets user's to-location.
@@ -216,7 +223,8 @@ public class Request implements Serializable {
 
     /**
      * Get the status of the request
-     * @return int
+     *
+     * @return int status
      */
     public int getStatus() {
         return status;
@@ -224,7 +232,8 @@ public class Request implements Serializable {
 
     /**
      * Set the request status
-     * @param status
+     *
+     * @param status the status
      */
     public void setStatus(int status) {
         this.status = status;
@@ -232,7 +241,8 @@ public class Request implements Serializable {
 
     /**
      * Get the request's date of creation
-     * @return Calendar
+     *
+     * @return Calendar date
      */
     public Calendar getDate() {
         return this.date;
@@ -240,7 +250,8 @@ public class Request implements Serializable {
 
     /**
      * Get the request's rate
-     * @return double
+     *
+     * @return double rate
      */
     public double getRate() {
         return rate;
@@ -248,7 +259,8 @@ public class Request implements Serializable {
 
     /**
      * Set's the request's rate
-     * @param rate
+     *
+     * @param rate the rate
      */
     public void setRate(double rate) {
         this.rate = rate;
@@ -256,7 +268,8 @@ public class Request implements Serializable {
 
     /**
      * Generates the cost of the request using the rate
-     * @param rate
+     *
+     * @param rate the rate
      */
     public void generateCost(double rate) {
         Location start = new Location("start");
@@ -277,7 +290,8 @@ public class Request implements Serializable {
      * 0 is Cancelled
      * 1 is Pending
      * 2 is Accepted
-     * @return String
+     *
+     * @return String string
      */
     public String statusCodeToString() {
         if (status == 0) {

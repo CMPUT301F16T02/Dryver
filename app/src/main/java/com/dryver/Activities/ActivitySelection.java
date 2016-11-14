@@ -32,7 +32,7 @@ import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 /**
- * Selection screen which provides the user with a choice to choose if he'd like to be a rider or a driver.
+ * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
 public class ActivitySelection extends Activity {
 

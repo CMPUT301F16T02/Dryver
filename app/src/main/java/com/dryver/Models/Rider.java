@@ -25,7 +25,6 @@ package com.dryver.Models;
  */
 
 public class Rider extends User {
-
     public Rider(User user) {
         super(user.getUserId(),
                 user.getFirstName(),

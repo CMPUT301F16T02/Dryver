@@ -26,6 +26,9 @@ import android.os.Bundle;
 import com.dryver.R;
 
 
+/**
+ * This activities deals with providing the driver with UI for requests.
+ */
 public class ActivityDriver extends Activity {
 
     @Override
