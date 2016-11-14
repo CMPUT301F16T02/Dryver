@@ -17,31 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.ubertapp;
+package com.ubertapp.ClassTests;
 
 
-import com.ubertapp.Models.Driver;
+import com.ubertapp.Models.Rider;
 import com.ubertapp.Models.User;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
- * All Tests for the Driver Class.
- * @see Driver
+ * All Tests for the Rider Class.
+ * @see Rider
  */
 
-public class DriverTests {
+public class RiderTests {
 
-    private final String DEFAULT_DRIVER_ID = "a5d32d2s_21se2s2";
+    private final String DEFAULT_RIDER_ID = "b8sjd9sl_28sjd2u";
 
     /**
-     * Tests the getId() function from Driver class.
+     * Tests the getId() function from Rider class.
      */
     @Test
     public void testGetId() {
-        User user = new User(DEFAULT_DRIVER_ID);
-        Driver driver = new Driver(user);
-        assertEquals(DEFAULT_DRIVER_ID, driver.getUserId());
+        User user = new User(DEFAULT_RIDER_ID);
+        Rider rider = new Rider(user);
+        assertEquals(DEFAULT_RIDER_ID, rider.getUserId());
     }
 }
