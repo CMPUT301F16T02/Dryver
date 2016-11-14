@@ -62,6 +62,9 @@
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
+    <string name="activity_request_text_tripcost">Enter trip price</string>
+    <string name="activity_request_button_submit">Submit</string>
+    <string name="activity_request_button_location">Set Route</string>
     <string name="activity_request_selection_RequestDetails">Request Details</string>
     <string name="activity_request_selection_Name">Rider Name</string>
     <string name="activity_request_selection_FromLocation">From Location</string>

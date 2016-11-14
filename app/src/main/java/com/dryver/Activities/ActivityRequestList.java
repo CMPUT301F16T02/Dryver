@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,7 +34,6 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 
-import java.util.Calendar;
 
 /**
  * The activity that acts as the main rider activity. Lists requests, you can create requests here,
@@ -75,8 +73,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.addRequest(rider, Calendar.getInstance(), testFromLocation, testToLocation, 0.5);
-                requestListAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
+                startActivity(intent);
+
             }
         });
 
@@ -84,11 +83,20 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
-
                 startActivity(intent);
                 return true;
             }
         });
+
+        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request
+//        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
+////                intent.putExtra("position", position);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override
