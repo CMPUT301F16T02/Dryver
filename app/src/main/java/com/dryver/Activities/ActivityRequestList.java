@@ -40,13 +40,12 @@ import com.dryver.R;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestList extends Activity {
+public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     private Button mAddRequest;
     private ListView requestListView;
     private RequestListAdapter requestListAdapter;
 
-    private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private Rider rider;

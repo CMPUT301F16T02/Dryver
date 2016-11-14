@@ -34,31 +34,9 @@ import com.dryver.R;
 /**
  * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
-public class ActivitySelection extends Activity {
-
-    private UserController userController = UserController.getInstance();
-
+public class ActivitySelection extends ActivityLoggedInActionBar {
     private Button driverButton;
     private Button requestButton;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.hamburgler_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.viewMyProfile:
-                userController.viewActiveUserProfile(this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
