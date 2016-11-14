@@ -28,7 +28,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:focusable="false">
 
             <EditText
                 android:layout_width="match_parent"
@@ -65,7 +66,8 @@
             <DatePicker
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/requestDatePicker" />
+                android:id="@+id/requestDatePicker"
+                android:focusable="false" />
         </LinearLayout>
     </ScrollView>
 

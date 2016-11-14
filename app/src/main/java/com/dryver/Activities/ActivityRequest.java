@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TimePicker;
 
-import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
@@ -28,7 +26,6 @@ import java.util.Calendar;
 public class ActivityRequest extends Activity {
     private Button setLocation;
     private Button submitRequest;
-    private ScrollView scrollView;
     private TimePicker timePicker;
     private DatePicker datePicker;
     private EditText tripPrice;
@@ -51,7 +48,6 @@ public class ActivityRequest extends Activity {
 
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
-        scrollView = (ScrollView) findViewById(R.id.requestScrollView);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
 
         timePicker = (TimePicker) findViewById(R.id.requestTimePicker);
@@ -66,6 +62,8 @@ public class ActivityRequest extends Activity {
         testFromLocation.setLongitude(-113.526146);
         testToLocation.setLatitude(53.548623);
         testToLocation.setLongitude(-113.506537);
+
+        findViewById(R.id.requestTripPrice).requestFocus();
 
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
