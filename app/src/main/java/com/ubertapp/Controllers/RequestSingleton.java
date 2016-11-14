@@ -64,8 +64,7 @@ public class RequestSingleton {
         if(ES.addRequest(request)) {
             Log.i("info", "Request Successfully added to server");
             requests.add(request);
-        } else
-        {
+        } else {
             Log.i("info", "Request no successfully added to server...");
         }
     }
