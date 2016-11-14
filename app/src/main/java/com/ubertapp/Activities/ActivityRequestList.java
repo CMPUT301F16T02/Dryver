@@ -21,36 +21,29 @@ package com.ubertapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.ubertapp.Controllers.ElasticSearchController;
 import com.ubertapp.Controllers.RequestListAdapter;
 import com.ubertapp.Controllers.RequestSingleton;
 import com.ubertapp.Controllers.UserController;
-import com.ubertapp.Models.Request;
 import com.ubertapp.Models.Rider;
 
 import com.ubertapp.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * The activity that acts as the main rider activity. Lists requests, you can create requests here,
  * and select requests to inspect a request.
  */
 
-public class ActivityRiderRequest extends Activity {
+public class ActivityRequestList extends Activity {
 
     private Button mAddRequest;
     private ListView requestListView;
@@ -69,9 +62,8 @@ public class ActivityRiderRequest extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("Activtiy", "RiderRequest onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rider_request);
+        setContentView(R.layout.activity_request_list);
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
@@ -98,7 +90,7 @@ public class ActivityRiderRequest extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 requestPosition = position;
-                Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
+                Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
 
                 startActivity(intent);
                 return true;

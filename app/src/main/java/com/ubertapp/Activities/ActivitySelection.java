@@ -29,7 +29,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ubertapp.Controllers.UserController;
-import com.ubertapp.Models.User;
 import com.ubertapp.R;
 
 /**
@@ -80,7 +79,7 @@ public class ActivitySelection extends Activity {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivitySelection.this, ActivityRiderRequest.class);
+                Intent intent = new Intent(ActivitySelection.this, ActivityRequestList.class);
                 ActivitySelection.this.startActivity(intent);
             }
         });

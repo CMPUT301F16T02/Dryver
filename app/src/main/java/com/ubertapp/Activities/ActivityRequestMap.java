@@ -29,6 +29,6 @@ public class ActivityRequestMap extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_request_map);
+        setContentView(R.layout.activity_request_map);
     }
 }

@@ -73,7 +73,7 @@ public class ActivityRequestSelection extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_request_selection);
+        setContentView(R.layout.activity_request_selection);
 
 
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);

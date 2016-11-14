@@ -37,10 +37,11 @@
         <activity android:name=".Activities.ActivityRegistration" />
         <activity android:name=".Activities.ActivitySelection" />
         <activity android:name=".Activities.ActivityDriver" />
-        <activity android:name=".Activities.ActivityRiderRequest" />
+        <activity android:name=".Activities.ActivityRequestList" />
         <activity android:name=".Activities.ActivityUserProfile" />
         <activity android:name=".Activities.ActivityRequestSelection" />
-        <activity android:name=".Activities.ActivityRequestMap"></activity>
+        <activity android:name=".Activities.ActivityRequestMap" />
+        <activity android:name=".Activities.ActivityRequest"></activity>
     </application>
 
 </manifest>

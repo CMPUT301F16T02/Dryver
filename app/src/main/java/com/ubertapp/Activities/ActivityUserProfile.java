@@ -55,7 +55,7 @@ public class ActivityUserProfile extends Activity {
         user = userController.getViewedUser();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_user_profile);
+        setContentView(R.layout.activity_user_profile);
 
         this.userNameEditText = (EditText)findViewById(R.id.profileEditTextUserName);
         this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
