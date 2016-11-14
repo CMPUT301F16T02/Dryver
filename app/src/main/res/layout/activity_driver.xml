@@ -28,6 +28,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ubertapp.Activities.ActivityDriver">
+    tools:context="com.dryver.Activities.ActivityDriver">
 
 </RelativeLayout>

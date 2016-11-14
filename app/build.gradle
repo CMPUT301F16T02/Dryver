@@ -23,7 +23,7 @@ android {
     compileSdkVersion 18
     buildToolsVersion "22.0.1"
     defaultConfig {
-        applicationId "com.example.adam.ubertapp"
+        applicationId 'com.dryver'
         minSdkVersion 18
         targetSdkVersion 18
         versionCode 1
@@ -35,6 +35,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
