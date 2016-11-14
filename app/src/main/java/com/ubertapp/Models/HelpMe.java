@@ -50,7 +50,7 @@ public class HelpMe extends Activity {
     /**
      * Checks the validity of an email within an editText
      * @param editText
-     * @return
+     * @return boolean
      */
     static public boolean isValidEmail(EditText editText)
     {
@@ -60,7 +60,7 @@ public class HelpMe extends Activity {
     /**
      * Checks the validity of a phone number within an edit text
      * @param editText
-     * @return
+     * @return boolean
      */
     static public boolean isValidPhone(EditText editText)
     {

@@ -279,7 +279,7 @@ public class Request implements Serializable {
      * 0 is Cancelled
      * 1 is Pending
      * 2 is Accepted
-     * @return
+     * @return String
      */
     public String statusCodeToString() {
         if (status == 0) {

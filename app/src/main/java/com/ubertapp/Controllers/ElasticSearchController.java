@@ -74,7 +74,7 @@ public class ElasticSearchController {
 
     /**
      * gets the Instance of the ElasticSearchController as it is a singleton
-     * @return
+     * @return ElasticSearchController
      */
     public static ElasticSearchController getInstance(){
         return instance;

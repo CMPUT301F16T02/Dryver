@@ -95,7 +95,7 @@ public class RequestSingleton {
      * Elastic Search see deleteRequestById() in ESC
      * @see ElasticSearchController
      * @param request
-     * @return
+     * @return Boolean
      */
     public synchronized Boolean removeRequest(Request request)
     {
