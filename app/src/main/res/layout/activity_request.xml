@@ -10,4 +10,63 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.dryver.Activities.ActivityRequest">
 
+    <Button
+        android:text="@string/activity_request_button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/requestButtonSubmit" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/requestButtonSubmit"
+        android:layout_alignParentStart="true"
+        android:id="@+id/requestScrollView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/requestTripPrice"
+                android:duplicateParentState="false"
+                android:hint="Enter trip price" />
+
+            <Button
+                android:text="@string/activity_request_button_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestButtonLocation" />
+
+            <TextView
+                android:text="@string/activity_request_selection_FromLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestFromLocation" />
+
+            <TextView
+                android:text="@string/activity_request_selection_ToLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestToLocation" />
+
+            <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestTimePicker" />
+
+            <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestDatePicker" />
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

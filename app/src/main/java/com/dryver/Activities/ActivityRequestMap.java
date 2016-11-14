@@ -19,7 +19,7 @@
 
 package com.dryver.Activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.dryver.R;
@@ -27,7 +27,7 @@ import com.dryver.R;
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
  */
-public class ActivityRequestMap extends ActionBarActivity {
+public class ActivityRequestMap extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

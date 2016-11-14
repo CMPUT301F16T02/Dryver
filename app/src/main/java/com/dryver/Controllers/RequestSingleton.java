@@ -79,7 +79,7 @@ public class RequestSingleton {
     public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Log.i("info", "RequestSingleton addRequest()");
 
-        Request request = new Request(rider, Calendar.getInstance(), fromLocation, toLocation, rate);
+        Request request = new Request(rider, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
         if(ES.addRequest(request)) {
