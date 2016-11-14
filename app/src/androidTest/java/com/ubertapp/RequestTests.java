@@ -26,6 +26,8 @@ import android.support.test.runner.AndroidJUnit4;
 import com.ubertapp.Models.Driver;
 import com.ubertapp.Models.Request;
 import com.ubertapp.Models.Rider;
+import com.ubertapp.Models.User;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,7 +54,11 @@ public class RequestTests {
 
     private final Calendar date = Calendar.getInstance();
 
-    private final Rider DEFAULT_RIDER = new Rider(DEFAULT_RIDER_ID);
+    private User user1 = new User(DEFAULT_DRIVER_ID);
+    private User user2 = new User(DEFAULT_DRIVER_ID2);
+    private User user3 = new User(DEFAULT_RIDER_ID);
+
+    private final Rider DEFAULT_RIDER = new Rider(user3);
 
 
     /**
@@ -83,7 +89,7 @@ public class RequestTests {
     @Test
     public void testAddDriver() {
         Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
-        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+        Driver driver = new Driver(user1);
 
         assertEquals(0, request.getDrivers().size());
 
@@ -102,8 +108,8 @@ public class RequestTests {
     @Test
     public void testAcceptOffer() {
         Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
-        Driver driver = new Driver(DEFAULT_DRIVER_ID);
-        Driver driver2 = new Driver(DEFAULT_DRIVER_ID2);
+        Driver driver = new Driver(user1);
+        Driver driver2 = new Driver(user2);
 
         request.addDriver(driver);
         request.addDriver(driver2);
@@ -119,7 +125,7 @@ public class RequestTests {
     @Test
     public void testCancelOffer() {
         Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
-        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+        Driver driver = new Driver(user1);
 
         request.addDriver(driver);
         request.acceptOffer(driver);

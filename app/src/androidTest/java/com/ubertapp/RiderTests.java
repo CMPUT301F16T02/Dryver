@@ -21,6 +21,8 @@ package com.ubertapp;
 
 
 import com.ubertapp.Models.Rider;
+import com.ubertapp.Models.User;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -37,7 +39,8 @@ public class RiderTests {
      */
     @Test
     public void testGetId() {
-        Rider rider = new Rider(DEFAULT_RIDER_ID);
+        User user = new User(DEFAULT_RIDER_ID);
+        Rider rider = new Rider(user);
         assertEquals(DEFAULT_RIDER_ID, rider.getUserId());
     }
 }
