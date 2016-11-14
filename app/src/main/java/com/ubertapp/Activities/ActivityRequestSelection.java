@@ -56,8 +56,6 @@ public class ActivityRequestSelection extends Activity {
     private Rider rider;;
     private int status;
     private int position;
-    private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
-    private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private UserController userController = UserController.getInstance();
@@ -72,7 +70,6 @@ public class ActivityRequestSelection extends Activity {
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
-        position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
         request = requestSingleton.getRequests().get(position);
         status = request.getStatus();
 
@@ -130,12 +127,6 @@ public class ActivityRequestSelection extends Activity {
             }
         });
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        setResult(RESULT_CANCELED);
-        finish();
     }
 
 }

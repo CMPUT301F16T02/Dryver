@@ -56,10 +56,10 @@ public class RequestSingleton {
         return requests;
     }
 
-    public void updateRequests() {
+    private void updateRequests() {
+        Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
             requests =  new ArrayList<Request>(ES.getRiderRequests((Rider)userController.getActiveUser()));
-            Collections.reverse(requests);
         } else if(userController.getActiveUser() instanceof Driver){
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
@@ -67,6 +67,8 @@ public class RequestSingleton {
 
     //TODO Correct Times... Why is date passed and not used?
     public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
+        Log.i("info", "RequestSingleton addRequest()");
+
         Request request = new Request(rider, Calendar.getInstance(), fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
@@ -81,6 +83,7 @@ public class RequestSingleton {
 
     public synchronized Boolean removeRequest(Request request)
     {
+        Log.i("info", "RequestSingleton removeRequest()");
         if(!requests.contains(request)) {
             Log.i("info", "The request singleton doesn't have this request");
             return false;
@@ -90,11 +93,10 @@ public class RequestSingleton {
         while (deleted == null);
 
         if(deleted) {
+            Log.i("info", Integer.toString(requests.size()));
+            Log.i("info", "Request successfully removed from the server");
             requests.remove(request);
-            if(!requests.contains(request)){
-                Log.i("info", "Request removed from request list");
-                return deleted;
-            }
+            Log.i("info", Integer.toString(requests.size()));
         }
         return deleted;
     }

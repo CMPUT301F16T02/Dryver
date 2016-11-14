@@ -58,13 +58,12 @@ public class ActivityRiderRequest extends Activity {
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
-    private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
-    private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
     private static final int REQUEST_VIEW_REQUEST = 0;
     private int requestPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("Activtiy", "RiderRequest onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_request);
 
@@ -77,6 +76,9 @@ public class ActivityRiderRequest extends Activity {
         testFromLocation.setLongitude(-113.526146);
         testToLocation.setLatitude(53.548623);
         testToLocation.setLongitude(-113.506537);
+
+        requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
+        requestListView.setAdapter(requestListAdapter);
 
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +94,8 @@ public class ActivityRiderRequest extends Activity {
 
                 requestPosition = position;
                 Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
-                intent.putExtra(RETURN_VIEW_REQUEST, requestPosition);
 
-                startActivityForResult(intent, REQUEST_VIEW_REQUEST);
+                startActivity(intent);
                 return true;
             }
         });
@@ -102,30 +103,17 @@ public class ActivityRiderRequest extends Activity {
 
     @Override
     public void onStart() {
+        Log.i("Activtiy", "RiderRequest onStart()");
         super.onStart();
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
-        requestListView.setAdapter(requestListAdapter);
 
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_VIEW_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                int position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
-                requestSingleton.getRequests().remove(position);
-                requestListAdapter.notifyDataSetChanged();
-            }
-        }
     }
 
     @Override
     public void onResume() {
-
+        Log.i("info", Integer.toString(requestSingleton.getRequests().size()));
         Log.i("Activtiy", "RiderRequest onResume()");
         super.onResume();
         requestListAdapter.notifyDataSetChanged();
     }
-
-
 }
