@@ -28,6 +28,8 @@ import com.ubertapp.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -56,7 +58,7 @@ public class RequestSingleton {
 
     //TODO Correct Times... Why is date passed and not used?
     public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
-        Request request = new Request(rider, Calendar.getInstance(), fromLocation, toLocation, rate);
+        Request request = new Request(rider, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
         if(ES.addRequest(request)) {
@@ -76,6 +78,5 @@ public class RequestSingleton {
             requests.remove(request);
         }
     }
-
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

@@ -58,6 +58,7 @@ public class ActivityRequestSelection extends Activity {
     private int position;
     private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
     private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
+    private static final int RETURN_DELETE_CODE = 2;
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private UserController userController = UserController.getInstance();
@@ -102,7 +103,8 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.removeRequest(request);
+                requestSingleton.removeRequest(requestSingleton.getRequests().get(position));
+                setResult(RETURN_DELETE_CODE);
                 finish();
             }
         });
@@ -124,7 +126,6 @@ public class ActivityRequestSelection extends Activity {
                 }
             }
         });
-
     }
 
     @Override

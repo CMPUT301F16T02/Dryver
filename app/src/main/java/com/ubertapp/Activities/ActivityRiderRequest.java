@@ -60,6 +60,7 @@ public class ActivityRiderRequest extends Activity {
     private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
     private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
     private static final int REQUEST_VIEW_REQUEST = 0;
+    private static final int RETURN_DELETE_CODE = 2;
     private int requestPosition;
 
     @Override
@@ -92,7 +93,6 @@ public class ActivityRiderRequest extends Activity {
                 requestPosition = position;
                 Intent intent = new Intent(ActivityRiderRequest.this, ActivityRequestSelection.class);
                 intent.putExtra(RETURN_VIEW_REQUEST, requestPosition);
-
                 startActivityForResult(intent, REQUEST_VIEW_REQUEST);
                 return true;
             }
@@ -108,12 +108,11 @@ public class ActivityRiderRequest extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_VIEW_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                int position = (Integer) getIntent().getSerializableExtra(RETURN_VIEW_REQUEST);
-                requestSingleton.getRequests().remove(position);
-                requestListAdapter.notifyDataSetChanged();
-            }
+        if (resultCode == RETURN_DELETE_CODE) {
+            requestListAdapter.notifyDataSetChanged();
+        }
+        else {
+            requestListAdapter.notifyDataSetChanged();
         }
     }
 
