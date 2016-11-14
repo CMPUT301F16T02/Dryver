@@ -34,7 +34,7 @@ import com.dryver.R;
 /**
  * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
-public class ActivitySelection extends Activity {
+public class ActivitySelection extends ActivityLoggedInActionBar {
 
     private UserController userController = UserController.getInstance();
 

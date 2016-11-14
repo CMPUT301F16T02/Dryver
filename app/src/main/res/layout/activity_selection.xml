@@ -30,8 +30,8 @@
     tools:context="com.dryver.Activities.ActivitySelection">
 
     <Button
-        android:text="request a ride?"
-        android:layout_width="wrap_content"
+        android:text="Ryde"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/request_button"
         android:layout_below="@+id/driver_button"
@@ -39,11 +39,11 @@
         android:layout_marginTop="49dp" />
 
     <Button
-        android:text="be a driver?"
-        android:layout_width="wrap_content"
+        android:text="Dryve"
         android:layout_height="wrap_content"
         android:layout_marginTop="163dp"
         android:id="@+id/driver_button"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"/>
 </RelativeLayout>

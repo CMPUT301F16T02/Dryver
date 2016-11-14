@@ -27,7 +27,7 @@ import com.dryver.R;
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
  */
-public class ActivityRequestMap extends ActionBarActivity {
+public class ActivityRequestMap extends ActivityLoggedInActionBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
