@@ -19,7 +19,6 @@
 
 package com.ubertapp.Activities;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
@@ -56,6 +55,11 @@ public class ActivityRequestSelection extends Activity {
     private Rider rider;;
     private int status;
     private int position;
+
+    private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
+    private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
+    private static final int RETURN_DELETE_CODE = 2;
+
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private UserController userController = UserController.getInstance();
@@ -126,7 +130,6 @@ public class ActivityRequestSelection extends Activity {
                 }
             }
         });
-
     }
 
 }

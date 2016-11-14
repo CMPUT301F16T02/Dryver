@@ -59,6 +59,7 @@ public class ActivityRiderRequest extends Activity {
     private Location testToLocation = new Location("to");
 
     private static final int REQUEST_VIEW_REQUEST = 0;
+    private static final int RETURN_DELETE_CODE = 2;
     private int requestPosition;
 
     @Override
@@ -105,7 +106,6 @@ public class ActivityRiderRequest extends Activity {
     public void onStart() {
         Log.i("Activtiy", "RiderRequest onStart()");
         super.onStart();
-
 
     }
 

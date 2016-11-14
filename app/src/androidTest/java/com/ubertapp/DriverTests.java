@@ -21,6 +21,8 @@ package com.ubertapp;
 
 
 import com.ubertapp.Models.Driver;
+import com.ubertapp.Models.User;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -37,7 +39,8 @@ public class DriverTests {
      */
     @Test
     public void testGetId() {
-        Driver driver = new Driver(DEFAULT_DRIVER_ID);
+        User user = new User(DEFAULT_DRIVER_ID);
+        Driver driver = new Driver(user);
         assertEquals(DEFAULT_DRIVER_ID, driver.getUserId());
     }
 }

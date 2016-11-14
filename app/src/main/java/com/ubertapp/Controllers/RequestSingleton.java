@@ -28,8 +28,6 @@ import com.ubertapp.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -75,8 +73,7 @@ public class RequestSingleton {
         if(ES.addRequest(request)) {
             Log.i("info", "Request Successfully added to server");
             requests.add(request);
-        } else
-        {
+        } else {
             Log.i("info", "Request no successfully added to server...");
         }
     }
@@ -100,6 +97,5 @@ public class RequestSingleton {
         }
         return deleted;
     }
-
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }
