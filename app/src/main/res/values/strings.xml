@@ -52,7 +52,7 @@
     <string name="activity_user_profile_PaymentMethod">Payment Method</string>
 
 
-    <string name="title_activity_activity_request_selection_NewRequest">New Request</string>
+    <string name="title_activity_request_selection_NewRequest">Make Request</string>
     <string name="request_item_Name">Request Name</string>
     <string name="request_item_Destination">Destination</string>
     <string name="request_item_StatusName">Status</string>
@@ -61,7 +61,7 @@
     <string name="activity_rider_request_Profile">Profile</string>
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
-    <string name="activity_rider_request_NewRequest">New Request</string>
+    <string name="activity_rider_request_NewRequest">Make Request</string>
     <string name="activity_request_selection_RequestDetails">Request Details</string>
     <string name="activity_request_selection_Name">Rider Name</string>
     <string name="activity_request_selection_FromLocation">From Location</string>

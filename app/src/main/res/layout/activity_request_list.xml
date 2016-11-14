@@ -60,17 +60,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/requestListViewRequest"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/requestButtonNewRequest">
 
         </ListView>
+
         <Button
             android:text="@string/activity_rider_request_NewRequest"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:id="@+id/requestButtonNewRequest"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
             android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
-            android:id="@+id/requestButtonNewRequest"/>
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </RelativeLayout>

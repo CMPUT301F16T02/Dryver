@@ -55,10 +55,6 @@ public class ActivityRequestList extends Activity {
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
-    private static final int REQUEST_VIEW_REQUEST = 0;
-    private static final int RETURN_DELETE_CODE = 2;
-    private int requestPosition;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +84,6 @@ public class ActivityRequestList extends Activity {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                requestPosition = position;
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
 
                 startActivity(intent);
@@ -99,14 +94,11 @@ public class ActivityRequestList extends Activity {
 
     @Override
     public void onStart() {
-        Log.i("Activtiy", "RiderRequest onStart()");
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        Log.i("info", Integer.toString(requestSingleton.getRequests().size()));
-        Log.i("Activtiy", "RiderRequest onResume()");
         super.onResume();
         requestListAdapter.notifyDataSetChanged();
     }

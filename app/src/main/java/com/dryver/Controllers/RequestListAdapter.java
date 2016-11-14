@@ -32,8 +32,6 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Request request = getItem(position);
-        int status = request.getStatus();
-        String statusString;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_item, null);
@@ -45,13 +43,11 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
         TextView requestStatus = (TextView) convertView.findViewById(R.id.requestItemStatus);
         TextView requestDate = (TextView) convertView.findViewById(R.id.requestItemDate);
-        TextView requestStatusImage = (TextView) convertView.findViewById(R.id.requestItemStatusImage);
 
         requestName.setText("Ride Request");
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
-        requestStatusImage.setText(request.statusCodeToString());
 
 
         return convertView;
