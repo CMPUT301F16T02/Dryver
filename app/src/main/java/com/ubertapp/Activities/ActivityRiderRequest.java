@@ -45,6 +45,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * The activity that acts as the main rider activity. Lists requests, you can create requests here,
+ * and select requests to inspect a request.
+ */
+
 public class ActivityRiderRequest extends Activity {
 
     private Button mAddRequest;

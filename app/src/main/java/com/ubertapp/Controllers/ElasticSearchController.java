@@ -254,6 +254,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Adds a request to the ElasticSearch server
+     * @see Request
+     * @return boolean
+     * */
     public boolean addRequest(Request request) {
         verifySettings();
 
@@ -273,6 +278,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A synchronized method for deleting a request by it's ElasticSearch ID
+     * @param request
+     * @see Request
+     * @return boolean
+     */
     public synchronized Boolean deleteRequestByEsID(Request request) {
         verifySettings();
         boolean deletable = false;
@@ -293,6 +304,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A method for getting the list of requests associated with a rider on the Elastic Search server.
+     * @param rider
+     * @see Request
+     * @return boolean
+     */
     public List<Request> getRiderRequests(Rider rider) {
 
         String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + rider.getUserId() + "\"}}}";
@@ -326,6 +343,13 @@ public class ElasticSearchController {
         return requests;
     }
 
+    /**
+     *
+     * @param request
+     * @see Request
+     * @return boolean
+     * @throws InterruptedException
+     */
     public boolean updateRequest(Request request) throws InterruptedException {
         verifySettings();
 

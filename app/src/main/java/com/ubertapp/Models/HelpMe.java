@@ -47,26 +47,38 @@ public class HelpMe extends Activity {
         return false;
     }
 
+    /**
+     * Checks the validity of an email within an editText
+     * @param editText
+     * @return
+     */
     static public boolean isValidEmail(EditText editText)
     {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
     }
 
+    /**
+     * Checks the validity of a phone number within an edit text
+     * @param editText
+     * @return
+     */
     static public boolean isValidPhone(EditText editText)
     {
         return android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
     }
 
-    static public void configureHeader(Activity activity, TextView header) {
-//        back = (Button) activity.findViewById(R.id.back_button);
-//        save = (Button) activity.findViewById(R.id.save_button);
-        //header = (TextView) activity.findViewById(R.id.header_textview);
-    }
-
+    /**
+     * Cnvert a date to a consistent form that is TBC
+     * @param date
+     */
     static public void dateToString(Date date) {
         // TODO: 2016-10-18 implement this
     }
 
+    /**
+     * Convert a string to a date
+     * @param stringDate
+     */
     static public void stringToDate(String stringDate) {
         // TODO: 2016-10-18 implement this. 
     }

@@ -37,6 +37,11 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * The activity responsible for viewing a requests details more closely / inspecting a request.
+ * Allows you to cancel requests, as well as view the drivers associated with a request.
+ */
+
 public class ActivityRequestSelection extends Activity {
 
     private TextView requestSelectionTitle;
@@ -130,5 +135,4 @@ public class ActivityRequestSelection extends Activity {
             }
         });
     }
-
 }

@@ -18,7 +18,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by Jiawei on 11/10/2016.
+ * A custom Array Adapter for listing requests as strings properly.
+ * @see Request
  */
 public class RequestListAdapter extends ArrayAdapter<Request> {
 

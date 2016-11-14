@@ -53,6 +53,10 @@ public class RequestSingleton {
         return requests;
     }
 
+    /**
+     * A simple method for fetching an updated request list via Elastic Search
+     * @see ElasticSearchController
+     */
     private void updateRequests() {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
@@ -62,6 +66,15 @@ public class RequestSingleton {
         }
     }
 
+    /**
+     * A method that adds a request to the current request list for the user as well as Elastic Search
+     * @param rider
+     * @param date
+     * @param fromLocation
+     * @param toLocation
+     * @param rate
+     * @see ElasticSearchController
+     */
     //TODO Correct Times... Why is date passed and not used?
     public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Log.i("info", "RequestSingleton addRequest()");
@@ -77,6 +90,13 @@ public class RequestSingleton {
         }
     }
 
+    /**
+     * a synchronized method for removing a request from the current request list as well as
+     * Elastic Search see deleteRequestById() in ESC
+     * @see ElasticSearchController
+     * @param request
+     * @return
+     */
     public synchronized Boolean removeRequest(Request request)
     {
         Log.i("info", "RequestSingleton removeRequest()");

@@ -216,30 +216,50 @@ public class Request implements Serializable {
         this.toLocation = toLocation;
     }
 
+    /**
+     * Get the status of the request
+     * @return int
+     */
     public int getStatus() {
         return status;
     }
 
+    /**
+     * Set the request status
+     * @param status
+     */
     public void setStatus(int status) {
         this.status = status;
     }
 
+    /**
+     * Get the request's date of creation
+     * @return Calendar
+     */
     public Calendar getDate() {
         return this.date;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
+    /**
+     * Get the request's rate
+     * @return double
+     */
     public double getRate() {
         return rate;
     }
 
+    /**
+     * Set's the request's rate
+     * @param rate
+     */
     public void setRate(double rate) {
         this.rate = rate;
     }
 
+    /**
+     * Generates the cost of the request using the rate
+     * @param rate
+     */
     public void generateCost(double rate) {
         Location start = new Location("start");
         Location destination = new Location("Destination");
@@ -254,6 +274,13 @@ public class Request implements Serializable {
         this.cost = rate * distance;
     }
 
+    /**
+     * Converts the status of the request to a string
+     * 0 is Cancelled
+     * 1 is Pending
+     * 2 is Accepted
+     * @return
+     */
     public String statusCodeToString() {
         if (status == 0) {
             return "Cancelled";
