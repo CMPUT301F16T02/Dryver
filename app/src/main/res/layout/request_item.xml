@@ -15,27 +15,35 @@
             android:id="@+id/requestItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/request_item_Name"/>
+            android:text="@string/request_item_Name"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
         <TextView
             android:id="@+id/requestItemDestination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemName"
-            android:text="@string/request_item_Destination"/>
+            android:text="@string/request_item_Destination"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
         <TextView
             android:id="@+id/requestItemStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemDestination"
-            android:text="@string/request_item_StatusName"/>
+            android:text="@string/request_item_StatusName"
+            android:focusableInTouchMode="false"
+            android:focusable="false" />
 
         <TextView
             android:id="@+id/requestItemDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemStatus"
-            android:text="@string/request_item_Date"/>
+            android:text="@string/request_item_Date"
+            android:focusableInTouchMode="false"
+            android:focusable="false" />
     </RelativeLayout>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.dryver.Activities;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -19,6 +19,7 @@ import com.dryver.Models.Rider;
 import com.dryver.R;
 
 import java.util.Calendar;
+
 
 /**
  * Activity used to get information from the user for a request they are about to make.
@@ -103,4 +104,14 @@ public class ActivityRequest extends Activity {
         fromLocationText.setText("From: Lat: " + testFromLocation.getLatitude() + " Long: " + testFromLocation.getLongitude());
         toLocationText.setText("To  : Lat: " + testToLocation.getLatitude() + " Long: " + testToLocation.getLongitude());
     }
+
+    // TODO: 2016-11-14 implement checker. if intent: get request and edit, otherwise: make new request
+//    public void checkIntent() {
+//        Intent intent = getIntent();
+//        if (intent.hasExtra("position")) {
+//
+//        }
+//    }
+
+    // TODO: 2016-11-14 toggle extra options with a button
 }
