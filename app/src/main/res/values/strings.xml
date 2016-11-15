@@ -1,15 +1,77 @@
+<!--
+  ~ Copyright (C) 2016
+  ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
 <resources>
-    <string name="app_name">UberTapp</string>
-    <string name="title_activity_activity_user_profile">ActivityUserProfile</string>
-    <string name="title_activity_activity_request_selection">ActivityRequestSelection</string>
+    <string name="app_name">Dryver</string>
+
+    <string name="done">Done</string>
+
     <string name="view_profile">View Profile</string>
 
-    <!--TODO: Verify Reasonable Payment Methods-->
-    <string-array
-        name="payment_methods">
-        <item>Cash</item>
-        <item>PayPal</item>
-        <item>Credit</item>
-        <item>BitCoin</item>
-    </string-array>
+    <string name="activity_registration_title">Registration</string>
+    <string name="activity_registration_instructions">Please fill all fields.</string>
+    <string name="activity_registration_username">Username</string>
+    <string name="activity_registration_firstname">First Name</string>
+    <string name="activity_registration_lastname">Last Name</string>
+    <string name="activity_registration_phone">Phone Number</string>
+    <string name="activity_registration_email">Email Address</string>
+
+    <string name="activity_login_username">Username</string>
+    <string name="activity_login_login">Login</string>
+
+    <string name="activity_openingpage_newuser">New User?</string>
+    <string name="activity_openingpage_register">Sign Up</string>
+    <string name="activity_openingpage_existinguser">Existing User?</string>
+    <string name="activity_openingpage_login">Sign In</string>
+
+    <string name="activity_request_selection_title">ActivityRequestSelection</string>
+    <string name="activity_request_selection_Profile">Profile</string>
+    <string name="activity_request_selection_Request">Request</string>
+    <string name="activity_request_selection_Status">Status</string>
+
+    <string name="activity_user_profile_title">User Profile</string>
+    <string name="activity_user_profile_UserName">Username</string>
+    <string name="activity_user_profile_Email">Email</string>
+    <string name="activity_user_profile_PhoneNumber">Phone Number</string>
+    <string name="activity_user_profile_PaymentMethod">Payment Method</string>
+
+
+    <string name="title_activity_request_selection_NewRequest">Make Request</string>
+    <string name="request_item_Name">Request Name</string>
+    <string name="request_item_Destination">Destination</string>
+    <string name="request_item_StatusName">Status</string>
+    <string name="request_item_Date">Date</string>
+    <string name="request_item_Placeholder">Placeholder</string>
+    <string name="activity_rider_request_Profile">Profile</string>
+    <string name="activity_rider_request_Request">Request</string>
+    <string name="activity_rider_request_Status">Status</string>
+    <string name="activity_rider_request_NewRequest">Make Request</string>
+    <string name="activity_request_text_tripcost">Enter trip price</string>
+    <string name="activity_request_button_submit">Submit</string>
+    <string name="activity_request_button_location">Set Route</string>
+    <string name="activity_request_selection_RequestDetails">Request Details</string>
+    <string name="activity_request_selection_Name">Rider Name</string>
+    <string name="activity_request_selection_FromLocation">From Location</string>
+    <string name="activity_request_selection_ToLocation">To Location</string>
+    <string name="activity_request_selection_Date">Date Created</string>
+    <string name="activity_request_selection_Delete">Delete Request</string>
+    <string name="activity_request_selection_Edit">Edit Request</string>
+    <string name="activity_request_selection_Cancel">Cancel Request</string>
+    <string name="activity_request_selection_ViewDriver">View Drivers</string>
 </resources>

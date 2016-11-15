@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016
+  ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.dryver.Activities.ActivityUserProfile">
+
+    <TextView
+        android:text="@string/activity_user_profile_UserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileTextViewUserName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_below="@+id/profileTextViewUserName"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileEditTextUserName" />
+
+    <TextView
+        android:text="@string/activity_user_profile_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileEditTextUserName"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileTextViewEmail"/>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_below="@+id/profileTextViewEmail"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileEditTextEmail"/>
+
+    <TextView
+        android:text="@string/activity_user_profile_PhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileEditTextEmail"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileTextViewPhoneNumber"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:layout_below="@+id/profileTextViewPhoneNumber"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileEditTextPhoneNumber"/>
+
+    <TextView
+        android:text="@string/activity_user_profile_PaymentMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileEditTextPhoneNumber"
+        android:layout_alignParentStart="true"
+        android:id="@+id/profileTextViewPaymentMethod"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileTextViewPaymentMethod"
+        android:layout_alignParentStart="true"
+        android:entries="@array/payment_methods"
+        android:id="@+id/profileSpinnerPaymentMethod"/>
+
+    <TextView
+        android:text="@string/activity_user_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+
+</RelativeLayout>
