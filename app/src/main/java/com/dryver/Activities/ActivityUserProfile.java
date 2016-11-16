@@ -46,7 +46,6 @@ public class ActivityUserProfile extends Activity {
     //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
 
     private UserController userController = UserController.getInstance();
-    private ElasticSearchController ES = ElasticSearchController.getInstance();
     private User user;
     private EditText userNameEditText;
     private EditText emailEditText;
@@ -86,9 +85,9 @@ public class ActivityUserProfile extends Activity {
             public void onClick(View view) {
                 userController.getActiveUser().setEmail(emailEditText.getText().toString());
                 userController.getActiveUser().setPhoneNumber(phoneEditText.getText().toString());
-                if (ES.updateUser(user)) {
-                    finish();
-                }
+                ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
+                updateUserTask.execute(user);
+                finish();
             }
         });
     }
