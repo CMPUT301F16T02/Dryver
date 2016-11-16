@@ -28,7 +28,6 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 import com.dryver.Models.Request;
-import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 
 import java.io.IOException;
@@ -61,7 +60,6 @@ public class ElasticSearchController {
     /**
      * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting
      * a mock for testing purposes. Hacky workaround for mocking a singleton hehe...
-     * @see com.dryver.Mock.MockElasticSeachController
      * @param ES
      */
     public static void setMock(ElasticSearchController ES){
@@ -123,84 +121,98 @@ public class ElasticSearchController {
     /**
      * Adds a user to the database.
      *
-     * @param user
      * @see User
      * @return Boolean
      */
-    public Boolean addUser(User user) {
-        verifySettings();
+    public static class AddUserTask extends AsyncTask<User, Void, Boolean> {
 
-        if (getUser(user.getUserId()) != null) {
-            return false;
-        }
+        @Override
+        protected Boolean doInBackground(User... search_parameters) {
+            verifySettings();
 
-        Index index = new Index.Builder(user).index(INDEX).type(USER).build();
-
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                user.setId(result.getId());
-            } else {
-                Log.i("Error", "Elastic search was not able to add the user.");
+            if (getUserByUsername(search_parameters[0].getUserId()) != null) {
+                return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return true;
-        }
-    }
 
-    /**
-     * Deletes a user in the database based on the userId.
-     * @param user
-     * @see User
-     */
-    public boolean deleteUser(User user) {
-        User newUser = getUser(user.getUserId());
-        return deleteUserByEsID(newUser);
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    search_parameters[0].setId(result.getId());
+                    return true;
+                }
+                else {
+                    Log.i("Error", "Elastic search was not able to add the user.");
+                    return false;
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
     }
 
     /**
      * Deletes a user in the database based on the user id.
-     * @param user
      * @see User
      */
-    public boolean deleteUserByEsID(User user) {
-        verifySettings();
-        boolean deletable = false;
+    public static class DeleteUserByIdTask extends AsyncTask<User, Void, Boolean> {
 
-        if (user == null) {
-            return deletable;
-        }
+        @Override
+        protected Boolean doInBackground(User... search_parameters) {
+            verifySettings();
+            boolean deletable = false;
 
-        User internalUser = getUser(user.getUserId());
-        if (internalUser == null || internalUser.getId() == null) {
-            return deletable;
-        }
+            if (search_parameters[0] == null) {
+                return deletable;
+            }
 
-        Delete delete = new Delete.Builder(user.getId()).index(INDEX).type(USER).build();
+            User internalUser = getUserByUsername(search_parameters[0].getUserId());
+            if (internalUser == null || internalUser.getId() == null) {
+                return deletable;
+            }
 
-        try {
-            client.execute(delete);
-            deletable = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return deletable;
+            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).build();
+
+            try {
+                client.execute(delete);
+                deletable = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return deletable;
+            }
         }
     }
 
     /**
-     * Gets a user based on the users' user id
+     * Gets a user based on the users' user id asynchronously
      *
-     * @param id
      * @return User
      * @see User
      */
-    public User getUser(String id) {
-        Log.i("Info", "logging in with user id: " + id);
+    public static class GetUserByNameTask extends AsyncTask<String, Void, User> {
 
-        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + id + "\"}}}";
+        @Override
+        protected User doInBackground(String... search_parameters) {
+            return getUserByUsername(search_parameters[0]);
+        }
+    }
+
+
+    /**
+     * Gets a user based on the users' user id
+     *
+     * @return User
+     * @see User
+     */
+    private static User getUserByUsername(String... search_parameters)
+    {
+        Log.i("Info", "logging in with user id: " + search_parameters[0]);
+
+        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
 
         verifySettings();
         Search search = new Search.Builder(search_string)
@@ -245,27 +257,31 @@ public class ElasticSearchController {
      * Updates a existing user profile based on the ES id
      * @see User
      * */
-    public boolean updateUser(User user) throws InterruptedException {
-        verifySettings();
+    public static class UpdateUserTask extends AsyncTask<User, Void, Boolean> {
 
-        if (getUser(user.getUserId()) == null) {
-            return false;
-        }
+        @Override
+        protected Boolean doInBackground(User... search_parameters) {
+            verifySettings();
 
-        Index index = new Index.Builder(user).index(INDEX).type(USER).id(user.getId()).build();
-
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                user.setId(result.getId());
-                return true;
-            } else {
-                Log.i("Error", "Elastic search was not able to add the user.");
+            if (getUserByUsername(search_parameters[0].getUserId()) == null) {
+                return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return true;
+
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    search_parameters[0].setId(result.getId());
+                    return true;
+                } else {
+                    Log.i("Error", "Elastic search was not able to add the user.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return true;
+            }
         }
     }
 
@@ -274,114 +290,131 @@ public class ElasticSearchController {
      * @see Request
      * @return boolean
      * */
-    public boolean addRequest(Request request) {
-        verifySettings();
 
-        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).build();
+    public static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
 
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                request.setId(result.getId());
-            } else {
-                Log.i("Error", "Elastic search was not able to add the user.");
+        @Override
+        protected Boolean doInBackground(Request... search_parameters) {
+            verifySettings();
+
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    search_parameters[0].setId(result.getId());
+                    return true;
+                } else {
+                    Log.i("Error", "Elastic search was not able to add the user.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return true;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return true;
         }
     }
 
     /**
-     * A synchronized method for deleting a request by it's ElasticSearch ID
-     * @param request
+     * A class for deleting a request by it's ElasticSearch ID
      * @see Request
      * @return boolean
      */
-    public synchronized Boolean deleteRequestByEsID(Request request) {
-        verifySettings();
-        boolean deletable = false;
+    public static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
 
-        if (request == null) {
-            return deletable;
-        }
+        @Override
+        protected Boolean doInBackground(Request... search_parameters) {
+            verifySettings();
+            boolean deletable = false;
 
-        Delete delete = new Delete.Builder(request.getId()).index(INDEX).type(REQUEST).build();
+            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(REQUEST).build();
 
-        try {
-            DocumentResult result = client.execute(delete);
-            deletable = true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return deletable;
-        }
-    }
-
-    /**
-     * A method for getting the list of requests associated with a rider on the Elastic Search server.
-     * @param rider
-     * @see Request
-     * @return boolean
-     */
-    public List<Request> getRiderRequests(Rider rider) {
-
-        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + rider.getUserId() + "\"}}}";
-
-        verifySettings();
-        Search search = new Search.Builder(search_string)
-                .addIndex(INDEX)
-                .addType(REQUEST)
-                .build();
-
-        List<Request> requests = new ArrayList<Request>();
-        try {
-            JestResult result = client.execute(search);
-            requests = result.getSourceAsObjectList(Request.class);
-            JsonObject resultObj = result.getJsonObject();
-            JsonArray hitsArray =  resultObj
-                    .get("hits")
-                    .getAsJsonObject()
-                    .get("hits")
-                    .getAsJsonArray();
-
-            for (int i = 0; i < hitsArray.size(); i++) {
-                requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
+            try {
+                //TODO: use the result?
+                DocumentResult result = client.execute(delete);
+                deletable = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return deletable;
             }
-
-
-            return requests;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return requests;
     }
+
+
 
     /**
      *
-     * @param request
      * @see Request
      * @return boolean
      * @throws InterruptedException
      */
-    public boolean updateRequest(Request request) throws InterruptedException {
-        verifySettings();
+    public static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
+        private RequestSingleton RS = RequestSingleton.getInstance();
 
-        Index index = new Index.Builder(request).index(INDEX).type(REQUEST).id(request.getId()).build();
+        @Override
+        protected Boolean doInBackground(Request... search_parameters) {
+            verifySettings();
 
-        try {
-            DocumentResult result = client.execute(index);
-            if (result.isSucceeded()) {
-                request.setId(result.getId());
-                return true;
-            } else {
-                Log.i("Error", "Elastic search was not able to add the user.");
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).id(search_parameters[0].getId()).build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    search_parameters[0].setId(result.getId());
+                    return true;
+                }
+                else {
+                    Log.i("Error", "Elastic search was not able to add the user.");
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return true;
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * A class for getting the list of requests associated with a rider on the Elastic Search server
+     * @see Request
+     * @return boolean
+     */
+
+    public static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+
+            verifySettings();
+            Search search = new Search.Builder(search_string)
+                    .addIndex(INDEX)
+                    .addType(REQUEST)
+                    .build();
+
+            ArrayList<Request> requests = new ArrayList<Request>();
+            try {
+                JestResult result = client.execute(search);
+                requests.addAll(result.getSourceAsObjectList(Request.class));
+                JsonObject resultObj = result.getJsonObject();
+                JsonArray hitsArray =  resultObj
+                        .get("hits")
+                        .getAsJsonObject()
+                        .get("hits")
+                        .getAsJsonArray();
+
+                for (int i = 0; i < hitsArray.size(); i++) {
+                    requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
+                }
+
+
+                return requests;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return requests;
         }
     }
 

@@ -32,6 +32,8 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
 import com.dryver.R;
 
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * Activity for user login.
@@ -57,11 +59,19 @@ public class ActivityLogin extends Activity {
             @Override
             public void onClick(View view) {
                 if (!HelpMe.isEmptyTextField(usernameEditText)) {
-                    if (userController.login(usernameEditText.getText().toString())) {
-                        Intent intent = new Intent(ActivityLogin.this, ActivitySelection.class);
-                        ActivityLogin.this.startActivity(intent);
-                    } else {
-                        usernameEditText.setError("Username does not exist.");
+                    try {
+                        if (userController.login(usernameEditText.getText().toString())) {
+                            Intent intent = new Intent(ActivityLogin.this, ActivitySelection.class);
+                            ActivityLogin.this.startActivity(intent);
+                        } else {
+                            usernameEditText.setError("Username does not exist.");
+                        }
+                    }
+                    catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }

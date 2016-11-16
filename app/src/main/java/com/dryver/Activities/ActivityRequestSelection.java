@@ -22,6 +22,7 @@ package com.dryver.Activities;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ import com.dryver.R;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import io.searchbox.core.Update;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
@@ -121,17 +124,24 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    status = request.getStatus();
-                    status ^= 1;
+                status = request.getStatus();
+                status ^= 1;
 
-                    request.setStatus(status);
-                    ES.updateRequest(request);
+                request.setStatus(status);
 
-                    requestSelectionStatus.setText("Status: " + request.statusCodeToString());
-                } catch (InterruptedException e) {
+                ElasticSearchController.UpdateRequestTask updateRequestTask = new ElasticSearchController.UpdateRequestTask();
+                updateRequestTask.execute(request);
+
+                try{
+                    if(!updateRequestTask.get())
+                    {
+                        Log.e("ERROR", "Request not updated on server correctly");
+                    }
+                }catch(Exception e){
                     e.printStackTrace();
                 }
+
+                requestSelectionStatus.setText("Status: " + request.statusCodeToString());
             }
         });
     }

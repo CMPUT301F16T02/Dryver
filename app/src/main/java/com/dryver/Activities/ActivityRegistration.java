@@ -35,6 +35,8 @@ import com.dryver.Models.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * User registration screen. User is able to register.
@@ -83,18 +85,29 @@ public class ActivityRegistration extends Activity {
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    Boolean added = ES.addUser(user);
+                    ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
+                    addUserTask.execute(user);
+
+                    Boolean added = null;
+                    try {
+                        added = addUserTask.get();
+                        if (added) {
+                            Log.i("Info", "User added succesfully via ElasticSearch Controller");
+                            userController.setActiveUser(user);
+                            Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                            ActivityRegistration.this.startActivity(intent);
+                        } else {
+                            usernameEditText.setError("Username is taken. Try something else.");
+                        }
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
 
                     while (added == null);
-
-                    if (added) {
-                        Log.i("Info", "User added succesfully via ElasticSearch Controller");
-                        userController.setActiveUser(user);
-                        Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
-                        ActivityRegistration.this.startActivity(intent);
-                    } else {
-                        usernameEditText.setError("Username is taken. Try something else.");
-                    }
                 }
                 else if(!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");

@@ -25,6 +25,8 @@ import android.content.Intent;
 import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Models.User;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Controller for the Current user, as well as the user currently being viewed.
  * Follows the Singleton design pattern, allows user to view ActivityUserProfile.
@@ -101,8 +103,11 @@ public class UserController {
      * @param userid the userid
      * @return the true or false based on login success
      */
-    public boolean login(String userid) {
-        return (activeUser = ES.getUser(userid)) != null;
+    //TODO: Exceptions handled in the activity
+    public boolean login(String userid) throws ExecutionException, InterruptedException {
+        ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
+        getUserByNameTask.execute(userid);
+        return (activeUser = getUserByNameTask.get()) != null;
     }
 
     /**

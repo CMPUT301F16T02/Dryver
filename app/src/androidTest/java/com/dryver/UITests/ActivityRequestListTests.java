@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.concurrent.ExecutionException;
+
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
@@ -41,9 +43,10 @@ public class ActivityRequestListTests {
      * Initializes the input strings for the editTexts available during registration
      */
     @Before
-    public void addUserToESLogin() {
+    public void addUserToESLogin() throws ExecutionException, InterruptedException {
         ElasticSearchController ES = ElasticSearchController.getInstance();
-        ES.addUser(testUser);
+        ElasticSearchController.AddUserTask addRequestTask = new ElasticSearchController.AddUserTask();
+        addRequestTask.execute(testUser);
         userController.login(testUserName);
     }
 

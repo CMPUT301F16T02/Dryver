@@ -58,8 +58,9 @@ public class ActivityLoginTests {
 
     @Before
     public void addUserToES(){
-            ElasticSearchController ES = ElasticSearchController.getInstance();
-            ES.addUser(testUser);
+        ElasticSearchController ES = ElasticSearchController.getInstance();
+        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
+        addUserTask.execute(testUser);
     }
 
     /**

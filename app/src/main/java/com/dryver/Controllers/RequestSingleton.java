@@ -60,7 +60,13 @@ public class RequestSingleton {
     private void updateRequests() {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
-            requests =  new ArrayList<Request>(ES.getRiderRequests((Rider)userController.getActiveUser()));
+            ElasticSearchController.GetRequestsTask getRequestsTask = new ElasticSearchController.GetRequestsTask();
+            getRequestsTask.execute(userController.getActiveUser().getUserId());
+            try {
+                requests = getRequestsTask.get();
+            } catch (Exception e) {
+                Log.i("Error", "Failed to get " + userController.getActiveUser().getUserId() + "'s ID.");
+            }
         } else if(userController.getActiveUser() instanceof Driver){
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
@@ -82,12 +88,20 @@ public class RequestSingleton {
         Request request = new Request(rider, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
-        if(ES.addRequest(request)) {
-            Log.i("info", "Request Successfully added to server");
-            requests.add(request);
-        } else {
-            Log.i("info", "Request no successfully added to server...");
+
+        ElasticSearchController.AddRequestTask addRequestTask = new ElasticSearchController.AddRequestTask();
+        addRequestTask.execute(request);
+        try{
+            if(addRequestTask.get()) {
+                Log.i("info", "Request Successfully added to server");
+                requests.add(request);
+            } else {
+                Log.i("info", "Request no successfully added to server...");
+            }
+        }catch (Exception e){
+            e.getStackTrace();
         }
+
     }
 
     /**
@@ -97,24 +111,28 @@ public class RequestSingleton {
      * @param request
      * @return Boolean
      */
-    public synchronized Boolean removeRequest(Request request)
-    {
+    public synchronized Boolean removeRequest(Request request){
         Log.i("info", "RequestSingleton removeRequest()");
         if(!requests.contains(request)) {
             Log.i("info", "The request singleton doesn't have this request");
             return false;
         }
 
-        Boolean deleted = ES.deleteRequestByEsID(request);
-        while (deleted == null);
+        ElasticSearchController.DeleteRequestTask deleteRequestTask = new ElasticSearchController.DeleteRequestTask();
+        deleteRequestTask.execute(request);
 
-        if(deleted) {
-            Log.i("info", Integer.toString(requests.size()));
-            Log.i("info", "Request successfully removed from the server");
-            requests.remove(request);
-            Log.i("info", Integer.toString(requests.size()));
+        Boolean deleted = false;
+        try {
+            deleted = deleteRequestTask.get();
+            if(deleted) {
+                Log.i("info", "Request successfully removed from the server");
+                requests.remove(request);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Failed to get " + userController.getActiveUser().getUserId() + "'s ID.");
+        } finally {
+            return deleted;
         }
-        return deleted;
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }
