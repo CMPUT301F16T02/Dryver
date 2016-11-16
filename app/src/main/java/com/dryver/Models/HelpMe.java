@@ -21,8 +21,10 @@ package com.dryver.Models;
 
 
 import android.app.Activity;
+import android.net.ConnectivityManager;
 import android.widget.EditText;
 
+import java.net.InetAddress;
 import java.util.Date;
 
 
@@ -30,6 +32,8 @@ import java.util.Date;
  * Global helper methods for the ubertapp app. HelpMe stands for Helper Methods.
  */
 public class HelpMe extends Activity {
+    private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
+
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -78,5 +82,15 @@ public class HelpMe extends Activity {
      */
     static public void stringToDate(String stringDate) {
         // TODO: 2016-10-18 implement this. 
+    }
+
+    static public boolean isInternetConnected() {
+        try {
+            InetAddress inetAddress = InetAddress.getByName(DATABASE_URL);
+            return !inetAddress.equals("");
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 }
