@@ -57,7 +57,7 @@ public class User implements Serializable {
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public User(String userId, String firstName, String lastName,String phoneNumber, String email) {
+    public User(String userId, String firstName, String lastName, String phoneNumber, String email) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -72,6 +72,10 @@ public class User implements Serializable {
      */
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     /**

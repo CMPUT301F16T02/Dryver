@@ -100,13 +100,13 @@ public class UserController {
     /**
      * Login the user by userid they provide in the text field.
      *
-     * @param userid the userid
+     * @param username the userid
      * @return the true or false based on login success
      */
     //TODO: Exceptions handled in the activity
-    public boolean login(String userid) throws ExecutionException, InterruptedException {
+    public boolean login(String username) throws ExecutionException, InterruptedException {
         ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
-        getUserByNameTask.execute(userid);
+        getUserByNameTask.execute(username);
         return (activeUser = getUserByNameTask.get()) != null;
     }
 
@@ -116,5 +116,21 @@ public class UserController {
     public void logout() {
         activeUser = null;
         viewedUser = null;
+    }
+
+    public Boolean updateActiveUser(){
+        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
+        updateUserTask.execute(activeUser);
+
+        try {
+            return updateUserTask.get();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

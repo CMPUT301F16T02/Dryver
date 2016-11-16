@@ -22,11 +22,13 @@ package com.dryver.Activities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
 
@@ -50,7 +52,7 @@ public class ActivityUserProfile extends Activity {
     private EditText phoneEditText;
     private TextView paymentText;
     private Spinner paymentSpinner;
-
+    private Button saveChanges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class ActivityUserProfile extends Activity {
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
         this.paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
         this.paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
+        this.saveChanges = (Button)findViewById(R.id.save_changes);
 
         //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
         if(user.equals(userController.getActiveUser())){
@@ -75,6 +78,15 @@ public class ActivityUserProfile extends Activity {
         userNameEditText.setText(user.getUserId());
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
+
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(updateUserProfile()){
+                    finish();
+                }
+            }
+        });
     }
 
     private void setActiveUserFields() {
@@ -91,5 +103,30 @@ public class ActivityUserProfile extends Activity {
         phoneEditText.setEnabled(false);
         paymentText.setVisibility(View.GONE);
         paymentSpinner.setVisibility(View.GONE);
+    }
+
+    //TODO: Default Payment Method
+    private boolean updateUserProfile(){
+        user = userController.getActiveUser();
+
+        if(!HelpMe.isEmptyTextField(userNameEditText)) {
+            user.setUserId(userNameEditText.getText().toString());
+        } else{
+            userNameEditText.setError("Username is taken. Try something else.");
+        }
+
+        if(HelpMe.isValidEmail(emailEditText)) {
+            user.setEmail(emailEditText.getText().toString());
+        } else{
+            emailEditText.setError("Invalid email. Must be of form name@domain.extension");
+        }
+
+        if(HelpMe.isValidPhone(phoneEditText)){
+            user.setPhoneNumber(phoneEditText.getText().toString());
+        } else{
+            emailEditText.setError("Invalid phone number.");
+        }
+
+        return userController.updateActiveUser();
     }
 }
