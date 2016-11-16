@@ -1,14 +1,14 @@
-package com.dryver.UITests;
+package com.dryver.uiTests;
 
 import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.Activities.ActivityRegistration;
-import com.dryver.Activities.ActivityRequest;
-import com.dryver.Activities.ActivityUserProfile;
-import com.dryver.Controllers.ElasticSearchController;
-import com.dryver.Controllers.UserController;
-import com.dryver.Models.User;
+import com.dryver.activities.ActivityRegistration;
+import com.dryver.activities.ActivityRequest;
+import com.dryver.activities.ActivityUserProfile;
+import com.dryver.controllers.ElasticSearchController;
+import com.dryver.controllers.UserController;
+import com.dryver.models.User;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,7 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Tests the finctionality of the RequestList Activity
- * @see com.dryver.Activities.ActivityRequestList
+ * @see com.dryver.activities.ActivityRequestList
  */
 
 public class ActivityRequestListTests {

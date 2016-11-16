@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Models;
+package com.dryver.models;
 
 /**
  * The Rider class represents a rider. That meaning it can request rides, and then accept them from

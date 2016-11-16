@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Models;
+package com.dryver.models;
 
 /**
  * The Request class represents a request that was sent out by the rider. A Driver that is in the
@@ -271,7 +271,7 @@ public class Request implements Serializable {
      *
      * @param rate the rate
      */
-    public void generateCost(double rate) {
+    private void generateCost(double rate) {
         Location start = new Location("start");
         Location destination = new Location("Destination");
 

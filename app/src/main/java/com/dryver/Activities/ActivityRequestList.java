@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Activities;
+package com.dryver.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -28,10 +27,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.dryver.Controllers.RequestListAdapter;
-import com.dryver.Controllers.RequestSingleton;
-import com.dryver.Controllers.UserController;
-import com.dryver.Models.Rider;
+import com.dryver.controllers.RequestListAdapter;
+import com.dryver.controllers.RequestSingleton;
+import com.dryver.models.Rider;
 import com.dryver.R;
 
 

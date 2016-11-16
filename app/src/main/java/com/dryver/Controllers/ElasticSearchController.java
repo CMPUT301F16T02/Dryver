@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Controllers;
+package com.dryver.controllers;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,9 +27,9 @@ import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
-import com.dryver.Models.Request;
-import com.dryver.Models.Rider;
-import com.dryver.Models.User;
+import com.dryver.models.Request;
+import com.dryver.models.Rider;
+import com.dryver.models.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class ElasticSearchController {
     /**
      * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting
      * a mock for testing purposes. Hacky workaround for mocking a singleton hehe...
-     * @see com.dryver.Mock.MockElasticSeachController
+     * @see com.dryver.mock.MockElasticSeachController
      * @param ES
      */
     public static void setMock(ElasticSearchController ES){

@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.ClassTests;
+package com.dryver.classTests;
 
 
 import android.location.Location;
 import android.support.test.runner.AndroidJUnit4;
-import com.dryver.Models.Driver;
-import com.dryver.Models.Request;
-import com.dryver.Models.Rider;
-import com.dryver.Models.User;
+import com.dryver.models.Driver;
+import com.dryver.models.Request;
+import com.dryver.models.Rider;
+import com.dryver.models.User;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

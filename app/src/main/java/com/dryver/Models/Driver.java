@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Models;
+package com.dryver.models;
 
 /**
  * The Driver Class represents a driver when instantiated. That meaning an actual person who is

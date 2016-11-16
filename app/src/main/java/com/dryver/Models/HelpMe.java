@@ -17,15 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Models;
+package com.dryver.models;
 
 
 import android.app.Activity;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
-import java.util.Calendar;
 import java.util.Date;
 
 

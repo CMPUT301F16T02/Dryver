@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.ClassTests;
+package com.dryver.classTests;
 
 
 import android.util.Log;
 
-import com.dryver.Controllers.ElasticSearchController;
-import com.dryver.Models.User;
+import com.dryver.controllers.ElasticSearchController;
+import com.dryver.models.User;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import static com.dryver.Controllers.ElasticSearchController.GetUsersTask;
+import static com.dryver.controllers.ElasticSearchController.GetUsersTask;
 
 /**
  * Various Tests for the ElasticSearchController
@@ -38,7 +38,7 @@ import static com.dryver.Controllers.ElasticSearchController.GetUsersTask;
  */
 
 public class ElasticSearchTests {
-    ElasticSearchController ES = ElasticSearchController.getInstance();
+    private ElasticSearchController ES = ElasticSearchController.getInstance();
     // TODO: 2016-11-13 remove sleep statements and replace with a wait on condition somehow.
 
 

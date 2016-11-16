@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Mock;
+package com.dryver.mock;
 
-import com.dryver.Controllers.ElasticSearchController;
-import com.dryver.Models.User;
+import com.dryver.controllers.ElasticSearchController;
+import com.dryver.models.User;
 
 /**
  * Essentially a ES controller that fakes adding a user. Used for testing UI without pushing to the Server.

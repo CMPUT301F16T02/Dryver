@@ -17,22 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.UITests;
+package com.dryver.uiTests;
 
 import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.Activities.ActivityRegistration;
-import com.dryver.Activities.ActivitySelection;
-import com.dryver.Controllers.ElasticSearchController;
-import com.dryver.Mock.MockElasticSeachController;
-import com.dryver.Models.User;
+import com.dryver.activities.ActivityRegistration;
+import com.dryver.activities.ActivitySelection;
+import com.dryver.controllers.ElasticSearchController;
+import com.dryver.mock.MockElasticSeachController;
+import com.dryver.models.User;
 import com.dryver.R;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 

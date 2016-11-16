@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.Controllers;
+package com.dryver.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import com.dryver.Activities.ActivityUserProfile;
-import com.dryver.Models.User;
+import com.dryver.activities.ActivityUserProfile;
+import com.dryver.models.User;
 
 /**
  * Controller for the Current user, as well as the user currently being viewed.
@@ -102,10 +102,7 @@ public class UserController {
      * @return the true or false based on login success
      */
     public boolean login(String userid) {
-        if ((activeUser=ES.getUser(userid)) != null) {
-            return true;
-        }
-        return false;
+        return (activeUser = ES.getUser(userid)) != null;
     }
 
     /**
