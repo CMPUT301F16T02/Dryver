@@ -17,16 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.uiTests;
+package com.dryver.UITests;
 
 import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.activities.ActivityLogin;
-import com.dryver.activities.ActivitySelection;
-import com.dryver.controllers.ElasticSearchController;
-import com.dryver.models.User;
+import com.dryver.Activities.ActivityLogin;
+import com.dryver.Activities.ActivitySelection;
+import com.dryver.Controllers.ElasticSearchController;
+import com.dryver.Models.User;
 import com.dryver.R;
 
 import org.junit.Before;
@@ -45,7 +45,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * UI Tests for the Login Acttivity using Espresso
- * @see com.dryver.activities.ActivityLogin
+ * @see com.dryver.Activities.ActivityLogin
  */
 
 public class ActivityLoginTests {

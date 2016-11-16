@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.controllers;
+package com.dryver.Controllers;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import com.dryver.activities.ActivityUserProfile;
-import com.dryver.models.User;
+import com.dryver.Activities.ActivityUserProfile;
+import com.dryver.Models.User;
 
 /**
  * Controller for the Current user, as well as the user currently being viewed.

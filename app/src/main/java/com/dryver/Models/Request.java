@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.models;
+package com.dryver.Models;
 
 /**
  * The Request class represents a request that was sent out by the rider. A Driver that is in the

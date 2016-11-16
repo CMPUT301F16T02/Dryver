@@ -1,11 +1,11 @@
-package com.dryver.activities;
+package com.dryver.Activities;
 
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.dryver.controllers.UserController;
+import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 /**

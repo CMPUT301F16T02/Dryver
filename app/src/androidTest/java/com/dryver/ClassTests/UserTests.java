@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.classTests;
+package com.dryver.ClassTests;
 
 
-import com.dryver.models.User;
+import com.dryver.Models.User;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

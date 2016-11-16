@@ -26,24 +26,24 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".activities.ActivityOpeningPage">
+        <activity android:name=".Activities.ActivityOpeningPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActivityLogin" />
-        <activity android:name=".activities.ActivityRegistration" />
-        <activity android:name=".activities.ActivitySelection" />
-        <activity android:name=".activities.ActivityDriver" />
-        <activity android:name=".activities.ActivityRequestList" />
-        <activity android:name=".activities.ActivityUserProfile" />
-        <activity android:name=".activities.ActivityRequestSelection" />
-        <activity android:name=".activities.ActivityRequestMap" />
-        <activity android:name=".activities.ActivityRequest"/>
-        <activity android:name=".activities.ActivityLoggedInActionBar"/>
-        <activity android:name=".models.HelpMe">
+        <activity android:name=".Activities.ActivityLogin" />
+        <activity android:name=".Activities.ActivityRegistration" />
+        <activity android:name=".Activities.ActivitySelection" />
+        <activity android:name=".Activities.ActivityDriver" />
+        <activity android:name=".Activities.ActivityRequestList" />
+        <activity android:name=".Activities.ActivityUserProfile" />
+        <activity android:name=".Activities.ActivityRequestSelection" />
+        <activity android:name=".Activities.ActivityRequestMap" />
+        <activity android:name=".Activities.ActivityRequest"/>
+        <activity android:name=".Activities.ActivityLoggedInActionBar"/>
+        <activity android:name=".Models.HelpMe">
         </activity>
     </application>
 

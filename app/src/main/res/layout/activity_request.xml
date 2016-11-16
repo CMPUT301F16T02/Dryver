@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dryver.activities.ActivityRequest">
+    tools:context="com.dryver.Activities.ActivityRequest">
 
     <Button
         android:text="@string/activity_request_button_submit"
@@ -38,7 +38,7 @@
                 android:ems="10"
                 android:id="@+id/requestTripPrice"
                 android:duplicateParentState="false"
-                android:hint="Enter trip price" />
+                android:hint="@string/enter_trip_price" />
 
             <Button
                 android:text="@string/activity_request_button_location"

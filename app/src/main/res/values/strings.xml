@@ -21,6 +21,14 @@
     <string name="app_name">Dryver</string>
 
     <string name="done">Done</string>
+    <string name="new_user">New user?</string>
+    <string name="existing_user">Existing user?</string>
+    <string name="enter_trip_price">Enter trip price</string>
+    <string name="ryde">Ryde</string>
+    <string name="dryve">Dryve</string>
+
+
+
 
     <string name="view_profile">View Profile</string>
 

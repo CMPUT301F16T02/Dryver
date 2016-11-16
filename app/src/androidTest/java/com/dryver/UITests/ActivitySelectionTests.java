@@ -1,14 +1,14 @@
-package com.dryver.uiTests;
+package com.dryver.UITests;
 
 import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.activities.ActivityDriver;
-import com.dryver.activities.ActivityRequestList;
-import com.dryver.activities.ActivitySelection;
-import com.dryver.activities.ActivityUserProfile;
-import com.dryver.controllers.UserController;
-import com.dryver.models.User;
+import com.dryver.Activities.ActivityDriver;
+import com.dryver.Activities.ActivityRequestList;
+import com.dryver.Activities.ActivitySelection;
+import com.dryver.Activities.ActivityUserProfile;
+import com.dryver.Controllers.UserController;
+import com.dryver.Models.User;
 
 import org.junit.Rule;
 import org.junit.Test;

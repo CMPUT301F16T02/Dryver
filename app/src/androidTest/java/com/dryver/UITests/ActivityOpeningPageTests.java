@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.uiTests;
+package com.dryver.UITests;
 
 /**
  * UI tests for the OpeningPage Activity using Espressp
- * @see com.dryver.activities.ActivityOpeningPage
+ * @see com.dryver.Activities.ActivityOpeningPage
  */
 
 import org.junit.Rule;
@@ -31,9 +31,9 @@ import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.activities.ActivityLogin;
-import com.dryver.activities.ActivityOpeningPage;
-import com.dryver.activities.ActivityRegistration;
+import com.dryver.Activities.ActivityLogin;
+import com.dryver.Activities.ActivityOpeningPage;
+import com.dryver.Activities.ActivityRegistration;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;

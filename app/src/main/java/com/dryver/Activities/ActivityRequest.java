@@ -1,4 +1,4 @@
-package com.dryver.activities;
+package com.dryver.Activities;
 
 
 import android.app.Activity;
@@ -12,10 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.dryver.controllers.RequestSingleton;
-import com.dryver.controllers.UserController;
-import com.dryver.models.HelpMe;
-import com.dryver.models.Rider;
+import com.dryver.Controllers.RequestSingleton;
+import com.dryver.Controllers.UserController;
+import com.dryver.Models.HelpMe;
+import com.dryver.Models.Rider;
 import com.dryver.R;
 
 import java.util.Calendar;

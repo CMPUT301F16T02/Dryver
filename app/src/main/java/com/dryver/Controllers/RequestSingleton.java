@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.controllers;
+package com.dryver.Controllers;
 
 import android.location.Location;
 import android.util.Log;
 
-import com.dryver.models.Driver;
-import com.dryver.models.Request;
-import com.dryver.models.Rider;
+import com.dryver.Models.Driver;
+import com.dryver.Models.Request;
+import com.dryver.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;

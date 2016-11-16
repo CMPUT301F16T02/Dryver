@@ -1,4 +1,4 @@
-package com.dryver.controllers;
+package com.dryver.Controllers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.dryver.models.Request;
+import com.dryver.Models.Request;
 import com.dryver.R;
 
 import java.text.SimpleDateFormat;

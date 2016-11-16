@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.dryver.activities;
+package com.dryver.Activities;
 
 
 import android.os.Bundle;
