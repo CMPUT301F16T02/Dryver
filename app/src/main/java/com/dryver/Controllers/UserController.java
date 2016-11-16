@@ -82,6 +82,7 @@ public class UserController {
      * @param currentActivity the current activity
      */
     public void viewActiveUserProfile(Activity currentActivity) {
+        viewedUser = activeUser;
         viewUserProfile(currentActivity, activeUser);
     }
 

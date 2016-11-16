@@ -53,11 +53,12 @@
     <string name="activity_request_selection_Request">Request</string>
     <string name="activity_request_selection_Status">Status</string>
 
-    <string name="activity_user_profile_title">User Profile</string>
+    <string name="activity_user_profile_title">Edit Profile</string>
     <string name="activity_user_profile_UserName">Username</string>
     <string name="activity_user_profile_Email">Email</string>
     <string name="activity_user_profile_PhoneNumber">Phone Number</string>
     <string name="activity_user_profile_PaymentMethod">Payment Method</string>
+    <string name="activity_user_profile_saveButton">Save</string>
 
 
     <string name="title_activity_request_selection_NewRequest">Make Request</string>

@@ -37,6 +37,7 @@ import java.util.Collection;
  * The type Request.
  */
 public class Request implements Serializable {
+    // TODO: 2016-11-16 rework to only get the riderid and driver id and store a collection of ids, instead of the full classes.
     private Rider rider;
     private Collection<Driver> drivers;
     private Driver acceptedDriver;
