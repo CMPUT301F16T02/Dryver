@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityRegistration;
+import com.dryver.Activities.ActivityRequest;
 import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
@@ -47,16 +48,20 @@ public class ActivityRequestListTests {
     }
 
     @Test
-    public void TestOpenUserProfile(){
+    public void TestOpenUserProfile() throws InterruptedException {
         openActionBarOverflowOrOptionsMenu(getTargetContext());
         onView(withText("View Profile")).perform(click());
+
+        Thread.sleep(1000);
 
         intended(hasComponent(new ComponentName(getTargetContext(), ActivityUserProfile.class)));
     }
 
     @Test
-    public void TestNewRequest(){
-        //TODO: Implememnt.
+    public void TestMakeRequest() throws InterruptedException {
+        onView(withText("Make Request")).perform(click());
+        Thread.sleep(1000);
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRequest.class)));
     }
 
 }

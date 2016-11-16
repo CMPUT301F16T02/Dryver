@@ -56,7 +56,7 @@ public class ElasticSearchTests {
         Thread.sleep(3000);
         assertTrue(ES.deleteUser(user));
         Thread.sleep(3000);
-        assertEquals(null, ES.getUser(user.getUserId()));
+        assertNull(ES.getUser(user.getUserId()));
         Thread.sleep(3000);
     }
 

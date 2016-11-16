@@ -30,7 +30,9 @@ import com.dryver.Mock.MockElasticSeachController;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -52,12 +54,15 @@ import static junit.framework.Assert.assertTrue;
  */
 
 public class ActivityRegistrationTests {
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String phoneNumber;
-    private String email;
+    private static final String username = "TEST2";
+    private static final String firstname = "Osama";
+    private static final String lastname = "Bin Laden";
+    private static final String phoneNumber = "5555555555";
+    private static final String email = "superman@Gmail.com";
 
+    private User AddedUser;
+
+    //NOTE: Sleeps b/c Intent testing apparently tests too slow.
     @Rule
     public IntentsTestRule<ActivityRegistration> OPActivityRule = new IntentsTestRule<ActivityRegistration>(
             ActivityRegistration.class);
@@ -65,24 +70,21 @@ public class ActivityRegistrationTests {
     /**
      * Initializes the input strings for the editTexts available during registration
      */
+
     @Before
-    public void initValidString() {
-        username = "TEST2";
-        firstname = "Osama";
-        lastname = "Bin Laden";
-        phoneNumber = "5555555555";
-        email = "superman@Gmail.com";
+    public void DeleteUser() throws InterruptedException {
+        ElasticSearchController ES = ElasticSearchController.getInstance();
+        User user = ES.getUser(username);
+        Thread.sleep(1000);
+        if(user != null)
+        {
+            ES.deleteUserByEsID(user);
+            Thread.sleep(1000);
+        }
     }
 
-    /**
-     * Simply inputs a presumably valid string for all EditTexts and attempts to select register.
-     * Uses the mock ESController, so although the strings are validated, it is not actually pushed
-     * to the ES server. Registration leads to the Selection Activity.
-     * @see MockElasticSeachController
-     * @see ActivitySelection
-     */
     @Test
-    public void TestRegister() {
+    public void TestRegisterUI() throws InterruptedException {
         ElasticSearchController.setMock(MockElasticSeachController.getInstance());
 
         onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
@@ -104,6 +106,41 @@ public class ActivityRegistrationTests {
 
         onView(withText("Done")).perform(click());
 
+        Thread.sleep(3000);
+
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
+    }
+
+    /**
+     * Simply inputs a presumably valid string for all EditTexts and attempts to select register.
+     * Uses the mock ESController, so although the strings are validated, it is not actually pushed
+     * to the ES server. Registration leads to the Selection Activity.
+     * @see MockElasticSeachController
+     * @see ActivitySelection
+     */
+    @Test
+    public void TestRegister() throws InterruptedException {
+        onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withId(R.id.username_edittext)).perform(typeText(username));
+        onView(withText(username)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withId(R.id.firstname_edittext)).perform(typeText(firstname));
+        onView(withText(firstname)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withId(R.id.lastname_edittext)).perform(typeText(lastname));
+        onView(withText(lastname)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withId(R.id.phone_edittext)).perform(typeText(phoneNumber));
+        onView(withText(phoneNumber)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withId(R.id.email_edittext)).perform(typeText(email));
+        onView(withText(email)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withText("Done")).perform(click());
+
+        Thread.sleep(1000);
+
         intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
     }
 
@@ -113,11 +150,9 @@ public class ActivityRegistrationTests {
     @Test
     public void TestRegisterTakenUser(){
         ElasticSearchController ES = ElasticSearchController.getInstance();
-        User user = ES.getUser(username);
-        if(user == null)
-        {
-            assertTrue(ES.addUser(new User(username, firstname, lastname, phoneNumber, email)));
-        }
+
+        AddedUser = new User(username, firstname, lastname, phoneNumber, email);
+        assertTrue(ES.addUser(AddedUser));
 
         onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
 
@@ -140,8 +175,13 @@ public class ActivityRegistrationTests {
 
         onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
 
-        assertTrue(ES.deleteUserByEsID(user));
-        assertNull(ES.getUser(username));
+
+    }
+
+    @After
+    public void removeUser(){
+        ElasticSearchController ES = ElasticSearchController.getInstance();
+        ES.deleteUserByEsID(AddedUser);
     }
 
 
