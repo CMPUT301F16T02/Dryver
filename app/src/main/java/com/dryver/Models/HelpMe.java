@@ -41,11 +41,11 @@ public class HelpMe extends Activity {
      * @return the boolean
      */
     static public boolean isEmptyTextField(EditText editText) {
-        if (editText.getText().toString().equals("")) {
+        boolean empty = editText.getText().toString().equals("");
+        if (empty) {
             editText.setError("This field is required.");
-            return true;
         }
-        return false;
+        return empty;
     }
 
     /**
@@ -55,7 +55,11 @@ public class HelpMe extends Activity {
      */
     static public boolean isValidEmail(EditText editText)
     {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
+        boolean valid = android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
+        if(!valid){
+            editText.setError("Invalid email. Must be of form name@domain.extension");
+        }
+        return valid;
     }
 
     /**
@@ -65,7 +69,11 @@ public class HelpMe extends Activity {
      */
     static public boolean isValidPhone(EditText editText)
     {
-        return android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
+        boolean valid = android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
+        if(!valid){
+            editText.setError("Invalid phone number.");
+        }
+        return valid;
     }
 
     /**

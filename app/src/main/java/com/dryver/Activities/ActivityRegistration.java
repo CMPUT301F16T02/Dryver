@@ -78,7 +78,6 @@ public class ActivityRegistration extends Activity {
                         && HelpMe.isValidPhone(phoneEditText)
                         && HelpMe.isValidEmail(emailEditText)) {
 
-                    //TODO: Is Address really necessary?
                     User user = new User(usernameEditText.getText().toString(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
@@ -106,13 +105,9 @@ public class ActivityRegistration extends Activity {
                     catch (ExecutionException e) {
                         e.printStackTrace();
                     }
-
-                    while (added == null);
-                }
-                else if(!HelpMe.isValidEmail(emailEditText)) {
+                } else if(!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
-                }
-                else if(!HelpMe.isValidPhone(phoneEditText)) {
+                } else if(!HelpMe.isValidPhone(phoneEditText)) {
                     emailEditText.setError("Invalid phone number.");
                 }
             }

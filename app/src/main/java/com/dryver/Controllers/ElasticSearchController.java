@@ -262,16 +262,6 @@ public class ElasticSearchController {
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
 
-            User user = getUserByEsID(search_parameters[0].getId());
-
-            if (user == null) {
-                return false;
-            } else if(!user.getUserId().equals(search_parameters[0].getUserId())){
-                if (getUserByUsername(search_parameters[0].getUserId()) != null){
-                    return false;
-                }
-            }
-
             Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
 
             try {

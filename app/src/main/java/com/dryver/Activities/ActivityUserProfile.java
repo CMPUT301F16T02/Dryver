@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
 import com.dryver.Models.User;
@@ -48,7 +47,7 @@ public class ActivityUserProfile extends Activity {
 
     private UserController userController = UserController.getInstance();
     private User user;
-    private EditText userNameEditText;
+    private TextView userNameTextView;
     private EditText emailEditText;
     private EditText phoneEditText;
     private TextView paymentText;
@@ -62,7 +61,10 @@ public class ActivityUserProfile extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        this.userNameEditText = (EditText)findViewById(R.id.profileEditTextUserName);
+        //This doesn't work for some reason;
+        this.userNameTextView = (TextView)findViewById(R.id.profile_name);
+        userNameTextView.setText(user.getUserId() + "'s Profile");
+
         this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
         this.paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
@@ -76,7 +78,7 @@ public class ActivityUserProfile extends Activity {
             setOtherUserFields();
         }
 
-        userNameEditText.setText(user.getUserId());
+        userNameTextView.setText(user.getUserId());
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
 
@@ -91,7 +93,7 @@ public class ActivityUserProfile extends Activity {
     }
 
     private void setActiveUserFields() {
-        userNameEditText.setEnabled(true);
+        userNameTextView.setEnabled(true);
         emailEditText.setEnabled(true);
         phoneEditText.setEnabled(true);
         paymentText.setVisibility(View.VISIBLE);
@@ -99,7 +101,7 @@ public class ActivityUserProfile extends Activity {
     }
 
     private void setOtherUserFields(){
-        userNameEditText.setEnabled(false);
+        userNameTextView.setEnabled(false);
         emailEditText.setEnabled(false);
         phoneEditText.setEnabled(false);
         paymentText.setVisibility(View.GONE);
@@ -110,24 +112,13 @@ public class ActivityUserProfile extends Activity {
     private boolean updateUserProfile(){
         user = userController.getActiveUser();
 
-        if(!HelpMe.isEmptyTextField(userNameEditText)) {
-            user.setUserId(userNameEditText.getText().toString());
-        } else{
-            userNameEditText.setError("Username is taken. Try something else.");
-        }
-
-        if(HelpMe.isValidEmail(emailEditText)) {
-            user.setEmail(emailEditText.getText().toString());
-        } else{
-            emailEditText.setError("Invalid email. Must be of form name@domain.extension");
-        }
-
-        if(HelpMe.isValidPhone(phoneEditText)){
+        boolean updated = false;
+        if(HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText))
+        {
             user.setPhoneNumber(phoneEditText.getText().toString());
-        } else{
-            emailEditText.setError("Invalid phone number.");
+            user.setEmail(emailEditText.getText().toString());
+            updated = userController.updateActiveUser();
         }
-
-        return userController.updateActiveUser();
+        return updated;
     }
 }

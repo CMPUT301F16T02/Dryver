@@ -28,32 +28,6 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.dryver.Activities.ActivityUserProfile">
 
-    <TextView
-        android:text="@string/activity_user_profile_UserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/profileTextViewUserName"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:layout_below="@+id/profileTextViewUserName"
-        android:layout_alignParentStart="true"
-        android:id="@+id/profileEditTextUserName" />
-
-    <TextView
-        android:text="@string/activity_user_profile_Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profileEditTextUserName"
-        android:layout_alignParentStart="true"
-        android:id="@+id/profileTextViewEmail"/>
-
 
     <EditText
         android:layout_width="match_parent"
@@ -97,15 +71,6 @@
         android:entries="@array/payment_methods"
         android:id="@+id/profileSpinnerPaymentMethod"/>
 
-    <TextView
-        android:text="@string/activity_user_profile_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
-
     <Button
         android:text="@string/activity_user_profile_saveButton"
         android:layout_width="300dp"
@@ -114,6 +79,24 @@
         android:id="@+id/save_changes"
         android:layout_below="@+id/profileSpinnerPaymentMethod"
         android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:text="@string/activity_user_profile_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileTextViewEmail"
+        android:layout_below="@+id/profile_name"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profile_name"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Username's Profile"/>
 
 
 </RelativeLayout>
