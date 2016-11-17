@@ -63,7 +63,7 @@ public class ActivityUserProfile extends Activity {
 
         //This doesn't work for some reason;
         this.userNameTextView = (TextView)findViewById(R.id.profile_name);
-        userNameTextView.setText(user.getUserId() + "'s Profile");
+        userNameTextView.setText(user.getUsername() + "'s Profile");
 
         this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
@@ -78,7 +78,7 @@ public class ActivityUserProfile extends Activity {
             setOtherUserFields();
         }
 
-        userNameTextView.setText(user.getUserId());
+        userNameTextView.setText(user.getUsername());
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
 

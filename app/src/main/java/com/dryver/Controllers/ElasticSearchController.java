@@ -37,7 +37,6 @@ import java.util.List;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -123,14 +122,15 @@ public class ElasticSearchController {
      * @see User
      * @return Boolean
      */
-    public static class AddUserTask extends AsyncTask<User, Void, Boolean> {
+    public static class AddUserByIDTask extends AsyncTask<User, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
+            boolean addable = false;
 
-            if (getUserByUsername(search_parameters[0].getUserId()) != null) {
-                return false;
+            if (getUserByUsername(search_parameters[0].getUsername()) != null) {
+                return addable;
             }
 
             Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).build();
@@ -139,17 +139,15 @@ public class ElasticSearchController {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
                     search_parameters[0].setId(result.getId());
-                    return true;
-                }
-                else {
+                    addable = true;
+                } else {
                     Log.i("Error", "Elastic search was not able to add the user.");
-                    return false;
+                    addable = false;
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-                return false;
             }
+            return addable;
         }
     }
 
@@ -168,7 +166,7 @@ public class ElasticSearchController {
                 return deletable;
             }
 
-            User internalUser = getUserByUsername(search_parameters[0].getUserId());
+            User internalUser = getUserByUsername(search_parameters[0].getUsername());
             if (internalUser == null || internalUser.getId() == null) {
                 return deletable;
             }
@@ -207,8 +205,7 @@ public class ElasticSearchController {
      * @return User
      * @see User
      */
-    private static User getUserByUsername(String... search_parameters)
-    {
+    private static User getUserByUsername(String... search_parameters) {
         Log.i("Info", "logging in with user id: " + search_parameters[0]);
 
         String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
@@ -231,26 +228,26 @@ public class ElasticSearchController {
         }
         return user;
     }
-
-    /**
-     * Gets a user based on their ES ID set by jest-droid
-     * @param id
-     * @see User
-     * @see JestDroidClient
-     */
-    public static User getUserByEsID(String id) {
-        Get get = new Get.Builder(INDEX, id).type(USER).build();
-
-        JestResult result = null;
-        try {
-            result = client.execute(get);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        User user = result.getSourceAsObject(User.class);
-        return user;
-    }
+//
+//    /**
+//     * Gets a user based on their ES ID set by jest-droid
+//     * @param id
+//     * @see User
+//     * @see JestDroidClient
+//     */
+//    public static User getUserByEsID(String id) {
+//        Get get = new Get.Builder(INDEX, id).type(USER).build();
+//
+//        JestResult result = null;
+//        try {
+//            result = client.execute(get);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        User user = result.getSourceAsObject(User.class);
+//        return user;
+//    }
 
     /**
      * Updates a existing user profile based on the ES id
@@ -336,26 +333,26 @@ public class ElasticSearchController {
         }
     }
 
-    public static class DeleteRequestTaskByID extends AsyncTask<String, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(String... search_parameters) {
-            verifySettings();
-            boolean deletable = false;
-
-            Delete delete = new Delete.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
-
-            try {
-                //TODO: use the result?
-                DocumentResult result = client.execute(delete);
-                deletable = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                return deletable;
-            }
-        }
-    }
+//    public static class DeleteRequestTaskByID extends AsyncTask<String, Void, Boolean> {
+//
+//        @Override
+//        protected Boolean doInBackground(String... search_parameters) {
+//            verifySettings();
+//            boolean deletable = false;
+//
+//            Delete delete = new Delete.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
+//
+//            try {
+//                //TODO: use the result?
+//                DocumentResult result = client.execute(delete);
+//                deletable = true;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                return deletable;
+//            }
+//        }
+//    }
 
 
 

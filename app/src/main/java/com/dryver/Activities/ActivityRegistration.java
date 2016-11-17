@@ -84,7 +84,7 @@ public class ActivityRegistration extends Activity {
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
+                    ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
                     addUserTask.execute(user);
 
                     Boolean added = null;

@@ -39,7 +39,7 @@ public class UserTests {
     @Test
     public void testGetId() {
         User user = new User(DEFAULT_USER_ID);
-        assertEquals(DEFAULT_USER_ID, user.getUserId());
+        assertEquals(DEFAULT_USER_ID, user.getUsername());
     }
 
     /**

@@ -59,39 +59,31 @@ public class ElasticSearchTests {
 //        deleteUserByIdTask.execute(testUser);
 //
 //    }
+
+
+    /**
+     * Tests Adding and then deleting a User from the Database
+     * @throws InterruptedException
+     */
+    @Test
+    public void testAddDeleteUser() throws InterruptedException, ExecutionException {
+        User user = testUser;
+
+        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
+        deleteUserByIdTask.execute(user);
+        assertFalse(deleteUserByIdTask.get());
+
+        ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
+        addUserTask.execute(user);
+        assertTrue(addUserTask.get());
 //
-//
-//    /**
-//     * Tests Adding and then deleting a User from the Database
-//     * @throws InterruptedException
-//     */
-//    @Test
-//    public void testAddDeleteUser() throws InterruptedException, ExecutionException {
-//        User user = testUser;
-//
-//        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(user);
-//        assertFalse(deleteUserByIdTask.get());
-//
-//        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
-//        addUserTask.execute(user);
-//        assertTrue(addUserTask.get());
-//
-//
+//        deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
 //        deleteUserByIdTask.execute(user);
 //        assertTrue(deleteUserByIdTask.get());
 //
 //        ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
-//        getUserByNameTask.execute(user.getUserId());
+//        getUserByNameTask.execute(user.getUsername());
 //        assertNull(getUserByNameTask.get());
-//
-//    }
-
-    @Test
-    public void testDelete() {
-
-        ElasticSearchController.DeleteRequestTaskByID deleteRequestTask = new ElasticSearchController.DeleteRequestTaskByID();
-        deleteRequestTask.execute("AVhkisO7GbOPMhbsCqG8");
 
     }
 
@@ -113,7 +105,7 @@ public class ElasticSearchTests {
 //        Thread.sleep(3000);
 //
 //        ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
-//        getUserByNameTask.execute(user.getUserId());
+//        getUserByNameTask.execute(user.getUsername());
 //        User requestedUser = getUserByNameTask.get();
 //
 //        assertEquals(null, requestedUser.getFirstName());
@@ -137,7 +129,7 @@ public class ElasticSearchTests {
 //        Thread.sleep(3000);
 //
 //        getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
-//        getUserByNameTask.execute(user.getUserId());
+//        getUserByNameTask.execute(user.getUsername());
 //        User requestedUser2 = getUserByNameTask.get();
 //        assertEquals(user.getFirstName(), requestedUser2.getFirstName());
 //        assertEquals(user.getLastName(), requestedUser2.getLastName());

@@ -129,7 +129,7 @@ public class ActivityRegistrationTests {
 
         AddedUser = new User(username, firstname, lastname, phoneNumber, email);
 
-        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
+        ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
         addUserTask.execute(AddedUser);
         assertTrue(addUserTask.get());
 

@@ -2,13 +2,15 @@ package com.dryver.Models;
 
 import android.location.Location;
 
+import java.io.Serializable;
+
 import io.searchbox.indices.template.TemplateAction;
 
 /**
  * Created by drei on 2016-11-16.
  */
 
-public class SimpleCoordinates {
+public class SimpleCoordinates implements Serializable {
     private Double[] location = new Double[2];
     private String locationName;
 

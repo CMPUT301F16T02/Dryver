@@ -45,7 +45,7 @@ public class ActivityRequestListTests {
     @Before
     public void addUserToESLogin() throws ExecutionException, InterruptedException {
         ElasticSearchController ES = ElasticSearchController.getInstance();
-        ElasticSearchController.AddUserTask addRequestTask = new ElasticSearchController.AddUserTask();
+        ElasticSearchController.AddUserByIDTask addRequestTask = new ElasticSearchController.AddUserByIDTask();
         addRequestTask.execute(testUser);
         userController.login(testUserName);
     }
