@@ -22,6 +22,7 @@ package com.dryver.Controllers;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.common.cache.CacheStats;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -33,6 +34,7 @@ import com.dryver.Models.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
@@ -127,9 +129,24 @@ public class ElasticSearchController {
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
+
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
+            Search search = new Search.Builder(search_string)
+                    .addIndex(INDEX)
+                    .addType(USER)
+                    .build();
+
+            User user = null;
+            try {
+                JestResult result = client.execute(search);
+                user = result.getSourceAsObject(User.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             boolean addable = false;
 
-            if (getUserByUsername(search_parameters[0].getUsername()) != null) {
+            if (user != null) {
                 return addable;
             }
 
@@ -151,6 +168,19 @@ public class ElasticSearchController {
         }
     }
 
+//    public static User getUser(String username) {
+//        User user = null;
+//        GetUserByUsernameTask task = new GetUserByUsernameTask();
+//        try {
+//            user = task.execute(username).get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        return user;
+//    }
+
     /**
      * Deletes a user in the database based on the user id.
      * @see User
@@ -160,27 +190,22 @@ public class ElasticSearchController {
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
+
             boolean deletable = false;
 
-            if (search_parameters[0] == null) {
-                return deletable;
-            }
-
-            User internalUser = getUserByUsername(search_parameters[0].getUsername());
-            if (internalUser == null || internalUser.getId() == null) {
-                return deletable;
-            }
-
+            User user = null;
             Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).build();
 
             try {
-                client.execute(delete);
-                deletable = true;
+                JestResult result = client.execute(delete);
+                user = result.getSourceAsObject(User.class);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                return deletable;
             }
+            if (user != null) {
+                deletable = true;
+            }
+            return deletable;
         }
     }
 
@@ -190,14 +215,32 @@ public class ElasticSearchController {
      * @return User
      * @see User
      */
-    public static class GetUserByNameTask extends AsyncTask<String, Void, User> {
+    public static class GetUserByUsernameTask extends AsyncTask<String, Void, User> {
 
         @Override
         protected User doInBackground(String... search_parameters) {
-            return getUserByUsername(search_parameters[0]);
+            Log.i("Info", "logging in with user id: " + search_parameters[0]);
+
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
+
+            verifySettings();
+            Search search = new Search.Builder(search_string)
+                    .addIndex(INDEX)
+                    .addType(USER)
+                    .build();
+
+            Log.i("info", "Searching using " + search_string.toString());
+
+            User user = null;
+            try {
+                JestResult result = client.execute(search);
+                user = result.getSourceAsObject(User.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return user;
         }
     }
-
 
     /**
      * Gets a user based on the users' user id
@@ -222,32 +265,11 @@ public class ElasticSearchController {
         try {
             JestResult result = client.execute(search);
             user = result.getSourceAsObject(User.class);
-            return user;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return user;
     }
-//
-//    /**
-//     * Gets a user based on their ES ID set by jest-droid
-//     * @param id
-//     * @see User
-//     * @see JestDroidClient
-//     */
-//    public static User getUserByEsID(String id) {
-//        Get get = new Get.Builder(INDEX, id).type(USER).build();
-//
-//        JestResult result = null;
-//        try {
-//            result = client.execute(get);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        User user = result.getSourceAsObject(User.class);
-//        return user;
-//    }
 
     /**
      * Updates a existing user profile based on the ES id
@@ -332,29 +354,6 @@ public class ElasticSearchController {
             }
         }
     }
-
-//    public static class DeleteRequestTaskByID extends AsyncTask<String, Void, Boolean> {
-//
-//        @Override
-//        protected Boolean doInBackground(String... search_parameters) {
-//            verifySettings();
-//            boolean deletable = false;
-//
-//            Delete delete = new Delete.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
-//
-//            try {
-//                //TODO: use the result?
-//                DocumentResult result = client.execute(delete);
-//                deletable = true;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                return deletable;
-//            }
-//        }
-//    }
-
-
 
     /**
      *

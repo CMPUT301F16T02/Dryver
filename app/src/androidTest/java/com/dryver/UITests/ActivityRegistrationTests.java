@@ -75,10 +75,10 @@ public class ActivityRegistrationTests {
     public void DeleteUser() throws InterruptedException, ExecutionException {
         ElasticSearchController ES = ElasticSearchController.getInstance();
 
-        ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
-        getUserByNameTask.execute(username);
+        ElasticSearchController.GetUserByUsernameTask getUserByUsernameTask = new ElasticSearchController.GetUserByUsernameTask();
+        getUserByUsernameTask.execute(username);
 
-        User user = getUserByNameTask.get();
+        User user = getUserByUsernameTask.get();
         Thread.sleep(1000);
         if(user != null)
         {
