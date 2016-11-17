@@ -48,7 +48,6 @@ import io.searchbox.indices.CreateIndex;
  * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
  * @see <a href="http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/_search?pretty=true&q=*:*">list of users</a>
  */
-
 public class ElasticSearchController {
     /**
      * The instance of the singleton that is returns and used by everyone.
@@ -258,7 +257,7 @@ public class ElasticSearchController {
      * @see User
      * */
     public static class UpdateUserTask extends AsyncTask<User, Void, Boolean> {
-
+    	
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();

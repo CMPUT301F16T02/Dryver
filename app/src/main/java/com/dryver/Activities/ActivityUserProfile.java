@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
 import com.dryver.Models.User;
@@ -42,17 +43,17 @@ import com.dryver.R;
 public class ActivityUserProfile extends Activity {
     //TODO: Contacting a driver via email or phone. (should that be here?)
     //TODO: Add field for entering the required payment method info. Could be a popup of some sort or w/e.
+    // TODO: 2016-11-16 change user name to be static
     //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
 
     private UserController userController = UserController.getInstance();
-
     private User user;
     private EditText userNameEditText;
     private EditText emailEditText;
     private EditText phoneEditText;
     private TextView paymentText;
     private Spinner paymentSpinner;
-    private Button saveChanges;
+    private Button saveChangesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class ActivityUserProfile extends Activity {
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
         this.paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
         this.paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
-        this.saveChanges = (Button)findViewById(R.id.save_changes);
+        this.saveChangesButton = (Button)findViewById(R.id.save_changes);
 
         //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
         if(user.equals(userController.getActiveUser())){
@@ -79,7 +80,7 @@ public class ActivityUserProfile extends Activity {
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
 
-        saveChanges.setOnClickListener(new View.OnClickListener() {
+        saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(updateUserProfile()){
