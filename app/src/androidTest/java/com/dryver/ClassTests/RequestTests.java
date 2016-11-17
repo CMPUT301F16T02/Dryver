@@ -69,7 +69,7 @@ public class RequestTests {
         DEFAULT_FROM_ADDRESS.setLongitude(-113.526146);
         DEFAULT_TO_ADDRESS.setLatitude(53.548623);
         DEFAULT_TO_ADDRESS.setLongitude(-113.506537);
-        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
+        Request request = new Request(DEFAULT_RIDER.getUserId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         // test cost
         assertEquals(DEFAULT_COST, request.getCost(), 0.001);
         // test ids
@@ -77,7 +77,8 @@ public class RequestTests {
         // test driver list.
         assertEquals(0, request.getDrivers().size());
         //test getRider
-        assertEquals(DEFAULT_RIDER, request.getRider());
+
+        assertEquals(DEFAULT_RIDER.getUserId(), request.getRiderId());
     }
 
     /**
@@ -86,17 +87,17 @@ public class RequestTests {
      */
     @Test
     public void testAddDriver() {
-        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
+        Request request = new Request(DEFAULT_RIDER.getUserId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(user1);
 
         assertEquals(0, request.getDrivers().size());
 
         // check driver in list
-        request.addDriver(driver);
+        request.addDriver(driver.getUserId());
         assertTrue(request.getDrivers().contains(driver));
 
         // check list count
-        request.addDriver(driver);
+        request.addDriver(driver.getUserId());
         assertEquals(2, request.getDrivers().size());
     }
 
@@ -105,16 +106,16 @@ public class RequestTests {
      */
     @Test
     public void testAcceptOffer() {
-        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
+        Request request = new Request(DEFAULT_RIDER.getUserId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(user1);
         Driver driver2 = new Driver(user2);
 
-        request.addDriver(driver);
-        request.addDriver(driver2);
+        request.addDriver(driver.getUserId());
+        request.addDriver(driver2.getUserId());
 
-        request.acceptOffer(driver2);
+        request.acceptOffer(driver2.getUserId());
 
-        assertEquals(driver2.getUserId(), request.getAcceptedDriver().getUserId());
+        assertEquals(driver2.getUserId(), request.getAcceptedDriverID());
     }
 
     /**
@@ -122,14 +123,14 @@ public class RequestTests {
      */
     @Test
     public void testCancelOffer() {
-        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
+        Request request = new Request(DEFAULT_RIDER.getUserId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(user1);
 
-        request.addDriver(driver);
-        request.acceptOffer(driver);
+        request.addDriver(driver.getUserId());
+        request.acceptOffer(driver.getUserId());
         request.cancelOffer();
 
-        assertEquals(null, request.getAcceptedDriver());
+        assertEquals(null, request.getAcceptedDriverID());
     }
 
     /**
@@ -137,7 +138,7 @@ public class RequestTests {
      */
     @Test
     public void testToFromLocations() {
-        Request request = new Request(DEFAULT_RIDER, date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
+        Request request = new Request(DEFAULT_RIDER.getUserId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
 
         Location someLocation = new Location("test");
         someLocation.setLatitude(12.0);

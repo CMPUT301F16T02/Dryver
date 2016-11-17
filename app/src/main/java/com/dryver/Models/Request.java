@@ -138,6 +138,10 @@ public class Request implements Serializable {
         drivers.add(driver);
     }
 
+    public String getAcceptedDriverID() {
+        return this.acceptedDriverID;
+    }
+
     public void acceptOffer(String driverID) {
         if (drivers.contains(driverID)) {
             this.acceptedDriverID = driverID;
@@ -234,6 +238,11 @@ public class Request implements Serializable {
      */
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+
+    public double getCost() {
+        return cost;
     }
 
     /**
@@ -351,4 +360,5 @@ public class Request implements Serializable {
     public void setCost(double cost) {
         this.cost = cost;
     }
+
 }

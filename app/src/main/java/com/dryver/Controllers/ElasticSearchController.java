@@ -346,6 +346,27 @@ public class ElasticSearchController {
         }
     }
 
+    public static class DeleteRequestTaskByID extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... search_parameters) {
+            verifySettings();
+            boolean deletable = false;
+
+            Delete delete = new Delete.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
+
+            try {
+                //TODO: use the result?
+                DocumentResult result = client.execute(delete);
+                deletable = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return deletable;
+            }
+        }
+    }
+
 
 
     /**
