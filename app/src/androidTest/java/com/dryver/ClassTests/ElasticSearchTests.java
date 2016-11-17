@@ -47,6 +47,8 @@ public class ElasticSearchTests {
 
     @BeforeClass
     public static void removeTestUsers() throws ExecutionException, InterruptedException {
+        ElasticSearchController.DeleteRequestTask deleteRequestTask = new ElasticSearchController.DeleteRequestTask();
+        deleteRequestTask.execute();
         ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
         getUserByNameTask.execute(username);
 

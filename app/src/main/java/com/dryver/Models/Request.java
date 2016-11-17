@@ -37,43 +37,41 @@ import java.util.Collection;
  * The type Request.
  */
 public class Request implements Serializable {
+    private String id;
+    private final String riderId;
     // TODO: 2016-11-16 rework to only get the riderid and driver id and store a collection of ids, instead of the full classes.
-    private Rider rider;
-    private Collection<Driver> drivers;
-    private Driver acceptedDriver;
+    private Collection<String> drivers;
+    private String acceptedDriverID;
     private String description;
     private Calendar date;
     //Status: 0 for pending, 1 for accepted, 2 for cancelled
     private int status;
-    private String id;
 
-    private Location fromLocation;
-    private Location toLocation;
+    // [Latitude, Longitude]
+    private SimpleCoordinates fromCoordinates;
+    private SimpleCoordinates toCoordinates;
 
     private double cost;
     private double rate;
-    private final String riderId;
 
     /**
      * Instantiates a new Request.
      *
-     * @param rider        the rider
      * @param date         date the request was created
      * @param fromLocation location of the rider
      * @param toLocation   destination of the rider
      * @param rate         the rate
      */
-    public Request(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
-            this.rider = rider;
-            this.date = date;
-            this.fromLocation = fromLocation;
-            this.toLocation = toLocation;
-            this.rate = rate;
-            this.riderId = rider.getUserId();
-            this.drivers = new ArrayList<Driver>();
-            this.acceptedDriver = null;
-            this.status = 1;
-            generateCost(rate);
+    public Request(String riderId, Calendar date, Location fromLocation, Location toLocation, double rate) {
+        this.riderId = riderId;
+        this.date = date;
+        this.fromCoordinates = new SimpleCoordinates(fromLocation.getLatitude(), fromLocation.getLongitude(), fromLocation.getProvider());
+        this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
+        this.drivers = new ArrayList<String>();
+        this.acceptedDriverID = null;
+        this.status = 0;
+        this.rate = rate;
+        this.id = null;
     }
 
     /**
@@ -113,30 +111,12 @@ public class Request implements Serializable {
     }
 
     /**
-     * Gets cost of the ride.
-     *
-     * @return the cost
-     */
-    public double getCost() {
-        return cost;
-    }
-
-    /**
      * Gets drivers who accepted the ride.
      *
      * @return the drivers
      */
-    public Collection<Driver> getDrivers() {
+    public Collection<String> getDrivers() {
         return this.drivers;
-    }
-
-    /**
-     * Gets rider.
-     *
-     * @return the rider
-     */
-    public Rider getRider() {
-        return this.rider;
     }
 
     /**
@@ -145,37 +125,24 @@ public class Request implements Serializable {
      * @return the rider id
      */
     public String getRiderId() {
-        return rider.getUserId();
+        return this.riderId;
     }
 
-    /**
-     * Gets driver who was accepted by the rider.
-     *
-     * @return the accepted driver
-     */
-    public Driver getAcceptedDriver() {
-        return acceptedDriver;
-    }
 
     /**
      * Adds a driver to the list of drivers.
      *
      * @param driver the driver
      */
-    public void addDriver(Driver driver) {
+    public void addDriver(String driver) {
         drivers.add(driver);
     }
 
-    /**
-     * Accept driver offer to give rider a ride.
-     *
-     * @param driver the driver
-     */
-    public void acceptOffer(Driver driver) {
-        if (drivers.contains(driver)) {
-            this.acceptedDriver = driver;
-        } else { // if somehow the driver is not in the collection...
-            this.acceptedDriver = null;
+    public void acceptOffer(String driverID) {
+        if (drivers.contains(driverID)) {
+            this.acceptedDriverID = driverID;
+        } else {
+            this.acceptedDriverID = null;
         }
     }
 
@@ -183,7 +150,7 @@ public class Request implements Serializable {
      * Cancel rider's offer to driver.
      */
     public void cancelOffer() {
-        this.acceptedDriver = null;
+        this.acceptedDriverID = null;
     }
 
     /**
@@ -192,7 +159,7 @@ public class Request implements Serializable {
      * @return the to-location
      */
     public Location getToLocation() {
-        return toLocation;
+        return toCoordinates.getLocation();
     }
 
     /**
@@ -201,7 +168,7 @@ public class Request implements Serializable {
      * @return the from-location
      */
     public Location getFromLocation() {
-        return fromLocation;
+        return fromCoordinates.getLocation();
     }
 
     /**
@@ -210,7 +177,8 @@ public class Request implements Serializable {
      * @param fromLocation the from location
      */
     public void setFromLocation(Location fromLocation) {
-        this.fromLocation = fromLocation;
+        this.fromCoordinates.setLocation(fromLocation.getLatitude(), fromLocation.getLongitude());
+        this.fromCoordinates.setLocationName(fromLocation.getProvider());
     }
 
     /**
@@ -219,7 +187,8 @@ public class Request implements Serializable {
      * @param toLocation the to location
      */
     public void setToLocation(Location toLocation) {
-        this.toLocation = toLocation;
+        this.fromCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
+        this.fromCoordinates.setLocationName(toLocation.getProvider());
     }
 
     /**
@@ -273,17 +242,18 @@ public class Request implements Serializable {
      * @param rate the rate
      */
     private void generateCost(double rate) {
-        Location start = new Location("start");
-        Location destination = new Location("Destination");
-
-        start.setLatitude(fromLocation.getLatitude());
-        start.setLongitude(fromLocation.getLongitude());
-
-        destination.setLatitude(toLocation.getLatitude());
-        destination.setLongitude(toLocation.getLongitude());
-
-        double distance = start.distanceTo(destination);
-        this.cost = rate * distance;
+        // TODO: 2016-11-16 generate cost somehow.
+//        Location start = new Location("start");
+//        Location destination = new Location("Destination");
+//
+//        start.setLatitude(fromLocation.getLatitude());
+//        start.setLongitude(fromLocation.getLongitude());
+//
+//        destination.setLatitude(toLocation.getLatitude());
+//        destination.setLongitude(toLocation.getLongitude());
+//
+//        double distance = start.distanceTo(destination);
+//        this.cost = rate * distance;
     }
 
     /**
@@ -329,13 +299,13 @@ public class Request implements Serializable {
         if (Double.compare(request.rate, rate) != 0) {
             return false;
         }
-        if (rider != null ? !rider.equals(request.rider) : request.rider != null) {
+        if (riderId != null ? !riderId.equals(request.riderId) : request.riderId != null) {
             return false;
         }
         if (drivers != null ? !drivers.equals(request.drivers) : request.drivers != null) {
             return false;
         }
-        if (acceptedDriver != null ? !acceptedDriver.equals(request.acceptedDriver) : request.acceptedDriver != null) {
+        if (acceptedDriverID != null ? !acceptedDriverID.equals(request.acceptedDriverID) : request.acceptedDriverID != null) {
             return false;
         }
         if (description != null ? !description.equals(request.description) : request.description != null) {
@@ -347,10 +317,10 @@ public class Request implements Serializable {
         if (id != null ? !id.equals(request.id) : request.id != null) {
             return false;
         }
-        if (fromLocation != null ? !fromLocation.equals(request.fromLocation) : request.fromLocation != null) {
+        if (fromCoordinates != null ? !fromCoordinates.equals(request.fromCoordinates) : request.fromCoordinates != null) {
             return false;
         }
-        if (toLocation != null ? !toLocation.equals(request.toLocation) : request.toLocation != null) {
+        if (toCoordinates != null ? !toCoordinates.equals(request.toCoordinates) : request.toCoordinates != null) {
             return false;
         }
         return riderId != null ? riderId.equals(request.riderId) : request.riderId == null;
@@ -361,20 +331,24 @@ public class Request implements Serializable {
     public int hashCode() {
         int result;
         long temp;
-        result = rider != null ? rider.hashCode() : 0;
+        result = riderId != null ? riderId.hashCode() : 0;
         result = 31 * result + (drivers != null ? drivers.hashCode() : 0);
-        result = 31 * result + (acceptedDriver != null ? acceptedDriver.hashCode() : 0);
+        result = 31 * result + (acceptedDriverID != null ? acceptedDriverID.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + status;
         result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (fromLocation != null ? fromLocation.hashCode() : 0);
-        result = 31 * result + (toLocation != null ? toLocation.hashCode() : 0);
+        result = 31 * result + (fromCoordinates != null ? fromCoordinates.hashCode() : 0);
+        result = 31 * result + (toCoordinates != null ? toCoordinates.hashCode() : 0);
         temp = Double.doubleToLongBits(cost);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(rate);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (riderId != null ? riderId.hashCode() : 0);
         return result;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }

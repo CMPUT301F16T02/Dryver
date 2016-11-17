@@ -25,6 +25,7 @@ import android.util.Log;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
+import com.dryver.Models.SimpleCoordinates;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,7 +75,7 @@ public class RequestSingleton {
 
     /**
      * A method that adds a request to the current request list for the user as well as Elastic Search
-     * @param rider
+     * @param riderID
      * @param date
      * @param fromLocation
      * @param toLocation
@@ -82,10 +83,10 @@ public class RequestSingleton {
      * @see ElasticSearchController
      */
     //TODO Correct Times... Why is date passed and not used?
-    public void addRequest(Rider rider, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Log.i("info", "RequestSingleton addRequest()");
 
-        Request request = new Request(rider, date, fromLocation, toLocation, rate);
+        Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
 
