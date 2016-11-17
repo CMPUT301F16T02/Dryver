@@ -41,7 +41,10 @@
         <activity android:name=".Activities.ActivityUserProfile" />
         <activity android:name=".Activities.ActivityRequestSelection" />
         <activity android:name=".Activities.ActivityRequestMap" />
-        <activity android:name=".Activities.ActivityRequest"></activity>
+        <activity android:name=".Activities.ActivityRequest"/>
+        <activity android:name=".Activities.ActivityLoggedInActionBar"/>
+        <activity android:name=".Models.HelpMe">
+        </activity>
     </application>
 
 </manifest>

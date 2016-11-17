@@ -1,7 +1,6 @@
 package com.dryver.UITests;
 
 import android.content.ComponentName;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityDriver;
@@ -10,7 +9,6 @@ import com.dryver.Activities.ActivitySelection;
 import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
-import com.dryver.R;
 
 import org.junit.Rule;
 import org.junit.Test;

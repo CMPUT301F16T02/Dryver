@@ -30,7 +30,7 @@
     tools:context="com.dryver.Activities.ActivitySelection">
 
     <Button
-        android:text="Ryde"
+        android:text="@string/ryde"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/request_button"
@@ -39,7 +39,7 @@
         android:layout_marginTop="49dp" />
 
     <Button
-        android:text="Dryve"
+        android:text="@string/dryve"
         android:layout_height="wrap_content"
         android:layout_marginTop="163dp"
         android:id="@+id/driver_button"

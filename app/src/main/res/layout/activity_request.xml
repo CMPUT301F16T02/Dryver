@@ -38,7 +38,7 @@
                 android:ems="10"
                 android:id="@+id/requestTripPrice"
                 android:duplicateParentState="false"
-                android:hint="Enter trip price" />
+                android:hint="@string/enter_trip_price" />
 
             <Button
                 android:text="@string/activity_request_button_location"

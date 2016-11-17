@@ -29,7 +29,7 @@ import io.searchbox.annotations.JestId;
  * and a Rider.
  */
 public class User implements Serializable {
-    private String userId;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -43,22 +43,22 @@ public class User implements Serializable {
     /**
      * Instantiates a new User with unique id.
      *
-     * @param userId the user id of the user.
+     * @param username the user id of the user.
      */
-    public User(String userId) {
-        this.userId = userId;
+    public User(String username) {
+        this.username = username;
         this.id = null;
     }
 
     /**
      * Instantiates a new User with unique id, first name, and last name.
      *
-     * @param userId    the user id
+     * @param username    the user id
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public User(String userId, String firstName, String lastName,String phoneNumber, String email) {
-        this.userId = userId;
+    public User(String username, String firstName, String lastName, String phoneNumber, String email) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -70,8 +70,12 @@ public class User implements Serializable {
      *
      * @return the user id of the user.
      */
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**

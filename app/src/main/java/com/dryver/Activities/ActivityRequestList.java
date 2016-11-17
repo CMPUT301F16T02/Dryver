@@ -19,7 +19,6 @@
 
 package com.dryver.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -30,7 +29,6 @@ import android.widget.ListView;
 
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
-import com.dryver.Controllers.UserController;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 

@@ -26,7 +26,7 @@ package com.dryver.Models;
 
 public class Driver extends User {
     public Driver(User user) {
-        super(user.getUserId(),
+        super(user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhoneNumber(),

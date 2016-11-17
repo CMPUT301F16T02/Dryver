@@ -42,6 +42,6 @@ public class DriverTests {
     public void testGetId() {
         User user = new User(DEFAULT_DRIVER_ID);
         Driver driver = new Driver(user);
-        assertEquals(DEFAULT_DRIVER_ID, driver.getUserId());
+        assertEquals(DEFAULT_DRIVER_ID, driver.getUsername());
     }
 }

@@ -25,6 +25,8 @@ import android.content.Intent;
 import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Models.User;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Controller for the Current user, as well as the user currently being viewed.
  * Follows the Singleton design pattern, allows user to view ActivityUserProfile.
@@ -80,6 +82,7 @@ public class UserController {
      * @param currentActivity the current activity
      */
     public void viewActiveUserProfile(Activity currentActivity) {
+        viewedUser = activeUser;
         viewUserProfile(currentActivity, activeUser);
     }
 
@@ -98,14 +101,14 @@ public class UserController {
     /**
      * Login the user by userid they provide in the text field.
      *
-     * @param userid the userid
+     * @param username the userid
      * @return the true or false based on login success
      */
-    public boolean login(String userid) {
-        if ((activeUser=ES.getUser(userid)) != null) {
-            return true;
-        }
-        return false;
+    //TODO: Exceptions handled in the activity
+    public boolean login(String username) throws ExecutionException, InterruptedException {
+        ElasticSearchController.GetUserByNameTask getUserByNameTask = new ElasticSearchController.GetUserByNameTask();
+        getUserByNameTask.execute(username);
+        return (activeUser = getUserByNameTask.get()) != null;
     }
 
     /**
@@ -114,5 +117,21 @@ public class UserController {
     public void logout() {
         activeUser = null;
         viewedUser = null;
+    }
+
+    public Boolean updateActiveUser(){
+        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
+        updateUserTask.execute(activeUser);
+
+        try {
+            return updateUserTask.get();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -35,6 +35,8 @@ import com.dryver.Models.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * User registration screen. User is able to register.
@@ -76,30 +78,36 @@ public class ActivityRegistration extends Activity {
                         && HelpMe.isValidPhone(phoneEditText)
                         && HelpMe.isValidEmail(emailEditText)) {
 
-                    //TODO: Is Address really necessary?
                     User user = new User(usernameEditText.getText().toString(),
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    Boolean added = ES.addUser(user);
+                    ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
+                    addUserTask.execute(user);
 
-                    while (added == null);
-
-                    if (added) {
-                        Log.i("Info", "User added succesfully via ElasticSearch Controller");
-                        userController.setActiveUser(user);
-                        Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
-                        ActivityRegistration.this.startActivity(intent);
-                    } else {
-                        usernameEditText.setError("Username is taken. Try something else.");
+                    Boolean added = null;
+                    try {
+                        added = addUserTask.get();
+                        if (added) {
+                            Log.i("Info", "User added succesfully via ElasticSearch Controller");
+                            userController.setActiveUser(user);
+                            Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                            ActivityRegistration.this.startActivity(intent);
+                        } else {
+                            usernameEditText.setError("Username is taken. Try something else.");
+                        }
                     }
-                }
-                else if(!HelpMe.isValidEmail(emailEditText)) {
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                } else if(!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
-                }
-                else if(!HelpMe.isValidPhone(phoneEditText)) {
+                } else if(!HelpMe.isValidPhone(phoneEditText)) {
                     emailEditText.setError("Invalid phone number.");
                 }
             }

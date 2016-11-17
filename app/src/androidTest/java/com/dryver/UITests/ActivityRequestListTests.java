@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityRegistration;
+import com.dryver.Activities.ActivityRequest;
 import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
@@ -12,6 +13,8 @@ import com.dryver.Models.User;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.concurrent.ExecutionException;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
@@ -40,23 +43,28 @@ public class ActivityRequestListTests {
      * Initializes the input strings for the editTexts available during registration
      */
     @Before
-    public void addUserToESLogin() {
+    public void addUserToESLogin() throws ExecutionException, InterruptedException {
         ElasticSearchController ES = ElasticSearchController.getInstance();
-        ES.addUser(testUser);
+        ElasticSearchController.AddUserByIDTask addRequestTask = new ElasticSearchController.AddUserByIDTask();
+        addRequestTask.execute(testUser);
         userController.login(testUserName);
     }
 
     @Test
-    public void TestOpenUserProfile(){
+    public void TestOpenUserProfile() throws InterruptedException {
         openActionBarOverflowOrOptionsMenu(getTargetContext());
         onView(withText("View Profile")).perform(click());
+
+        Thread.sleep(1000);
 
         intended(hasComponent(new ComponentName(getTargetContext(), ActivityUserProfile.class)));
     }
 
     @Test
-    public void TestNewRequest(){
-        //TODO: Implememnt.
+    public void TestMakeRequest() throws InterruptedException {
+        onView(withText("Make Request")).perform(click());
+        Thread.sleep(1000);
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRequest.class)));
     }
 
 }

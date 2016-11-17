@@ -20,7 +20,6 @@
 package com.dryver.Activities;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.dryver.R;
