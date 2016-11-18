@@ -22,7 +22,9 @@ package com.dryver.Controllers;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.dryver.Activities.ActivityDriverProfile;
 import com.dryver.Activities.ActivityUserProfile;
+import com.dryver.Models.Driver;
 import com.dryver.Models.User;
 
 import java.util.concurrent.ExecutionException;
@@ -94,8 +96,17 @@ public class UserController {
      */
     public void viewUserProfile(Activity currentActivity, User user) {
         viewedUser = user;
-        Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
-        currentActivity.startActivity(intent);
+        if (user.equals(activeUser)) {
+            Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
+            currentActivity.startActivity(intent);
+        } else if (user instanceof Driver){
+            Intent intent = new Intent(currentActivity, ActivityDriverProfile.class);
+            currentActivity.startActivity(intent);
+        } else{
+            //do something
+        }
+
+
     }
 
     /**

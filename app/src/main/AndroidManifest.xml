@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2016
   ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~
@@ -17,9 +18,9 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dryver">
+          package="com.dryver">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -28,22 +29,24 @@
         android:supportsRtl="true">
         <activity android:name=".Activities.ActivityOpeningPage">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ActivityLogin" />
-        <activity android:name=".Activities.ActivityRegistration" />
-        <activity android:name=".Activities.ActivitySelection" />
-        <activity android:name=".Activities.ActivityDriver" />
-        <activity android:name=".Activities.ActivityRequestList" />
-        <activity android:name=".Activities.ActivityUserProfile" />
-        <activity android:name=".Activities.ActivityRequestSelection" />
-        <activity android:name=".Activities.ActivityRequestMap" />
+        <activity android:name=".Activities.ActivityLogin"/>
+        <activity android:name=".Activities.ActivityRegistration"/>
+        <activity android:name=".Activities.ActivitySelection"/>
+        <activity android:name=".Activities.ActivityDriver"/>
+        <activity android:name=".Activities.ActivityRequestList"/>
+        <activity android:name=".Activities.ActivityUserProfile"/>
+        <activity android:name=".Activities.ActivityRequestSelection"/>
+        <activity android:name=".Activities.ActivityRequestMap"/>
         <activity android:name=".Activities.ActivityRequest"/>
         <activity android:name=".Activities.ActivityLoggedInActionBar"/>
         <activity android:name=".Models.HelpMe">
+        </activity>
+        <activity android:name=".Activities.ActivityDriverProfile">
         </activity>
     </application>
 
