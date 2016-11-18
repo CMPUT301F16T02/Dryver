@@ -1,7 +1,10 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
@@ -29,5 +32,27 @@ public class ActivityDriverProfile extends Activity {
         phone = (TextView)findViewById(R.id.driver_profile_phone);
         email = (TextView)findViewById(R.id.driver_profile_email);
         vehicleInfo = (TextView)findViewById(R.id.driver_profile_vehicle_info);
+
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(phone.getText().toString()));
+                startActivity(intent);
+            }
+        });
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, email.getText().toString());
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Message to: " +
+                        userController.getViewedUser().getUsername() +
+                        " From: " +
+                        userController.getActiveUser().getUsername());
+                intent.setType("message/rfc822");
+            }
+        });
     }
 }
