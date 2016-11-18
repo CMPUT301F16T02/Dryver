@@ -61,11 +61,11 @@ public class RequestSingleton {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
             ElasticSearchController.GetRequestsTask getRequestsTask = new ElasticSearchController.GetRequestsTask();
-            getRequestsTask.execute(userController.getActiveUser().getUsername());
+            getRequestsTask.execute(userController.getActiveUser().getId());
             try {
                 requests = getRequestsTask.get();
             } catch (Exception e) {
-                Log.i("Error", "Failed to get " + userController.getActiveUser().getUsername() + "'s ID.");
+                Log.i("Error", "Failed to get " + userController.getActiveUser().getId() + "'s ID.");
             }
         } else if(userController.getActiveUser() instanceof Driver){
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
@@ -129,7 +129,7 @@ public class RequestSingleton {
                 requests.remove(request);
             }
         } catch (Exception e) {
-            Log.i("Error", "Failed to get " + userController.getActiveUser().getUsername() + "'s ID.");
+            Log.i("Error", "Failed to get " + userController.getActiveUser().getId() + "'s ID.");
         } finally {
             return deleted;
         }

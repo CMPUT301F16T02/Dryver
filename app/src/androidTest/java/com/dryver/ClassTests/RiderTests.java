@@ -42,6 +42,6 @@ public class RiderTests {
     public void testGetId() {
         User user = new User(DEFAULT_RIDER_ID);
         Rider rider = new Rider(user);
-        assertEquals(DEFAULT_RIDER_ID, rider.getUsername());
+        assertEquals(DEFAULT_RIDER_ID, rider.getId());
     }
 }

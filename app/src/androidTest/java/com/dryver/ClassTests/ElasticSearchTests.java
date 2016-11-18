@@ -20,19 +20,12 @@
 package com.dryver.ClassTests;
 
 
-import android.util.Log;
-
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 
-import org.junit.BeforeClass;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import static com.dryver.Controllers.ElasticSearchController.GetUsersTask;
 
 /**
  * Various Tests for the ElasticSearchController
@@ -68,12 +61,19 @@ public class ElasticSearchTests {
     @Test
     public void testAddDeleteUser() throws InterruptedException, ExecutionException {
         User user = testUser;
+        Assert.assertTrue(ES.deleteUser(user));
+        Assert.assertTrue(ES.addUser(user));
 
-        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-        deleteUserByIdTask.execute(user);
-        assertFalse(deleteUserByIdTask.get());
+//        ElasticSearchController.DeleteUserByIdTask task = new ElasticSearchController.DeleteUserByIdTask();
+//        ElasticSearchController.AddUserTask task = new ElasticSearchController.AddUserTask();
+//        Assert.assertTrue(task.execute(user).get());
+//        assertTrue(ES.addUserByUsername(user));
 
-//        ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
+//        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
+//        deleteUserByIdTask.execute(user);
+//        assertFalse(deleteUserByIdTask.get());
+
+//        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
 //        addUserTask.execute(user);
 //        assertTrue(addUserTask.get());
 
