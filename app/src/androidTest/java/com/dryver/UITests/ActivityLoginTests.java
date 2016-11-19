@@ -49,6 +49,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 
 public class ActivityLoginTests {
+    private ElasticSearchController ES = ElasticSearchController.getInstance();
     private String testUserName = "TestyMcTesterton";
     private User testUser = new User(testUserName, "fTest", "lTest", "5555555555", "Test@Test.com");
 
@@ -58,9 +59,7 @@ public class ActivityLoginTests {
 
     @Before
     public void addUserToES(){
-        ElasticSearchController ES = ElasticSearchController.getInstance();
-        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
-        addUserTask.execute(testUser);
+        ES.addUser(testUser);
     }
 
     /**

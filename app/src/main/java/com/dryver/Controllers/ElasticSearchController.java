@@ -22,8 +22,6 @@ package com.dryver.Controllers;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.common.cache.CacheStats;
-import com.google.common.reflect.Parameter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -45,7 +43,6 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
-import io.searchbox.indices.template.DeleteTemplate;
 
 /**
  * Used to communicate with the Elasticsearch server follows the Songleton design pattern.
@@ -121,9 +118,11 @@ public class ElasticSearchController {
 
     }
 
+    // ==============           USER               ===============
+
     public boolean addUser(User user) {
         boolean addable = false;
-        GetUserByUsernameTask getTask = new GetUserByUsernameTask();
+        GetUserTask getTask = new GetUserTask();
         try {
             if (getTask.execute(user.getId()).get() == null) {
                 AddUserTask addTask = new AddUserTask();
@@ -139,9 +138,50 @@ public class ElasticSearchController {
     }
 
     public boolean deleteUser(User user) {
-        DeleteUserByIdTask deleteTask = new DeleteUserByIdTask();
-        deleteTask.execute(user);
-        return true;
+        boolean addable = false;
+        GetUserTask getTask = new GetUserTask();
+        try {
+            if (getTask.execute(user.getId()).get() != null) {
+                DeleteUserTask deleteTask = new DeleteUserTask();
+                deleteTask.execute(user);
+                addable = true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return addable;
+    }
+
+    public boolean updateUser(User user) {
+        boolean addable = false;
+        GetUserTask getTask = new GetUserTask();
+        try {
+            if (getTask.execute(user.getId()).get() != null) {
+                AddUserTask addTask = new AddUserTask();
+                addTask.execute(user);
+                addable = true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return addable;
+    }
+
+    public User getUserByString(String username) {
+        GetUserTask getTask = new GetUserTask();
+        User temp = null;
+        try {
+            temp = getTask.execute(username).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return temp;
     }
 
     /**
@@ -150,15 +190,13 @@ public class ElasticSearchController {
      * @see User
      * @return Boolean
      */
-    public static class AddUserTask extends AsyncTask<User, Void, Boolean> {
+    private static class AddUserTask extends AsyncTask<User, Void, Boolean> {
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
 
             boolean addable = false;
-
-//            Get get = new Get.Builder(search_parameters[0].getId()).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
-            Index index = new Index.Builder(search_parameters[0]).type(USER).id(search_parameters[0].getId()).build();
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).build();
 
             try {
                 DocumentResult result = client.execute(index);
@@ -176,13 +214,13 @@ public class ElasticSearchController {
      * Deletes a user in the database based on the user id.
      * @see User
      */
-    public static class DeleteUserByIdTask extends AsyncTask<User, Void, Boolean> {
+    private static class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(User... search_parameters) {
             verifySettings();
 
-            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).build();
+            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
 
             try {
                 client.execute(delete);
@@ -199,12 +237,12 @@ public class ElasticSearchController {
      * @return User
      * @see User
      */
-    public static class GetUserByUsernameTask extends AsyncTask<String, Void, User> {
+    private static class GetUserTask extends AsyncTask<String, Void, User> {
 
         @Override
         protected User doInBackground(String... search_parameters) {
             verifySettings();
-            Get get = new Get.Builder(INDEX, search_parameters[0]).type("user").build();
+            Get get = new Get.Builder(INDEX, search_parameters[0]).type("user").id(search_parameters[0]).build();
 
             User user = null;
             try {
@@ -217,34 +255,34 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * Gets a user based on the users' user id
-     *
-     * @return User
-     * @see User
-     */
-    private static User getUserByUsername(String... search_parameters) {
-        Log.i("Info", "logging in with user id: " + search_parameters[0]);
-
-        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
-
-        verifySettings();
-        Search search = new Search.Builder(search_string)
-                .addIndex(INDEX)
-                .addType(USER)
-                .build();
-
-        Log.i("info", "Searching using " + search_string.toString());
-
-        User user = null;
-        try {
-            JestResult result = client.execute(search);
-            user = result.getSourceAsObject(User.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
+    //    /**
+//     * Gets a user based on the users' user id
+//     *
+//     * @return User
+//     * @see User
+//     */
+    //    private static User getUserByUsername(String... search_parameters) {
+//        Log.i("Info", "logging in with user id: " + search_parameters[0]);
+//
+//        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
+//
+//        verifySettings();
+//        Search search = new Search.Builder(search_string)
+//                .addIndex(INDEX)
+//                .addType(USER)
+//                .build();
+//
+//        Log.i("info", "Searching using " + search_string.toString());
+//
+//        User user = null;
+//        try {
+//            JestResult result = client.execute(search);
+//            user = result.getSourceAsObject(User.class);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return user;
+//    }
 
     /**
      * Updates a existing user profile based on the ES id
@@ -273,6 +311,8 @@ public class ElasticSearchController {
             }
         }
     }
+
+    // ==============           REQUEST             ===============
 
     /**
      * Adds a request to the ElasticSearch server

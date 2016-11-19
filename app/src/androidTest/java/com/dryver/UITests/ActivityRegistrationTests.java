@@ -75,15 +75,10 @@ public class ActivityRegistrationTests {
     public void DeleteUser() throws InterruptedException, ExecutionException {
         ElasticSearchController ES = ElasticSearchController.getInstance();
 
-        ElasticSearchController.GetUserByUsernameTask getUserByUsernameTask = new ElasticSearchController.GetUserByUsernameTask();
-        getUserByUsernameTask.execute(username);
-
-        User user = getUserByUsernameTask.get();
+        User user = ES.getUserByString(username);
         Thread.sleep(1000);
-        if(user != null)
-        {
-            ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-            deleteUserByIdTask.execute(user);
+        if(user != null) {
+            ES.deleteUser(user);
             Thread.sleep(1000);
         }
     }
@@ -129,9 +124,7 @@ public class ActivityRegistrationTests {
 
         AddedUser = new User(username, firstname, lastname, phoneNumber, email);
 
-        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
-        addUserTask.execute(AddedUser);
-        assertTrue(addUserTask.get());
+        assertTrue(ES.addUser(AddedUser));
 
         onView(withText("Registration")).check(ViewAssertions.matches(isDisplayed()));
 
@@ -160,8 +153,7 @@ public class ActivityRegistrationTests {
     @After
     public void removeUser(){
         ElasticSearchController ES = ElasticSearchController.getInstance();
-        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-        deleteUserByIdTask.execute(AddedUser);
+        ES.deleteUser(AddedUser);
     }
 
 

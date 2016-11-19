@@ -23,9 +23,18 @@ package com.dryver.ClassTests;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Various Tests for the ElasticSearchController
@@ -38,20 +47,12 @@ public class ElasticSearchTests {
     private final static User testUser = new User(username, "testFirst", "testLast", "7805555555", "test@test.com");
     // TODO: 2016-11-13 remove sleep statements and replace with a wait on condition somehow.
 
-//    @BeforeClass
-//    public static void removeTestUsers() throws ExecutionException, InterruptedException {
-//        ElasticSearchController.DeleteRequestTask deleteRequestTask = new ElasticSearchController.DeleteRequestTask();
-//        deleteRequestTask.execute();
-//        ElasticSearchController.GetUserByUsernameTask getUserByNameTask = new ElasticSearchController.GetUserByUsernameTask();
-//        getUserByNameTask.execute(username);
-//
-//        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(getUserByNameTask.get());
-//
-//        deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(testUser);
-//
-//    }
+    @AfterClass
+    @BeforeClass
+    public static void removeTestUsers() throws ExecutionException, InterruptedException {
+        ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
+        elasticSearchController.deleteUser(testUser);
+    }
 
 
     /**
@@ -60,86 +61,48 @@ public class ElasticSearchTests {
      */
     @Test
     public void testAddDeleteUser() throws InterruptedException, ExecutionException {
-        User user = testUser;
-        Assert.assertTrue(ES.deleteUser(user));
-        Assert.assertTrue(ES.addUser(user));
-
-//        ElasticSearchController.DeleteUserByIdTask task = new ElasticSearchController.DeleteUserByIdTask();
-//        ElasticSearchController.AddUserTask task = new ElasticSearchController.AddUserTask();
-//        Assert.assertTrue(task.execute(user).get());
-//        assertTrue(ES.addUserByUsername(user));
-
-//        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(user);
-//        assertFalse(deleteUserByIdTask.get());
-
-//        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
-//        addUserTask.execute(user);
-//        assertTrue(addUserTask.get());
-
-//        deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(user);
-//        assertTrue(deleteUserByIdTask.get());
-
-//        ElasticSearchController.GetUserByUsernameTask getUserByNameTask = new ElasticSearchController.GetUserByUsernameTask();
-//        getUserByNameTask.execute(user.getUsername());
-//        assertNull(getUserByNameTask.get());
-
+        assertFalse(ES.deleteUser(testUser));
+        assertTrue(ES.addUser(testUser));
+        assertFalse(ES.addUser(testUser));
+        assertTrue(ES.deleteUser(testUser));
     }
 
-//    /**
-//     * Tests updating an existing user's values in the database
-//     * @throws InterruptedException
-//     */
-//    @Test
-//    public void testUpdateUser() throws InterruptedException, ExecutionException {
-//        User user =  new User(username);
-//
-//        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
-//        updateUserTask.execute(user);
-//        assertFalse(updateUserTask.get());
-//
-//        ElasticSearchController.AddUserTask addUserTask = new ElasticSearchController.AddUserTask();
-//        addUserTask.execute(user);
-//
-//        Thread.sleep(3000);
-//
-//        ElasticSearchController.GetUserByUsernameTask getUserByNameTask = new ElasticSearchController.GetUserByUsernameTask();
-//        getUserByNameTask.execute(user.getUsername());
-//        User requestedUser = getUserByNameTask.get();
-//
-//        assertEquals(null, requestedUser.getFirstName());
-//        assertEquals(user.getLastName(), requestedUser.getLastName());
-//        assertEquals(user.getPhoneNumber(), requestedUser.getPhoneNumber());
-//        assertEquals(user.getEmail(), requestedUser.getEmail());
-//
-//        user.setFirstName("testFirst");
-//        user.setLastName("testLast");
-//        user.setPhoneNumber("7805555555");
-//        user.setEmail("test@test.com");
-//
-//        assertNotEquals(user.getFirstName(), requestedUser.getFirstName());
-//        assertNotEquals(user.getLastName(), requestedUser.getLastName());
-//        assertNotEquals(user.getPhoneNumber(), requestedUser.getPhoneNumber());
-//        assertNotEquals(user.getEmail(), requestedUser.getEmail());
-//
-//        updateUserTask = new ElasticSearchController.UpdateUserTask();
-//        updateUserTask.execute(user);
-//        assertTrue(updateUserTask.get());
-//        Thread.sleep(3000);
-//
-//        getUserByNameTask = new ElasticSearchController.GetUserByUsernameTask();
-//        getUserByNameTask.execute(user.getUsername());
-//        User requestedUser2 = getUserByNameTask.get();
-//        assertEquals(user.getFirstName(), requestedUser2.getFirstName());
-//        assertEquals(user.getLastName(), requestedUser2.getLastName());
-//        assertEquals(user.getPhoneNumber(), requestedUser2.getPhoneNumber());
-//        assertEquals(user.getEmail(), requestedUser2.getEmail());
-//
-//        ElasticSearchController.DeleteUserByIdTask deleteUserByIdTask = new ElasticSearchController.DeleteUserByIdTask();
-//        deleteUserByIdTask.execute(user);
-//        Thread.sleep(3000);
-//    }
+    /**
+     * Tests updating an existing user's values in the database
+     * @throws InterruptedException
+     */
+    @Test
+    public void testUpdateUser() throws InterruptedException, ExecutionException {
+        User user =  new User(username);
+
+        assertFalse(ES.updateUser(user));
+        assertTrue(ES.addUser(user));
+
+        User requestedUser = ES.getUserByString(user.getId());
+
+        assertEquals(user.getFirstName(), requestedUser.getFirstName());
+        assertEquals(user.getLastName(), requestedUser.getLastName());
+        assertEquals(user.getPhoneNumber(), requestedUser.getPhoneNumber());
+        assertEquals(user.getEmail(), requestedUser.getEmail());
+
+        user.setFirstName("testFirst");
+        user.setLastName("testLast");
+        user.setPhoneNumber("7805555555");
+        user.setEmail("test@test.com");
+
+        assertNotEquals(user.getFirstName(), requestedUser.getFirstName());
+        assertNotEquals(user.getLastName(), requestedUser.getLastName());
+        assertNotEquals(user.getPhoneNumber(), requestedUser.getPhoneNumber());
+        assertNotEquals(user.getEmail(), requestedUser.getEmail());
+
+        assertTrue(ES.updateUser(user));
+
+        User requestedUser2 = ES.getUserByString(user.getId());
+        assertEquals(user.getFirstName(), requestedUser2.getFirstName());
+        assertEquals(user.getLastName(), requestedUser2.getLastName());
+        assertEquals(user.getPhoneNumber(), requestedUser2.getPhoneNumber());
+        assertEquals(user.getEmail(), requestedUser2.getEmail());
+    }
 
 //    /**
 //     * Tests getting a user from the database

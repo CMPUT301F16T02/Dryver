@@ -106,9 +106,7 @@ public class UserController {
      */
     //TODO: Exceptions handled in the activity
     public boolean login(String username) throws ExecutionException, InterruptedException {
-        ElasticSearchController.GetUserByUsernameTask getUserByUsernameTask = new ElasticSearchController.GetUserByUsernameTask();
-        getUserByUsernameTask.execute(username);
-        return (activeUser = getUserByUsernameTask.get()) != null;
+        return (ES.getUserByString(username)) != null;
     }
 
     /**
