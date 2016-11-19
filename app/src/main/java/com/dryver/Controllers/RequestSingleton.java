@@ -60,13 +60,7 @@ public class RequestSingleton {
     private void updateRequests() {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
-            ElasticSearchController.GetRequestsTask getRequestsTask = new ElasticSearchController.GetRequestsTask();
-            getRequestsTask.execute(userController.getActiveUser().getUsername());
-            try {
-                requests = getRequestsTask.get();
-            } catch (Exception e) {
-                Log.i("Error", "Failed to get " + userController.getActiveUser().getUsername() + "'s ID.");
-            }
+            requests = ES.getRequests(userController.getActiveUser().getId());
         } else if(userController.getActiveUser() instanceof Driver){
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
@@ -83,25 +77,13 @@ public class RequestSingleton {
      */
     //TODO Correct Times... Why is date passed and not used?
     public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
-        Log.i("info", "RequestSingleton addRequest()");
-
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
 
-        ElasticSearchController.AddRequestTask addRequestTask = new ElasticSearchController.AddRequestTask();
-        addRequestTask.execute(request);
-        try{
-            if(addRequestTask.get()) {
-                Log.i("info", "Request Successfully added to server");
-                requests.add(request);
-            } else {
-                Log.i("info", "Request no successfully added to server...");
-            }
-        }catch (Exception e){
-            e.getStackTrace();
+        if (ES.addRequest(request)) {
+            requests.add(request);
         }
-
     }
 
     /**
@@ -118,21 +100,11 @@ public class RequestSingleton {
             return false;
         }
 
-        ElasticSearchController.DeleteRequestTask deleteRequestTask = new ElasticSearchController.DeleteRequestTask();
-        deleteRequestTask.execute(request);
-
-        Boolean deleted = false;
-        try {
-            deleted = deleteRequestTask.get();
-            if(deleted) {
-                Log.i("info", "Request successfully removed from the server");
-                requests.remove(request);
-            }
-        } catch (Exception e) {
-            Log.i("Error", "Failed to get " + userController.getActiveUser().getUsername() + "'s ID.");
-        } finally {
-            return deleted;
+        Boolean deleted;
+        if (deleted = ES.deleteRequest(request)) {
+            requests.remove(request);
         }
+        return deleted;
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

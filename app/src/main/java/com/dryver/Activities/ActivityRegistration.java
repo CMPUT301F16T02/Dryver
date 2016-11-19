@@ -84,26 +84,13 @@ public class ActivityRegistration extends Activity {
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
 
-                    ElasticSearchController.AddUserByIDTask addUserTask = new ElasticSearchController.AddUserByIDTask();
-                    addUserTask.execute(user);
-
-                    Boolean added = null;
-                    try {
-                        added = addUserTask.get();
-                        if (added) {
-                            Log.i("Info", "User added succesfully via ElasticSearch Controller");
-                            userController.setActiveUser(user);
-                            Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
-                            ActivityRegistration.this.startActivity(intent);
-                        } else {
-                            usernameEditText.setError("Username is taken. Try something else.");
-                        }
-                    }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    catch (ExecutionException e) {
-                        e.printStackTrace();
+                    if (ES.addUser(user)) {
+                        Log.i("Info", "User added succesfully via ElasticSearch Controller");
+                        userController.setActiveUser(user);
+                        Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                        ActivityRegistration.this.startActivity(intent);
+                    } else {
+                        usernameEditText.setError("Username is taken. Try something else.");
                     }
                 } else if(!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
