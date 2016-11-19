@@ -57,14 +57,12 @@ public class ElasticSearchTests {
     private final static Double cost = 12.00;
     private final static Request testRequest = new Request(username, calendar, toLocation, fromLocation, cost);
 
-    @AfterClass
-    @BeforeClass
-    public static void removeTestUsers() throws ExecutionException, InterruptedException {
-        ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
-        elasticSearchController.deleteUser(testUser);
-        elasticSearchController.deleteRequest(testRequest);
-        Thread.sleep(2000);
-    }
+//    @AfterClass
+//    public static void removeTestUsers() throws ExecutionException, InterruptedException {
+//        ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
+//        elasticSearchController.deleteUser(testUser);
+//        elasticSearchController.deleteRequestByRiderID(testRequest);
+//    }
 
 
     /**
@@ -72,11 +70,13 @@ public class ElasticSearchTests {
      * @throws InterruptedException
      */
     @Test
-    public void testAddDeleteUser() {
+    public void testAddDeleteUser() throws InterruptedException {
         assertFalse(ES.deleteUser(testUser));
         assertTrue(ES.addUser(testUser));
+        Thread.sleep(2000);
         assertFalse(ES.addUser(testUser));
         assertTrue(ES.deleteUser(testUser));
+        Thread.sleep(2000);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ElasticSearchTests {
      * @throws InterruptedException
      */
     @Test
-    public void testUpdateUser() {
+    public void testUpdateUser() throws InterruptedException {
         User user =  new User(username);
 
         assertFalse(ES.updateUser(user));
@@ -114,6 +114,10 @@ public class ElasticSearchTests {
         assertEquals(user.getLastName(), requestedUser2.getLastName());
         assertEquals(user.getPhoneNumber(), requestedUser2.getPhoneNumber());
         assertEquals(user.getEmail(), requestedUser2.getEmail());
+
+        ES.deleteUser(user);
+        Thread.sleep(2000);
+
     }
 
     @Test
@@ -123,6 +127,8 @@ public class ElasticSearchTests {
         Thread.sleep(2000);
         assertFalse(ES.addRequest(testRequest));
         assertTrue(ES.deleteRequest(testRequest));
+
+        Thread.sleep(2000);
     }
 
     @Test
@@ -166,5 +172,8 @@ public class ElasticSearchTests {
         assertEquals(esRequest.getFromLocation().getLatitude(), esRequest2.getFromLocation().getLatitude());
         assertEquals(esRequest.getFromLocation().getLongitude(), esRequest2.getFromLocation().getLongitude());
         assertEquals(esRequest.getCost(), esRequest2.getCost());
+
+        ES.deleteRequest(esRequest2);
+        Thread.sleep(2000);
     }
 }

@@ -259,7 +259,6 @@ public class ElasticSearchController {
     }
     // ==============           REQUEST             ===============
 
-    // TODO: 2016-11-19 finish request side of things.
     public boolean addRequest(Request request) {
         if (getRequestByMatch(request) == null) {
             AddRequestTask addTask = new AddRequestTask();
@@ -284,6 +283,17 @@ public class ElasticSearchController {
         if (getRequestByID(request.getId()) != null) {
             DeleteRequestTask deleteTask = new DeleteRequestTask();
             deleteTask.execute(request);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteRequestByRiderID(Request request) {
+        Request testRequest;
+        if ((testRequest = getRequestByRiderID(request)) != null) {
+            DeleteRequestTask deleteTask = new DeleteRequestTask();
+            deleteTask.execute(testRequest);
+            deleteRequest(request); //recursively delete all similar requests to remove redundancy.
             return true;
         }
         return false;
@@ -346,12 +356,47 @@ public class ElasticSearchController {
         return null;
     }
 
+    public Request getRequestByRiderID(Request request) {
+        GetRequestsTask getTask = new GetRequestsTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+
+        try {
+            requestList = getTask.execute(request.getRiderId()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (!requestList.isEmpty()) {
+            for (Request rq: requestList) {
+                if (rq.getRiderId().equals(request.getRiderId())) {
+                    return rq;
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Request> getRequests(String riderID) {
+        GetRequestsTask getTask = new GetRequestsTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(riderID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
     /**
      * A class for getting the list of requests associated with a rider on the Elastic Search server
      * @see Request
      * @return boolean
      */
-    public static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
+    private static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
@@ -379,7 +424,7 @@ public class ElasticSearchController {
      * @see Request
      * @return boolean
      */
-    public static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
+    private static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
@@ -408,7 +453,7 @@ public class ElasticSearchController {
      * @return boolean
      * @throws InterruptedException
      */
-    public static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
+    private static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
@@ -438,7 +483,7 @@ public class ElasticSearchController {
      * @see Request
      * @return boolean
      * */
-    public static class GetRequestTask extends AsyncTask<String, Void, Request> {
+    private static class GetRequestTask extends AsyncTask<String, Void, Request> {
 
         @Override
         protected Request doInBackground(String... search_parameters) {
@@ -457,7 +502,7 @@ public class ElasticSearchController {
     }
 
 
-    public static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
+    private static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
