@@ -138,37 +138,37 @@ public class ElasticSearchController {
     }
 
     public boolean deleteUser(User user) {
-        boolean addable = false;
+        boolean deletable = false;
         GetUserTask getTask = new GetUserTask();
         try {
             if (getTask.execute(user.getId()).get() != null) {
                 DeleteUserTask deleteTask = new DeleteUserTask();
                 deleteTask.execute(user);
-                addable = true;
+                deletable = true;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return addable;
+        return deletable;
     }
 
     public boolean updateUser(User user) {
-        boolean addable = false;
+        boolean updatable = false;
         GetUserTask getTask = new GetUserTask();
         try {
             if (getTask.execute(user.getId()).get() != null) {
                 AddUserTask addTask = new AddUserTask();
                 addTask.execute(user);
-                addable = true;
+                updatable = true;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return addable;
+        return updatable;
     }
 
     public User getUserByString(String username) {
@@ -255,71 +255,32 @@ public class ElasticSearchController {
         }
     }
 
-    //    /**
-//     * Gets a user based on the users' user id
-//     *
-//     * @return User
-//     * @see User
-//     */
-    //    private static User getUserByUsername(String... search_parameters) {
-//        Log.i("Info", "logging in with user id: " + search_parameters[0]);
-//
-//        String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"userId\": \"" + search_parameters[0] + "\"}}}";
-//
-//        verifySettings();
-//        Search search = new Search.Builder(search_string)
-//                .addIndex(INDEX)
-//                .addType(USER)
-//                .build();
-//
-//        Log.i("info", "Searching using " + search_string.toString());
-//
-//        User user = null;
+    // ==============           REQUEST             ===============
+
+    // TODO: 2016-11-19 finish request side of things.
+    public boolean addRequest(Request request) {
+//        boolean addable = false;
+//        GetRequestTask getTask = new GetRequestTask();
 //        try {
-//            JestResult result = client.execute(search);
-//            user = result.getSourceAsObject(User.class);
-//        } catch (IOException e) {
+//            if (getTask.execute(user.getId()).get() == null) {
+//                AddUserTask addTask = new AddUserTask();
+//                addTask.execute(user);
+//                addable = true;
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
 //            e.printStackTrace();
 //        }
-//        return user;
-//    }
-
-    /**
-     * Updates a existing user profile based on the ES id
-     * @see User
-     * */
-    public static class UpdateUserTask extends AsyncTask<User, Void, Boolean> {
-    	
-        @Override
-        protected Boolean doInBackground(User... search_parameters) {
-            verifySettings();
-
-            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
-
-            try {
-                DocumentResult result = client.execute(index);
-                if (result.isSucceeded()) {
-                    search_parameters[0].setId(result.getId());
-                    return true;
-                } else {
-                    Log.i("Error", "Elastic search was not able to add the user.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                return true;
-            }
-        }
+//        return addable;
+        return true;
     }
-
-    // ==============           REQUEST             ===============
 
     /**
      * Adds a request to the ElasticSearch server
      * @see Request
      * @return boolean
      * */
-
     public static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
 
         @Override
@@ -412,7 +373,7 @@ public class ElasticSearchController {
      * @return boolean
      */
 
-    public static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
+    public static class GetRequestTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
