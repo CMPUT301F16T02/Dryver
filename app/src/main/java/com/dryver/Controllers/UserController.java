@@ -117,19 +117,20 @@ public class UserController {
         viewedUser = null;
     }
 
+    // TODO: 2016-11-19 what is this?
     public Boolean updateActiveUser(){
-        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
-        updateUserTask.execute(activeUser);
-
-        try {
-            return updateUserTask.get();
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+//        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
+//        updateUserTask.execute(activeUser);
+//
+//        try {
+//            return updateUserTask.get();
+//        }
+//        catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 }

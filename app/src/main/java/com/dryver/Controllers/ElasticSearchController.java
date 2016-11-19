@@ -121,54 +121,30 @@ public class ElasticSearchController {
     // ==============           USER               ===============
 
     public boolean addUser(User user) {
-        boolean addable = false;
-        GetUserTask getTask = new GetUserTask();
-        try {
-            if (getTask.execute(user.getId()).get() == null) {
-                AddUserTask addTask = new AddUserTask();
-                addTask.execute(user);
-                addable = true;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (getUserByString(user.getId()) == null) {
+            AddUserTask addTask = new AddUserTask();
+            addTask.execute(user);
+            return true;
         }
-        return addable;
+        return false;
     }
 
     public boolean deleteUser(User user) {
-        boolean deletable = false;
-        GetUserTask getTask = new GetUserTask();
-        try {
-            if (getTask.execute(user.getId()).get() != null) {
-                DeleteUserTask deleteTask = new DeleteUserTask();
-                deleteTask.execute(user);
-                deletable = true;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (getUserByString(user.getId()) != null) {
+            DeleteUserTask deleteTask = new DeleteUserTask();
+            deleteTask.execute(user);
+            return true;
         }
-        return deletable;
+        return false;
     }
 
     public boolean updateUser(User user) {
-        boolean updatable = false;
-        GetUserTask getTask = new GetUserTask();
-        try {
-            if (getTask.execute(user.getId()).get() != null) {
-                AddUserTask addTask = new AddUserTask();
-                addTask.execute(user);
-                updatable = true;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (getUserByString(user.getId()) != null) {
+            AddUserTask addTask = new AddUserTask();
+            addTask.execute(user);
+            return true;
         }
-        return updatable;
+        return false;
     }
 
     public User getUserByString(String username) {
@@ -242,7 +218,7 @@ public class ElasticSearchController {
         @Override
         protected User doInBackground(String... search_parameters) {
             verifySettings();
-            Get get = new Get.Builder(INDEX, search_parameters[0]).type("user").id(search_parameters[0]).build();
+            Get get = new Get.Builder(INDEX, search_parameters[0]).type(USER).id(search_parameters[0]).build();
 
             User user = null;
             try {
@@ -255,53 +231,146 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Used to get a list of users.
+     */
+    public static class GetUsersTask extends AsyncTask<String, Void, ArrayList<User>> {
+        @Override
+        protected ArrayList<User> doInBackground(String... search_parameters) {
+            verifySettings();
+            ArrayList<User> users = new ArrayList<User>();
+
+            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType(USER).build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<User> foundUsers = result.getSourceAsObjectList(User.class);
+                    users.addAll(foundUsers);
+                } else {
+                    Log.i("Error", "The search query failed to find users");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Something went wrong when communicating with the server!");
+
+            }
+            return users;
+        }
+    }
     // ==============           REQUEST             ===============
 
     // TODO: 2016-11-19 finish request side of things.
     public boolean addRequest(Request request) {
-//        boolean addable = false;
-//        GetRequestTask getTask = new GetRequestTask();
-//        try {
-//            if (getTask.execute(user.getId()).get() == null) {
-//                AddUserTask addTask = new AddUserTask();
-//                addTask.execute(user);
-//                addable = true;
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//        return addable;
-        return true;
+        if (getRequestByMatch(request) == null) {
+            AddRequestTask addTask = new AddRequestTask();
+            addTask.execute(request);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteRequest(Request request) {
+        Request testRequest;
+        if ((testRequest = getRequestByMatch(request)) != null) {
+            DeleteRequestTask deleteTask = new DeleteRequestTask();
+            deleteTask.execute(testRequest);
+//            deleteRequest(request); //recursively delete all similar requests to remove redundancy.
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteRequestByID(Request request) {
+        if (getRequestByID(request.getId()) != null) {
+            DeleteRequestTask deleteTask = new DeleteRequestTask();
+            deleteTask.execute(request);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateRequest(Request request) {
+        Request tempRequest = request;
+        if (tempRequest.getId() == null) {
+            if ((tempRequest = getRequestByMatch(tempRequest)) != null) {
+                UpdateRequestTask updateTask = new UpdateRequestTask();
+                updateTask.execute(tempRequest);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            UpdateRequestTask updateTask = new UpdateRequestTask();
+            updateTask.execute(tempRequest);
+            return true;
+        }
+    }
+
+    public Request getRequestByID(String requestID) {
+        GetRequestTask getTask = new GetRequestTask();
+        Request request = null;
+        try {
+            request = getTask.execute(requestID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return request;
+    }
+
+    public Request getRequestByMatch(Request request) {
+        GetRequestsTask getTask = new GetRequestsTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+
+        try {
+            requestList = getTask.execute(request.getRiderId()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (!requestList.isEmpty()) {
+            for (Request rq: requestList) {
+                Log.i("Request rider ID: " + rq.getRiderId(), "displaying rider id.");
+                if (    rq.getRiderId().equals(request.getRiderId()) &&
+                        rq.getFromLocation().getLatitude() == request.getFromLocation().getLatitude() &&
+                        rq.getFromLocation().getLongitude() == request.getFromLocation().getLongitude() &&
+                        rq.getToLocation().getLatitude() == request.getToLocation().getLatitude() &&
+                        rq.getToLocation().getLongitude() == request.getToLocation().getLongitude()) {
+                    return rq;
+                }
+            }
+        }
+        return null;
     }
 
     /**
-     * Adds a request to the ElasticSearch server
+     * A class for getting the list of requests associated with a rider on the Elastic Search server
      * @see Request
      * @return boolean
-     * */
+     */
     public static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
             verifySettings();
-
+            boolean addable = false;
             Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
 
             try {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
                     search_parameters[0].setId(result.getId());
-                    return true;
+                    addable = true;
                 } else {
                     Log.i("Error", "Elastic search was not able to add the user.");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                return true;
             }
+            return addable;
         }
     }
 
@@ -340,40 +409,55 @@ public class ElasticSearchController {
      * @throws InterruptedException
      */
     public static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
-        private RequestSingleton RS = RequestSingleton.getInstance();
 
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
             verifySettings();
-
+            boolean updatable = false;
             Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).id(search_parameters[0].getId()).build();
 
             try {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
                     search_parameters[0].setId(result.getId());
-                    return true;
                 }
                 else {
                     Log.i("Error", "Elastic search was not able to add the user.");
                 }
+                updatable = true;
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
-            finally {
-                return true;
-            }
+            return updatable;
         }
     }
 
     /**
-     * A class for getting the list of requests associated with a rider on the Elastic Search server
+     * Adds a request to the ElasticSearch server
      * @see Request
      * @return boolean
-     */
+     * */
+    public static class GetRequestTask extends AsyncTask<String, Void, Request> {
 
-    public static class GetRequestTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected Request doInBackground(String... search_parameters) {
+            verifySettings();
+            Get get = new Get.Builder(INDEX, search_parameters[0]).type(REQUEST).id(search_parameters[0]).build();
+
+            Request request = null;
+            try {
+                JestResult result = client.execute(get);
+                request = result.getSourceAsObject(Request.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return request;
+        }
+    }
+
+
+    public static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
@@ -410,30 +494,4 @@ public class ElasticSearchController {
 
     //TODO: getDriverRequests
 
-    /**
-     * Used to get a list of users.
-     */
-    public static class GetUsersTask extends AsyncTask<String, Void, ArrayList<User>> {
-        @Override
-        protected ArrayList<User> doInBackground(String... search_parameters) {
-            verifySettings();
-            ArrayList<User> users = new ArrayList<User>();
-
-            Search search = new Search.Builder(search_parameters[0]).addIndex(INDEX).addType(USER).build();
-
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    List<User> foundUsers = result.getSourceAsObjectList(User.class);
-                    users.addAll(foundUsers);
-                } else {
-                    Log.i("Error", "The search query failed to find users");
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Something went wrong when communicating with the server!");
-
-            }
-            return users;
-        }
-    }
 }

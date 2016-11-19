@@ -20,15 +20,17 @@
 package com.dryver.ClassTests;
 
 
+import android.location.Location;
+
 import com.dryver.Controllers.ElasticSearchController;
+import com.dryver.Models.Request;
 import com.dryver.Models.User;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 import static junit.framework.Assert.assertEquals;
@@ -43,15 +45,25 @@ import static org.junit.Assert.assertNotEquals;
 
 public class ElasticSearchTests {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
+
+    // USERS
     private final static String username = "ESTestUser";
     private final static User testUser = new User(username, "testFirst", "testLast", "7805555555", "test@test.com");
-    // TODO: 2016-11-13 remove sleep statements and replace with a wait on condition somehow.
+
+    // REQUESTS
+    private final static Calendar calendar = Calendar.getInstance();
+    private final static Location toLocation = new Location("to");
+    private final static Location fromLocation = new Location("from");
+    private final static Double cost = 12.00;
+    private final static Request testRequest = new Request(username, calendar, toLocation, fromLocation, cost);
 
     @AfterClass
     @BeforeClass
     public static void removeTestUsers() throws ExecutionException, InterruptedException {
         ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
         elasticSearchController.deleteUser(testUser);
+        elasticSearchController.deleteRequest(testRequest);
+        Thread.sleep(2000);
     }
 
 
@@ -60,7 +72,7 @@ public class ElasticSearchTests {
      * @throws InterruptedException
      */
     @Test
-    public void testAddDeleteUser() throws InterruptedException, ExecutionException {
+    public void testAddDeleteUser() {
         assertFalse(ES.deleteUser(testUser));
         assertTrue(ES.addUser(testUser));
         assertFalse(ES.addUser(testUser));
@@ -72,7 +84,7 @@ public class ElasticSearchTests {
      * @throws InterruptedException
      */
     @Test
-    public void testUpdateUser() throws InterruptedException, ExecutionException {
+    public void testUpdateUser() {
         User user =  new User(username);
 
         assertFalse(ES.updateUser(user));
@@ -104,35 +116,55 @@ public class ElasticSearchTests {
         assertEquals(user.getEmail(), requestedUser2.getEmail());
     }
 
-//    /**
-//     * Tests getting a user from the database
-//     */
-//    @Test
-//    public void testGetUsers() {
-//        ArrayList<User> userList = new ArrayList<User>();
-//        // Tests to see if the connection to the ES server was established.
-//        GetUsersTask getUsersTask = new GetUsersTask();
-//        getUsersTask.execute("");
-//        try {
-//            userList = getUsersTask.get();
-//        } catch (Exception e) {
-//            Log.i("Error", "Failed to get the users.");
-//        }
-//    }
+    @Test
+    public void testAddDeleteRequest() throws InterruptedException {
+        assertFalse(ES.deleteRequest(testRequest));
+        assertTrue(ES.addRequest(testRequest));
+        Thread.sleep(2000);
+        assertFalse(ES.addRequest(testRequest));
+        assertTrue(ES.deleteRequest(testRequest));
+    }
 
-//    /**
-//     * Tests getting a request from the database
-//     */
-//    @Test
-//    public void testFetchRequest() {
-//        // TODO: test fetching from server
-//    }
-//
-//    /**
-//     * Tests adding a request to the database
-//     */
-//    @Test
-//    public void testPushRequest() {
-//        // TODO: test pushing to server
-//    }
+    @Test
+    public void testUpdateRequest() throws InterruptedException {
+        assertTrue(ES.addRequest(testRequest));
+        Thread.sleep(2000);
+        Request esRequest = ES.getRequestByMatch(testRequest);
+
+        assertEquals(testRequest.getRiderId(), esRequest.getRiderId());
+        assertEquals(testRequest.getToLocation().getLatitude(), esRequest.getToLocation().getLatitude());
+        assertEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
+        assertEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
+        assertEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
+        assertEquals(testRequest.getCost(), esRequest.getCost());
+
+        Location toLocation = new Location("To");
+        toLocation.setLatitude(10);
+        toLocation.setLongitude(10);
+        Location fromLocation = new Location("From");
+        fromLocation.setLatitude(10);
+        fromLocation.setLongitude(10);
+
+        esRequest.setToLocation(toLocation);
+        esRequest.setFromLocation(fromLocation);
+        esRequest.setCost(15);
+
+
+        assertNotEquals(testRequest.getToLocation().getLatitude(), esRequest.getToLocation().getLatitude());
+        assertNotEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
+        assertNotEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
+        assertNotEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
+        assertNotEquals(testRequest.getCost(), esRequest.getCost());
+
+
+        assertTrue(ES.updateRequest(esRequest));
+        Thread.sleep(2000);
+        Request esRequest2 = ES.getRequestByMatch(esRequest);
+
+        assertEquals(esRequest.getToLocation().getLatitude(), esRequest2.getToLocation().getLatitude());
+        assertEquals(esRequest.getToLocation().getLongitude(), esRequest2.getToLocation().getLongitude());
+        assertEquals(esRequest.getFromLocation().getLatitude(), esRequest2.getFromLocation().getLatitude());
+        assertEquals(esRequest.getFromLocation().getLongitude(), esRequest2.getFromLocation().getLongitude());
+        assertEquals(esRequest.getCost(), esRequest2.getCost());
+    }
 }

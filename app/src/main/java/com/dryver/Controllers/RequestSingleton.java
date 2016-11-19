@@ -60,10 +60,10 @@ public class RequestSingleton {
     private void updateRequests() {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
-            ElasticSearchController.GetRequestTask getRequestTask = new ElasticSearchController.GetRequestTask();
-            getRequestTask.execute(userController.getActiveUser().getId());
+            ElasticSearchController.GetRequestsTask getRequestsTask = new ElasticSearchController.GetRequestsTask();
+            getRequestsTask.execute(userController.getActiveUser().getId());
             try {
-                requests = getRequestTask.get();
+                requests = getRequestsTask.get();
             } catch (Exception e) {
                 Log.i("Error", "Failed to get " + userController.getActiveUser().getId() + "'s ID.");
             }

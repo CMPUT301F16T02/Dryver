@@ -191,8 +191,8 @@ public class Request implements Serializable {
      * @param toLocation the to location
      */
     public void setToLocation(Location toLocation) {
-        this.fromCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
-        this.fromCoordinates.setLocationName(toLocation.getProvider());
+        this.toCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
+        this.toCoordinates.setLocationName(toLocation.getProvider());
     }
 
     /**
