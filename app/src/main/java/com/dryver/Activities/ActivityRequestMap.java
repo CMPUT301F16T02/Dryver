@@ -23,33 +23,16 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.dryver.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
  */
-public class ActivityRequestMap extends Activity implements OnMapReadyCallback {
+public class ActivityRequestMap extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_map);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-//        LatLng sydney = new LatLng(-33.867, 151.206);
-//
-//        googleMap.setMyLocationEnabled(true);
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-//        googleMap.addMarker(new MarkerOptions().title("Sydney").snippet("The most populous city in Australia.").position(sydney));
     }
 }
