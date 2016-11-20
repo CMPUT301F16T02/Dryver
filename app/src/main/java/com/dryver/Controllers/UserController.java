@@ -106,7 +106,12 @@ public class UserController {
      */
     //TODO: Exceptions handled in the activity
     public boolean login(String username) throws ExecutionException, InterruptedException {
-        return (ES.getUserByString(username)) != null;
+        User user = null;
+        if ((user = ES.getUserByString(username)) != null) {
+            this.activeUser = user;
+            return true;
+        }
+        return false;
     }
 
     /**

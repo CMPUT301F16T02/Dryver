@@ -68,6 +68,8 @@ public class ActivityRegistration extends Activity {
         phoneEditText = (EditText) findViewById(R.id.phone_edittext);
         emailEditText = (EditText) findViewById(R.id.email_edittext);
 
+        findViewById(R.id.username_edittext).requestFocus();
+
         doneButton = (Button) findViewById(R.id.done_button);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
