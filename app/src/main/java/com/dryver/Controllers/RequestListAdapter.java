@@ -43,11 +43,13 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
         TextView requestStatus = (TextView) convertView.findViewById(R.id.requestItemStatus);
         TextView requestDate = (TextView) convertView.findViewById(R.id.requestItemDate);
+        TextView requestCost = (TextView) convertView.findViewById(R.id.requestItemCost);
 
         requestName.setText("Ride Request");
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
+        requestCost.setText("Cost: $" + request.getRate());
 
 
         return convertView;

@@ -26,15 +26,19 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
  */
 public class RequestSingleton {
     private static RequestSingleton ourInstance = new RequestSingleton();
-    private static ArrayList<Request> requests = new ArrayList<Request>();
+    private ArrayList<Request> requests = new ArrayList<Request>();
+    private ArrayList<Request> sortedRequests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
 
@@ -81,7 +85,7 @@ public class RequestSingleton {
 
         //TODO: Handle offline here. If it isn't added to ES...
 
-        if (ES.addRequest(request)) {
+        if (!ES.addRequest(request)) {
             requests.add(request);
         }
     }
@@ -106,5 +110,52 @@ public class RequestSingleton {
         }
         return deleted;
     }
+
+    public void sortRequestByDate() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        });
+    }
+
+    public void sortRequestByCost() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getRate(), rhs.getRate());
+            }
+        });
+    }
+
+    public void sortRequestByDistance() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(lhs.getToLocation()), rhs.getFromLocation().distanceTo(rhs.getToLocation()));
+            }
+        });
+    }
+
+    public void sortRequestsByProximity(final Location currentLocation) {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(currentLocation), rhs.getFromLocation().distanceTo(currentLocation));
+            }
+        });
+    }
+
+    public void generateSortedRequest() {
+        updateRequests();
+        this.sortedRequests = new ArrayList<Request>(requests);
+    }
+
+    public ArrayList<Request> getSortedRequests() {
+        generateSortedRequest();
+        return sortedRequests;
+    }
+
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }
