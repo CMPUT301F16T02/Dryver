@@ -49,4 +49,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.0'
     testCompile 'junit:junit:4.12'
     compile files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
+    compile 'com.google.android.gms:play-services-maps:9.6.1'
 }
