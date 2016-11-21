@@ -101,7 +101,6 @@ public class RequestSingleton {
         }catch (Exception e){
             e.getStackTrace();
         }
-
     }
 
     /**

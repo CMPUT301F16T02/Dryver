@@ -86,7 +86,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             }
         });
 
-        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request
+        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request... It makes more sense for longlick to be edit and view to be single click
 //        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

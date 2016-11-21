@@ -49,6 +49,8 @@
         </activity>
         <activity android:name=".Activities.ActivityDriverProfile">
         </activity>
+        <activity android:name=".Activities.ActivityEmail">
+        </activity>
     </application>
 
 </manifest>

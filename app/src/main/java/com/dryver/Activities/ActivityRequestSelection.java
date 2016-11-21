@@ -38,8 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import io.searchbox.core.Update;
-
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
  * Allows you to cancel requests, as well as view the drivers associated with a request.
@@ -47,15 +45,15 @@ import io.searchbox.core.Update;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView requestSelectionTitle;
-    private TextView requestSelectionRiderName;
-    private TextView requestSelectionFromLocation;
-    private TextView requestSelectionToLocation;
-    private TextView requestSelectionDate;
-    private TextView requestSelectionStatus;
-    private Button requestSelectionButtonDelete;
-    private Button requestSelectionButtonCancel;
-    private Button requestSelectionButtonViewDriver;
+    private TextView titleTextView;
+    private TextView riderNameTextView;
+    private TextView fromLocationTextView;
+    private TextView toLocationTextView;
+    private TextView dateTextView;
+    private TextView statusTextView;
+    private Button deleteRequestButton;
+    private Button cancelRequestButton;
+    private Button viewDriversButton;
     private SimpleDateFormat sdf;
     private Request request;
     private Location fromLocation;
@@ -78,37 +76,35 @@ public class ActivityRequestSelection extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_selection);
 
-
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
         request = requestSingleton.getRequests().get(position);
-        status = request.getStatus();
 
         rider = new Rider(userController.getActiveUser());
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
-        requestSelectionTitle = (TextView) findViewById(R.id.requestSelectionTitle);
-        requestSelectionRiderName = (TextView) findViewById(R.id.requestSelectionRiderName);
-        requestSelectionFromLocation = (TextView) findViewById(R.id.requestSelectionFromLocation);
-        requestSelectionToLocation = (TextView) findViewById(R.id.requestSelectionToLocation);
-        requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
-        requestSelectionStatus = (TextView) findViewById(R.id.requestSelectionToStatus);
-        requestSelectionButtonCancel = (Button) findViewById(R.id.requestSelectionButtonCancel);
-        requestSelectionButtonDelete = (Button) findViewById(R.id.requestSelectionButtonDelete);
-        requestSelectionButtonViewDriver = (Button) findViewById(R.id.requestSelectionButtonViewList);
+        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
+        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
+        fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
+        toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
+        dateTextView = (TextView) findViewById(R.id.requestSelectionDate);
+        statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
+        cancelRequestButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
+        deleteRequestButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
+        viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        requestSelectionTitle.setText("Request Details");
-        requestSelectionRiderName.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
-        requestSelectionFromLocation.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionToLocation.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
+        titleTextView.setText("Request Details");
+        riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
+        fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        dateTextView.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
 
-        requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+        statusTextView.setText("Status: " + request.statusCodeToString());
 
-        requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
+        deleteRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean deleted = requestSingleton.removeRequest(request);
@@ -121,13 +117,10 @@ public class ActivityRequestSelection extends Activity {
             }
         });
 
-        requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
+        cancelRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status = request.getStatus();
-                status ^= 1;
-
-                request.setStatus(status);
+                request.setStatus(request.getStatus() ^ 1);
 
                 ElasticSearchController.UpdateRequestTask updateRequestTask = new ElasticSearchController.UpdateRequestTask();
                 updateRequestTask.execute(request);
@@ -141,7 +134,14 @@ public class ActivityRequestSelection extends Activity {
                     e.printStackTrace();
                 }
 
-                requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+                statusTextView.setText("Status: " + request.statusCodeToString());
+            }
+        });
+
+        viewDriversButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //TODO: popup list of drivers?
             }
         });
     }

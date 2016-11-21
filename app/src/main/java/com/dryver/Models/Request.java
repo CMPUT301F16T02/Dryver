@@ -69,7 +69,7 @@ public class Request implements Serializable {
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
-        this.status = 0;
+        this.status = 1;
         this.rate = rate;
         this.id = null;
     }
