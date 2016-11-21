@@ -28,6 +28,8 @@ import com.dryver.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -105,6 +107,55 @@ public class RequestSingleton {
             requests.remove(request);
         }
         return deleted;
+    }
+
+    /**
+     * Function that sorts the request arraylist by request date by overriding the compare method anonymously
+     */
+    public void sortRequestByDate() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request cost by overriding the compare method anonymously
+     */
+    public void sortRequestByCost() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getRate(), rhs.getRate());
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request distance by overriding the compare method anonymously
+     */
+    public void sortRequestByDistance() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(lhs.getToLocation()), rhs.getFromLocation().distanceTo(rhs.getToLocation()));
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request date by overriding the compare method anonymously
+     * @param currentLocation
+     */
+    public void sortRequestsByProximity(final Location currentLocation) {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(currentLocation), rhs.getFromLocation().distanceTo(currentLocation));
+            }
+        });
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }
