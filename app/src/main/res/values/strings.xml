@@ -86,6 +86,7 @@
     <string name="activity_request_selection_ViewDriver">View Drivers</string>
     <string name="activity_rider_request_Sort">Sort By:</string>
     <string name="request_item_Cost">Cost</string>
+
     <string-array name="activity_driver_spinner">
         <item>Date</item>
         <item>Distance</item>
