@@ -160,6 +160,23 @@ public class ElasticSearchController {
         return temp;
     }
 
+    public ArrayList<Request> getAllRequests(){
+        GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
+        getAllRequestsTask.execute();
+
+        ArrayList<Request> requests = new ArrayList<Request>();
+
+        try {
+            requests = getAllRequestsTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } finally{
+            return requests;
+        }
+    }
+
     /**
      * Adds a user to the database.
      *
@@ -506,6 +523,43 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+
+            verifySettings();
+            Search search = new Search.Builder(search_string)
+                    .addIndex(INDEX)
+                    .addType(REQUEST)
+                    .build();
+
+            ArrayList<Request> requests = new ArrayList<Request>();
+            try {
+                JestResult result = client.execute(search);
+                requests.addAll(result.getSourceAsObjectList(Request.class));
+                JsonObject resultObj = result.getJsonObject();
+                JsonArray hitsArray =  resultObj
+                        .get("hits")
+                        .getAsJsonObject()
+                        .get("hits")
+                        .getAsJsonArray();
+
+                for (int i = 0; i < hitsArray.size(); i++) {
+                    requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
+                }
+
+
+                return requests;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return requests;
+        }
+    }
+
+    private static class GetAllRequestsTask extends AsyncTask<Void, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(Void... search_parameters) {
+            verifySettings();
+
+            String search_string = "{\"query\": { \"match_all\": {}}}";
 
             verifySettings();
             Search search = new Search.Builder(search_string)
