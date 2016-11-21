@@ -44,7 +44,7 @@ public class Request implements Serializable {
     private String acceptedDriverID;
     private String description;
     private Calendar date;
-    //Status: 0 for pending, 1 for accepted, 2 for cancelled
+    //Status: 0 for cancelled, 1 for Pending, 2 for Accepted
     private int status;
 
     // [Latitude, Longitude]
@@ -191,8 +191,8 @@ public class Request implements Serializable {
      * @param toLocation the to location
      */
     public void setToLocation(Location toLocation) {
-        this.fromCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
-        this.fromCoordinates.setLocationName(toLocation.getProvider());
+        this.toCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
+        this.toCoordinates.setLocationName(toLocation.getProvider());
     }
 
     /**

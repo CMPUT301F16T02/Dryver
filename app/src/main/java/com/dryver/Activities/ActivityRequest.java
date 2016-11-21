@@ -91,7 +91,7 @@ public class ActivityRequest extends Activity {
                                     datePicker.getDayOfMonth(),
                                     timePicker.getCurrentHour(),
                                     timePicker.getCurrentMinute());
-                    requestSingleton.addRequest(userController.getActiveUser().getUsername(), calendar, testFromLocation, testToLocation, price);
+                    requestSingleton.addRequest(userController.getActiveUser().getId(), calendar, testFromLocation, testToLocation, price);
                     finish();
                 }
             }

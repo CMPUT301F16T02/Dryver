@@ -92,4 +92,14 @@
     <string name="activity_email_subject">Subject...</string>
     <string name="activity_email_body">Enter email body here...</string>
     <string name="activity_email_send">Send Email</string>
+
+    <string name="activity_rider_request_Sort">Sort By:</string>
+    <string name="request_item_Cost">Cost</string>
+    <string-array name="activity_driver_spinner">
+        <item>Date</item>
+        <item>Distance</item>
+        <item>Cost</item>
+        <item>Proximity</item>
+    </string-array>
+
 </resources>

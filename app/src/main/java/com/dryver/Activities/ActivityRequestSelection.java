@@ -122,16 +122,8 @@ public class ActivityRequestSelection extends Activity {
             public void onClick(View v) {
                 request.setStatus(request.getStatus() ^ 1);
 
-                ElasticSearchController.UpdateRequestTask updateRequestTask = new ElasticSearchController.UpdateRequestTask();
-                updateRequestTask.execute(request);
-
-                try{
-                    if(!updateRequestTask.get())
-                    {
-                        Log.e("ERROR", "Request not updated on server correctly");
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
+                if (ES.updateRequest(request)) {
+                    Log.e("ERROR", "Request not updated on server correctly");
                 }
 
                 statusTextView.setText("Status: " + request.statusCodeToString());

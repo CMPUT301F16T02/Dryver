@@ -29,7 +29,8 @@ import io.searchbox.annotations.JestId;
  * and a Rider.
  */
 public class User implements Serializable {
-    private String username;
+//    @JestId
+//    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -43,40 +44,40 @@ public class User implements Serializable {
     /**
      * Instantiates a new User with unique id.
      *
-     * @param username the user id of the user.
+     * @param id the user id of the user.
      */
-    public User(String username) {
-        this.username = username;
-        this.id = null;
+    public User(String id) {
+//        this.username = username;
+        this.id = id;
     }
 
     /**
      * Instantiates a new User with unique id, first name, and last name.
      *
-     * @param username    the user id
+     * @param id    the user id
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public User(String username, String firstName, String lastName, String phoneNumber, String email) {
-        this.username = username;
+    public User(String id, String firstName, String lastName, String phoneNumber, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
 
-    /**
-     * Gets user id.
-     *
-     * @return the user id of the user.
-     */
-    public String getUsername() {
-        return username;
-    }
+//    /**
+//     * Gets user id.
+//     *
+//     * @return the user id of the user.
+//     */
+//    public String getUsername() {
+//        return username;
+//    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     /**
      * Gets first name.
