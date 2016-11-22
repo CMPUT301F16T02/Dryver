@@ -178,6 +178,7 @@ public class ActivityRequestSelection extends Activity {
             public void onClick(View v) {
                 request.addDriver(activeUser.getId());
                 request.setStatus(RequestStatus.DRIVERS_FOUND);
+                statusTextView.setText(request.statusCodeToString());
                 ES.updateRequest(request);
             }
         });

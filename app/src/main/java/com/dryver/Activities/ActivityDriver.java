@@ -117,4 +117,10 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
 
     public void onNothingSelected(AdapterView<?> parent) {
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        requestListAdapter.notifyDataSetChanged();
+    }
 }
