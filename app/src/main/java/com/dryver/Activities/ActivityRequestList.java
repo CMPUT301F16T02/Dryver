@@ -60,7 +60,7 @@ public class ActivityRequestList extends Activity {
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
-        
+
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
