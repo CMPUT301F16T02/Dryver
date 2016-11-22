@@ -29,6 +29,7 @@ import android.widget.ListView;
 
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
+import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 
@@ -60,6 +61,8 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
+        setClickListeners();
+
         testFromLocation.setLatitude(53.523869);
         testFromLocation.setLongitude(-113.526146);
         testToLocation.setLatitude(53.548623);
@@ -67,7 +70,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
+    }
 
+    private void setClickListeners(){
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,22 +82,24 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             }
         });
 
-        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
+                intent.putExtra("position", position);
                 startActivity(intent);
-                return true;
             }
         });
 
-        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request
-//        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request... It makes more sense for longlick to be edit and view to be single click
+//        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 //                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
-////                intent.putExtra("position", position);
+//                intent.putExtra("position", position);
 //                startActivity(intent);
+//                return true;
 //            }
 //        });
     }

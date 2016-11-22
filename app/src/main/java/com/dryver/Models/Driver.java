@@ -32,4 +32,9 @@ public class Driver extends User {
                 user.getPhoneNumber(),
                 user.getEmail());
     }
+
+    @Override
+    public String toString(){
+        return getId();
+    }
 }

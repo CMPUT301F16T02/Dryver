@@ -28,12 +28,16 @@ import com.dryver.Models.Rider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
  */
 public class RequestSingleton {
     private static RequestSingleton ourInstance = new RequestSingleton();
+    private Request viewedRequest;
+
     private static ArrayList<Request> requests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
@@ -53,6 +57,14 @@ public class RequestSingleton {
         return requests;
     }
 
+    public Request getViewedRequest() {
+        return viewedRequest;
+    }
+
+    public void setViewedRequest(Request viewedRequest) {
+        this.viewedRequest = viewedRequest;
+    }
+
     /**
      * A simple method for fetching an updated request list via Elastic Search
      * @see ElasticSearchController
@@ -62,6 +74,7 @@ public class RequestSingleton {
         if(userController.getActiveUser() instanceof Rider){
             requests = ES.getRequests(userController.getActiveUser().getId());
         } else if(userController.getActiveUser() instanceof Driver){
+            requests = ES.getAllRequests();
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
     }
@@ -75,7 +88,6 @@ public class RequestSingleton {
      * @param rate
      * @see ElasticSearchController
      */
-    //TODO Correct Times... Why is date passed and not used?
     public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
@@ -105,6 +117,55 @@ public class RequestSingleton {
             requests.remove(request);
         }
         return deleted;
+    }
+
+    /**
+     * Function that sorts the request arraylist by request date by overriding the compare method anonymously
+     */
+    public void sortRequestByDate() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return lhs.getDate().compareTo(rhs.getDate());
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request cost by overriding the compare method anonymously
+     */
+    public void sortRequestByCost() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getRate(), rhs.getRate());
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request distance by overriding the compare method anonymously
+     */
+    public void sortRequestByDistance() {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(lhs.getToLocation()), rhs.getFromLocation().distanceTo(rhs.getToLocation()));
+            }
+        });
+    }
+
+    /**
+     * Function that sorts the request arraylist by request date by overriding the compare method anonymously
+     * @param currentLocation
+     */
+    public void sortRequestsByProximity(final Location currentLocation) {
+        Collections.sort(requests, new Comparator<Request>() {
+            @Override
+            public int compare(Request lhs, Request rhs) {
+                return Double.compare(lhs.getFromLocation().distanceTo(currentLocation), rhs.getFromLocation().distanceTo(currentLocation));
+            }
+        });
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

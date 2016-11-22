@@ -20,11 +20,18 @@
 
 <resources>
     <!--TODO: Verify Reasonable Payment Methods-->
-    <string-array
-        name="payment_methods">
+    <string-array name="payment_methods">
         <item>Cash</item>
         <item>PayPal</item>
         <item>Credit</item>
         <item>BitCoin</item>
     </string-array>
+
+    <string-array name="activity_driver_spinner">
+        <item>Date</item>
+        <item>Distance</item>
+        <item>Cost</item>
+        <item>Proximity</item>
+    </string-array>
+
 </resources>

@@ -45,5 +45,13 @@
             android:text="@string/request_item_Date"
             android:focusableInTouchMode="false"
             android:focusable="false" />
+        <TextView
+            android:id="@+id/requestItemCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemDate"
+            android:text="@string/request_item_Cost"
+            android:focusableInTouchMode="false"
+            android:focusable="false" />
     </RelativeLayout>
 </RelativeLayout>

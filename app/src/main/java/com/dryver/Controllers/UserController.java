@@ -22,7 +22,9 @@ package com.dryver.Controllers;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.dryver.Activities.ActivityDriverProfile;
 import com.dryver.Activities.ActivityUserProfile;
+import com.dryver.Models.Driver;
 import com.dryver.Models.User;
 
 import java.util.concurrent.ExecutionException;
@@ -94,8 +96,17 @@ public class UserController {
      */
     public void viewUserProfile(Activity currentActivity, User user) {
         viewedUser = user;
-        Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
-        currentActivity.startActivity(intent);
+        if (user.equals(activeUser)) {
+            Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
+            currentActivity.startActivity(intent);
+        } else if (user instanceof Driver){
+            Intent intent = new Intent(currentActivity, ActivityDriverProfile.class);
+            currentActivity.startActivity(intent);
+        } else{
+            //do something
+        }
+
+
     }
 
     /**
@@ -106,12 +117,7 @@ public class UserController {
      */
     //TODO: Exceptions handled in the activity
     public boolean login(String username) throws ExecutionException, InterruptedException {
-        User user = null;
-        if ((user = ES.getUserByString(username)) != null) {
-            this.activeUser = user;
-            return true;
-        }
-        return false;
+        return (activeUser = ES.getUserByString(username)) != null;
     }
 
     /**
@@ -122,20 +128,11 @@ public class UserController {
         viewedUser = null;
     }
 
-    // TODO: 2016-11-19 what is this?
-    public Boolean updateActiveUser(){
-//        ElasticSearchController.UpdateUserTask updateUserTask = new ElasticSearchController.UpdateUserTask();
-//        updateUserTask.execute(activeUser);
-//
-//        try {
-//            return updateUserTask.get();
-//        }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-        return false;
+    /**
+     * updates the user, is called by the saveButton onclick listener in UserProfile
+     * @return
+     */
+    public boolean updateActiveUser(){
+        return ES.updateUser(activeUser);
     }
 }

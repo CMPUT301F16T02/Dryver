@@ -39,12 +39,11 @@ import java.util.Collection;
 public class Request implements Serializable {
     private String id;
     private final String riderId;
-    // TODO: 2016-11-16 rework to only get the riderid and driver id and store a collection of ids, instead of the full classes.
-    private Collection<String> drivers;
+    private ArrayList<String> drivers;
     private String acceptedDriverID;
     private String description;
     private Calendar date;
-    //Status: 0 for pending, 1 for accepted, 2 for cancelled
+    //Status: 0 for cancelled, 1 for Pending, 2 for Accepted
     private int status;
 
     // [Latitude, Longitude]
@@ -69,7 +68,7 @@ public class Request implements Serializable {
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
-        this.status = 0;
+        this.status = 1;
         this.rate = rate;
         this.id = null;
     }
@@ -115,7 +114,7 @@ public class Request implements Serializable {
      *
      * @return the drivers
      */
-    public Collection<String> getDrivers() {
+    public ArrayList<String> getDrivers() {
         return this.drivers;
     }
 

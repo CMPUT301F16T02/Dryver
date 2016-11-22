@@ -21,13 +21,63 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_driver"
+    android:id="@+id/activity_rider_request"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dryver.Activities.ActivityDriver">
+    tools:context="com.dryver.Activities.ActivityRequestList">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLinearLayout">
 
+        <Button
+            android:text="@string/activity_rider_request_Request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/requestButtonRequest"/>
+        <Button
+            android:text="@string/activity_rider_request_Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/requestButtonStatus"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonLinearLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/requestSpinnerLayout">
+            <TextView
+                android:padding="20dp"
+                android:text="@string/activity_rider_request_Sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/requestSortText"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/activity_driver_spinner"
+                android:id="@+id/requestSortSpinner"/>
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/requestListViewRequest"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/requestSpinnerLayout"
+            android:layout_above="@+id/requestButtonNewRequest"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+        </ListView>
+    </RelativeLayout>
 </RelativeLayout>
