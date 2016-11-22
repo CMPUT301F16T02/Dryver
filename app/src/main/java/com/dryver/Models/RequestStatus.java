@@ -1,4 +1,4 @@
-package com.dryver.Activities;
+package com.dryver.Models;
 
 /**
  * Created by Adam on 11/22/2016.
