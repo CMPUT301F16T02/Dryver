@@ -361,11 +361,7 @@ public class ElasticSearchController {
         if (!requestList.isEmpty()) {
             for (Request rq: requestList) {
                 Log.i("Request rider ID: " + rq.getRiderId(), "displaying rider id.");
-                if (    rq.getRiderId().equals(request.getRiderId()) &&
-                        rq.getFromLocation().getLatitude() == request.getFromLocation().getLatitude() &&
-                        rq.getFromLocation().getLongitude() == request.getFromLocation().getLongitude() &&
-                        rq.getToLocation().getLatitude() == request.getToLocation().getLatitude() &&
-                        rq.getToLocation().getLongitude() == request.getToLocation().getLongitude()) {
+                if (rq.equals(request)) {
                     return rq;
                 }
             }

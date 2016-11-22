@@ -40,14 +40,14 @@
         <activity android:name=".Activities.ActivitySelection"/>
         <activity android:name=".Activities.ActivityDriver"/>
         <activity android:name=".Activities.ActivityRequestList"/>
-        <activity android:name=".Activities.ActivityUserProfile"/>
+        <activity android:name=".Activities.ActivityEditProfile"/>
         <activity android:name=".Activities.ActivityRequestSelection"/>
         <activity android:name=".Activities.ActivityRequestMap"/>
         <activity android:name=".Activities.ActivityRequest"/>
         <activity android:name=".Activities.ActivityLoggedInActionBar"/>
         <activity android:name=".Models.HelpMe">
         </activity>
-        <activity android:name=".Activities.ActivityDriverProfile">
+        <activity android:name=".Activities.ActivityViewProfile">
         </activity>
         <activity android:name=".Activities.ActivityEmail">
         </activity>

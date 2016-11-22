@@ -4,9 +4,9 @@ import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityDriver;
+import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityRequestList;
 import com.dryver.Activities.ActivitySelection;
-import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
 
@@ -41,7 +41,7 @@ public class ActivitySelectionTests {
         openActionBarOverflowOrOptionsMenu(getTargetContext());
         onView(withText("View Profile")).perform(click());
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityUserProfile.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityEditProfile.class)));
     }
 
     //TODO: These tests fail... Not sure why...

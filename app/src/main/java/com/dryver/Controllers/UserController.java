@@ -22,8 +22,8 @@ package com.dryver.Controllers;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.dryver.Activities.ActivityDriverProfile;
-import com.dryver.Activities.ActivityUserProfile;
+import com.dryver.Activities.ActivityEditProfile;
+import com.dryver.Activities.ActivityViewProfile;
 import com.dryver.Models.Driver;
 import com.dryver.Models.User;
 
@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Controller for the Current user, as well as the user currently being viewed.
- * Follows the Singleton design pattern, allows user to view ActivityUserProfile.
+ * Follows the Singleton design pattern, allows user to view ActivityEditProfile.
  */
 public class UserController {
     private static UserController instance = new UserController();
@@ -97,10 +97,10 @@ public class UserController {
     public void viewUserProfile(Activity currentActivity, User user) {
         viewedUser = user;
         if (user.equals(activeUser)) {
-            Intent intent = new Intent(currentActivity, ActivityUserProfile.class);
+            Intent intent = new Intent(currentActivity, ActivityEditProfile.class);
             currentActivity.startActivity(intent);
         } else if (user instanceof Driver){
-            Intent intent = new Intent(currentActivity, ActivityDriverProfile.class);
+            Intent intent = new Intent(currentActivity, ActivityViewProfile.class);
             currentActivity.startActivity(intent);
         } else{
             //do something

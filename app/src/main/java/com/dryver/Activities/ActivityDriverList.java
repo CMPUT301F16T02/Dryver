@@ -54,20 +54,20 @@ public class ActivityDriverList extends Activity {
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
                 userController.setActiveUser(driver);
 
-                Intent intent = new Intent(ActivityDriverList.this, ActivityDriverProfile.class);
+                Intent intent = new Intent(ActivityDriverList.this, ActivityViewProfile.class);
                 startActivity(intent);
             }
         });
 
-//        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-//        {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
-//            {
-//                String selectedDriver = (String)adapter.getItemAtPosition(position);
-//
-//                return true;
-//            }
-//        });
+        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
+            {
+                String selectedDriver = (String)adapter.getItemAtPosition(position);
+
+                return true;
+            }
+        });
     }
 }

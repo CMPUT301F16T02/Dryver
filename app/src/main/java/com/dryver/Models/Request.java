@@ -28,6 +28,8 @@ package com.dryver.Models;
 
 import android.location.Location;
 
+import com.dryver.Activities.RequestStatus;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +46,7 @@ public class Request implements Serializable {
     private String description;
     private Calendar date;
     //Status: 0 for cancelled, 1 for Pending, 2 for Accepted
-    private int status;
+    private RequestStatus status;
 
     // [Latitude, Longitude]
     private SimpleCoordinates fromCoordinates;
@@ -68,7 +70,7 @@ public class Request implements Serializable {
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
-        this.status = 1;
+        this.status = RequestStatus.NO_DRIVERS;
         this.rate = rate;
         this.id = null;
     }
@@ -199,7 +201,7 @@ public class Request implements Serializable {
      *
      * @return int status
      */
-    public int getStatus() {
+    public RequestStatus getStatus() {
         return status;
     }
 
@@ -208,7 +210,7 @@ public class Request implements Serializable {
      *
      * @param status the status
      */
-    public void setStatus(int status) {
+    public void setStatus(RequestStatus status) {
         this.status = status;
     }
 
@@ -273,16 +275,15 @@ public class Request implements Serializable {
      * @return String string
      */
     public String statusCodeToString() {
-        if (status == 0) {
+        if (status == RequestStatus.CANCELLED) {
             return "Cancelled";
-        }
-        else if (status == 1) {
-            return "Pending";
-        }
-        else if (status == 2) {
-            return "Accepted";
-        }
-        else {
+        } else if (status == RequestStatus.NO_DRIVERS) {
+            return "No Drivers Found";
+        } else if (status == RequestStatus.DRIVERS_FOUND) {
+            return "Drivers Available";
+        } else if (status == RequestStatus.FINALIZED) {
+            return "Driver Selected";
+        } else {
             return "Unknown Status String";
         }
     }
@@ -298,13 +299,13 @@ public class Request implements Serializable {
 
         Request request = (Request) o;
 
-        if (status != request.status) {
-            return false;
-        }
         if (Double.compare(request.cost, cost) != 0) {
             return false;
         }
         if (Double.compare(request.rate, rate) != 0) {
+            return false;
+        }
+        if (id != null ? !id.equals(request.id) : request.id != null) {
             return false;
         }
         if (riderId != null ? !riderId.equals(request.riderId) : request.riderId != null) {
@@ -322,16 +323,13 @@ public class Request implements Serializable {
         if (date != null ? !date.equals(request.date) : request.date != null) {
             return false;
         }
-        if (id != null ? !id.equals(request.id) : request.id != null) {
+        if (status != request.status) {
             return false;
         }
         if (fromCoordinates != null ? !fromCoordinates.equals(request.fromCoordinates) : request.fromCoordinates != null) {
             return false;
         }
-        if (toCoordinates != null ? !toCoordinates.equals(request.toCoordinates) : request.toCoordinates != null) {
-            return false;
-        }
-        return riderId != null ? riderId.equals(request.riderId) : request.riderId == null;
+        return toCoordinates != null ? toCoordinates.equals(request.toCoordinates) : request.toCoordinates == null;
 
     }
 
@@ -339,20 +337,19 @@ public class Request implements Serializable {
     public int hashCode() {
         int result;
         long temp;
-        result = riderId != null ? riderId.hashCode() : 0;
+        result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (riderId != null ? riderId.hashCode() : 0);
         result = 31 * result + (drivers != null ? drivers.hashCode() : 0);
         result = 31 * result + (acceptedDriverID != null ? acceptedDriverID.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + status;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (fromCoordinates != null ? fromCoordinates.hashCode() : 0);
         result = 31 * result + (toCoordinates != null ? toCoordinates.hashCode() : 0);
         temp = Double.doubleToLongBits(cost);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(rate);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (riderId != null ? riderId.hashCode() : 0);
         return result;
     }
 
