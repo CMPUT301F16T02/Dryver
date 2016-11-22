@@ -49,12 +49,9 @@ public class ActivityRequestList extends Activity {
     private RequestListAdapter requestListAdapter;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
+    private UserController userController = UserController.getInstance();
 
     private Rider rider;
-    private Location testFromLocation = new Location("from");
-    private Location testToLocation = new Location("to");
-
-    private UserController userController = UserController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +60,13 @@ public class ActivityRequestList extends Activity {
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
+
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-
-        testFromLocation.setLatitude(53.523869);
-        testFromLocation.setLongitude(-113.526146);
-        testToLocation.setLatitude(53.548623);
-        testToLocation.setLongitude(-113.506537);
-
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
-        setClickListeners();
-    }
 
-    private void setClickListeners(){
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

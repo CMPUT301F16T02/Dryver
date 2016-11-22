@@ -16,12 +16,9 @@ import android.widget.TimePicker;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
+import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
@@ -47,6 +44,9 @@ public class ActivityRequest extends Activity {
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
+    private Location fromLocation = new Location("from");
+    private Location toLocation = new Location("to");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +62,10 @@ public class ActivityRequest extends Activity {
         toLocationText = (TextView) findViewById(R.id.requestToLocation);
 
         timePicker = (TimePicker) findViewById(R.id.requestTimePicker);
-        timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
         datePicker = (DatePicker) findViewById(R.id.requestDatePicker);
-        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        HelpMe.setTimePicker(calendar, timePicker);
+        HelpMe.setDatePicker(calendar, datePicker);
 
         // TODO: 2016-11-14 Set these locations through the map map.
         // set default locations for now
@@ -73,6 +73,8 @@ public class ActivityRequest extends Activity {
         testFromLocation.setLongitude(-113.526146);
         testToLocation.setLatitude(53.548623);
         testToLocation.setLongitude(-113.506537);
+
+        checkIntent();
 
         findViewById(R.id.requestTripPrice).requestFocus();
 
@@ -87,15 +89,10 @@ public class ActivityRequest extends Activity {
         submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //create new request here.
                 if (!HelpMe.isEmptyTextField(tripPrice)) {
                     // TODO: 2016-11-14 limit the number of decimal places to 2
                     Double price = Double.parseDouble(tripPrice.getText().toString());
-                    calendar.set(   datePicker.getYear(),
-                                    datePicker.getMonth(),
-                                    datePicker.getDayOfMonth(),
-                                    timePicker.getCurrentHour(),
-                                    timePicker.getCurrentMinute());
+                    HelpMe.setCalendar(calendar, datePicker, timePicker);
                     requestSingleton.addRequest(rider.getId(), calendar, testFromLocation, testToLocation, price);
                     finish();
                 }
@@ -111,12 +108,19 @@ public class ActivityRequest extends Activity {
     }
 
     // TODO: 2016-11-14 implement checker. if intent: get request and edit, otherwise: make new request
-//    public void checkIntent() {
-//        Intent intent = getIntent();
-//        if (intent.hasExtra("position")) {
-//
-//        }
-//    }
+    public void checkIntent() {
+        Integer position;
+        Intent intent = getIntent();
+        if (intent.hasExtra("position")) {
+            Log.i("has intent", "stuff");
+            if ((position = intent.getIntExtra("position", -1)) != -1) {
+                Request request = requestSingleton.getUpdatedRequests().get(position);
+                tripPrice.setText(Double.toString(request.getRate()));
+                HelpMe.setTimePicker(request.getDate(), timePicker);
+                HelpMe.setDatePicker(request.getDate(), datePicker);
+            }
+        }
+    }
 
     // TODO: 2016-11-14 toggle extra options with a button
 }
