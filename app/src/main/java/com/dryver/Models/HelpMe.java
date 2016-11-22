@@ -22,9 +22,12 @@ package com.dryver.Models;
 
 import android.app.Activity;
 import android.net.ConnectivityManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import java.net.InetAddress;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -100,5 +103,22 @@ public class HelpMe extends Activity {
             return false;
         }
 
+    }
+
+    static public void setDatePicker(Calendar cal, DatePicker datePicker) {
+        datePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+    }
+
+    static public void setTimePicker(Calendar cal, TimePicker timePicker) {
+        timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
+    }
+
+    static public void setCalendar(Calendar cal, DatePicker datePicker, TimePicker timePicker) {
+        cal.set(datePicker.getYear(),
+                datePicker.getMonth(),
+                datePicker.getDayOfMonth(),
+                timePicker.getCurrentHour(),
+                timePicker.getCurrentMinute());
     }
 }
