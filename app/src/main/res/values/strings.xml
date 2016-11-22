@@ -29,8 +29,6 @@
     <string name="save_changes"></string>
 
 
-
-
     <string name="view_profile">View Profile</string>
 
     <string name="activity_registration_title">Registration</string>
@@ -61,20 +59,26 @@
     <string name="activity_user_profile_PaymentMethod">Payment Method</string>
     <string name="activity_user_profile_saveButton">Save Changes</string>
 
+    <string name="activity_driver_profile_vehicle_info">Vehicle Information</string>
+    <string name="activity_driver_profile_ratings">Average Rating</string>
 
     <string name="title_activity_request_selection_NewRequest">Make Request</string>
+
     <string name="request_item_Name">Request Name</string>
     <string name="request_item_Destination">Destination</string>
     <string name="request_item_StatusName">Status</string>
     <string name="request_item_Date">Date</string>
     <string name="request_item_Placeholder">Placeholder</string>
+
     <string name="activity_rider_request_Profile">Profile</string>
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
+
     <string name="activity_request_text_tripcost">Enter trip price</string>
     <string name="activity_request_button_submit">Submit</string>
     <string name="activity_request_button_location">Set Route</string>
+
     <string name="activity_request_selection_RequestDetails">Request Details</string>
     <string name="activity_request_selection_Name">Rider Name</string>
     <string name="activity_request_selection_FromLocation">From Location</string>
@@ -84,12 +88,14 @@
     <string name="activity_request_selection_Edit">Edit Request</string>
     <string name="activity_request_selection_Cancel">Cancel Request</string>
     <string name="activity_request_selection_ViewDriver">View Drivers</string>
+
+    <string name="activity_email_subject">Subject...</string>
+    <string name="activity_email_body">Enter email body here...</string>
+    <string name="activity_email_send">Send Email</string>
+
     <string name="activity_rider_request_Sort">Sort By:</string>
+
+    <string name="activity_driver_list_title">Drivers</string>
+
     <string name="request_item_Cost">Cost</string>
-    <string-array name="activity_driver_spinner">
-        <item>Date</item>
-        <item>Distance</item>
-        <item>Cost</item>
-        <item>Proximity</item>
-    </string-array>
 </resources>

@@ -21,6 +21,7 @@ package com.dryver.ClassTests;
 
 
 import android.location.Location;
+import android.util.Log;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.Request;
@@ -30,6 +31,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
@@ -175,5 +177,15 @@ public class ElasticSearchTests {
 
         ES.deleteRequest(esRequest2);
         Thread.sleep(2000);
+    }
+
+    //This test doesnt do really anything yet, just wanted to make sure my method got a correct value (verified with postman)
+    @Test
+    public void testGetAllRequest() throws InterruptedException {
+        ArrayList<Request> requests = ES.getAllRequests();
+
+        Thread.sleep(3000);
+
+        Log.i("infoAHHHHHHHHH", Integer.toString(requests.size()));
     }
 }
