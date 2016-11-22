@@ -21,6 +21,7 @@ package com.dryver.Activities;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -79,28 +80,30 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
 
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestListAdapter);
+
+        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                Intent intent = new Intent(ActivityDriver.this, ActivityRequestSelection.class);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
+    //Depending on the spinner select, requests are sorted according to the selection.
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         String sortSelection = parent.getItemAtPosition(pos).toString();
         if (sortSelection.equals("Date")) {
-            Toast.makeText(ActivityDriver.this, sortSelection,
-                    Toast.LENGTH_SHORT).show();
             requestSingleton.sortRequestByDate();
         }
         else if (sortSelection.equals("Distance")) {
-            Toast.makeText(ActivityDriver.this, sortSelection,
-                    Toast.LENGTH_SHORT).show();
             requestSingleton.sortRequestByDistance();
         }
         else if (sortSelection.equals("Cost")) {
-            Toast.makeText(ActivityDriver.this, sortSelection,
-                    Toast.LENGTH_SHORT).show();
             requestSingleton.sortRequestByCost();
         }
         else if (sortSelection.equals("Proximity")) {
-            Toast.makeText(ActivityDriver.this, sortSelection,
-                    Toast.LENGTH_SHORT).show();
             requestSingleton.sortRequestsByProximity(currentLocation);
         }
         requestListAdapter.notifyDataSetChanged();
@@ -108,8 +111,5 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
-
-
 }

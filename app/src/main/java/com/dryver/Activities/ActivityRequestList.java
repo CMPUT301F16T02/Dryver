@@ -79,22 +79,13 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
+                intent.putExtra("position", position);
                 startActivity(intent);
                 return true;
             }
         });
-
-        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request
-//        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
-////                intent.putExtra("position", position);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     @Override
