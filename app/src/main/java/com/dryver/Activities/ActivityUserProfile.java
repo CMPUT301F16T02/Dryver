@@ -44,7 +44,7 @@ public class ActivityUserProfile extends Activity {
 
     private UserController userController = UserController.getInstance();
     private User user;
-    private TextView userNameTextView;
+    private TextView titleTextView;
     private EditText emailEditText;
     private EditText phoneEditText;
     private TextView paymentText;
@@ -59,8 +59,8 @@ public class ActivityUserProfile extends Activity {
         setContentView(R.layout.activity_user_profile);
 
         //This doesn't work for some reason;
-        this.userNameTextView = (TextView)findViewById(R.id.profile_name);
-        userNameTextView.setText(user.getId() + "'s Profile");
+        this.titleTextView = (TextView)findViewById(R.id.profile_name);
+        titleTextView.setText(user.getId() + "'s Profile");
 
         this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
@@ -76,7 +76,6 @@ public class ActivityUserProfile extends Activity {
             setOtherUserFields();
         }
 
-        userNameTextView.setText(user.getId());
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
 
@@ -91,7 +90,7 @@ public class ActivityUserProfile extends Activity {
     }
 
     private void setActiveUserFields() {
-        userNameTextView.setEnabled(true);
+        titleTextView.setEnabled(true);
         emailEditText.setEnabled(true);
         phoneEditText.setEnabled(true);
         paymentText.setVisibility(View.VISIBLE);
@@ -99,7 +98,7 @@ public class ActivityUserProfile extends Activity {
     }
 
     private void setOtherUserFields(){
-        userNameTextView.setEnabled(false);
+        titleTextView.setEnabled(false);
         emailEditText.setEnabled(false);
         phoneEditText.setEnabled(false);
         paymentText.setVisibility(View.GONE);
