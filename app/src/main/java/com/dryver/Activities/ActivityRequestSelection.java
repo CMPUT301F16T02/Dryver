@@ -49,16 +49,16 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView requestSelectionTitle;
-    private TextView requestSelectionRiderName;
-    private TextView requestSelectionFromLocation;
-    private TextView requestSelectionToLocation;
+    private TextView titleTextView;
+    private TextView riderNameTextView;
+    private TextView fromLocationTextView;
+    private TextView toLocationTextView;
     private TextView requestSelectionDate;
-    private TextView requestSelectionStatus;
-    private Button requestSelectionButtonDelete;
-    private Button requestSelectionButtonAccept;
-    private Button requestSelectionButtonCancel;
-    private Button requestSelectionButtonViewDriver;
+    private TextView statusTextView;
+    private Button deleteButton;
+    private Button acceptButton;
+    private Button cancelButton;
+    private Button viewDriversButton;
     private SimpleDateFormat sdf;
     private Request request;
     private Location fromLocation;
@@ -95,24 +95,24 @@ public class ActivityRequestSelection extends Activity {
         toLocation = request.getToLocation();
 
         //Text View initialization
-        requestSelectionTitle = (TextView) findViewById(R.id.requestSelectionTitle);
-        requestSelectionRiderName = (TextView) findViewById(R.id.requestSelectionRiderName);
-        requestSelectionFromLocation = (TextView) findViewById(R.id.requestSelectionFromLocation);
-        requestSelectionToLocation = (TextView) findViewById(R.id.requestSelectionToLocation);
+        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
+        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
+        fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
+        toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
-        requestSelectionStatus = (TextView) findViewById(R.id.requestSelectionToStatus);
+        statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
 
         //Button initialization
-        requestSelectionButtonDelete = (Button) findViewById(R.id.requestSelectionButtonDelete);
-        requestSelectionButtonViewDriver = (Button) findViewById(R.id.requestSelectionButtonViewList);
+        deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
+        viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        requestSelectionTitle.setText("Request Details");
-        requestSelectionRiderName.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
-        requestSelectionFromLocation.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionToLocation.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        titleTextView.setText("Request Details");
+        riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
+        fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
-        requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+        statusTextView.setText("Status: " + request.statusCodeToString());
         checkUser();
     }
 
@@ -120,15 +120,15 @@ public class ActivityRequestSelection extends Activity {
         activeUser = userController.getActiveUser();
         if (activeUser instanceof Rider) {
             userMode = "rider";
-            requestSelectionButtonCancel = (Button) findViewById(R.id.requestSelectionButtonCancel);
+            cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
             requestButtonRiderListener();
         }
         else if (activeUser instanceof Driver) {
             userMode = "driver";
-            requestSelectionButtonAccept = (Button) findViewById(R.id.requestSelectionButtonCancel);
-            requestSelectionButtonAccept.setText("Accept Request");
-            requestSelectionButtonDelete.setVisibility(View.INVISIBLE);
-            requestSelectionButtonViewDriver.setVisibility(View.INVISIBLE);
+            acceptButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
+            acceptButton.setText("Accept Request");
+            deleteButton.setVisibility(View.INVISIBLE);
+            viewDriversButton.setVisibility(View.INVISIBLE);
             requestButtonDriverListener();
         }
         else {
@@ -139,7 +139,7 @@ public class ActivityRequestSelection extends Activity {
     }
 
     public void requestButtonRiderListener() {
-        requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean deleted = requestSingleton.removeRequest(request);
@@ -151,7 +151,7 @@ public class ActivityRequestSelection extends Activity {
             }
         });
 
-        requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 request.setStatus(RequestStatus.CANCELLED);
@@ -159,13 +159,21 @@ public class ActivityRequestSelection extends Activity {
                 if (ES.updateRequest(request)) {
                     Log.e("ERROR", "Request not updated on server correctly");
                 }
-                requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+                statusTextView.setText("Status: " + request.statusCodeToString());
+            }
+        });
+        
+        viewDriversButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
+                startActivity(intent);
             }
         });
     }
 
     public void requestButtonDriverListener() {
-        requestSelectionButtonAccept.setOnClickListener(new View.OnClickListener() {
+        acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 request.addDriver(activeUser.getId());
