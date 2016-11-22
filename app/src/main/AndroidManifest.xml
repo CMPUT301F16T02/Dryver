@@ -64,8 +64,6 @@
         </activity>
         <activity android:name=".Activities.ActivityViewProfile">
         </activity>
-        <activity android:name=".Activities.ActivityEmail">
-        </activity>
         <activity android:name=".Activities.ActivityDriverList">
         </activity>
     </application>

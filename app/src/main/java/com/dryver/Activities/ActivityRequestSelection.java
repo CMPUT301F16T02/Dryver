@@ -127,7 +127,7 @@ public class ActivityRequestSelection extends Activity {
             userMode = "driver";
             acceptButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
             acceptButton.setText("Accept Request");
-            deleteButton.setVisibility(View.INVISIBLE);
+            deleteButton.setText("View Rider");
             viewDriversButton.setVisibility(View.INVISIBLE);
             requestButtonDriverListener();
         }
@@ -180,6 +180,12 @@ public class ActivityRequestSelection extends Activity {
                 request.setStatus(RequestStatus.DRIVERS_FOUND);
                 statusTextView.setText(request.statusCodeToString());
                 ES.updateRequest(request);
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
             }
         });
     }
