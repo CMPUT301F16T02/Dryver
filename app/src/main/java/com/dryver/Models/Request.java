@@ -28,12 +28,9 @@ package com.dryver.Models;
 
 import android.location.Location;
 
-import com.dryver.Activities.RequestStatus;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 
 /**
  * The type Request.

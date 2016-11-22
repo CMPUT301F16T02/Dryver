@@ -33,6 +33,7 @@ import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
@@ -40,8 +41,6 @@ import com.dryver.R;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import io.searchbox.core.Update;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.

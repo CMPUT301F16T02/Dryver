@@ -3,55 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:longClickable="true">
+    android:longClickable="true"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/requestItemTextRelativeLayout">
+        android:focusable="false"
+        android:id="@+id/requestItemTextRelativeLayout"
+        android:focusableInTouchMode="false">
 
         <TextView
             android:id="@+id/requestItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/request_item_Name"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:text="@string/request_item_Name"/>
 
         <TextView
             android:id="@+id/requestItemDestination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemName"
-            android:text="@string/request_item_Destination"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:text="@string/request_item_Destination"/>
 
         <TextView
             android:id="@+id/requestItemStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemDestination"
-            android:text="@string/request_item_StatusName"
-            android:focusableInTouchMode="false"
-            android:focusable="false" />
+            android:text="@string/request_item_StatusName"/>
 
         <TextView
             android:id="@+id/requestItemDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemStatus"
-            android:text="@string/request_item_Date"
-            android:focusableInTouchMode="false"
-            android:focusable="false" />
+            android:text="@string/request_item_Date"/>
         <TextView
             android:id="@+id/requestItemCost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestItemDate"
-            android:text="@string/request_item_Cost"
-            android:focusableInTouchMode="false"
-            android:focusable="false" />
+            android:text="@string/request_item_Cost"/>
     </RelativeLayout>
 </RelativeLayout>
