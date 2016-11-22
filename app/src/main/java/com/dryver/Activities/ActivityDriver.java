@@ -23,7 +23,9 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +45,10 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.R;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 
 /**
@@ -51,23 +57,25 @@ import com.dryver.R;
 public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
     private ListView requestListView;
+    private Button currentLocationButton;
     private Spinner sortSpinner;
     private RequestListAdapter requestListAdapter;
     private Location currentLocation;
+    private LocationRequest mLocationRequest;
 
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private Driver driver;
+    private GoogleApiClient mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
 
-        currentLocation = new Location("Current Location Test");
-        currentLocation.setLatitude(53.456143);
-        currentLocation.setLongitude(-113.514594);
+        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
+        currentLocationButton.setVisibility(View.INVISIBLE);
 
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
@@ -77,10 +85,10 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
 
         driver = new Driver(userController.getActiveUser());
         userController.setActiveUser(driver);
-        requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
+        requestListView = (ListView) findViewById(R.id.requestListViewRequest);
         requestSingleton.setRequestsAll();
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestListAdapter);
@@ -92,6 +100,56 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 startActivity(intent);
                 return true;
+            }
+        });
+
+        currentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findCurrentLocation();
+            }
+        });
+
+        //========== EXPERIMENTAL CODE ==============
+        initializeLocationRequest(100, 100);
+        mClient = new GoogleApiClient.Builder(ActivityDriver.this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        currentLocationButton.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                    }
+                })
+                .build();
+        //==============================================
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mClient.isConnected()) {
+            mClient.disconnect();
+        }
+    }
+
+    public void findCurrentLocation() {
+        currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
+        Log.i("ActivityDriver: ", "CURRENT LOCATION: " + currentLocation);
+
+        //CODE BELOW IS FOR CONTINUOUSLY UPDATING USER LOCATION
+        LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("ActivityDriver: ", "NEW LOCATION: " + location);
             }
         });
     }
@@ -112,9 +170,21 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
             requestSingleton.sortRequestsByProximity(currentLocation);
         }
         requestListAdapter.notifyDataSetChanged();
-
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
+        mLocationRequest.setInterval(LOCATION_INTERVAL);
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        requestListAdapter.notifyDataSetChanged();
     }
 }

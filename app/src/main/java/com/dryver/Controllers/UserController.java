@@ -24,7 +24,6 @@ import android.content.Intent;
 
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityViewProfile;
-import com.dryver.Models.Driver;
 import com.dryver.Models.User;
 
 import java.util.concurrent.ExecutionException;
@@ -83,30 +82,16 @@ public class UserController {
      *
      * @param currentActivity the current activity
      */
-    public void viewActiveUserProfile(Activity currentActivity) {
+    public void editUserProfile(Activity currentActivity) {
         viewedUser = activeUser;
-        viewUserProfile(currentActivity, activeUser);
+        Intent intent = new Intent(currentActivity, ActivityEditProfile.class);
+        currentActivity.startActivity(intent);
     }
 
-    /**
-     * View user profile.
-     *
-     * @param currentActivity the current activity
-     * @param user            the user
-     */
-    public void viewUserProfile(Activity currentActivity, User user) {
+    public void viewUserProfile(User user, Activity currentActivity){
         viewedUser = user;
-        if (user.equals(activeUser)) {
-            Intent intent = new Intent(currentActivity, ActivityEditProfile.class);
-            currentActivity.startActivity(intent);
-        } else if (user instanceof Driver){
-            Intent intent = new Intent(currentActivity, ActivityViewProfile.class);
-            currentActivity.startActivity(intent);
-        } else{
-            //do something
-        }
-
-
+        Intent intent = new Intent(currentActivity, ActivityViewProfile.class);
+        currentActivity.startActivity(intent);
     }
 
     /**

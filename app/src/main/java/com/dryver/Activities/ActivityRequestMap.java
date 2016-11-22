@@ -23,16 +23,15 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.dryver.R;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
  */
-public class ActivityRequestMap extends Activity {
+public class ActivityRequestMap extends SupportMapFragment{
+    private static final String TAG = "DrvyerFragment";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_map);
-
-    }
+    private GoogleApiClient mClient;
 }

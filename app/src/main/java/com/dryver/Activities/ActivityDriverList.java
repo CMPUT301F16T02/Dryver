@@ -52,22 +52,20 @@ public class ActivityDriverList extends Activity {
             {
                 String selectedDriver = (String)adapter.getItemAtPosition(position);
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
-                userController.setActiveUser(driver);
-
-                Intent intent = new Intent(ActivityDriverList.this, ActivityViewProfile.class);
-                startActivity(intent);
+                userController.viewUserProfile(driver, ActivityDriverList.this);
             }
         });
 
-        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
-            @Override
-            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
-            {
-                String selectedDriver = (String)adapter.getItemAtPosition(position);
-
-                return true;
-            }
-        });
+        //TODO: ContextMenu?
+//        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+//        {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
+//            {
+//                String selectedDriver = (String)adapter.getItemAtPosition(position);
+//
+//                return true;
+//            }
+//        });
     }
 }
