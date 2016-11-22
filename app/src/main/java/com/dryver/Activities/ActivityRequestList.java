@@ -61,6 +61,8 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
+        setClickListeners();
+
         testFromLocation.setLatitude(53.523869);
         testFromLocation.setLongitude(-113.526146);
         testToLocation.setLatitude(53.548623);
