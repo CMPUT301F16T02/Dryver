@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +18,10 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.HelpMe;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
@@ -96,8 +101,6 @@ public class ActivityRequest extends Activity {
                 }
             }
         });
-
-
     }
 
     @Override
