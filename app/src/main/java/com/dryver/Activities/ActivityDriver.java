@@ -181,4 +181,10 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         mLocationRequest.setNumUpdates(LOCATION_UPDATES);
         mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        requestListAdapter.notifyDataSetChanged();
+    }
 }

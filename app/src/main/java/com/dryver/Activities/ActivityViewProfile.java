@@ -15,12 +15,12 @@ import com.dryver.R;
 
 public class ActivityViewProfile extends Activity {
 
-    private TextView title;
-    private TextView phone;
-    private TextView email;
-    private TextView vehicleInfoTitle;
-    private TextView vehicleInfo;
-    private TextView ratingsTitle;
+    private TextView titleTextView;
+    private TextView phoneTextView;
+    private TextView emailTextView;
+    private TextView vehicleInfoTitleTextView;
+    private TextView vehicleInfoTextView;
+    private TextView ratingsTitleTextView;
     //TODO: How to represent ratings?? Is there a 5 star widget?
 
     private UserController userController = UserController.getInstance();
@@ -31,40 +31,46 @@ public class ActivityViewProfile extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
-        user = (Driver) userController.getViewedUser();
+        user = userController.getViewedUser();
 
-        title = (TextView)findViewById(R.id.profile_title);
-        phone = (TextView)findViewById(R.id.driver_profile_phone);
-        email = (TextView)findViewById(R.id.driver_profile_email);
-        vehicleInfoTitle = (TextView)findViewById(R.id.description_title);
-        vehicleInfo = (TextView)findViewById(R.id.driver_profile_vehicle_info);
-        ratingsTitle = (TextView)findViewById(R.id.ratings_title);
+        titleTextView = (TextView)findViewById(R.id.profile_title);
+        phoneTextView = (TextView)findViewById(R.id.driver_profile_phone);
+        emailTextView = (TextView)findViewById(R.id.driver_profile_email);
+        vehicleInfoTitleTextView = (TextView)findViewById(R.id.description_title);
+        vehicleInfoTextView = (TextView)findViewById(R.id.driver_profile_vehicle_info);
+        ratingsTitleTextView = (TextView)findViewById(R.id.ratings_title);
+
+        titleTextView.setText(user.getId() + "'s Profile");
+        emailTextView.setText(user.getEmail());
+        phoneTextView.setText(user.getPhoneNumber());
 
         if(user instanceof Rider){
-            vehicleInfoTitle.setVisibility(View.GONE);
-            vehicleInfo.setVisibility(View.GONE);
-            ratingsTitle.setVisibility(View.GONE);
+            vehicleInfoTitleTextView.setVisibility(View.GONE);
+            vehicleInfoTextView.setVisibility(View.GONE);
+            ratingsTitleTextView.setVisibility(View.GONE);
         } else if(user instanceof Driver) {
-            vehicleInfoTitle.setVisibility(View.VISIBLE);
-            vehicleInfo.setVisibility(View.VISIBLE);
-            ratingsTitle.setVisibility(View.VISIBLE);
+            vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
+            vehicleInfoTextView.setVisibility(View.VISIBLE);
+            ratingsTitleTextView.setVisibility(View.VISIBLE);
             //this is bad, I'm sorry
-            vehicleInfo.setText(((Driver) user).getVehicleDescription());
+            vehicleInfoTextView.setText(((Driver) user).getVehicleDescription());
         } else{
-            vehicleInfoTitle.setVisibility(View.VISIBLE);
-            vehicleInfo.setVisibility(View.GONE);
-            ratingsTitle.setVisibility(View.GONE);
+            vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
+            vehicleInfoTextView.setVisibility(View.GONE);
+            ratingsTitleTextView.setVisibility(View.GONE);
         }
 
-        phone.setOnClickListener(new View.OnClickListener() {
+
+
+        phoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(phone.getText().toString()));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(phoneTextView.getText().toString()));
                 startActivity(intent);
             }
         });
 
-        email.setOnClickListener(new View.OnClickListener() {
+        emailTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
                 Intent intent = new Intent(ActivityViewProfile.this, ActivityEmail.class);
