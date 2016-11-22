@@ -75,21 +75,6 @@ public class ActivityRequestList extends Activity {
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
         setClickListeners();
-
-        requestListView.setFocusable(false);
-        requestListView.setItemsCanFocus(true);
-
-        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Clicking", "onItemClick");
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
-                Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
     }
 
     private void setClickListeners(){
@@ -101,19 +86,16 @@ public class ActivityRequestList extends Activity {
             }
         });
 
-
-
-        // TODO: 2016-11-14 implement this onitemclicklistener for editing a request... It makes more sense for longlick to be edit and view to be single click
-//        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
-//                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
-//                intent.putExtra("position", position);
-//                startActivity(intent);
-//                return true;
-//            }
-//        });
+        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
+                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override
