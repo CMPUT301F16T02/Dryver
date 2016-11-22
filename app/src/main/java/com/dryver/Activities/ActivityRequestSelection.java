@@ -19,12 +19,14 @@
 
 package com.dryver.Activities;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.dryver.Controllers.ElasticSearchController;
@@ -79,7 +81,9 @@ public class ActivityRequestSelection extends Activity {
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
-        request = requestSingleton.getRequests().get(position);
+        //refactor this
+        request = requestSingleton.getViewedRequest();
+
 
         rider = new Rider(userController.getActiveUser());
         fromLocation = request.getFromLocation();
@@ -112,7 +116,7 @@ public class ActivityRequestSelection extends Activity {
                 while(deleted == null);
 
                 if(deleted){
-                    finish();
+                    onBackPressed();
                 }
             }
         });
@@ -130,11 +134,19 @@ public class ActivityRequestSelection extends Activity {
             }
         });
 
+        //TODO: Make this a popup
         viewDriversButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //TODO: popup list of drivers?
+                Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        requestSingleton.setViewedRequest(null);
+        finish();
     }
 }

@@ -40,9 +40,6 @@ import com.dryver.R;
  * at least calling the methods responsible for contacting the driver****
  */
 public class ActivityUserProfile extends Activity {
-    //TODO: Contacting a driver via email or phone. (should that be here?)
-    //TODO: Add field for entering the required payment method info. Could be a popup of some sort or w/e.
-    // TODO: 2016-11-16 change user name to be static
     //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
 
     private UserController userController = UserController.getInstance();
@@ -72,6 +69,7 @@ public class ActivityUserProfile extends Activity {
         this.saveChangesButton = (Button)findViewById(R.id.save_changes);
 
         //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
+        //May get rid of this...
         if(user.equals(userController.getActiveUser())){
             setActiveUserFields();
         } else {

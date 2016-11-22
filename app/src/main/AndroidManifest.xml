@@ -51,6 +51,8 @@
         </activity>
         <activity android:name=".Activities.ActivityEmail">
         </activity>
+        <activity android:name=".Activities.ActivityDriverList">
+        </activity>
     </application>
 
 </manifest>

@@ -39,8 +39,7 @@ import java.util.Collection;
 public class Request implements Serializable {
     private String id;
     private final String riderId;
-    // TODO: 2016-11-16 rework to only get the riderid and driver id and store a collection of ids, instead of the full classes.
-    private Collection<String> drivers;
+    private ArrayList<String> drivers;
     private String acceptedDriverID;
     private String description;
     private Calendar date;
@@ -115,7 +114,7 @@ public class Request implements Serializable {
      *
      * @return the drivers
      */
-    public Collection<String> getDrivers() {
+    public ArrayList<String> getDrivers() {
         return this.drivers;
     }
 

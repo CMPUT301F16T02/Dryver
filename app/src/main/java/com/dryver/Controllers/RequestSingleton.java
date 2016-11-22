@@ -36,6 +36,8 @@ import java.util.Comparator;
  */
 public class RequestSingleton {
     private static RequestSingleton ourInstance = new RequestSingleton();
+    private Request viewedRequest;
+
     private static ArrayList<Request> requests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
@@ -53,6 +55,14 @@ public class RequestSingleton {
     public ArrayList<Request> getUpdatedRequests() {
         updateRequests();
         return requests;
+    }
+
+    public Request getViewedRequest() {
+        return viewedRequest;
+    }
+
+    public void setViewedRequest(Request viewedRequest) {
+        this.viewedRequest = viewedRequest;
     }
 
     /**
@@ -77,7 +87,6 @@ public class RequestSingleton {
      * @param rate
      * @see ElasticSearchController
      */
-    //TODO Correct Times... Why is date passed and not used?
     public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
