@@ -82,13 +82,14 @@ public class ActivityRequestSelection extends Activity {
 
         Intent intent = getIntent();
 
+        request = requestSingleton.getViewedRequest();
+
         position = intent.getIntExtra("position", 99);
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
         Log.d("USERNAME: ", request.getRiderId());
-        rider = (Rider) ES.getUserByString(request.getRiderId());
+        rider = new Rider(ES.getUserByString(request.getRiderId()));
 
-        request = requestSingleton.getRequests().get(position);
         status = request.getStatus();
 
         fromLocation = request.getFromLocation();

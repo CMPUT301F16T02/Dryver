@@ -41,6 +41,7 @@ import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
+import com.dryver.Models.Request;
 import com.dryver.R;
 
 
@@ -78,6 +79,9 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         userController.setActiveUser(driver);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
+        //TODO: Change this in future
+        //sets the request singleton's requests lists to getAllRequests in ES Controller
+        requestSingleton.setRequestsAll();
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestListAdapter);
 
@@ -85,6 +89,7 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 Intent intent = new Intent(ActivityDriver.this, ActivityRequestSelection.class);
+                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 startActivity(intent);
                 return true;
             }

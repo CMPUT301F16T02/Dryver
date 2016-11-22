@@ -48,6 +48,10 @@ public class RequestSingleton {
 
     private RequestSingleton() {}
 
+    public void setRequestsAll(){
+        requests = ES.getAllRequests();
+    }
+
     public ArrayList<Request> getRequests() {
         return requests;
     }
