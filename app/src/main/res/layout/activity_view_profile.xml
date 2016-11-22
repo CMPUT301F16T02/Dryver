@@ -36,6 +36,8 @@
         android:layout_below="@+id/textView6"
         android:layout_alignParentStart="true"
         android:id="@+id/driver_profile_email"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textAppearance="@android:style/TextAppearance.Large"/>
 
     <TextView
@@ -61,6 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/driver_profile_phone"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:layout_below="@+id/textView3"
         android:layout_alignParentStart="true"/>
