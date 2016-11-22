@@ -19,9 +19,11 @@
 
 package com.dryver.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -29,6 +31,7 @@ import android.widget.ListView;
 
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
+import com.dryver.Controllers.UserController;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
@@ -39,7 +42,7 @@ import com.dryver.R;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestList extends ActivityLoggedInActionBar {
+public class ActivityRequestList extends Activity {
 
     private Button mAddRequest;
     private ListView requestListView;
@@ -51,6 +54,8 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
+    private UserController userController = UserController.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +66,6 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        setClickListeners();
 
         testFromLocation.setLatitude(53.523869);
         testFromLocation.setLongitude(-113.526146);
@@ -70,6 +74,22 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
+        setClickListeners();
+
+        requestListView.setFocusable(false);
+        requestListView.setItemsCanFocus(true);
+
+        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("Clicking", "onItemClick");
+                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
+                Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setClickListeners(){
@@ -78,24 +98,16 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
                 startActivity(intent);
-
             }
         });
 
-        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
-                Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
+
 
         // TODO: 2016-11-14 implement this onitemclicklistener for editing a request... It makes more sense for longlick to be edit and view to be single click
 //        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
 //                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
 //                intent.putExtra("position", position);
 //                startActivity(intent);
