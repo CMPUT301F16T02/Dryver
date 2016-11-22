@@ -82,19 +82,13 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
         requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-<<<<<<< HEAD
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-=======
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
->>>>>>> 86920b2fb576b273e105f64f23f47dad825dc1de
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
                 intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
-<<<<<<< HEAD
-=======
 
         // TODO: 2016-11-14 implement this onitemclicklistener for editing a request... It makes more sense for longlick to be edit and view to be single click
 //        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -106,7 +100,6 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 //                return true;
 //            }
 //        });
->>>>>>> 86920b2fb576b273e105f64f23f47dad825dc1de
     }
 
     @Override
