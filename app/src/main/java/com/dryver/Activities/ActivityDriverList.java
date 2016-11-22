@@ -54,7 +54,7 @@ public class ActivityDriverList extends Activity {
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
                 userController.setActiveUser(driver);
 
-                Intent intent = new Intent(ActivityDriverList.this, ActivityDriverProfile.class);
+                Intent intent = new Intent(ActivityDriverList.this, ActivityViewProfile.class);
                 startActivity(intent);
             }
         });

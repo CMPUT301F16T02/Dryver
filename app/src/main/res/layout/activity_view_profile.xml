@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dryver.Activities.ActivityDriverProfile">
+    tools:context="com.dryver.Activities.ActivityViewProfile">
 
     <TextView
         android:text="Driver's Profile"
@@ -21,7 +21,7 @@
         android:textAppearance="@android:style/TextAppearance.Large"/>
 
     <TextView
-        android:text="@string/activity_user_profile_PhoneNumber"
+        android:text="@string/activity_edit_profile_PhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_title"
@@ -45,25 +45,16 @@
         android:layout_below="@+id/driver_profile_email"
         android:layout_alignParentStart="true"
         android:layout_marginTop="21dp"
-        android:id="@+id/textView10"/>
+        android:id="@+id/description_title"/>
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView10"
+        android:layout_below="@+id/description_title"
         android:layout_alignParentStart="true"
         android:id="@+id/driver_profile_vehicle_info"
         android:textAppearance="@android:style/TextAppearance.Large"/>
-
-    <TextView
-        android:text="@string/activity_driver_profile_ratings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/driver_profile_vehicle_info"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="21dp"
-        android:id="@+id/textView12"/>
 
     <TextView
         android:text="TextView"
@@ -75,11 +66,20 @@
         android:layout_alignParentStart="true"/>
 
     <TextView
-        android:text="@string/activity_user_profile_Email"
+        android:text="@string/activity_edit_profile_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:id="@+id/textView6"
         android:layout_below="@+id/driver_profile_phone"
         android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:text="@string/activity_driver_profile_ratings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:id="@+id/ratings_title"
+        android:layout_below="@+id/driver_profile_vehicle_info"
+        android:layout_alignEnd="@+id/textView3"/>
 </RelativeLayout>

@@ -3,9 +3,9 @@ package com.dryver.UITests;
 import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
+import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityRegistration;
 import com.dryver.Activities.ActivityRequest;
-import com.dryver.Activities.ActivityUserProfile;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
@@ -56,7 +56,7 @@ public class ActivityRequestListTests {
 
         Thread.sleep(1000);
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityUserProfile.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityEditProfile.class)));
     }
 
     @Test

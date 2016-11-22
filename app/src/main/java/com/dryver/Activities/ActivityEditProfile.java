@@ -28,7 +28,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.Driver;
 import com.dryver.Models.HelpMe;
+import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
 
@@ -39,7 +41,7 @@ import com.dryver.R;
  * select to view a driver or rider's profile (that is not their own). ****May be responsible for
  * at least calling the methods responsible for contacting the driver****
  */
-public class ActivityUserProfile extends Activity {
+public class ActivityEditProfile extends Activity {
     //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
 
     private UserController userController = UserController.getInstance();
@@ -49,6 +51,8 @@ public class ActivityUserProfile extends Activity {
     private EditText phoneEditText;
     private TextView paymentText;
     private Spinner paymentSpinner;
+    private TextView vehicleDesriptionTextView;
+    private EditText vehicleDescriptionEditText;
     private Button saveChangesButton;
 
     @Override
@@ -56,7 +60,7 @@ public class ActivityUserProfile extends Activity {
         user = userController.getViewedUser();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_edit_profile);
 
         //This doesn't work for some reason;
         this.titleTextView = (TextView)findViewById(R.id.profile_name);
@@ -66,14 +70,21 @@ public class ActivityUserProfile extends Activity {
         this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
         this.paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
         this.paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
+        this.vehicleDesriptionTextView = (TextView)findViewById(R.id.activity_edit_profile_vehicle_textview);
+        this.vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
         this.saveChangesButton = (Button)findViewById(R.id.save_changes);
 
-        //Allows for genericism and not creating another activity. Active user and view driver, for example handled by this activity
-        //May get rid of this...
-        if(user.equals(userController.getActiveUser())){
-            setActiveUserFields();
-        } else {
-            setOtherUserFields();
+        if(user instanceof Rider){
+            vehicleDesriptionTextView.setVisibility(View.GONE);
+            vehicleDescriptionEditText.setVisibility(View.GONE);
+        } else if(user instanceof Driver) {
+            vehicleDesriptionTextView.setVisibility(View.VISIBLE);
+            vehicleDescriptionEditText.setVisibility(View.VISIBLE);
+            //this is bad, I'm sorry
+            vehicleDescriptionEditText.setText(((Driver) user).getVehicleDescription());
+        } else{
+            vehicleDesriptionTextView.setVisibility(View.VISIBLE);
+            vehicleDescriptionEditText.setVisibility(View.GONE);
         }
 
         emailEditText.setText(user.getEmail());
@@ -87,22 +98,6 @@ public class ActivityUserProfile extends Activity {
                 }
             }
         });
-    }
-
-    private void setActiveUserFields() {
-        titleTextView.setEnabled(true);
-        emailEditText.setEnabled(true);
-        phoneEditText.setEnabled(true);
-        paymentText.setVisibility(View.VISIBLE);
-        paymentSpinner.setVisibility(View.VISIBLE);
-    }
-
-    private void setOtherUserFields(){
-        titleTextView.setEnabled(false);
-        emailEditText.setEnabled(false);
-        phoneEditText.setEnabled(false);
-        paymentText.setVisibility(View.GONE);
-        paymentSpinner.setVisibility(View.GONE);
     }
 
     //TODO: Default Payment Method
