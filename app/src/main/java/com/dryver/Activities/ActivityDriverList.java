@@ -59,15 +59,15 @@ public class ActivityDriverList extends Activity {
             }
         });
 
-//        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-//        {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
-//            {
-//                String selectedDriver = (String)adapter.getItemAtPosition(position);
-//
-//                return true;
-//            }
-//        });
+        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
+            {
+                String selectedDriver = (String)adapter.getItemAtPosition(position);
+
+                return true;
+            }
+        });
     }
 }

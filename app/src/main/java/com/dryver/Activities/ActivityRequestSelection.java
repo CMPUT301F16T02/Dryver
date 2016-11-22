@@ -66,7 +66,7 @@ public class ActivityRequestSelection extends Activity {
     private Location toLocation;
     private User activeUser;
     private Rider rider;
-    private int status;
+    private RequestStatus status;
     private String userMode;
     private int position;
 
@@ -155,9 +155,7 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status = request.getStatus();
-                status ^= 1;
-                request.setStatus(status);
+                request.setStatus(RequestStatus.CANCELLED);
 
                 if (ES.updateRequest(request)) {
                     Log.e("ERROR", "Request not updated on server correctly");
@@ -172,7 +170,8 @@ public class ActivityRequestSelection extends Activity {
             @Override
             public void onClick(View v) {
                 request.addDriver(activeUser.getId());
-                //TODO driver accept request
+                request.setStatus(RequestStatus.DRIVERS_FOUND);
+                ES.updateRequest(request);
             }
         });
     }
