@@ -26,19 +26,22 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
+import com.dryver.Models.User;
 import com.dryver.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import io.searchbox.core.Update;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
@@ -47,26 +50,25 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView titleTextView;
-    private TextView riderNameTextView;
-    private TextView fromLocationTextView;
-    private TextView toLocationTextView;
-    private TextView dateTextView;
-    private TextView statusTextView;
-    private Button deleteRequestButton;
-    private Button cancelRequestButton;
-    private Button viewDriversButton;
+    private TextView requestSelectionTitle;
+    private TextView requestSelectionRiderName;
+    private TextView requestSelectionFromLocation;
+    private TextView requestSelectionToLocation;
+    private TextView requestSelectionDate;
+    private TextView requestSelectionStatus;
+    private Button requestSelectionButtonDelete;
+    private Button requestSelectionButtonAccept;
+    private Button requestSelectionButtonCancel;
+    private Button requestSelectionButtonViewDriver;
     private SimpleDateFormat sdf;
     private Request request;
     private Location fromLocation;
     private Location toLocation;
+    private User activeUser;
     private Rider rider;
     private int status;
+    private String userMode;
     private int position;
-
-    private static final String RETURN_VIEW_REQUEST = "com.ubertapp.return_view_request";
-    private static final String RETURN_REQUEST_DELETE = "com.ubertapp.return_request_delete";
-    private static final int RETURN_DELETE_CODE = 2;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
@@ -78,75 +80,99 @@ public class ActivityRequestSelection extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_selection);
 
+        Intent intent = getIntent();
+
+        position = intent.getIntExtra("position", 99);
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
+        Log.d("USERNAME: ", request.getRiderId());
+        rider = (Rider) ES.getUserByString(request.getRiderId());
 
-        //refactor this
-        request = requestSingleton.getViewedRequest();
+        request = requestSingleton.getRequests().get(position);
+        status = request.getStatus();
 
-
-        rider = new Rider(userController.getActiveUser());
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
-        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
-        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
-        fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
-        toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
-        dateTextView = (TextView) findViewById(R.id.requestSelectionDate);
-        statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
-        cancelRequestButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
-        deleteRequestButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
-        viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
+        //Text View initialization
+        requestSelectionTitle = (TextView) findViewById(R.id.requestSelectionTitle);
+        requestSelectionRiderName = (TextView) findViewById(R.id.requestSelectionRiderName);
+        requestSelectionFromLocation = (TextView) findViewById(R.id.requestSelectionFromLocation);
+        requestSelectionToLocation = (TextView) findViewById(R.id.requestSelectionToLocation);
+        requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
+        requestSelectionStatus = (TextView) findViewById(R.id.requestSelectionToStatus);
 
-        titleTextView.setText("Request Details");
-        riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
-        fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        dateTextView.setText("Request Date: " + sdf.format(request.getDate().getTime()));
+        //Button initialization
+        requestSelectionButtonDelete = (Button) findViewById(R.id.requestSelectionButtonDelete);
+        requestSelectionButtonViewDriver = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
+        requestSelectionTitle.setText("Request Details");
+        requestSelectionRiderName.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
+        requestSelectionFromLocation.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        requestSelectionToLocation.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
-        statusTextView.setText("Status: " + request.statusCodeToString());
+        requestSelectionStatus.setText("Status: " + request.statusCodeToString());
+        checkUser();
+    }
 
-        deleteRequestButton.setOnClickListener(new View.OnClickListener() {
+    public void checkUser() {
+        activeUser = userController.getActiveUser();
+        if (activeUser instanceof Rider) {
+            userMode = "rider";
+            requestSelectionButtonCancel = (Button) findViewById(R.id.requestSelectionButtonCancel);
+            requestButtonRiderListener();
+        }
+        else if (activeUser instanceof Driver) {
+            userMode = "driver";
+            requestSelectionButtonAccept = (Button) findViewById(R.id.requestSelectionButtonCancel);
+            requestSelectionButtonAccept.setText("Accept Request");
+            requestSelectionButtonDelete.setVisibility(View.INVISIBLE);
+            requestSelectionButtonViewDriver.setVisibility(View.INVISIBLE);
+            requestButtonDriverListener();
+        }
+        else {
+            activeUser = null;
+            userMode = null;
+            Log.wtf("UHH", "excuse me?");
+        }
+    }
+
+    public void requestButtonRiderListener() {
+        requestSelectionButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean deleted = requestSingleton.removeRequest(request);
 
                 while(deleted == null);
-
                 if(deleted){
-                    onBackPressed();
+                    finish();
                 }
             }
         });
 
-        cancelRequestButton.setOnClickListener(new View.OnClickListener() {
+        requestSelectionButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request.setStatus(request.getStatus() ^ 1);
+                status = request.getStatus();
+                status ^= 1;
+                request.setStatus(status);
 
                 if (ES.updateRequest(request)) {
                     Log.e("ERROR", "Request not updated on server correctly");
                 }
-
-                statusTextView.setText("Status: " + request.statusCodeToString());
-            }
-        });
-
-        //TODO: Make this a popup
-        viewDriversButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
-                startActivity(intent);
+                requestSelectionStatus.setText("Status: " + request.statusCodeToString());
             }
         });
     }
 
-    @Override
-    public void onBackPressed(){
-        requestSingleton.setViewedRequest(null);
-        finish();
+    public void requestButtonDriverListener() {
+        requestSelectionButtonAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                request.addDriver(activeUser.getId());
+                //TODO driver accept request
+            }
+        });
     }
 }

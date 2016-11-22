@@ -74,6 +74,7 @@ public class RequestSingleton {
         if(userController.getActiveUser() instanceof Rider){
             requests = ES.getRequests(userController.getActiveUser().getId());
         } else if(userController.getActiveUser() instanceof Driver){
+            requests = ES.getAllRequests();
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
         }
     }
