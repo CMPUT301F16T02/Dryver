@@ -162,7 +162,7 @@ public class ActivityRequestSelection extends Activity {
                 statusTextView.setText("Status: " + request.statusCodeToString());
             }
         });
-        
+
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

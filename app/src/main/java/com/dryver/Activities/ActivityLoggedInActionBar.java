@@ -27,7 +27,7 @@ public class ActivityLoggedInActionBar extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.viewMyProfile:
-                userController.viewActiveUserProfile(this);
+                userController.editUserProfile(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
