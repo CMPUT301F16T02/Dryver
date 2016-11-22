@@ -82,13 +82,14 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             }
         });
 
-        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestSelection.class);
                 intent.putExtra("position", position);
                 startActivity(intent);
+                return true;
             }
         });
 
