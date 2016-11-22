@@ -1,6 +1,7 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,7 +66,8 @@ public class ActivityViewProfile extends Activity {
         phoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(phoneTextView.getText().toString()));
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + phoneTextView.getText().toString()));
                 startActivity(intent);
             }
         });
@@ -73,9 +75,19 @@ public class ActivityViewProfile extends Activity {
         emailTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-                Intent intent = new Intent(ActivityViewProfile.this, ActivityEmail.class);
-                intent.putExtra("email", user.getEmail());
-                startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:" + user.getEmail()));
+                Intent chooser = intent.createChooser(intent, "Send Email to " + user.getEmail());
+
+                ComponentName emailApp = intent.resolveActivity(getPackageManager());
+                ComponentName unsupportedAction = ComponentName.unflattenFromString("com.android.fallback/.Fallback");
+                boolean hasEmailApp = emailApp != null && !emailApp.equals(unsupportedAction);
+
+                if(hasEmailApp){
+                    startActivity(chooser);
+                } else{
+                    emailTextView.setError("Please login in chosen email application");
+                }
             }
         });
     }
