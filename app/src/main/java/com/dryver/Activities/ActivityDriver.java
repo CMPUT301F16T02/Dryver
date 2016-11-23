@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +46,7 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -62,6 +64,8 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
     private RequestListAdapter requestListAdapter;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
+
+    private SwipeRefreshLayout swipeContainer;
 
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
@@ -93,6 +97,11 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestListAdapter);
 
+        setListeners();
+
+    }
+
+    private void setListeners(){
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -125,6 +134,15 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
                 })
                 .build();
         //==============================================
+
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
     }
 
     @Override
@@ -182,9 +200,24 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
 
+    public void beginRefresh() {
+        requestSingleton.updateRequests(new ICallBack() {
+            @Override
+            public void execute() {
+                refreshRequestList();
+            }
+        });
+    }
+
+    private void refreshRequestList(){
+        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        swipeContainer.setRefreshing(false);
+        requestListAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onResume () {
         super.onResume();
-        requestListAdapter.notifyDataSetChanged();
+        refreshRequestList();
     }
 }

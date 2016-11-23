@@ -80,7 +80,7 @@ public class RequestSingleton {
      * A simple method for fetching an updated request list via Elastic Search
      * @see ElasticSearchController
      */
-    public boolean updateRequests(ICallBack callBack) {
+    public void updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
 
         if(userController.getActiveUser() instanceof Rider){
@@ -96,14 +96,11 @@ public class RequestSingleton {
                 }
             }
             callBack.execute();
-            return true;
-        } else if(userController.getActiveUser() instanceof Driver){
+        } else if(userController.getActiveUser() instanceof Driver) {
             requests = ES.getAllRequests();
-            return true;
-            //TODO: Implement a way of searching for requests in a certain area or something for drivers
-        } else {
-            return false;
+            callBack.execute();
         }
+            //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
     /**
@@ -197,6 +194,20 @@ public class RequestSingleton {
         request.setAcceptedDriverID(driverID);
         request.setStatus(RequestStatus.FINALIZED);
         ES.updateRequest(request);
+    }
+
+    /**
+     * Updates the current viewed request. Called by ActivityDriverList to update the driver list
+     * @param request
+     * @param callBack
+     */
+    public void updateViewedRequest(Request request, ICallBack callBack){
+        Log.i("trace", "RequestSingleton.updateViewedRequest()");
+        Request updatedRequest = ES.getRequestByID(request.getId());
+        if(updatedRequest != null){
+            viewedRequest = updatedRequest;
+            callBack.execute();
+        }
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

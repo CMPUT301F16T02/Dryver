@@ -1,8 +1,9 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,7 @@ public class ActivityDriverList extends Activity{
     private Request request;
     private ArrayList<String> driverIds;
     private ArrayAdapter<String> adapter;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class ActivityDriverList extends Activity{
         driverListView.setAdapter(adapter);
 
         registerForContextMenu(driverListView);
-        setDriverClickEvents();
+        setListeners();
     }
 
     @Override
@@ -74,11 +77,36 @@ public class ActivityDriverList extends Activity{
         }
     }
 
-    private void setDriverClickEvents() {
+    public void beginRefresh() {
+         requestSingleton.updateViewedRequest(request, new ICallBack() {
+            @Override
+            public void execute() {
+                request = requestSingleton.getViewedRequest();
+                refreshDriverList();
+            }
+        });
+    }
+
+    private void refreshDriverList() {
+        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        swipeContainer.setRefreshing(false);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setListeners() {
         driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                 openContextMenu(v);
+            }
+        });
+
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
             }
         });
     }

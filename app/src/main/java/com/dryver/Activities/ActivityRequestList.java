@@ -93,7 +93,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         });
 
         //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerRider);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
