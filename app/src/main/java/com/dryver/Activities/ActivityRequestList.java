@@ -42,7 +42,7 @@ import com.dryver.R;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestList extends Activity {
+public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     private Button mAddRequest;
     private ListView requestListView;
@@ -80,7 +80,6 @@ public class ActivityRequestList extends Activity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
-                intent.putExtra("position", position);
                 startActivity(intent);
                 return true;
             }

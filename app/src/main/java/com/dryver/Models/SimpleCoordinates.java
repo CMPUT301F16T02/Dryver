@@ -3,6 +3,7 @@ package com.dryver.Models;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import io.searchbox.indices.template.TemplateAction;
 
@@ -43,5 +44,25 @@ public class SimpleCoordinates implements Serializable {
         tempLocation.setLatitude(getLatitude());
         tempLocation.setLongitude(getLongitude());
         return tempLocation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SimpleCoordinates that = (SimpleCoordinates) o;
+
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(location, that.location)) return false;
+        return locationName != null ? locationName.equals(that.locationName) : that.locationName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(location);
+        result = 31 * result + (locationName != null ? locationName.hashCode() : 0);
+        return result;
     }
 }
