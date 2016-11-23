@@ -80,7 +80,6 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
-                intent.putExtra("position", position);
                 startActivity(intent);
                 return true;
             }
