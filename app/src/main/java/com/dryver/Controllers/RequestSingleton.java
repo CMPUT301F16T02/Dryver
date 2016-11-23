@@ -116,12 +116,16 @@ public class RequestSingleton {
      * @see ElasticSearchController
      */
     public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
+        Log.i("trace", "RequestSingleton.addRequest()");
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
 
-        if (ES.addRequest(request, callBack)) {
+        if (ES.addRequest(request)) {
             requests.add(request);
+            callBack.success();
+        } else {
+            callBack.failure();
         }
     }
 
@@ -132,13 +136,12 @@ public class RequestSingleton {
      * @param request
      * @return Boolean
      */
-    public Boolean removeRequest(Request request, ICallBack callBack){
-        Log.i("info", "RequestSingleton removeRequest()");
-        if (ES.deleteRequest(request, callBack)) {
+    public void removeRequest(Request request, ICallBack callBack){
+        Log.i("trace", "RequestSingleton.removeRequest()");
+        if (ES.deleteRequest(request)) {
             requests.remove(request);
-            return true;
+            callBack.execute();
         }
-        return false;
     }
 
     /**

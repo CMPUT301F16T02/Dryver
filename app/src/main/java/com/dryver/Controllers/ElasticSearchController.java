@@ -261,48 +261,59 @@ public class ElasticSearchController {
     }
     // ==============           REQUEST             ===============
 
-    public boolean addRequest(Request request, IBooleanCallBack callBack) {
-        AddRequestTask addTask = new AddRequestTask(callBack, request);
+    public boolean addRequest(Request request) {
+        Log.i("trace", "ElasticSearchController.addRequest()");
+        AddRequestTask addTask = new AddRequestTask(request);
         addTask.execute();
+
+        boolean added = false;
         try {
-            return addTask.get();
+            added =  addTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } finally {
-            return false;
+            return added;
         }
     }
 
-    public boolean deleteRequest(Request request, ICallBack callBack) {
+    public boolean deleteRequest(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequest()");
-        Request testRequest;
-        if ((testRequest = getRequestByMatch(request)) != null) {
-            DeleteRequestTask deleteTask = new DeleteRequestTask(callBack);
-            deleteTask.execute(testRequest);
-            return true;
+        DeleteRequestTask deleteTask = new DeleteRequestTask(request);
+        deleteTask.execute();
+
+        //you cant return in try catch >.>
+        boolean deleted = false;
+        try {
+            deleted =  deleteTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            return deleted;
         }
-        return false;
+
     }
 
-    public boolean deleteRequestByID(Request request, ICallBack callBack) {
+    public boolean deleteRequestByID(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequestByID()");
         if (getRequestByID(request.getId()) != null) {
-            DeleteRequestTask deleteTask = new DeleteRequestTask(callBack);
-            deleteTask.execute(request);
+            DeleteRequestTask deleteTask = new DeleteRequestTask(request);
+            deleteTask.execute();
             return true;
         }
         return false;
     }
 
-    public boolean deleteRequestByRiderID(Request request, ICallBack callBack) {
+    public boolean deleteRequestByRiderID(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequestByRiderID()");
         Request testRequest;
         if ((testRequest = getRequestByRiderID(request)) != null) {
-            DeleteRequestTask deleteTask = new DeleteRequestTask(callBack);
-            deleteTask.execute(testRequest);
-            deleteRequest(request, callBack); //recursively delete all similar requests to remove redundancy.
+            DeleteRequestTask deleteTask = new DeleteRequestTask(request);
+            deleteTask.execute();
+            deleteRequest(request); //recursively delete all similar requests to remove redundancy.
             return true;
         }
         return false;
@@ -427,13 +438,10 @@ public class ElasticSearchController {
      * @return boolean
      */
     private static class AddRequestTask extends AsyncTask<Void, Void, Boolean> {
-
-        private IBooleanCallBack callBack;
         private Request request;
-        private boolean canAdd = false;
+        private boolean canAdd = true;
 
-        AddRequestTask(IBooleanCallBack callBack, Request request){
-            this.callBack = callBack;
+        AddRequestTask(Request request){
             this.request = request;
         }
 
@@ -463,16 +471,6 @@ public class ElasticSearchController {
             }
             return addable;
         }
-
-        @Override
-        protected void onPostExecute(Boolean success){
-            Log.i("trace", "AddRequestTask.onPostExecute()");
-                if (success){
-                    callBack.success();
-                } else {
-                    callBack.failure();
-                }
-        }
     }
 
     /**
@@ -480,37 +478,42 @@ public class ElasticSearchController {
      * @see Request
      * @return boolean
      */
-    private static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
+    private static class DeleteRequestTask extends AsyncTask<Void, Void, Boolean> {
+        private Request request;
+        private boolean canDelete = true;
 
-        private ICallBack callBack;
-
-        DeleteRequestTask(ICallBack callBack){
-            this.callBack = callBack;
+        DeleteRequestTask(Request request){
+            this.request = request;
         }
 
         @Override
-        protected Boolean doInBackground(Request... search_parameters) {
-            verifySettings();
-            boolean deletable = false;
+        protected void onPreExecute(){
+            canDelete = getRequestByMatch(request) != null;
+        }
 
-            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(REQUEST).id(search_parameters[0].getId()).build();
+
+        @Override
+        protected Boolean doInBackground(Void... search_parameters) {
+            verifySettings();
+
+            if(!canDelete){
+                return false;
+            }
+
+            boolean deleted = false;
+
+            Delete delete = new Delete.Builder(request.getId()).index(INDEX).type(REQUEST).id(request.getId()).build();
 
             try {
                 //TODO: use the result?
                 DocumentResult result = client.execute(delete);
                 if (result.isSucceeded()){
-                    deletable = true;
+                    deleted = true;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                return deletable;
-            }
-        }
-        @Override
-        protected void onPostExecute(Boolean deleted){
-            if(callBack != null){
-                callBack.execute();
+                return deleted;
             }
         }
     }

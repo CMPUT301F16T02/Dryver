@@ -128,7 +128,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
     public void onResume() {
         Log.i("info", "ActivityRequestList.onResume()");
         super.onResume();
-        beginRefresh();
+        refreshRequestList();
 
     }
 }
