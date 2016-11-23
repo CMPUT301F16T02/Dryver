@@ -69,6 +69,13 @@ public class ActivityRegistration extends Activity {
         findViewById(R.id.username_edittext).requestFocus();
 
         doneButton = (Button) findViewById(R.id.done_button);
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the done button's click
+     */
+    public void setListeners(){
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

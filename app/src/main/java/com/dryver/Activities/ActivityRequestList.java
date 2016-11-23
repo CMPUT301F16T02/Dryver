@@ -73,6 +73,10 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         setListeners();
     }
 
+    /**
+     * Sets the listeners for the add request button's click and the long click of the request list's
+     * items
+     */
     public void setListeners(){
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +106,10 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         });
     }
 
-
+    /**
+     * Begins the refresh of the request list
+     * @see ICallBack
+     */
     public void beginRefresh() {
         requestSingleton.updateRequests(new ICallBack() {
             @Override
@@ -112,6 +119,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         });
     }
 
+    /**
+     * called when request list data changes
+     */
     private void refreshRequestList(){
         Log.i("trace", "ActivityRequestList.refreshRequestList()");
         swipeContainer.setRefreshing(false);

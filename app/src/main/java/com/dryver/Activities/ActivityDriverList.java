@@ -77,6 +77,10 @@ public class ActivityDriverList extends Activity{
         }
     }
 
+    /**
+     * Begins the refreshing of the driver list
+     * @see ICallBack
+     */
     public void beginRefresh() {
          requestSingleton.updateViewedRequest(request, new ICallBack() {
             @Override
@@ -87,12 +91,18 @@ public class ActivityDriverList extends Activity{
         });
     }
 
+    /**
+     * Called after data in driver list has changed
+     */
     private void refreshDriverList() {
         Log.i("trace", "ActivityRequestList.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * sets the event listeners for the driver list items as well as the refresh swipe
+     */
     private void setListeners() {
         driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

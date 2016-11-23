@@ -101,6 +101,10 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
 
     }
 
+    /**
+     * Sets the action listeners for the long click on request list item, the click of current location
+     * button, the refresh swipe, and also does some google maps stuff **Maybe maps should be moved**
+     */
     private void setListeners(){
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -159,6 +163,9 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         }
     }
 
+    /**
+     * Find the device's current location using location services
+     */
     public void findCurrentLocation() {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
         Log.i("ActivityDriver: ", "CURRENT LOCATION: " + currentLocation);
@@ -173,6 +180,14 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
     }
 
     //Depending on the spinner select, requests are sorted according to the selection.
+
+    /**
+     * Handles selection of various selections in the sort by spinner
+     * @param parent
+     * @param view
+     * @param pos
+     * @param id
+     */
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         String sortSelection = parent.getItemAtPosition(pos).toString();
         if (sortSelection.equals("Date")) {
@@ -190,9 +205,18 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         requestListAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * handles nothing being selected in the spinner
+     * @param parent
+     */
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
+    /**
+     * Initializes the location request
+     * @param LOCATION_UPDATES
+     * @param LOCATION_INTERVAL
+     */
     public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -200,6 +224,10 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
 
+    /**
+     * Begins refreshing of the request list
+     * @see ICallBack
+     */
     public void beginRefresh() {
         requestSingleton.updateRequests(new ICallBack() {
             @Override
@@ -209,6 +237,9 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         });
     }
 
+    /**
+     * The method called after data has changed in the request list
+     */
     private void refreshRequestList(){
         Log.i("trace", "ActivityRequestList.refreshRequestList()");
         swipeContainer.setRefreshing(false);

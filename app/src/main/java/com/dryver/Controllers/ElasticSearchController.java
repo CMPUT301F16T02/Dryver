@@ -261,6 +261,12 @@ public class ElasticSearchController {
     }
     // ==============           REQUEST             ===============
 
+    /**
+     * adds a request to Elasitc Search
+     * @param request
+     * @return boolean
+     * @see AddRequestTask
+     */
     public boolean addRequest(Request request) {
         Log.i("trace", "ElasticSearchController.addRequest()");
         AddRequestTask addTask = new AddRequestTask(request);
@@ -278,6 +284,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Deletes a request from ES
+     * @param request
+     * @return boolean
+     * @see DeleteRequestTask
+     */
     public boolean deleteRequest(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequest()");
         DeleteRequestTask deleteTask = new DeleteRequestTask(request);
@@ -297,6 +309,12 @@ public class ElasticSearchController {
 
     }
 
+    /**
+     * deletes a request using it's ID
+     * @param request
+     * @return boolean
+     * @see DeleteRequestTask
+     */
     public boolean deleteRequestByID(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequestByID()");
         if (getRequestByID(request.getId()) != null) {
@@ -307,6 +325,12 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Deletes all requests for a given user
+     * @param request
+     * @return boolean
+     * @see DeleteRequestTask
+     */
     public boolean deleteRequestByRiderID(Request request) {
         Log.i("trace", "ElasticSearchController.deleteRequestByRiderID()");
         Request testRequest;
@@ -319,6 +343,12 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Updates a request in ES using it's new values
+     * @param request
+     * @return boolean
+     * @see UpdateRequestTask
+     */
     public boolean updateRequest(Request request) {
         Log.i("trace", "ElasticSearchController.updateRequest()");
         Request tempRequest = request;
@@ -337,6 +367,13 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * gets a request from ES via ES ID
+     * @param requestID
+     * @return Request
+     * @see Request
+     * @see GetRequestTask
+     */
     public Request getRequestByID(String requestID) {
         Log.i("trace", "ElasticSearchController.getRequestByID()");
         GetRequestTask getTask = new GetRequestTask();
@@ -351,6 +388,14 @@ public class ElasticSearchController {
         return request;
     }
 
+    /**
+     * returns a matching request from ES. Often used to check if the request is a duplicate as it returns null
+     * if the inputted request is not a duplicate.
+     * @param request
+     * @return Request
+     * @see Request
+     * @see GetRequestTask
+     */
     public static Request getRequestByMatch(Request request) {
         Log.i("trace", "ElasticSearchController.getRequestByMatch()");
         GetRequestsTask getTask = new GetRequestsTask();
@@ -376,6 +421,13 @@ public class ElasticSearchController {
         return null;
     }
 
+    /**
+     * gets a request for a given Rider using the Rider's ID
+     * @param request
+     * @return Request
+     * @see Request
+     * @see GetRequestsTask
+     */
     public Request getRequestByRiderID(Request request) {
         Log.i("trace", "ElasticSearchController.getRequestByRiderID()");
         GetRequestsTask getTask = new GetRequestsTask();
@@ -400,6 +452,14 @@ public class ElasticSearchController {
         return null;
     }
 
+    /**
+     * gets All requests for a given rider using rider ID
+     * @param riderID
+     * @return ArrayList<Request>
+     * @see GetRequestsTask
+     * @see Request
+     * @see com.dryver.Models.Rider
+     */
     public ArrayList<Request> getRequests(String riderID) {
         Log.i("trace", "ElasticSearchController.getRequests()");
         GetRequestsTask getTask = new GetRequestsTask();
@@ -414,6 +474,12 @@ public class ElasticSearchController {
         return requestList;
     }
 
+    /**
+     * Gets all requests on the entirety of ES
+     * @return ArrayList<Request>
+     * @see GetAllRequestsTask
+     * @see Request
+     */
     public ArrayList<Request> getAllRequests(){
         Log.i("trace", "ElasticSearchController.getAllRequests()");
         GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
@@ -441,10 +507,17 @@ public class ElasticSearchController {
         private Request request;
         private boolean canAdd = true;
 
+        /**
+         * initializes the task with a request
+         * @param request
+         */
         AddRequestTask(Request request){
             this.request = request;
         }
 
+        /**
+         * overridden method, checks for match before starting
+         */
         @Override
         protected void onPreExecute(){
             canAdd = getRequestByMatch(request) == null;
@@ -482,10 +555,17 @@ public class ElasticSearchController {
         private Request request;
         private boolean canDelete = true;
 
+        /**
+         * initializes the task with a request
+         * @param request
+         */
         DeleteRequestTask(Request request){
             this.request = request;
         }
 
+        /**
+         * overridded method checks for match before start
+         */
         @Override
         protected void onPreExecute(){
             canDelete = getRequestByMatch(request) != null;

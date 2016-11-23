@@ -45,7 +45,7 @@ public class ActivityOpeningPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opening_page);
 
-        assignButtonListeners();
+        setListeners();
 
         /* Check if their is an existing cached user. Otherwise prompt for login. */
         if (UserController.getInstance().hasCachedUser()) {
@@ -53,11 +53,17 @@ public class ActivityOpeningPage extends Activity {
             Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
             ActivityOpeningPage.this.startActivity(intent);
         }
-    }
-    private void assignButtonListeners(){
+
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
 
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the sign in button's click as well as the get started button's click
+     */
+    private void setListeners(){
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

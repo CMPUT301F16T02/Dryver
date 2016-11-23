@@ -79,6 +79,14 @@ public class ActivityRequest extends Activity {
 
         findViewById(R.id.requestTripPrice).requestFocus();
 
+        setListeners();
+    }
+
+    /**
+     * Sets the event listeners for the set location button's clock and the submit request button's
+     * click
+     */
+    public void setListeners(){
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +127,10 @@ public class ActivityRequest extends Activity {
     }
 
     // TODO: 2016-11-14 implement checker. if intent: get request and edit, otherwise: make new request
+
+    /**
+     * Checks the intent of the ......... <SOMEONE WRITE WTF THIS IS SUPPOSED TO DO>
+     */
     public void checkIntent() {
         Integer position;
         Intent intent = getIntent();

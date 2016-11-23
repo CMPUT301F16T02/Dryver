@@ -56,6 +56,13 @@ public class ActivityLogin extends Activity {
 
         loginButton = (Button) findViewById(R.id.login_button);
 
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the Login Button's click
+     */
+    private void setListeners(){
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -59,6 +59,12 @@ public class RequestSingleton {
         return requests;
     }
 
+    /**
+     * Updates the requests and returns them. Gives an emoty callback
+     * @return ArrayList<Request>
+     * @see Request
+     * @see ICallBack
+     */
     public ArrayList<Request> getUpdatedRequests() {
         updateRequests(new ICallBack() {
             @Override
@@ -68,17 +74,31 @@ public class RequestSingleton {
         return requests;
     }
 
+    /**
+     * Gets the currently viewed request (I.E open in RequestSelection)
+     * @return Request
+     * @see Request
+     * @see com.dryver.Activities.ActivityRequestSelection
+     */
     public Request getViewedRequest() {
         return viewedRequest;
     }
 
+    /**
+     * Sets the currently viewed request (I.E open in RequestSelection)
+     * @param viewedRequest
+     * @see Request
+     * @see com.dryver.Activities.ActivityRequestSelection
+     */
     public void setViewedRequest(Request viewedRequest) {
         this.viewedRequest = viewedRequest;
     }
 
     /**
-     * A simple method for fetching an updated request list via Elastic Search
+     * A simple method for fetching an updated request list via Elastic Search. Executes callback after
+     * @param callBack
      * @see ElasticSearchController
+     * @see ICallBack
      */
     public void updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
@@ -110,7 +130,9 @@ public class RequestSingleton {
      * @param fromLocation
      * @param toLocation
      * @param rate
+     * @param callBack
      * @see ElasticSearchController
+     * @see ICallBack
      */
     public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
         Log.i("trace", "RequestSingleton.addRequest()");
@@ -127,11 +149,13 @@ public class RequestSingleton {
     }
 
     /**
-     * a synchronized method for removing a request from the current request list as well as
+     * a method for removing a request from the current request list as well as
      * Elastic Search see deleteRequestById() in ESC
      * @see ElasticSearchController
      * @param request
+     * @param callBack
      * @return Boolean
+     * @see ICallBack
      */
     public void removeRequest(Request request, ICallBack callBack){
         Log.i("trace", "RequestSingleton.removeRequest()");
@@ -190,8 +214,13 @@ public class RequestSingleton {
         });
     }
 
+    /**
+     * A Function for a Rider selecting a Driver and updating the request in ES
+     * @param request
+     * @param driverID
+     */
     public void selectDriver(Request request, String driverID){
-        request.setAcceptedDriverID(driverID);
+        request.acceptOffer(driverID);
         request.setStatus(RequestStatus.FINALIZED);
         ES.updateRequest(request);
     }
@@ -200,6 +229,7 @@ public class RequestSingleton {
      * Updates the current viewed request. Called by ActivityDriverList to update the driver list
      * @param request
      * @param callBack
+     * @see ICallBack
      */
     public void updateViewedRequest(Request request, ICallBack callBack){
         Log.i("trace", "RequestSingleton.updateViewedRequest()");

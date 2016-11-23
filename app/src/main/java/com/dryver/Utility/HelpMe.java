@@ -95,6 +95,10 @@ public class HelpMe extends Activity {
         // TODO: 2016-10-18 implement this. 
     }
 
+    /**
+     * Checks whether the internet is connected
+     * @return boolean
+     */
     static public boolean isInternetConnected() {
         try {
             InetAddress inetAddress = InetAddress.getByName(DATABASE_URL);
@@ -105,15 +109,31 @@ public class HelpMe extends Activity {
 
     }
 
+    /**
+     * Sets the date
+     * @param cal
+     * @param datePicker
+     */
     static public void setDatePicker(Calendar cal, DatePicker datePicker) {
         datePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * Set Time picker
+     * @param cal
+     * @param timePicker
+     */
     static public void setTimePicker(Calendar cal, TimePicker timePicker) {
         timePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
         timePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
     }
 
+    /**
+     * Sets the calender
+     * @param cal
+     * @param datePicker
+     * @param timePicker
+     */
     static public void setCalendar(Calendar cal, DatePicker datePicker, TimePicker timePicker) {
         cal.set(datePicker.getYear(),
                 datePicker.getMonth(),

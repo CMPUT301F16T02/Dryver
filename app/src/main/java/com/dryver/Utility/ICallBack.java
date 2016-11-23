@@ -1,9 +1,12 @@
 package com.dryver.Utility;
 
 /**
- * Created by Adam on 11/22/2016.
+ * Simple callback interface
  */
 
 public interface ICallBack {
+    /**
+     * Callback method
+     */
     void execute();
 }
