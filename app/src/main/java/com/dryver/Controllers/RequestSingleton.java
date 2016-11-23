@@ -20,13 +20,26 @@
 package com.dryver.Controllers;
 
 import android.location.Location;
+import android.os.Environment;
 import android.util.Log;
 
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -36,6 +49,7 @@ import java.util.Comparator;
  * Request Singleton. Deals from providing request information to the caller.
  */
 public class RequestSingleton {
+    private static String REQUESTS_SAV = "requests.json";
     private static RequestSingleton ourInstance = new RequestSingleton();
     private Request viewedRequest;
 
@@ -178,4 +192,77 @@ public class RequestSingleton {
         ES.updateRequest(request);
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
+
+    /**
+     * Saves the current ArrayList of requests to local storage
+     * */
+    public void saveRequests() {
+        try {
+            String state = Environment.getExternalStorageState();
+            if(Environment.MEDIA_MOUNTED.equals(state)) {
+                File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+
+                Gson gson = new Gson();
+
+
+                gson.toJson(requests, bufferedWriter);
+                bufferedWriter.flush();
+
+                fileOutputStream.close();
+            }
+            else {
+                throw new IOException("External storage was not available!");
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Loads all the requests from local storage */
+    public void loadRequests() {
+        try {
+            String state = Environment.getExternalStorageState();
+            if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+                File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
+
+                FileInputStream fileInputStream = new FileInputStream(file);
+
+                BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(fileInputStream));
+
+                Gson gson = new Gson();
+
+                // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                Type listType = new TypeToken<ArrayList<Request>>(){}.getType();
+
+                requests = gson.fromJson(bufferedReader, listType);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns true or false if there are cached requests.
+     * */
+    public boolean hasCacheRequests() {
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)) {
+            return new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV).isFile();
+        } else return false;
+    }
+
+    /**
+     * Syncs all locally stored requests with the server.*/
+    public void syncRequests() {
+        //TODO Sync requests with ES and local storage.
+    }
+
+    //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }
