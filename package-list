@@ -1,6 +1,6 @@
-com.ubertapp
-com.ubertapp.Activities
-com.ubertapp.Controllers
-com.ubertapp.Mock
-com.ubertapp.Models
-com.ubertapp.UITests
+com.dryver.Activities
+com.dryver.ClassTests
+com.dryver.Controllers
+com.dryver.Models
+com.dryver.UITests
+com.dryver.Utility
