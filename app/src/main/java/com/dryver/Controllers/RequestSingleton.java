@@ -225,7 +225,8 @@ public class RequestSingleton {
     }
 
     /**
-     * Loads all the requests from local storage */
+     * Loads all the requests from local storage
+     * */
     public void loadRequests() {
         try {
             String state = Environment.getExternalStorageState();
@@ -259,9 +260,10 @@ public class RequestSingleton {
     }
 
     /**
-     * Syncs all locally stored requests with the server.*/
+     * Syncs all locally stored requests with the server.
+     * */
     public void syncRequests() {
-        //TODO Sync requests with ES and local storage.
+        //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
