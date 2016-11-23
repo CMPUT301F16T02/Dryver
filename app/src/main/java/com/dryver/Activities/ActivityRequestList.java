@@ -42,7 +42,7 @@ import com.dryver.R;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestList extends Activity {
+public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     private Button mAddRequest;
     private ListView requestListView;

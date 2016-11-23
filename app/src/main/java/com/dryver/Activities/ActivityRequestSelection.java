@@ -106,6 +106,13 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
+        riderNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
+            }
+        });
+
         titleTextView.setText("Request Details");
         riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
