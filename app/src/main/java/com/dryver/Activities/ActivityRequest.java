@@ -81,7 +81,7 @@ public class ActivityRequest extends Activity {
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequest.this, ActivityRequestMap.class);
+                Intent intent = new Intent(ActivityRequest.this, MapsActivity.class);
                 startActivity(intent);
             }
         });

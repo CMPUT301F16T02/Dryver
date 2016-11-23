@@ -36,6 +36,7 @@ public class ActivityOpeningPage extends Activity {
 
     private Button signinButton;
     private Button getStartedButton;
+    private Button mapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class ActivityOpeningPage extends Activity {
 
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
+        mapButton = (Button) findViewById(R.id.mapButton);
 
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +59,14 @@ public class ActivityOpeningPage extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ActivityOpeningPage.this, ActivityRegistration.class);
+                ActivityOpeningPage.this.startActivity(intent);
+            }
+        });
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivityOpeningPage.this, MapsActivity.class);
                 ActivityOpeningPage.this.startActivity(intent);
             }
         });

@@ -72,4 +72,14 @@
         android:layout_width="250dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:text="Maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/signin_button"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/mapButton" />
 </RelativeLayout>
