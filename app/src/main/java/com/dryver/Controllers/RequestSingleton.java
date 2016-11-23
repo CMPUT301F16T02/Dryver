@@ -114,18 +114,13 @@ public class RequestSingleton {
      * @param request
      * @return Boolean
      */
-    public synchronized Boolean removeRequest(Request request){
+    public Boolean removeRequest(Request request){
         Log.i("info", "RequestSingleton removeRequest()");
-        if(!requests.contains(request)) {
-            Log.i("info", "The request singleton doesn't have this request");
-            return false;
-        }
-
-        Boolean deleted;
-        if (deleted = ES.deleteRequest(request)) {
+        if (ES.deleteRequest(request)) {
             requests.remove(request);
+            return true;
         }
-        return deleted;
+        return false;
     }
 
     /**
