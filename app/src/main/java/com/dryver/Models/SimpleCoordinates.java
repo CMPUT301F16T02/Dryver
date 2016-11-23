@@ -8,7 +8,7 @@ import java.util.Arrays;
 import io.searchbox.indices.template.TemplateAction;
 
 /**
- * Created by drei on 2016-11-16.
+ * Simplified coordinate system for cleaner serialization
  */
 
 public class SimpleCoordinates implements Serializable {
@@ -16,25 +16,48 @@ public class SimpleCoordinates implements Serializable {
     private String locationName;
 
 
+    /**
+     * initializes the coords
+     * @param latitude
+     * @param longitude
+     * @param locationName
+     */
     SimpleCoordinates(Double latitude, Double longitude, String locationName) {
         this.location[0] = latitude;
         this.location[1] = longitude;
         this.locationName = locationName;
     }
 
+    /**
+     * Sets the location
+     * @param latitude
+     * @param longitude
+     */
     public void setLocation(Double latitude, Double longitude) {
         this.location[0] = latitude;
         this.location[1] = longitude;
     }
 
+    /**
+     * Sets the location name
+     * @param locationName
+     */
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
 
+    /**
+     * Gets the latitiude
+     * @return Double
+     */
     public Double getLatitude() {
         return this.location[0];
     }
 
+    /**
+     * Gets the logitude
+     * @return Double
+     */
     public Double getLongitude() {
         return this.location[1];
     }

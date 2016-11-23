@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.R;
 
 import java.util.concurrent.ExecutionException;
@@ -56,6 +56,13 @@ public class ActivityLogin extends Activity {
 
         loginButton = (Button) findViewById(R.id.login_button);
 
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the Login Button's click
+     */
+    private void setListeners(){
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

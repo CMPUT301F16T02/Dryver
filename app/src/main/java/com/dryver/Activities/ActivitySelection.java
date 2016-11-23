@@ -30,18 +30,25 @@ import com.dryver.R;
  * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
 public class ActivitySelection extends ActivityLoggedInActionBar {
-    private Button driverButton;
-    private Button requestButton;
+    private Button dryveButton;
+    private Button rydeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
 
-        driverButton = (Button) findViewById(R.id.driver_button);
-        requestButton = (Button) findViewById(R.id.request_button);
+        dryveButton = (Button) findViewById(R.id.driver_button);
+        rydeButton = (Button) findViewById(R.id.request_button);
 
-        driverButton.setOnClickListener(new View.OnClickListener() {
+        setListeners();
+    }
+
+    /**
+     * This sets the listeners for the driver button's click and the rider button's click
+     */
+    public void setListeners(){
+        dryveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ActivitySelection.this, ActivityDriver.class);
@@ -49,7 +56,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
             }
         });
 
-        requestButton.setOnClickListener(new View.OnClickListener() {
+        rydeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ActivitySelection.this, ActivityRequestList.class);

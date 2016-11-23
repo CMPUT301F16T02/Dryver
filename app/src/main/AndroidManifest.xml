@@ -60,12 +60,9 @@
         <!--<activity android:name=".Activities.ActivityRequestMap"/>-->
         <activity android:name=".Activities.ActivityRequest"/>
         <activity android:name=".Activities.ActivityLoggedInActionBar"/>
-        <activity android:name=".Models.HelpMe">
-        </activity>
-        <activity android:name=".Activities.ActivityViewProfile">
-        </activity>
-        <activity android:name=".Activities.ActivityDriverList">
-        </activity>
+        <activity android:name=".Utility.HelpMe"></activity>
+        <activity android:name=".Activities.ActivityViewProfile"></activity>
+        <activity android:name=".Activities.ActivityDriverList"></activity>
     </application>
 
 </manifest>

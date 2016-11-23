@@ -29,17 +29,14 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
 
 /**
- * This is the activity that is responsible for displaying both the active user's profile infomation
- * and the viewed user's information. This means that the active user (the one using the app) will
- * be able to edit there information here, and also that this activity will be displayed when they
- * select to view a driver or rider's profile (that is not their own). ****May be responsible for
- * at least calling the methods responsible for contacting the driver****
+ * This activity is for displaying the active user's information as well as allowing them to edit it
+ * and save it.
  */
 public class ActivityEditProfile extends Activity {
     //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
@@ -62,7 +59,6 @@ public class ActivityEditProfile extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        //This doesn't work for some reason;
         this.titleTextView = (TextView)findViewById(R.id.profile_name);
         titleTextView.setText(user.getId() + "'s Profile");
 
@@ -74,6 +70,17 @@ public class ActivityEditProfile extends Activity {
         this.vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
         this.saveChangesButton = (Button)findViewById(R.id.save_changes);
 
+        emailEditText.setText(user.getEmail());
+        phoneEditText.setText(user.getPhoneNumber());
+
+        checkUserType();
+        setListeners();
+    }
+
+    /**
+     * checks whether the user is a rider or driver, and displays and hides the appropriate UI elements
+     */
+    public void checkUserType(){
         if(user instanceof Rider){
             vehicleDesriptionTextView.setVisibility(View.GONE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
@@ -86,10 +93,12 @@ public class ActivityEditProfile extends Activity {
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
         }
+    }
 
-        emailEditText.setText(user.getEmail());
-        phoneEditText.setText(user.getPhoneNumber());
-
+    /**
+     * Sets the listeners for the click of save changes button
+     */
+    private void setListeners(){
         saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +110,11 @@ public class ActivityEditProfile extends Activity {
     }
 
     //TODO: Default Payment Method
+
+    /**
+     * updates the user's profile. This happens when they click save changes
+     * @return
+     */
     private boolean updateUserProfile(){
         user = userController.getActiveUser();
 

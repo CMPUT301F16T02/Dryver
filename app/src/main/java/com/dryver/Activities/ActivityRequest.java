@@ -15,7 +15,8 @@ import android.widget.TimePicker;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
+import com.dryver.Utility.IBooleanCallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
@@ -69,15 +70,23 @@ public class ActivityRequest extends Activity {
 
         // TODO: 2016-11-14 Set these locations through the map map.
         // set default locations for now
-        testFromLocation.setLatitude(53.523869);
-        testFromLocation.setLongitude(-113.526146);
-        testToLocation.setLatitude(53.548623);
+        testFromLocation.setLatitude(54.523869);
+        testFromLocation.setLongitude(-123.526146);
+        testToLocation.setLatitude(53.638623);
         testToLocation.setLongitude(-113.506537);
 
         checkIntent();
 
         findViewById(R.id.requestTripPrice).requestFocus();
 
+        setListeners();
+    }
+
+    /**
+     * Sets the event listeners for the set location button's clock and the submit request button's
+     * click
+     */
+    public void setListeners(){
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,8 +102,18 @@ public class ActivityRequest extends Activity {
                     // TODO: 2016-11-14 limit the number of decimal places to 2
                     Double price = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
-                    requestSingleton.addRequest(rider.getId(), calendar, testFromLocation, testToLocation, price);
-                    finish();
+                    requestSingleton.addRequest(rider.getId(), calendar, testFromLocation, testToLocation, price, new IBooleanCallBack() {
+                        @Override
+                        public void success() {
+                            finish();
+                        }
+
+                        @Override
+                        public void failure() {
+                            submitRequest.setError("You already have a very similar request open...");
+                        }
+                    });
+
                 }
             }
         });
@@ -108,6 +127,10 @@ public class ActivityRequest extends Activity {
     }
 
     // TODO: 2016-11-14 implement checker. if intent: get request and edit, otherwise: make new request
+
+    /**
+     * Checks the intent of the ......... <SOMEONE WRITE WTF THIS IS SUPPOSED TO DO>
+     */
     public void checkIntent() {
         Integer position;
         Intent intent = getIntent();

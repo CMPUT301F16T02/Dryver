@@ -91,7 +91,7 @@ public class UserController {
     }
 
     /**
-     * View active user profile.
+     * A method for viewing and editing your own profile
      *
      * @param currentActivity the current activity
      */
@@ -101,6 +101,11 @@ public class UserController {
         currentActivity.startActivity(intent);
     }
 
+    /**
+     * a method for viewing others' profiles
+     * @param user
+     * @param currentActivity
+     */
     public void viewUserProfile(User user, Activity currentActivity){
         viewedUser = user;
         Intent intent = new Intent(currentActivity, ActivityViewProfile.class);
@@ -190,6 +195,9 @@ public class UserController {
         }
     }
 
+    /**
+     * deletes a local files (cached uses)
+     */
     public void deleteFile() {
         try {
             boolean file = new File(ACTIVE_USER_SAV).delete();
@@ -198,6 +206,10 @@ public class UserController {
         }
     }
 
+    /**
+     * Checks if there is a chached user on the device
+     * @return
+     */
     public boolean hasCachedUser() {
         String state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state)) {

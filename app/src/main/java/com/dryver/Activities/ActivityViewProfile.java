@@ -14,6 +14,11 @@ import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+/**
+ * This activity is responsible for handling the viewing of a profile that is not the active user's
+ * Email and phone is done from here
+ */
+
 public class ActivityViewProfile extends Activity {
 
     private TextView titleTextView;
@@ -45,6 +50,15 @@ public class ActivityViewProfile extends Activity {
         emailTextView.setText(user.getEmail());
         phoneTextView.setText(user.getPhoneNumber());
 
+        checkUserType();
+
+       setListeners();
+    }
+
+    /**
+     * Checks whether the user is a rider or driver and display or hide appropriate UI elements
+     */
+    public void checkUserType(){
         if(user instanceof Rider){
             vehicleInfoTitleTextView.setVisibility(View.GONE);
             vehicleInfoTextView.setVisibility(View.GONE);
@@ -60,9 +74,12 @@ public class ActivityViewProfile extends Activity {
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
         }
+    }
 
-
-
+    /**
+     * Sets the listeners for the email TextView, the phone number TextView
+     */
+    public void setListeners(){
         phoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
