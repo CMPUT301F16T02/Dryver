@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.R;
 
 import java.util.concurrent.ExecutionException;

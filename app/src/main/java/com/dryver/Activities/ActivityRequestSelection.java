@@ -32,6 +32,7 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
+import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
@@ -136,9 +137,12 @@ public class ActivityRequestSelection extends Activity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(requestSingleton.removeRequest(request)) {
-                    finish();
-                }
+                requestSingleton.removeRequest(request, new ICallBack(){
+                    @Override
+                    public void execute(){
+                        finish();
+                    }
+                });
             }
         });
 

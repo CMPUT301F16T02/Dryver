@@ -23,6 +23,8 @@ import android.location.Location;
 import android.util.Log;
 
 import com.dryver.Models.Driver;
+import com.dryver.Utility.IBooleanCallBack;
+import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
@@ -58,7 +60,11 @@ public class RequestSingleton {
     }
 
     public ArrayList<Request> getUpdatedRequests() {
-        updateRequests();
+        updateRequests(new ICallBack() {
+            @Override
+            public void execute() {
+            }
+        });
         return requests;
     }
 
@@ -74,10 +80,22 @@ public class RequestSingleton {
      * A simple method for fetching an updated request list via Elastic Search
      * @see ElasticSearchController
      */
-    public boolean updateRequests() {
+    public boolean updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
+
         if(userController.getActiveUser() instanceof Rider){
-            requests = ES.getRequests(userController.getActiveUser().getId());
+            ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
+            for(Request newRequest : newRequests){
+                if(!requests.contains(newRequest)){
+                    requests.add(newRequest);
+                }
+                for(Request oldRequest: requests){
+                    if(!newRequests.contains(oldRequest)){
+                        requests.remove(oldRequest);
+                    }
+                }
+            }
+            callBack.execute();
             return true;
         } else if(userController.getActiveUser() instanceof Driver){
             requests = ES.getAllRequests();
@@ -97,12 +115,12 @@ public class RequestSingleton {
      * @param rate
      * @see ElasticSearchController
      */
-    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
 
-        if (ES.addRequest(request)) {
+        if (ES.addRequest(request, callBack)) {
             requests.add(request);
         }
     }
@@ -114,9 +132,9 @@ public class RequestSingleton {
      * @param request
      * @return Boolean
      */
-    public Boolean removeRequest(Request request){
+    public Boolean removeRequest(Request request, ICallBack callBack){
         Log.i("info", "RequestSingleton removeRequest()");
-        if (ES.deleteRequest(request)) {
+        if (ES.deleteRequest(request, callBack)) {
             requests.remove(request);
             return true;
         }

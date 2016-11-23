@@ -31,11 +31,9 @@ import android.widget.EditText;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
-
-import java.util.concurrent.ExecutionException;
 
 
 /**

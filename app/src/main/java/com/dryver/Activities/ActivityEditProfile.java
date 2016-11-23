@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
