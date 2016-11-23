@@ -39,6 +39,11 @@ public class Driver extends User {
         return vehicleDescription;
     }
 
+    /**
+     * Gets the driver's vehicle description
+     * //TODO: Make this work properly with ES
+     * @param vehicleDescription
+     */
     public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;
     }

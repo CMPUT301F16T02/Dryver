@@ -75,15 +75,21 @@
                 android:id="@+id/requestSortSpinner"/>
         </LinearLayout>
 
-        <ListView
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainerDriver"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/requestListViewRequest"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/requestSpinnerLayout"
-            android:layout_above="@+id/requestButtonNewRequest"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-        </ListView>
+            android:layout_height="match_parent">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/requestListViewRequest"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/requestSpinnerLayout"
+                android:layout_above="@+id/requestButtonNewRequest"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </RelativeLayout>

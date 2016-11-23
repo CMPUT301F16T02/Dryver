@@ -24,6 +24,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.dryver.Models.Driver;
+import com.dryver.Utility.IBooleanCallBack;
+import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
@@ -71,35 +73,68 @@ public class RequestSingleton {
         return requests;
     }
 
+    /**
+     * Updates the requests and returns them. Gives an emoty callback
+     * @return ArrayList<Request>
+     * @see Request
+     * @see ICallBack
+     */
     public ArrayList<Request> getUpdatedRequests() {
-        updateRequests();
+        updateRequests(new ICallBack() {
+            @Override
+            public void execute() {
+            }
+        });
         return requests;
     }
 
+    /**
+     * Gets the currently viewed request (I.E open in RequestSelection)
+     * @return Request
+     * @see Request
+     * @see com.dryver.Activities.ActivityRequestSelection
+     */
     public Request getViewedRequest() {
         return viewedRequest;
     }
 
+    /**
+     * Sets the currently viewed request (I.E open in RequestSelection)
+     * @param viewedRequest
+     * @see Request
+     * @see com.dryver.Activities.ActivityRequestSelection
+     */
     public void setViewedRequest(Request viewedRequest) {
         this.viewedRequest = viewedRequest;
     }
 
     /**
-     * A simple method for fetching an updated request list via Elastic Search
+     * A simple method for fetching an updated request list via Elastic Search. Executes callback after
+     * @param callBack
      * @see ElasticSearchController
+     * @see ICallBack
      */
-    public boolean updateRequests() {
+    public void updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
+
         if(userController.getActiveUser() instanceof Rider){
-            requests = ES.getRequests(userController.getActiveUser().getId());
-            return true;
-        } else if(userController.getActiveUser() instanceof Driver){
+            ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
+            for(Request newRequest : newRequests){
+                if(!requests.contains(newRequest)){
+                    requests.add(newRequest);
+                }
+                for(Request oldRequest: requests){
+                    if(!newRequests.contains(oldRequest)){
+                        requests.remove(oldRequest);
+                    }
+                }
+            }
+            callBack.execute();
+        } else if(userController.getActiveUser() instanceof Driver) {
             requests = ES.getAllRequests();
-            return true;
-            //TODO: Implement a way of searching for requests in a certain area or something for drivers
-        } else {
-            return false;
+            callBack.execute();
         }
+            //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
     /**
@@ -109,32 +144,39 @@ public class RequestSingleton {
      * @param fromLocation
      * @param toLocation
      * @param rate
+     * @param callBack
      * @see ElasticSearchController
+     * @see ICallBack
      */
-    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
+        Log.i("trace", "RequestSingleton.addRequest()");
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
 
         //TODO: Handle offline here. If it isn't added to ES...
 
         if (ES.addRequest(request)) {
             requests.add(request);
+            callBack.success();
+        } else {
+            callBack.failure();
         }
     }
 
     /**
-     * a synchronized method for removing a request from the current request list as well as
+     * a method for removing a request from the current request list as well as
      * Elastic Search see deleteRequestById() in ESC
      * @see ElasticSearchController
      * @param request
+     * @param callBack
      * @return Boolean
+     * @see ICallBack
      */
-    public Boolean removeRequest(Request request){
-        Log.i("info", "RequestSingleton removeRequest()");
+    public void removeRequest(Request request, ICallBack callBack){
+        Log.i("trace", "RequestSingleton.removeRequest()");
         if (ES.deleteRequest(request)) {
             requests.remove(request);
-            return true;
+            callBack.execute();
         }
-        return false;
     }
 
     /**
@@ -186,10 +228,30 @@ public class RequestSingleton {
         });
     }
 
+    /**
+     * A Function for a Rider selecting a Driver and updating the request in ES
+     * @param request
+     * @param driverID
+     */
     public void selectDriver(Request request, String driverID){
-        request.setAcceptedDriverID(driverID);
+        request.acceptOffer(driverID);
         request.setStatus(RequestStatus.FINALIZED);
         ES.updateRequest(request);
+    }
+
+    /**
+     * Updates the current viewed request. Called by ActivityDriverList to update the driver list
+     * @param request
+     * @param callBack
+     * @see ICallBack
+     */
+    public void updateViewedRequest(Request request, ICallBack callBack){
+        Log.i("trace", "RequestSingleton.updateViewedRequest()");
+        Request updatedRequest = ES.getRequestByID(request.getId());
+        if(updatedRequest != null){
+            viewedRequest = updatedRequest;
+            callBack.execute();
+        }
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 

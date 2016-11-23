@@ -31,11 +31,9 @@ import android.widget.EditText;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.HelpMe;
+import com.dryver.Utility.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
-
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -71,6 +69,13 @@ public class ActivityRegistration extends Activity {
         findViewById(R.id.username_edittext).requestFocus();
 
         doneButton = (Button) findViewById(R.id.done_button);
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the done button's click
+     */
+    public void setListeners(){
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

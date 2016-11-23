@@ -19,9 +19,7 @@
 
 package com.dryver.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -33,6 +31,7 @@ import android.widget.ListView;
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
@@ -58,6 +57,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("info", "ActivityRequestList.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
 
@@ -70,6 +70,14 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
 
+        setListeners();
+    }
+
+    /**
+     * Sets the listeners for the add request button's click and the long click of the request list's
+     * items
+     */
+    public void setListeners(){
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,21 +97,35 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         });
 
         //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerRider);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                beginRefresh();
+            }
+        });
+    }
+
+    /**
+     * Begins the refresh of the request list
+     * @see ICallBack
+     */
+    public void beginRefresh() {
+        requestSingleton.updateRequests(new ICallBack() {
+            @Override
+            public void execute() {
                 refreshRequestList();
             }
         });
-
     }
 
-    public void refreshRequestList() {
-        if(requestSingleton.updateRequests()){
-            swipeContainer.setRefreshing(false);
-            requestListAdapter.notifyDataSetChanged();
-        }
+    /**
+     * called when request list data changes
+     */
+    private void refreshRequestList(){
+        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        swipeContainer.setRefreshing(false);
+        requestListAdapter.notifyDataSetChanged();
     }
 
 
@@ -114,8 +136,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     @Override
     public void onResume() {
+        Log.i("info", "ActivityRequestList.onResume()");
         super.onResume();
-        //requestSingleton.updateRequests();
-        requestListAdapter.notifyDataSetChanged();
+        refreshRequestList();
+
     }
 }

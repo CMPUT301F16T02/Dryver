@@ -1,7 +1,7 @@
 package com.dryver.Models;
 
 /**
- * Created by Adam on 11/22/2016.
+ * Holds the status of a request
  */
 
 public enum RequestStatus {

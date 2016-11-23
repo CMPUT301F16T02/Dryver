@@ -32,6 +32,7 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
+import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
@@ -98,12 +99,7 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        riderNameTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
-            }
-        });
+        setGenericListeners();
 
         titleTextView.setText("Request Details");
         riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
@@ -112,33 +108,57 @@ public class ActivityRequestSelection extends Activity {
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
         statusTextView.setText("Status: " + request.statusCodeToString());
-        checkUser();
+        checkUserType();
     }
 
-    public void checkUser() {
+    /**
+     * Sets the listeners appropriate for both rider and driver. This includes: the rider name's
+     * textview
+     */
+    public void setGenericListeners(){
+        riderNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
+            }
+        });
+    }
+
+    /**
+     * Checks whether the user is a driver or a rider, hides or shows appropriate UI elements and
+     * calls the proper listener initialization
+     */
+    public void checkUserType() {
         activeUser = userController.getActiveUser();
         if (activeUser instanceof Rider) {
             cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
-            requestButtonRiderListener();
+            setRiderListeners();
         } else if (activeUser instanceof Driver) {
             acceptButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
             acceptButton.setText("Accept Request");
             deleteButton.setText("View Rider");
             viewDriversButton.setVisibility(View.INVISIBLE);
-            requestButtonDriverListener();
+            setDriverListeners();
         } else {
             activeUser = null;
             Log.wtf("UHH", "excuse me?");
         }
     }
 
-    public void requestButtonRiderListener() {
+    /**
+     * Sets the appripriate listeners for the rider. This includes: the delete button's click,
+     * the cancel button's click, and the view drivers button's click.
+     */
+    public void setRiderListeners() {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(requestSingleton.removeRequest(request)) {
-                    finish();
-                }
+                requestSingleton.removeRequest(request, new ICallBack(){
+                    @Override
+                    public void execute(){
+                        finish();
+                    }
+                });
             }
         });
 
@@ -163,7 +183,10 @@ public class ActivityRequestSelection extends Activity {
         });
     }
 
-    public void requestButtonDriverListener() {
+    /**
+     * sets the appropriate listeners for the driver. These include: the accept button's click
+     */
+    public void setDriverListeners() {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
