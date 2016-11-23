@@ -300,37 +300,16 @@ public class Request implements Serializable {
 
         Request request = (Request) o;
 
-        if (Double.compare(request.cost, cost) != 0) {
-            return false;
-        }
-        if (Double.compare(request.rate, rate) != 0) {
-            return false;
-        }
-        if (id != null ? !id.equals(request.id) : request.id != null) {
-            return false;
-        }
         if (riderId != null ? !riderId.equals(request.riderId) : request.riderId != null) {
-            return false;
-        }
-        if (drivers != null ? !drivers.equals(request.drivers) : request.drivers != null) {
-            return false;
-        }
-        if (acceptedDriverID != null ? !acceptedDriverID.equals(request.acceptedDriverID) : request.acceptedDriverID != null) {
-            return false;
-        }
-        if (description != null ? !description.equals(request.description) : request.description != null) {
-            return false;
-        }
-        if (date != null ? !date.equals(request.date) : request.date != null) {
-            return false;
-        }
-        if (status != request.status) {
             return false;
         }
         if (fromCoordinates != null ? !fromCoordinates.equals(request.fromCoordinates) : request.fromCoordinates != null) {
             return false;
         }
-        return toCoordinates != null ? toCoordinates.equals(request.toCoordinates) : request.toCoordinates == null;
+        if (toCoordinates != null ? !toCoordinates.equals(request.toCoordinates) : request.toCoordinates != null) {
+            return false;
+        }
+        return true;
 
     }
 

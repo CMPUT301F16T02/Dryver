@@ -290,7 +290,6 @@ public class ElasticSearchController {
         if ((testRequest = getRequestByMatch(request)) != null) {
             DeleteRequestTask deleteTask = new DeleteRequestTask();
             deleteTask.execute(testRequest);
-//            deleteRequest(request); //recursively delete all similar requests to remove redundancy.
             return true;
         }
         return false;
