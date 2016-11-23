@@ -21,11 +21,22 @@ package com.dryver.Controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Environment;
 
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityViewProfile;
 import com.dryver.Models.User;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -33,6 +44,7 @@ import java.util.concurrent.ExecutionException;
  * Follows the Singleton design pattern, allows user to view ActivityEditProfile.
  */
 public class UserController {
+    private static String ACTIVE_USER_SAV = "active_user.json";
     private static UserController instance = new UserController();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
 
@@ -75,6 +87,7 @@ public class UserController {
      */
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
+        saveUser();
     }
 
     /**
@@ -102,13 +115,17 @@ public class UserController {
      */
     //TODO: Exceptions handled in the activity
     public boolean login(String username) throws ExecutionException, InterruptedException {
-        return (activeUser = ES.getUserByString(username)) != null;
+        if ((activeUser = ES.getUserByString(username)) != null) {
+            saveUser();
+        };
+        return (activeUser) != null;
     }
 
     /**
      * Logout the active user.
      */
     public void logout() {
+        deleteFile();
         activeUser = null;
         viewedUser = null;
     }
@@ -119,5 +136,72 @@ public class UserController {
      */
     public boolean updateActiveUser(){
         return ES.updateUser(activeUser);
+    }
+
+    /**
+     * Save the current active user's profile to the local storage
+     * */
+    public void saveUser() {
+        try {
+            String state = Environment.getExternalStorageState();
+            if(Environment.MEDIA_MOUNTED.equals(state)) {
+                File file = new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV);
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+
+                Gson gson = new Gson();
+                gson.toJson(activeUser, bufferedWriter);
+                bufferedWriter.flush();
+
+                fileOutputStream.close();
+            }
+            else {
+                throw new IOException("External storage was not available!");
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Load the saved user from file
+     * http://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage
+     * @see User
+     */
+    public void loadUser() {
+        try {
+            String state = Environment.getExternalStorageState();
+            if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+                File file = new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV);
+
+                FileInputStream fileInputStream = new FileInputStream(file);
+
+                BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(fileInputStream));
+
+                Gson gson = new Gson();
+                activeUser = gson.fromJson(bufferedReader, User.class);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFile() {
+        try {
+            boolean file = new File(ACTIVE_USER_SAV).delete();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasCachedUser() {
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)) {
+            return new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV).isFile();
+        } else return false;
     }
 }
