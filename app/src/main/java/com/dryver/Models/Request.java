@@ -72,6 +72,13 @@ public class Request implements Serializable {
         this.id = null;
     }
 
+    public boolean hasID() {
+        if (getId() != null) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Gets elastic search user id.
      *
@@ -224,6 +231,9 @@ public class Request implements Serializable {
         this.status = status;
     }
 
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
     /**
      * Get the request's date of creation
      *
