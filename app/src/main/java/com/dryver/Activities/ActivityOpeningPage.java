@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 
@@ -42,23 +43,31 @@ public class ActivityOpeningPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opening_page);
 
-        signinButton = (Button) findViewById(R.id.signin_button);
-        getStartedButton = (Button) findViewById(R.id.getstarted_button);
+        /* Check if their is an existing cached user. Otherwise prompt for login. */
+        if (UserController.getInstance().hasCachedUser()) {
+            UserController.getInstance().loadUser();
+            Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
+            ActivityOpeningPage.this.startActivity(intent);
+        } else {
 
-        signinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ActivityOpeningPage.this, ActivityLogin.class);
-                ActivityOpeningPage.this.startActivity(intent);
-            }
-        });
+            signinButton = (Button) findViewById(R.id.signin_button);
+            getStartedButton = (Button) findViewById(R.id.getstarted_button);
 
-        getStartedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ActivityOpeningPage.this, ActivityRegistration.class);
-                ActivityOpeningPage.this.startActivity(intent);
-            }
-        });
+            signinButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ActivityOpeningPage.this, ActivityLogin.class);
+                    ActivityOpeningPage.this.startActivity(intent);
+                }
+            });
+
+            getStartedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ActivityOpeningPage.this, ActivityRegistration.class);
+                    ActivityOpeningPage.this.startActivity(intent);
+                }
+            });
+        }
     }
 }
