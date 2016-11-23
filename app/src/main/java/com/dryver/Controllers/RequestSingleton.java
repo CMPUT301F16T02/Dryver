@@ -74,13 +74,17 @@ public class RequestSingleton {
      * A simple method for fetching an updated request list via Elastic Search
      * @see ElasticSearchController
      */
-    private void updateRequests() {
+    public boolean updateRequests() {
         Log.i("info", "RequestSingleton updateRequests()");
         if(userController.getActiveUser() instanceof Rider){
             requests = ES.getRequests(userController.getActiveUser().getId());
+            return true;
         } else if(userController.getActiveUser() instanceof Driver){
             requests = ES.getAllRequests();
+            return true;
             //TODO: Implement a way of searching for requests in a certain area or something for drivers
+        } else {
+            return false;
         }
     }
 

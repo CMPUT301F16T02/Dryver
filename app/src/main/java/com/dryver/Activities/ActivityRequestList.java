@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,6 +51,8 @@ public class ActivityRequestList extends Activity {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
+
+    private SwipeRefreshLayout swipeContainer;
 
     private Rider rider;
 
@@ -85,7 +88,26 @@ public class ActivityRequestList extends Activity {
                 return true;
             }
         });
+
+
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshRequestList();
+            }
+        });
+
     }
+
+    public void refreshRequestList() {
+        if(requestSingleton.updateRequests()){
+            swipeContainer.setRefreshing(false);
+            requestListAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -95,6 +117,6 @@ public class ActivityRequestList extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        requestListAdapter.notifyDataSetChanged();
+        refreshRequestList();
     }
 }

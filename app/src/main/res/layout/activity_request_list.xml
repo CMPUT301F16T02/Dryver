@@ -51,13 +51,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonLinearLayout">
-        <ListView
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/requestListViewRequest"
-            android:layout_alignParentEnd="true"
-            android:layout_above="@+id/requestButtonNewRequest">
-        </ListView>
+            android:layout_height="match_parent">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/requestListViewRequest"
+                android:layout_alignParentEnd="true"
+                android:layout_above="@+id/requestButtonNewRequest">
+            </ListView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <Button
             android:text="@string/activity_rider_request_NewRequest"
