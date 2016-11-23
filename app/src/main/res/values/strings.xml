@@ -26,7 +26,8 @@
     <string name="enter_trip_price">Enter trip price</string>
     <string name="ryde">Ryde</string>
     <string name="dryve">Dryve</string>
-    <string name="save_changes"></string>
+    <string name="save_changes">Save</string>
+    <string name="choose_driver">Accept as Driver</string>
 
 
     <string name="view_profile">View Profile</string>

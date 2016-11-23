@@ -3,8 +3,12 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,7 +21,7 @@ import com.dryver.R;
 
 import java.util.ArrayList;
 
-public class ActivityDriverList extends Activity {
+public class ActivityDriverList extends Activity{
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
@@ -40,32 +44,42 @@ public class ActivityDriverList extends Activity {
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, driverIds);
         driverListView.setAdapter(adapter);
 
+        registerForContextMenu(driverListView);
         setDriverClickEvents();
     }
 
-    private void setDriverClickEvents()
-    {
-        driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long id)
-            {
-                String selectedDriver = (String)adapter.getItemAtPosition(position);
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.driver_list_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        switch (item.getItemId()) {
+            case R.id.chooseDriver:
+                requestSingleton.selectDriver(request, (String)driverListView.getItemAtPosition(position));
+                return true;
+            case R.id.viewTheirProfile:
+                String selectedDriver = (String)driverListView.getItemAtPosition(position);
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
                 userController.viewUserProfile(driver, ActivityDriverList.this);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void setDriverClickEvents() {
+        driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+                openContextMenu(v);
             }
         });
-
-        //TODO: ContextMenu?
-//        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-//        {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?>adapter, View v, int position, long id)
-//            {
-//                String selectedDriver = (String)adapter.getItemAtPosition(position);
-//
-//                return true;
-//            }
-//        });
     }
 }

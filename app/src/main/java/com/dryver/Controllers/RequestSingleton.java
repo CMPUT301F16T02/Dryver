@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
 
 import java.util.ArrayList;
@@ -170,6 +171,12 @@ public class RequestSingleton {
                 return Double.compare(lhs.getFromLocation().distanceTo(currentLocation), rhs.getFromLocation().distanceTo(currentLocation));
             }
         });
+    }
+
+    public void selectDriver(Request request, String driverID){
+        request.setAcceptedDriverID(driverID);
+        request.setStatus(RequestStatus.FINALIZED);
+        ES.updateRequest(request);
     }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 }

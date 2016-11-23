@@ -140,6 +140,10 @@ public class Request implements Serializable {
         return this.acceptedDriverID;
     }
 
+    public void setAcceptedDriverID(String driverID) {
+        this.acceptedDriverID = driverID;
+    }
+
     public void acceptOffer(String driverID) {
         if (drivers.contains(driverID)) {
             this.acceptedDriverID = driverID;
