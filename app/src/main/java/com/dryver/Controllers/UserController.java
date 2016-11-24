@@ -50,6 +50,7 @@ public class UserController {
 
     private User activeUser;
     private User viewedUser;
+    private boolean cached = false;
 
     /**
      * Gets instance of the User.
@@ -189,6 +190,7 @@ public class UserController {
 
                 Gson gson = new Gson();
                 activeUser = gson.fromJson(bufferedReader, User.class);
+                setCached(true);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -204,16 +206,15 @@ public class UserController {
         } catch ( Exception e ) {
             e.printStackTrace();
         }
+        setCached(false);
     }
 
-    /**
-     * Checks if there is a chached user on the device
-     * @return
-     */
-    public boolean hasCachedUser() {
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state)) {
-            return new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV).isFile();
-        } else return false;
+
+    public boolean isCached() {
+        return cached;
+    }
+
+    public void setCached(boolean cached) {
+        this.cached = cached;
     }
 }

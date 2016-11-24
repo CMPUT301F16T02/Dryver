@@ -46,7 +46,7 @@ public class ActivityOpeningPage extends Activity {
         setContentView(R.layout.activity_opening_page);
 
         /* Check if their is an existing cached user. Otherwise prompt for login. */
-        if (UserController.getInstance().hasCachedUser()) {
+        if (UserController.getInstance().isCached()) {
             UserController.getInstance().loadUser();
             Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
             ActivityOpeningPage.this.startActivity(intent);

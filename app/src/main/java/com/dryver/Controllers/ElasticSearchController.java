@@ -22,15 +22,13 @@ package com.dryver.Controllers;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.dryver.Utility.IBooleanCallBack;
-import com.dryver.Utility.ICallBack;
+import com.dryver.Models.Request;
+import com.dryver.Models.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
-import com.dryver.Models.Request;
-import com.dryver.Models.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +46,7 @@ import io.searchbox.indices.CreateIndex;
 
 /**
  * Used to communicate with the Elasticsearch server follows the Songleton design pattern.
+ *
  * @see <a href="https://github.com/searchbox-io/Jest/tree/master/jest">Jest</a>
  * @see <a href="http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/cmput301f16t02/_search?pretty=true&q=*:*">list of users</a>
  */
@@ -57,22 +56,25 @@ public class ElasticSearchController {
      */
     private static ElasticSearchController instance = new ElasticSearchController();
 
-    protected ElasticSearchController(){}
+    protected ElasticSearchController() {
+    }
 
     /**
      * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting
      * a mock for testing purposes. Hacky workaround for mocking a singleton hehe...
+     *
      * @param ES
      */
-    public static void setMock(ElasticSearchController ES){
+    public static void setMock(ElasticSearchController ES) {
         instance = ES;
     }
 
     /**
      * gets the Instance of the ElasticSearchController as it is a singleton
+     *
      * @return ElasticSearchController
      */
-    public static ElasticSearchController getInstance(){
+    public static ElasticSearchController getInstance() {
         return instance;
     }
 
@@ -165,8 +167,8 @@ public class ElasticSearchController {
     /**
      * Adds a user to the database.
      *
-     * @see User
      * @return Boolean
+     * @see User
      */
     private static class AddUserTask extends AsyncTask<User, Void, Boolean> {
         @Override
@@ -190,6 +192,7 @@ public class ElasticSearchController {
 
     /**
      * Deletes a user in the database based on the user id.
+     *
      * @see User
      */
     private static class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
@@ -263,6 +266,7 @@ public class ElasticSearchController {
 
     /**
      * adds a request to Elasitc Search
+     *
      * @param request
      * @return boolean
      * @see AddRequestTask
@@ -274,7 +278,7 @@ public class ElasticSearchController {
 
         boolean added = false;
         try {
-            added =  addTask.get();
+            added = addTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -286,6 +290,7 @@ public class ElasticSearchController {
 
     /**
      * Deletes a request from ES
+     *
      * @param request
      * @return boolean
      * @see DeleteRequestTask
@@ -298,7 +303,7 @@ public class ElasticSearchController {
         //you cant return in try catch >.>
         boolean deleted = false;
         try {
-            deleted =  deleteTask.get();
+            deleted = deleteTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -311,6 +316,7 @@ public class ElasticSearchController {
 
     /**
      * deletes a request using it's ID
+     *
      * @param request
      * @return boolean
      * @see DeleteRequestTask
@@ -327,6 +333,7 @@ public class ElasticSearchController {
 
     /**
      * Deletes all requests for a given user
+     *
      * @param request
      * @return boolean
      * @see DeleteRequestTask
@@ -345,6 +352,7 @@ public class ElasticSearchController {
 
     /**
      * Updates a request in ES using it's new values
+     *
      * @param request
      * @return boolean
      * @see UpdateRequestTask
@@ -369,6 +377,7 @@ public class ElasticSearchController {
 
     /**
      * gets a request from ES via ES ID
+     *
      * @param requestID
      * @return Request
      * @see Request
@@ -391,6 +400,7 @@ public class ElasticSearchController {
     /**
      * returns a matching request from ES. Often used to check if the request is a duplicate as it returns null
      * if the inputted request is not a duplicate.
+     *
      * @param request
      * @return Request
      * @see Request
@@ -411,7 +421,7 @@ public class ElasticSearchController {
         }
 
         if (!requestList.isEmpty()) {
-            for (Request rq: requestList) {
+            for (Request rq : requestList) {
                 Log.i("Request rider ID: " + rq.getRiderId(), "displaying rider id.");
                 if (rq.equals(request)) {
                     return rq;
@@ -423,6 +433,7 @@ public class ElasticSearchController {
 
     /**
      * gets a request for a given Rider using the Rider's ID
+     *
      * @param request
      * @return Request
      * @see Request
@@ -443,7 +454,7 @@ public class ElasticSearchController {
         }
 
         if (!requestList.isEmpty()) {
-            for (Request rq: requestList) {
+            for (Request rq : requestList) {
                 if (rq.getRiderId().equals(request.getRiderId())) {
                     return rq;
                 }
@@ -454,6 +465,7 @@ public class ElasticSearchController {
 
     /**
      * gets All requests for a given rider using rider ID
+     *
      * @param riderID
      * @return ArrayList<Request>
      * @see GetRequestsTask
@@ -476,11 +488,12 @@ public class ElasticSearchController {
 
     /**
      * Gets all requests on the entirety of ES
+     *
      * @return ArrayList<Request>
      * @see GetAllRequestsTask
      * @see Request
      */
-    public ArrayList<Request> getAllRequests(){
+    public ArrayList<Request> getAllRequests() {
         Log.i("trace", "ElasticSearchController.getAllRequests()");
         GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
         getAllRequestsTask.execute();
@@ -493,15 +506,16 @@ public class ElasticSearchController {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        } finally{
+        } finally {
             return requests;
         }
     }
 
     /**
      * A class for getting the list of requests associated with a rider on the Elastic Search server
-     * @see Request
+     *
      * @return boolean
+     * @see Request
      */
     private static class AddRequestTask extends AsyncTask<Void, Void, Boolean> {
         private Request request;
@@ -509,9 +523,10 @@ public class ElasticSearchController {
 
         /**
          * initializes the task with a request
+         *
          * @param request
          */
-        AddRequestTask(Request request){
+        AddRequestTask(Request request) {
             this.request = request;
         }
 
@@ -519,13 +534,13 @@ public class ElasticSearchController {
          * overridden method, checks for match before starting
          */
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             canAdd = getRequestByMatch(request) == null;
         }
 
         @Override
         protected Boolean doInBackground(Void... search_parameters) {
-            if(!canAdd) return false;
+            if (!canAdd) return false;
 
             verifySettings();
             boolean addable = false;
@@ -548,8 +563,9 @@ public class ElasticSearchController {
 
     /**
      * A class for deleting a request by it's ElasticSearch ID
-     * @see Request
+     *
      * @return boolean
+     * @see Request
      */
     private static class DeleteRequestTask extends AsyncTask<Void, Void, Boolean> {
         private Request request;
@@ -557,9 +573,10 @@ public class ElasticSearchController {
 
         /**
          * initializes the task with a request
+         *
          * @param request
          */
-        DeleteRequestTask(Request request){
+        DeleteRequestTask(Request request) {
             this.request = request;
         }
 
@@ -567,7 +584,7 @@ public class ElasticSearchController {
          * overridded method checks for match before start
          */
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             canDelete = getRequestByMatch(request) != null;
         }
 
@@ -576,7 +593,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Void... search_parameters) {
             verifySettings();
 
-            if(!canDelete){
+            if (!canDelete) {
                 return false;
             }
 
@@ -587,7 +604,7 @@ public class ElasticSearchController {
             try {
                 //TODO: use the result?
                 DocumentResult result = client.execute(delete);
-                if (result.isSucceeded()){
+                if (result.isSucceeded()) {
                     deleted = true;
                 }
             } catch (IOException e) {
@@ -599,10 +616,9 @@ public class ElasticSearchController {
     }
 
     /**
-     *
-     * @see Request
      * @return boolean
      * @throws InterruptedException
+     * @see Request
      */
     private static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
 
@@ -616,13 +632,11 @@ public class ElasticSearchController {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
                     search_parameters[0].setId(result.getId());
-                }
-                else {
+                } else {
                     Log.i("Error", "Elastic search was not able to add the user.");
                 }
                 updatable = true;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return updatable;
@@ -631,9 +645,10 @@ public class ElasticSearchController {
 
     /**
      * Adds a request to the ElasticSearch server
-     * @see Request
+     *
      * @return boolean
-     * */
+     * @see Request
+     */
     private static class GetRequestTask extends AsyncTask<String, Void, Request> {
 
         @Override
@@ -668,10 +683,10 @@ public class ElasticSearchController {
             ArrayList<Request> requests = new ArrayList<Request>();
             try {
                 JestResult result = client.execute(search);
-                if(result.isSucceeded()){
+                if (result.isSucceeded()) {
                     requests.addAll(result.getSourceAsObjectList(Request.class));
                     JsonObject resultObj = result.getJsonObject();
-                    JsonArray hitsArray =  resultObj
+                    JsonArray hitsArray = resultObj
                             .get("hits")
                             .getAsJsonObject()
                             .get("hits")
@@ -710,7 +725,7 @@ public class ElasticSearchController {
                 JestResult result = client.execute(search);
                 requests.addAll(result.getSourceAsObjectList(Request.class));
                 JsonObject resultObj = result.getJsonObject();
-                JsonArray hitsArray =  resultObj
+                JsonArray hitsArray = resultObj
                         .get("hits")
                         .getAsJsonObject()
                         .get("hits")

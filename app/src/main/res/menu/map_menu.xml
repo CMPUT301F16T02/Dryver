@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/magnify"
+        android:title="@string/action_search"
+        android:showAsAction="always" />
+    <!-- yes I know its underlined red but its fine don't touch it-->
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/delete"
+        android:title="@string/action_delete"
+        android:showAsAction="always" />
+    <!-- yes I know its underlined red but its fine don't touch it-->
+    <item
+        android:id="@+id/action_forward"
+        android:icon="@drawable/right_arrow_48"
+        android:title="@string/action_forward"
+        android:showAsAction="always" />
+    <!-- yes I know its underlined red but its fine don't touch it-->
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:showAsAction="never" />
+</menu>

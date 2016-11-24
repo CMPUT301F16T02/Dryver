@@ -19,10 +19,10 @@
 
 package com.dryver.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,12 +32,12 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
-import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -84,7 +84,7 @@ public class ActivityRequestSelection extends Activity {
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
         Log.d("USERNAME: ", request.getRiderId());
-        rider = new Rider(ES.getUserByString(request.getRiderId()));
+        String rider_name = request.getRiderId(); // Breaks here in offline mode
 
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
@@ -102,7 +102,7 @@ public class ActivityRequestSelection extends Activity {
         setGenericListeners();
 
         titleTextView.setText("Request Details");
-        riderNameTextView.setText("Rider Name: " + rider.getFirstName() + " " + rider.getLastName());
+        riderNameTextView.setText("Rider Name: " + rider_name);
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
@@ -115,7 +115,7 @@ public class ActivityRequestSelection extends Activity {
      * Sets the listeners appropriate for both rider and driver. This includes: the rider name's
      * textview
      */
-    public void setGenericListeners(){
+    public void setGenericListeners() {
         riderNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,9 +153,9 @@ public class ActivityRequestSelection extends Activity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.removeRequest(request, new ICallBack(){
+                requestSingleton.removeRequest(request, new ICallBack() {
                     @Override
-                    public void execute(){
+                    public void execute() {
                         finish();
                     }
                 });
