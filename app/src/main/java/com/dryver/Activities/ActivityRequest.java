@@ -42,6 +42,7 @@ public class ActivityRequest extends Activity {
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private Rider rider;
+    private Request request;
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
@@ -71,6 +72,7 @@ public class ActivityRequest extends Activity {
         fromLocation = requestSingleton.getTempFromLocation();
         toLocation = requestSingleton.getTempToLocation();
 
+        this.request = new Request(rider.getId(), calendar, fromLocation, toLocation, 0);
         // TODO: 2016-11-14 Set these locations through the map map.
         // set default locations for now
         testFromLocation.setLatitude(54.523869);
@@ -104,10 +106,12 @@ public class ActivityRequest extends Activity {
             @Override
             public void onClick(View v) {
                 if (!HelpMe.isEmptyTextField(tripPrice)) {
-                    // TODO: 2016-11-14 limit the number of decimal places to 2
-                    Double price = Double.parseDouble(tripPrice.getText().toString());
+                    Double cost = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
-                    requestSingleton.pushRequest(rider.getId(), calendar, fromLocation, toLocation, price);
+                    request.setCost(cost);
+                    request.setDate(calendar);
+                    requestSingleton.pushRequest(request);
+                    finish();
                 }
             }
         });
@@ -126,12 +130,11 @@ public class ActivityRequest extends Activity {
      * Checks the intent of the ......... <SOMEONE WRITE WTF THIS IS SUPPOSED TO DO>
      */
     public void checkIntent() {
-        Integer position;
+        String intentString;
         Intent intent = getIntent();
-        if (intent.hasExtra("position")) {
-            Log.i("has intent", "stuff");
-            if ((position = intent.getIntExtra("position", -1)) != -1) {
-                Request request = requestSingleton.getUpdatedRequests().get(position);
+        if (intent.hasExtra("requestId")) {
+            intentString = intent.getStringExtra("requestId");
+            if ((this.request = requestSingleton.getRequestById(intentString)) != null) {
                 tripPrice.setText(Double.toString(request.getCost()));
                 HelpMe.setTimePicker(request.getDate(), timePicker);
                 HelpMe.setDatePicker(request.getDate(), datePicker);

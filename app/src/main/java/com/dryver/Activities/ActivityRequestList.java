@@ -89,8 +89,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
+                Request intentRequest = (Request) requestListView.getItemAtPosition(position);
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
+                intent.putExtra("requestId", intentRequest.getId());
                 startActivity(intent);
                 return true;
             }
@@ -139,6 +140,5 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         Log.i("info", "ActivityRequestList.onResume()");
         super.onResume();
         refreshRequestList();
-
     }
 }

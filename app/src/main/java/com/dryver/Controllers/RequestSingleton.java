@@ -77,6 +77,15 @@ public class RequestSingleton {
         return requests;
     }
 
+    public Request getRequestById(String id) {
+        for (Request req: requests) {
+            if (req.getId().equals(id)) {
+                return req;
+            }
+        }
+        return null;
+    }
+
     /**
      * Updates the requests and returns them. Gives an emoty callback
      *
@@ -159,9 +168,8 @@ public class RequestSingleton {
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void pushRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public void pushRequest(Request request) {
         Log.i("trace", "RequestSingleton.addRequest()");
-        Request request = new Request(riderID, date, fromLocation, toLocation, rate);
         if (ES.updateRequest(request)) {
             int position = requests.indexOf(request);
             requests.remove(position);
