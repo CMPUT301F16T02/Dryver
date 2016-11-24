@@ -50,6 +50,8 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
+    private TextView titleTextView;
+    private TextView riderNameTextView;
     private TextView fromLocationTextView;
     private TextView toLocationTextView;
     private TextView requestSelectionDate;
@@ -84,6 +86,8 @@ public class ActivityRequestSelection extends Activity {
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
+        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
+        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
         fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
         toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
@@ -92,12 +96,29 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
+        setGenericListeners();
+
+        titleTextView.setText("Request Details");
+        riderNameTextView.setText("Rider Name: " + rider_name);
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
         statusTextView.setText("Status: " + request.statusCodeToString());
         checkUserType();
+    }
+
+    /**
+     * Sets the listeners appropriate for both rider and driver. This includes: the rider name's
+     * textview
+     */
+    public void setGenericListeners() {
+        riderNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
+            }
+        });
     }
 
     /**
