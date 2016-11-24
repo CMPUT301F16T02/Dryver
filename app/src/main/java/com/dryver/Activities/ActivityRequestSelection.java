@@ -70,9 +70,6 @@ public class ActivityRequestSelection extends Activity {
 
         request = requestSingleton.getViewedRequest();
 
-        String rider_name = (userController.getActiveUser().getFirstName() + " "
-                            + userController.getActiveUser().getLastName()); // Breaks here in offline mode
-
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 

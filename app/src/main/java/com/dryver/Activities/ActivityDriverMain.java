@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.dryver.Controllers.DriverListAdapter;
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
@@ -51,10 +52,10 @@ import com.google.android.gms.location.LocationServices;
  */
 public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
-    private ListView requestListView;
+    private ListView driverListView;
     private Button currentLocationButton;
     private Spinner sortSpinner;
-    private RequestListAdapter requestListAdapter;
+    private DriverListAdapter driverListAdapter;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
 
@@ -85,10 +86,10 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
 
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
-        requestListView = (ListView) findViewById(R.id.requestListViewRequest);
+        driverListView = (ListView) findViewById(R.id.requestListViewRequest);
         requestSingleton.setRequestsAll();
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
-        requestListView.setAdapter(requestListAdapter);
+        driverListAdapter = new DriverListAdapter(this, requestSingleton.getRequests());
+        driverListView.setAdapter(driverListAdapter);
 
         setListeners();
 
@@ -99,11 +100,11 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
      * button, the refresh swipe, and also does some google maps stuff **Maybe maps should be moved**
      */
     private void setListeners(){
-        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 Intent intent = new Intent(ActivityDriverMain.this, ActivityDriverSelection.class);
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
+                requestSingleton.setViewedRequest((Request)driverListView.getItemAtPosition(position));
                 startActivity(intent);
                 return true;
             }
@@ -195,7 +196,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Proximity")) {
             requestSingleton.sortRequestsByProximity(currentLocation);
         }
-        requestListAdapter.notifyDataSetChanged();
+        driverListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -236,7 +237,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
     private void refreshRequestList(){
         Log.i("trace", "ActivityRequestMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        requestListAdapter.notifyDataSetChanged();
+        driverListAdapter.notifyDataSetChanged();
     }
 
     @Override

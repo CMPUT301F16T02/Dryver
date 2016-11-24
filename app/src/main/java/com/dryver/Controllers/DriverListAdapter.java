@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dryver.Activities.ActivityDriverSelection;
 import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -25,8 +27,9 @@ public class DriverListAdapter extends ArrayAdapter<Request> {
     private Context mContext;
 
 
-    public DriverListAdapter(Context context, int resource) {
-        super(context, resource);
+    public DriverListAdapter(Context context, ArrayList<Request> requestArrayList) {
+        super(context, 0, requestArrayList);
+        this.mContext = context;
     }
 
 
@@ -44,7 +47,7 @@ public class DriverListAdapter extends ArrayAdapter<Request> {
                 RequestSingleton RS = RequestSingleton.getInstance();
 
                 RS.setViewedRequest(request);
-                Intent intent = new Intent(mContext, ActivityRequestSelection.class);
+                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
                 intent.putExtra("position", position);
                 mContext.startActivity(intent);
             }
