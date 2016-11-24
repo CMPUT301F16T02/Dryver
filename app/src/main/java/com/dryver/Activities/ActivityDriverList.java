@@ -65,7 +65,7 @@ public class ActivityDriverList extends Activity{
         int position = info.position;
         switch (item.getItemId()) {
             case R.id.chooseDriver:
-                requestSingleton.selectDriver(request, (String)driverListView.getItemAtPosition(position));
+//                requestSingleton.selectDriver(request, (String)driverListView.getItemAtPosition(position));
                 return true;
             case R.id.viewTheirProfile:
                 String selectedDriver = (String)driverListView.getItemAtPosition(position);
@@ -104,12 +104,12 @@ public class ActivityDriverList extends Activity{
      * sets the event listeners for the driver list items as well as the refresh swipe
      */
     private void setListeners() {
-        driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-                openContextMenu(v);
-            }
-        });
+//        driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+//                openContextMenu(v);
+//            }
+//        });
 
         //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);

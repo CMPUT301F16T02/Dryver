@@ -50,8 +50,6 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView titleTextView;
-    private TextView riderNameTextView;
     private TextView fromLocationTextView;
     private TextView toLocationTextView;
     private TextView requestSelectionDate;
@@ -65,7 +63,6 @@ public class ActivityRequestSelection extends Activity {
     private Location fromLocation;
     private Location toLocation;
     private User activeUser;
-    private Rider rider;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
@@ -77,20 +74,16 @@ public class ActivityRequestSelection extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_selection);
 
-        Intent intent = getIntent();
-
         request = requestSingleton.getViewedRequest();
 
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
-        Log.d("USERNAME: ", request.getRiderId());
-        String rider_name = request.getRiderId(); // Breaks here in offline mode
+
+        String rider_name = (activeUser.getFirstName() + " " + activeUser.getLastName()); // Breaks here in offline mode
 
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
-        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
-        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
         fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
         toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
@@ -99,29 +92,12 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        setGenericListeners();
-
-        titleTextView.setText("Request Details");
-        riderNameTextView.setText("Rider Name: " + rider_name);
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
         statusTextView.setText("Status: " + request.statusCodeToString());
         checkUserType();
-    }
-
-    /**
-     * Sets the listeners appropriate for both rider and driver. This includes: the rider name's
-     * textview
-     */
-    public void setGenericListeners() {
-        riderNameTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
-            }
-        });
     }
 
     /**

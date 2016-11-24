@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
   ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~
@@ -18,17 +17,19 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.dryver">
+    package="com.dryver">
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <permission
         android:name="com.truiton.supportmapfragment.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -41,33 +42,31 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDxMI1GZi5tHemo-GMK_WHyj72dGMWO2P4"/>
+            android:value="AIzaSyDxMI1GZi5tHemo-GMK_WHyj72dGMWO2P4" />
 
-
-        <activity android:name=".Activities.ActivityOpeningPage" >
+        <activity android:name=".Activities.ActivityOpeningPage">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Activities.ActivityLogin"/>
-        <activity android:name=".Activities.ActivityRegistration"/>
-        <activity android:name=".Activities.ActivitySelection"/>
-        <activity android:name=".Activities.ActivityDriver"/>
-        <activity android:name=".Activities.ActivityRequestList"/>
-        <activity android:name=".Activities.ActivityEditProfile"/>
-        <activity android:name=".Activities.ActivityRequestSelection"/>
-        <activity android:name=".Activities.ActivityRequestMap"/>
-        <activity android:name=".Activities.ActivityRequest"/>
-        <activity android:name=".Activities.ActivityLoggedInActionBar"/>
-        <activity android:name=".Utility.HelpMe"></activity>
-        <activity android:name=".Activities.ActivityViewProfile"></activity>
-        <activity android:name=".Activities.ActivityDriverList"></activity>
+        <activity android:name=".Activities.ActivityLogin" />
+        <activity android:name=".Activities.ActivityRegistration" />
+        <activity android:name=".Activities.ActivitySelection" />
+        <activity android:name=".Activities.ActivityDriver" />
+        <activity android:name=".Activities.ActivityRequestList" />
+        <activity android:name=".Activities.ActivityEditProfile" />
+        <activity android:name=".Activities.ActivityRequestSelection" />
+        <activity android:name=".Activities.ActivityRequestMap" />
+        <activity android:name=".Activities.ActivityRequest" />
+        <activity android:name=".Activities.ActivityLoggedInActionBar" />
+        <activity android:name=".Utility.HelpMe" />
+        <activity android:name=".Activities.ActivityViewProfile" />
+        <activity android:name=".Activities.ActivityDriverList" />
+        <activity android:name=".Activities.ActivityDriverSelection"></activity>
     </application>
 
 </manifest>
