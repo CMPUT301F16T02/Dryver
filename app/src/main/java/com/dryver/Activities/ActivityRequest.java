@@ -82,7 +82,6 @@ public class ActivityRequest extends Activity {
 
         findViewById(R.id.requestTripPrice).requestFocus();
 
-<<<<<<< HEAD
         setListeners();
     }
 
@@ -91,9 +90,7 @@ public class ActivityRequest extends Activity {
      * click
      */
     public void setListeners(){
-=======
         /*
->>>>>>> NewMapBranch
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,8 +107,7 @@ public class ActivityRequest extends Activity {
                     // TODO: 2016-11-14 limit the number of decimal places to 2
                     Double price = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
-<<<<<<< HEAD
-                    requestSingleton.addRequest(rider.getId(), calendar, testFromLocation, testToLocation, price, new IBooleanCallBack() {
+                    requestSingleton.addRequest(rider.getId(), calendar, fromLocation, toLocation, price, new IBooleanCallBack() {
                         @Override
                         public void success() {
                             finish();
@@ -122,11 +118,6 @@ public class ActivityRequest extends Activity {
                             submitRequest.setError("You already have a very similar request open...");
                         }
                     });
-
-=======
-                    requestSingleton.addRequest(rider.getId(), calendar, fromLocation, toLocation, price);
-                    finish();
->>>>>>> NewMapBranch
                 }
             }
         });
