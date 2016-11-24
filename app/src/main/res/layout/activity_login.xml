@@ -51,7 +51,8 @@
         android:hint="@string/activity_login_username"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/username_edittext"/>
+        android:id="@+id/username_edittext"
+        android:theme="@android:style/DeviceDefault.Light.ButtonBar" />
 
     <Button
         android:text="@string/activity_login_login"
@@ -60,6 +61,7 @@
         android:id="@+id/login_button"
         android:layout_below="@+id/username_edittext"
         android:layout_alignStart="@+id/username_edittext"
-        android:layout_alignEnd="@+id/username_edittext"/>
+        android:layout_alignEnd="@+id/username_edittext"
+        android:theme="@android:style/Widget.DeviceDefault.ActionButton.TextButton" />
 </RelativeLayout>
 </FrameLayout>
