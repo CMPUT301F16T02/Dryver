@@ -102,4 +102,5 @@
     <string name="request_item_Cost">Cost</string>
     <string name="google_api_key">AIzaSyCUdfcLLIkGiLLkF95uGQHww8Y0whSX2a4</string>
     <string name="activity_driver_CurrentLocation">Get Location</string>
+    <string name="logout">Logout</string>
 </resources>
