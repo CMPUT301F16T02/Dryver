@@ -1,6 +1,7 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,11 @@ public class ActivityLoggedInActionBar extends Activity {
             case R.id.viewMyProfile:
                 userController.editUserProfile(this);
                 return true;
+            case R.id.logout:
+                userController.logout();
+                Intent intent = new Intent(ActivityLoggedInActionBar.this, ActivityOpeningPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                ActivityLoggedInActionBar.this.startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -23,7 +23,7 @@
     <string name="done">Done</string>
     <string name="new_user">New user?</string>
     <string name="existing_user">Existing user?</string>
-    <string name="enter_trip_price">Enter trip price</string>
+    <string name="enter_trip_price">Enter trip cost</string>
     <string name="ryde">Ryde</string>
     <string name="dryve">Dryve</string>
     <string name="save_changes">Save</string>
@@ -77,7 +77,7 @@
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
 
-    <string name="activity_request_text_tripcost">Enter trip price</string>
+    <string name="activity_request_text_tripcost">Enter trip cost</string>
     <string name="activity_request_button_submit">Submit</string>
     <string name="activity_request_button_location">Set Route</string>
 
@@ -102,4 +102,10 @@
     <string name="request_item_Cost">Cost</string>
     <string name="google_api_key">AIzaSyCUdfcLLIkGiLLkF95uGQHww8Y0whSX2a4</string>
     <string name="activity_driver_CurrentLocation">Get Location</string>
+    <string name="logout">Logout</string>
+    <string name="map_activity_forward">forward</string>
+    <string name="action_settings">Action Setting</string>
+    <string name="action_forward">Action Forward</string>
+    <string name="action_delete">Action Delete</string>
+    <string name="action_search">Action Search</string>
 </resources>

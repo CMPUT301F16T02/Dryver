@@ -57,6 +57,8 @@ public class RequestSingleton {
     private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
+    private Location tempFromLocation;
+    private Location tempToLocation;
 
     private RequestSingleton() {
     }
@@ -73,6 +75,15 @@ public class RequestSingleton {
     public ArrayList<Request> getRequests() {
         loadRequests();
         return requests;
+    }
+
+    public Request getRequestById(String id) {
+        for (Request req: requests) {
+            if (req.getId().equals(id)) {
+                return req;
+            }
+        }
+        return null;
     }
 
     /**
@@ -147,26 +158,23 @@ public class RequestSingleton {
     }
 
     /**
-     * A method that adds a request to the current request list for the user as well as Elastic Search
+     * A method that forces a request into the ES by either updating an existing request or adding a new one.
      *
      * @param riderID
      * @param date
      * @param fromLocation
      * @param toLocation
      * @param rate
-     * @param callBack
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
-        Log.i("trace", "RequestSingleton.addRequest()");
-        Request request = new Request(riderID, date, fromLocation, toLocation, rate);
-
-        if (ES.addRequest(request)) {
+    public void pushRequest(Request request) {
+        if (ES.updateRequest(request)) {
+            int position = requests.indexOf(request);
+            requests.remove(position);
             requests.add(request);
-            callBack.success();
-        } else {
-            callBack.failure();
+        } else if (ES.addRequest(request)) {
+            requests.add(request);
         }
     }
 
@@ -207,7 +215,7 @@ public class RequestSingleton {
         Collections.sort(requests, new Comparator<Request>() {
             @Override
             public int compare(Request lhs, Request rhs) {
-                return Double.compare(lhs.getRate(), rhs.getRate());
+                return Double.compare(lhs.getCost(), rhs.getCost());
             }
         });
     }
@@ -259,7 +267,7 @@ public class RequestSingleton {
      */
     public void updateViewedRequest(Request request, ICallBack callBack) {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
-        Request updatedRequest = ES.getRequestByID(request.getId());
+        Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
             viewedRequest = updatedRequest;
             callBack.execute();
@@ -338,6 +346,26 @@ public class RequestSingleton {
      */
     public void syncRequests() {
         //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
+    }
+
+    /** GETTERS AND SETTERS
+     *
+     * @return
+     */
+    public Location getTempFromLocation() {
+        return tempFromLocation;
+    }
+
+    public void setTempFromLocation(Location tempFromLocation) {
+        this.tempFromLocation = tempFromLocation;
+    }
+
+    public Location getTempToLocation() {
+        return tempToLocation;
+    }
+
+    public void setTempToLocation(Location tempToLocation) {
+        this.tempToLocation = tempToLocation;
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
