@@ -23,7 +23,7 @@ package com.dryver.Models;
  * The Request class represents a request that was sent out by the rider. A Driver that is in the
  * drivers list can then offer a ride to the Rider who made the request. It is essentially a class
  * who's sole purpose is to commpunicate b/w the Driver and Rider class whild holding important
- * information such as ride price etc...
+ * information such as ride cost etc...
  */
 
 import android.location.Location;
@@ -53,7 +53,8 @@ public class Request implements Serializable {
     private SimpleCoordinates fromCoordinates;
     private SimpleCoordinates toCoordinates;
 
-    private double price;
+    private double cost;
+    private double rate;
 
     /**
      * Instantiates a new Request.
@@ -61,16 +62,16 @@ public class Request implements Serializable {
      * @param date         date the request was created
      * @param fromLocation location of the rider
      * @param toLocation   destination of the rider
-     * @param price         the rate
+     * @param cost         the rate
      */
-    public Request(String riderId, Calendar date, Location fromLocation, Location toLocation, double price) {
+    public Request(String riderId, Calendar date, Location fromLocation, Location toLocation, double cost) {
         this.riderId = riderId;
         this.date = date;
         this.fromCoordinates = new SimpleCoordinates(fromLocation.getLatitude(), fromLocation.getLongitude(), fromLocation.getProvider());
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
-        this.price = price;
+        this.cost = cost;
         this.status = RequestStatus.NO_DRIVERS;
         this.id = UUID.randomUUID().toString();
     }
@@ -240,12 +241,20 @@ public class Request implements Serializable {
         return this.date;
     }
 
-    public double getPrice() {
-        return price;
+    public double getCost() {
+        return cost;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     /**
@@ -284,10 +293,6 @@ public class Request implements Serializable {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
 }

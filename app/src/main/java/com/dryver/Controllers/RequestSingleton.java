@@ -149,26 +149,25 @@ public class RequestSingleton {
     }
 
     /**
-     * A method that adds a request to the current request list for the user as well as Elastic Search
+     * A method that forces a request into the ES by either updating an existing request or adding a new one.
      *
      * @param riderID
      * @param date
      * @param fromLocation
      * @param toLocation
      * @param rate
-     * @param callBack
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void addRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate, IBooleanCallBack callBack) {
+    public void pushRequest(String riderID, Calendar date, Location fromLocation, Location toLocation, double rate) {
         Log.i("trace", "RequestSingleton.addRequest()");
         Request request = new Request(riderID, date, fromLocation, toLocation, rate);
-
-        if (ES.addRequest(request)) {
+        if (ES.updateRequest(request)) {
+            int position = requests.indexOf(request);
+            requests.remove(position);
             requests.add(request);
-            callBack.success();
-        } else {
-            callBack.failure();
+        } else if (ES.addRequest(request)) {
+            requests.add(request);
         }
     }
 
@@ -209,7 +208,7 @@ public class RequestSingleton {
         Collections.sort(requests, new Comparator<Request>() {
             @Override
             public int compare(Request lhs, Request rhs) {
-                return Double.compare(lhs.getPrice(), rhs.getPrice());
+                return Double.compare(lhs.getCost(), rhs.getCost());
             }
         });
     }

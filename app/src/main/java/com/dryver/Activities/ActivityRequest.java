@@ -107,17 +107,7 @@ public class ActivityRequest extends Activity {
                     // TODO: 2016-11-14 limit the number of decimal places to 2
                     Double price = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
-                    requestSingleton.addRequest(rider.getId(), calendar, fromLocation, toLocation, price, new IBooleanCallBack() {
-                        @Override
-                        public void success() {
-                            finish();
-                        }
-
-                        @Override
-                        public void failure() {
-                            submitRequest.setError("You already have a very similar request open...");
-                        }
-                    });
+                    requestSingleton.pushRequest(rider.getId(), calendar, fromLocation, toLocation, price);
                 }
             }
         });
@@ -142,7 +132,7 @@ public class ActivityRequest extends Activity {
             Log.i("has intent", "stuff");
             if ((position = intent.getIntExtra("position", -1)) != -1) {
                 Request request = requestSingleton.getUpdatedRequests().get(position);
-                tripPrice.setText(Double.toString(request.getPrice()));
+                tripPrice.setText(Double.toString(request.getCost()));
                 HelpMe.setTimePicker(request.getDate(), timePicker);
                 HelpMe.setDatePicker(request.getDate(), datePicker);
             }

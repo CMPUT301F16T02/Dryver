@@ -47,6 +47,7 @@ public class ElasticSearchTests {
 
     // USERS
     private final static String username = "ESTestUser";
+
     private final static User testUser = new User(username, "testFirst", "testLast", "7805555555", "test@test.com");
 
     // REQUESTS
@@ -117,8 +118,7 @@ public class ElasticSearchTests {
         assertTrue(ES.addRequest(testRequest));
         Thread.sleep(2000);
         assertFalse(ES.addRequest(testRequest));
-//        assertTrue(ES.deleteRequest(testRequest));
-
+        assertTrue(ES.deleteRequest(testRequest));
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ElasticSearchTests {
         assertEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
         assertEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
         assertEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
-        assertEquals(testRequest.getPrice(), esRequest.getPrice());
+        assertEquals(testRequest.getCost(), esRequest.getCost());
 
         Location toLocation = new Location("To");
         toLocation.setLatitude(10);
@@ -143,14 +143,14 @@ public class ElasticSearchTests {
 
         esRequest.setToLocation(toLocation);
         esRequest.setFromLocation(fromLocation);
-        esRequest.setPrice(15);
+        esRequest.setCost(15.0);
 
 
         assertNotEquals(testRequest.getToLocation().getLatitude(), esRequest.getToLocation().getLatitude());
         assertNotEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
         assertNotEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
         assertNotEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
-        assertNotEquals(testRequest.getPrice(), esRequest.getPrice());
+        assertNotEquals(testRequest.getCost(), esRequest.getCost());
 
 
         assertTrue(ES.updateRequest(esRequest));
@@ -161,7 +161,7 @@ public class ElasticSearchTests {
         assertEquals(esRequest.getToLocation().getLongitude(), esRequest2.getToLocation().getLongitude());
         assertEquals(esRequest.getFromLocation().getLatitude(), esRequest2.getFromLocation().getLatitude());
         assertEquals(esRequest.getFromLocation().getLongitude(), esRequest2.getFromLocation().getLongitude());
-        assertEquals(esRequest.getPrice(), esRequest2.getPrice());
+        assertEquals(esRequest.getCost(), esRequest2.getCost());
 
         ES.deleteRequest(esRequest2);
         Thread.sleep(2000);

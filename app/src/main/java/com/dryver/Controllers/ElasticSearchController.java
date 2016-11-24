@@ -126,6 +126,7 @@ public class ElasticSearchController {
 
     }
 
+
     // ==============           PUBLIC USER               ===============
 
     public boolean addUser(User user) {
@@ -167,6 +168,7 @@ public class ElasticSearchController {
         }
         return temp;
     }
+
 
     // ==============           PRIVATE USER               ===============
 
@@ -271,6 +273,12 @@ public class ElasticSearchController {
 
     // ==============           PUBLIC REQUEST             ===============
 
+    /**
+     * Add request method that adds a new request given that there is no such request with same id.
+     *
+     * @param request the request
+     * @return the boolean
+     */
     public boolean addRequest(Request request) {
         if (getRequestByString(request.getId()) == null) {
             AddRequestTask addTask = new AddRequestTask();
@@ -280,6 +288,12 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Deletes a request by request id.
+     *
+     * @param request the request
+     * @return the boolean
+     */
     public boolean deleteRequest(Request request) {
         if (getRequestByString(request.getId()) != null) {
             DeleteRequestTask deleteTask = new DeleteRequestTask();
@@ -289,22 +303,36 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Updates a request by request id.
+     *
+     * @param request the request
+     * @return the boolean
+     */
     public boolean updateRequest(Request request) {
-        Log.i("trace", "ElasticSearchController.updateRequest()");
         Request tempRequest = request;
-        if (tempRequest.getId() == null) {
-            if ((tempRequest = getRequestByMatch(tempRequest)) != null) {
-                UpdateRequestTask updateTask = new UpdateRequestTask();
-                updateTask.execute(tempRequest);
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+        if ((tempRequest = getRequestByString(tempRequest.getId())) != null) {
             UpdateRequestTask updateTask = new UpdateRequestTask();
             updateTask.execute(tempRequest);
             return true;
         }
+        return false;
+    }
+
+    /**
+     * Forces a request to be updated or adds the request if id is not found in ES.
+     *
+     * @param request the request
+     * @return the boolean
+     */
+    public boolean pushRequest(Request request) {
+        if (updateRequest(request)) {
+            return true;
+        }
+        if (addRequest(request)) {
+            return true;
+        }
+        return false;
     }
 
     /**

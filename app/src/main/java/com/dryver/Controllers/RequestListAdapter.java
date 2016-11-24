@@ -1,16 +1,13 @@
 package com.dryver.Controllers;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.dryver.Activities.ActivityRequestList;
 import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
@@ -28,7 +25,6 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
 
     private SimpleDateFormat sdf;
     private Context mContext;
-//    private Integer position;
 
     public RequestListAdapter(Context context, ArrayList<Request> requestArrayList) {
         super(context, 0, requestArrayList);
@@ -46,7 +42,6 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("testing","testing");
                 RequestSingleton RS = RequestSingleton.getInstance();
 
                 RS.setViewedRequest(request);
@@ -70,7 +65,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
-        requestCost.setText("Cost: $" + request.getPrice());
+        requestCost.setText("Cost: $" + request.getCost());
 
 
         return convertView;
