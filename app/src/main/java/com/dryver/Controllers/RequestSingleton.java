@@ -43,6 +43,9 @@ public class RequestSingleton {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
 
+    private Location tempFromLocation;
+    private Location tempToLocation;
+
     public static RequestSingleton getInstance() {
         return ourInstance;
     }
@@ -170,6 +173,22 @@ public class RequestSingleton {
                 return Double.compare(lhs.getFromLocation().distanceTo(currentLocation), rhs.getFromLocation().distanceTo(currentLocation));
             }
         });
+    }
+
+    public Location getTempFromLocation() {
+        return tempFromLocation;
+    }
+
+    public void setTempFromLocation(Location tempFromLocation) {
+        this.tempFromLocation = tempFromLocation;
+    }
+
+    public Location getTempToLocation() {
+        return tempToLocation;
+    }
+
+    public void setTempToLocation(Location tempToLocation) {
+        this.tempToLocation = tempToLocation;
     }
 
     public void selectDriver(Request request, String driverID){

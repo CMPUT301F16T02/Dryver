@@ -19,29 +19,42 @@
 
 package com.dryver.Activities;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.dryver.Controllers.RequestSingleton;
 import com.dryver.R;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
@@ -50,37 +63,88 @@ public class ActivityRequestMap extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnMarkerDragListener,
-        GoogleMap.OnMapLongClickListener {
+        PlaceSelectionListener {
 
     private GoogleMap map;
     private GoogleApiClient mClient;
+    private ArrayList<Marker> mRoute;
 
     private Location currentLocation;
     private LocationRequest mLocationRequest;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.hamburgler_menu, menu);
-        return true;
-    }
+    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final int REQUEST_SELECT_PLACE = 0;
+    private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_map);
 
+        mRoute = new ArrayList<Marker>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        initializeLocationRequest(100, 1000);
 
         mClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .build();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.map_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                try {
+                    Intent intent = new PlaceAutocomplete.IntentBuilder
+                            (PlaceAutocomplete.MODE_OVERLAY)
+                            .setBoundsBias(edmontonBounds)
+                            .build(ActivityRequestMap.this);
+                    startActivityForResult(intent, REQUEST_SELECT_PLACE);
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            case R.id.action_delete:
+                map.clear();
+                mRoute.clear();
+                return true;
+            case R.id.action_forward:
+                if (mRoute.size() == 2) {
+                Location fromLocation = new Location("Start");
+                Location toLocation = new Location("End");
+
+                fromLocation.setLatitude(mRoute.get(0).getPosition().latitude);
+                fromLocation.setLongitude(mRoute.get(0).getPosition().longitude);
+                toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
+                toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
+                requestSingleton.setTempFromLocation(fromLocation);
+                requestSingleton.setTempToLocation(toLocation);
+
+                map.clear();
+                mRoute.clear();
+                Intent intent = new Intent(ActivityRequestMap.this, ActivityRequest.class);
+                startActivity(intent);
+                finish();
+                }
+                else {
+                    Toast.makeText(ActivityRequestMap.this, "Make sure you have selected 2 points!!!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -97,7 +161,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        map.clear();
+        initializeLocationRequest(100, 1000);
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -123,40 +187,35 @@ public class ActivityRequestMap extends FragmentActivity implements
     }
 
     @Override
-    public void onMapLongClick(LatLng latLng) {
-
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng latLng = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //Setting onMarkerDragListener to track the marker drag
-        map.setOnMarkerDragListener(this);
-        //Adding a long click listener to the map
-        map.setOnMapLongClickListener(this);
-    }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-
+        map.setMyLocationEnabled(true);
+        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng point) {
+                if (mRoute.size() == 0) {
+                    //Start location
+                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("Start Location")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+                }
+                else if (mRoute.size() == 1) {
+                    //End location
+                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("End Location")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
+                }
+                else {
+                    Marker removeMarker = mRoute.get(1);
+                    mRoute.remove(removeMarker);
+                    removeMarker.remove();
+                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("End Location")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
+                }
+            }
+        });
     }
 
     public void moveMap(Location location) {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        map.addMarker(new MarkerOptions().position(latlng).draggable(true).title("Current Location"));
         map.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         map.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
@@ -166,5 +225,28 @@ public class ActivityRequestMap extends FragmentActivity implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setNumUpdates(LOCATION_UPDATES);
         mLocationRequest.setInterval(LOCATION_INTERVAL);
+    }
+
+    @Override
+    public void onPlaceSelected(Place place) {
+
+    }
+
+    @Override
+    public void onError(Status status) {
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SELECT_PLACE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Location location = new Location("place");
+                location.setLatitude(place.getLatLng().latitude);
+                location.setLongitude(place.getLatLng().longitude);
+                moveMap(location);
+            }
+        }
     }
 }

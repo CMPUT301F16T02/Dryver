@@ -102,4 +102,9 @@
     <string name="request_item_Cost">Cost</string>
     <string name="google_api_key">AIzaSyCUdfcLLIkGiLLkF95uGQHww8Y0whSX2a4</string>
     <string name="activity_driver_CurrentLocation">Get Location</string>
+    <string name="map_activity_forward">forward</string>
+    <string name="action_settings">Action Setting</string>
+    <string name="action_forward">Action Forward</string>
+    <string name="action_delete">Action Delete</string>
+    <string name="action_search">Action Search</string>
 </resources>
