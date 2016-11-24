@@ -310,10 +310,9 @@ public class ElasticSearchController {
      * @return the boolean
      */
     public boolean updateRequest(Request request) {
-        Request tempRequest = request;
-        if ((tempRequest = getRequestByString(tempRequest.getId())) != null) {
-            UpdateRequestTask updateTask = new UpdateRequestTask();
-            updateTask.execute(tempRequest);
+        if (getRequestByString(request.getId()) != null) {
+            AddRequestTask addTask = new AddRequestTask();
+            addTask.execute(request);
             return true;
         }
         return false;
@@ -497,7 +496,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Request... search_parameters) {
             verifySettings();
 
-            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
+            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(REQUEST).id(search_parameters[0].getId()).build();
 
             try {
                 client.execute(delete);
