@@ -3,9 +3,9 @@ package com.dryver.UITests;
 import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.Activities.ActivityDriver;
+import com.dryver.Activities.ActivityDriverMain;
 import com.dryver.Activities.ActivityEditProfile;
-import com.dryver.Activities.ActivityRequestList;
+import com.dryver.Activities.ActivityRequestMain;
 import com.dryver.Activities.ActivitySelection;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
@@ -49,14 +49,14 @@ public class ActivitySelectionTests {
     public void TestSelectDryver(){
         onView(withText("Dryve")).perform(click());
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityDriver.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityDriverMain.class)));
     }
 
     @Test
     public void TestSelectRyder(){
         onView(withText("Ryde")).perform(click());
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRequestList.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRequestMain.class)));
     }
 
 }

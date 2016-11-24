@@ -95,7 +95,7 @@ public class ActivityDriverList extends Activity{
      * Called after data in driver list has changed
      */
     private void refreshDriverList() {
-        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
     }

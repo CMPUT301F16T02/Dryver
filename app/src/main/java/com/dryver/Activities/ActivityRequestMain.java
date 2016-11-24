@@ -44,7 +44,7 @@ import com.dryver.R;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestList extends ActivityLoggedInActionBar {
+public class ActivityRequestMain extends ActivityLoggedInActionBar {
 
     private Button addRequestButton;
     private ListView requestListView;
@@ -59,7 +59,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("info", "ActivityRequestList.onCreate()");
+        Log.i("info", "ActivityRequestMain.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
 
@@ -112,7 +112,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestList.this, ActivityRequestMap.class);
+                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequestMap.class);
                 startActivity(intent);
             }
         });
@@ -120,8 +120,9 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
-                Intent intent = new Intent(ActivityRequestList.this, ActivityRequest.class);
+                Request intentRequest = (Request) requestListView.getItemAtPosition(position);
+                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
+                intent.putExtra("requestId", intentRequest.getId());
                 startActivity(intent);
                 return true;
             }
@@ -156,7 +157,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
      * called when request list data changes
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         requestListAdapter.notifyDataSetChanged();
         checkStatuses();
@@ -170,9 +171,8 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
 
     @Override
     public void onResume() {
-        Log.i("info", "ActivityRequestList.onResume()");
+        Log.i("info", "ActivityRequestMain.onResume()");
         super.onResume();
         refreshRequestList();
-
     }
 }
