@@ -84,7 +84,7 @@ public class ActivityRequestSelection extends Activity {
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
         Log.d("USERNAME: ", request.getRiderId());
-        String rider = request.getRiderId(); // Breaks here in offline mode
+        String rider_name = request.getRiderId(); // Breaks here in offline mode
 
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
@@ -102,7 +102,7 @@ public class ActivityRequestSelection extends Activity {
         setGenericListeners();
 
         titleTextView.setText("Request Details");
-        riderNameTextView.setText("Rider Name: " + rider);
+        riderNameTextView.setText("Rider Name: " + rider_name);
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
