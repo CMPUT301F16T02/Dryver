@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dryver.Activities.ActivityDriverSelection;
 import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
-import com.dryver.Utility.HelpMe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,16 +19,19 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * A custom Array Adapter for listing requests as strings properly.
- * @see Request
+ * Created by drei on 2016-11-24.
  */
-public class RequestListAdapter extends ArrayAdapter<Request> {
+
+public class DriverListAdapter extends ArrayAdapter<Request> {
+    private SimpleDateFormat sdf;
     private Context mContext;
 
-    public RequestListAdapter(Context context, ArrayList<Request> requestArrayList) {
+
+    public DriverListAdapter(Context context, ArrayList<Request> requestArrayList) {
         super(context, 0, requestArrayList);
         this.mContext = context;
     }
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -44,12 +47,15 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
                 RequestSingleton RS = RequestSingleton.getInstance();
 
                 RS.setViewedRequest(request);
-                Intent intent = new Intent(mContext, ActivityRequestSelection.class);
+                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
                 intent.putExtra("position", position);
                 mContext.startActivity(intent);
             }
 
         });
+
+        sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
         TextView requestName = (TextView) convertView.findViewById(R.id.requestItemName);
         TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
@@ -60,7 +66,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         requestName.setText("Ride Request");
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
-        requestDate.setText("Date: "+ HelpMe.getStringDate(request.getDate()));
+        requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
         requestCost.setText("Cost: $" + request.getCost());
 
 

@@ -319,22 +319,6 @@ public class ElasticSearchController {
     }
 
     /**
-     * Forces a request to be updated or adds the request if id is not found in ES.
-     *
-     * @param request the request
-     * @return the boolean
-     */
-    public boolean pushRequest(Request request) {
-        if (updateRequest(request)) {
-            return true;
-        }
-        if (addRequest(request)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * gets a request from ES via ES ID
      *
      * @param requestID
@@ -353,72 +337,6 @@ public class ElasticSearchController {
             e.printStackTrace();
         }
         return temp;
-    }
-
-    /**
-     * returns a matching request from ES. Often used to check if the request is a duplicate as it returns null
-     * if the inputted request is not a duplicate.
-     *
-     * @param request
-     * @return Request
-     * @see Request
-     * @see GetRequestTask
-     */
-    public static Request getRequestByMatch(Request request) {
-        Log.i("trace", "ElasticSearchController.getRequestByMatch()");
-        GetRequestsTask getTask = new GetRequestsTask();
-
-        ArrayList<Request> requestList = new ArrayList<Request>();
-
-        try {
-            requestList = getTask.execute(request.getRiderId()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        if (!requestList.isEmpty()) {
-            for (Request rq : requestList) {
-                Log.i("Request rider ID: " + rq.getRiderId(), "displaying rider id.");
-                if (rq.equals(request)) {
-                    return rq;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * gets a request for a given Rider using the Rider's ID
-     *
-     * @param request
-     * @return Request
-     * @see Request
-     * @see GetRequestsTask
-     */
-    public Request getRequestByRiderID(Request request) {
-        Log.i("trace", "ElasticSearchController.getRequestByRiderID()");
-        GetRequestsTask getTask = new GetRequestsTask();
-
-        ArrayList<Request> requestList = new ArrayList<Request>();
-
-        try {
-            requestList = getTask.execute(request.getRiderId()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        if (!requestList.isEmpty()) {
-            for (Request rq : requestList) {
-                if (rq.getRiderId().equals(request.getRiderId())) {
-                    return rq;
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -507,40 +425,6 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * @return boolean
-     * @throws InterruptedException
-     * @see Request
-     */
-    private static class UpdateRequestTask extends AsyncTask<Request, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Request... search_parameters) {
-            verifySettings();
-            boolean updatable = false;
-            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).id(search_parameters[0].getId()).build();
-
-            try {
-                DocumentResult result = client.execute(index);
-                if (result.isSucceeded()) {
-                    search_parameters[0].setId(result.getId());
-                } else {
-                    Log.i("Error", "Elastic search was not able to add the user.");
-                }
-                updatable = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return updatable;
-        }
-    }
-
-    /**
-     * Adds a request to the ElasticSearch server
-     *
-     * @return boolean
-     * @see Request
-     */
     private static class GetRequestTask extends AsyncTask<String, Void, Request> {
 
         @Override
