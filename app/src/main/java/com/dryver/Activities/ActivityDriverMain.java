@@ -102,7 +102,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(ActivityDriverMain.this, ActivityRequestSelection.class);
+                Intent intent = new Intent(ActivityDriverMain.this, ActivityDriverSelection.class);
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 startActivity(intent);
                 return true;

@@ -157,16 +157,11 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
+
     /**
-     * A method that forces a request into the ES by either updating an existing request or adding a new one.
+     * Updates a request if it's id matches, otherwise creates a brand new request.
      *
-     * @param riderID
-     * @param date
-     * @param fromLocation
-     * @param toLocation
-     * @param rate
-     * @see ElasticSearchController
-     * @see ICallBack
+     * @param request the request
      */
     public void pushRequest(Request request) {
         if (ES.updateRequest(request)) {
@@ -331,22 +326,6 @@ public class RequestSingleton {
         }
     }
 
-    /**
-     * Returns true or false if there are cached requests.
-     */
-    public boolean hasCacheRequests() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV).isFile();
-        } else return false;
-    }
-
-    /**
-     * Syncs all locally stored requests with the server.
-     */
-    public void syncRequests() {
-        //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
-    }
 
     /** GETTERS AND SETTERS
      *
