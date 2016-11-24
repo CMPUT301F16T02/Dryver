@@ -57,6 +57,8 @@ public class RequestSingleton {
     private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
+    private Location tempFromLocation;
+    private Location tempToLocation;
 
     private RequestSingleton() {
     }
@@ -338,6 +340,26 @@ public class RequestSingleton {
      */
     public void syncRequests() {
         //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
+    }
+
+    /** GETTERS AND SETTERS
+     *
+     * @return
+     */
+    public Location getTempFromLocation() {
+        return tempFromLocation;
+    }
+
+    public void setTempFromLocation(Location tempFromLocation) {
+        this.tempFromLocation = tempFromLocation;
+    }
+
+    public Location getTempToLocation() {
+        return tempToLocation;
+    }
+
+    public void setTempToLocation(Location tempToLocation) {
+        this.tempToLocation = tempToLocation;
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
