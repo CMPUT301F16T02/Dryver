@@ -20,10 +20,8 @@
 package com.dryver.Activities;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -32,13 +30,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
@@ -56,7 +49,7 @@ import com.google.android.gms.location.LocationServices;
 /**
  * This activities deals with providing the driver with UI for requests.
  */
-public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemSelectedListener {
+public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
     private ListView requestListView;
     private Button currentLocationButton;
@@ -109,7 +102,7 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(ActivityDriver.this, ActivityRequestSelection.class);
+                Intent intent = new Intent(ActivityDriverMain.this, ActivityRequestSelection.class);
                 requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
                 startActivity(intent);
                 return true;
@@ -125,7 +118,7 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
 
         //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
-        mClient = new GoogleApiClient.Builder(ActivityDriver.this)
+        mClient = new GoogleApiClient.Builder(ActivityDriverMain.this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -168,13 +161,13 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
      */
     public void findCurrentLocation() {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
-        Log.i("ActivityDriver: ", "CURRENT LOCATION: " + currentLocation);
+        Log.i("ActivityDriverMain: ", "CURRENT LOCATION: " + currentLocation);
 
         //CODE BELOW IS FOR CONTINUOUSLY UPDATING USER LOCATION
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("ActivityDriver: ", "NEW LOCATION: " + location);
+                Log.i("ActivityDriverMain: ", "NEW LOCATION: " + location);
             }
         });
     }
@@ -241,7 +234,7 @@ public class ActivityDriver extends ActivityLoggedInActionBar implements OnItemS
      * The method called after data has changed in the request list
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestList.refreshRequestList()");
+        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         requestListAdapter.notifyDataSetChanged();
     }

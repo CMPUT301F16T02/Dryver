@@ -6,6 +6,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityRegistration;
 import com.dryver.Activities.ActivityRequest;
+import com.dryver.Activities.ActivityRequestMain;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
@@ -26,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Tests the finctionality of the RequestList Activity
- * @see com.dryver.Activities.ActivityRequestList
+ * @see ActivityRequestMain
  */
 
 public class ActivityRequestListTests {

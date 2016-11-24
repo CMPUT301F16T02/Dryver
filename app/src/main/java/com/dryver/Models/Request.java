@@ -31,11 +31,15 @@ import android.location.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * The type Request.
  */
 public class Request implements Serializable {
+    @JestId
     private String id;
     private final String riderId;
     private ArrayList<String> drivers;
@@ -58,18 +62,18 @@ public class Request implements Serializable {
      * @param date         date the request was created
      * @param fromLocation location of the rider
      * @param toLocation   destination of the rider
-     * @param rate         the rate
+     * @param cost         the rate
      */
-    public Request(String riderId, Calendar date, Location fromLocation, Location toLocation, double rate) {
+    public Request(String riderId, Calendar date, Location fromLocation, Location toLocation, double cost) {
         this.riderId = riderId;
         this.date = date;
         this.fromCoordinates = new SimpleCoordinates(fromLocation.getLatitude(), fromLocation.getLongitude(), fromLocation.getProvider());
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
+        this.cost = cost;
         this.status = RequestStatus.NO_DRIVERS;
-        this.rate = rate;
-        this.id = null;
+        this.id = UUID.randomUUID().toString();
     }
 
     public boolean hasID() {
@@ -88,11 +92,6 @@ public class Request implements Serializable {
         return id;
     }
 
-    /**
-     * Sets elastic search user id.
-     *
-     * @param id the id
-     */
     public void setId(String id) {
         this.id = id;
     }
@@ -132,7 +131,6 @@ public class Request implements Serializable {
     public String getRiderId() {
         return this.riderId;
     }
-
 
     /**
      * Adds a driver to the list of drivers.
@@ -243,47 +241,20 @@ public class Request implements Serializable {
         return this.date;
     }
 
-    /**
-     * Get the request's rate
-     *
-     * @return double rate
-     */
-    public double getRate() {
-        return rate;
-    }
-
-    /**
-     * Set's the request's rate
-     *
-     * @param rate the rate
-     */
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
-
-
     public double getCost() {
         return cost;
     }
 
-    /**
-     * Generates the cost of the request using the rate
-     *
-     * @param rate the rate
-     */
-    private void generateCost(double rate) {
-        // TODO: 2016-11-16 generate cost somehow.
-//        Location start = new Location("start");
-//        Location destination = new Location("Destination");
-//
-//        start.setLatitude(fromLocation.getLatitude());
-//        start.setLongitude(fromLocation.getLongitude());
-//
-//        destination.setLatitude(toLocation.getLatitude());
-//        destination.setLongitude(toLocation.getLongitude());
-//
-//        double distance = start.distanceTo(destination);
-//        this.cost = rate * distance;
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     /**
@@ -310,50 +281,21 @@ public class Request implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Request request = (Request) o;
 
-        if (riderId != null ? !riderId.equals(request.riderId) : request.riderId != null) {
-            return false;
-        }
-        if (fromCoordinates != null ? !fromCoordinates.equals(request.fromCoordinates) : request.fromCoordinates != null) {
-            return false;
-        }
-        if (toCoordinates != null ? !toCoordinates.equals(request.toCoordinates) : request.toCoordinates != null) {
-            return false;
-        }
-        return true;
+        return id != null ? id.equals(request.id) : request.id == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (riderId != null ? riderId.hashCode() : 0);
-        result = 31 * result + (drivers != null ? drivers.hashCode() : 0);
-        result = 31 * result + (acceptedDriverID != null ? acceptedDriverID.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (fromCoordinates != null ? fromCoordinates.hashCode() : 0);
-        result = 31 * result + (toCoordinates != null ? toCoordinates.hashCode() : 0);
-        temp = Double.doubleToLongBits(cost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(rate);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
+        return id != null ? id.hashCode() : 0;
     }
 
 }
+
+// REFERENCES
+// http://stackoverflow.com/questions/1389736/how-do-i-create-a-unique-id-in-java
