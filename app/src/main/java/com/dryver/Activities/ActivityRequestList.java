@@ -20,6 +20,7 @@
 package com.dryver.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -31,6 +32,7 @@ import android.widget.ListView;
 import com.dryver.Controllers.RequestListAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.RequestStatus;
 import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
@@ -44,7 +46,7 @@ import com.dryver.R;
 
 public class ActivityRequestList extends ActivityLoggedInActionBar {
 
-    private Button mAddRequest;
+    private Button addRequestButton;
     private ListView requestListView;
     private RequestListAdapter requestListAdapter;
 
@@ -64,13 +66,42 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
 
-        mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
+        assignElements();
+        checkStatuses();
+        setListeners();
+    }
+
+    /**
+     * Assigns the elements that are held in the UI that will be accessed or used later.
+     */
+    public void assignElements(){
+        addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
         requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
         requestListView.setAdapter(requestListAdapter);
+    }
 
-        setListeners();
+    /**
+     * Sets correct background colors for listview items based on the status of the request.
+     */
+    public void checkStatuses(){
+        for (Request request : requestSingleton.getRequests()){
+            switch (request.getStatus()){
+                case CANCELLED:
+                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.RED);
+                    break;
+                case NO_DRIVERS:
+                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.YELLOW);
+                    break;
+                case DRIVERS_FOUND:
+                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.GREEN);
+                    break;
+                case FINALIZED:
+                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.BLUE);
+                    break;
+            }
+        }
     }
 
     /**
@@ -78,7 +109,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
      * items
      */
     public void setListeners(){
-        mAddRequest.setOnClickListener(new View.OnClickListener() {
+        addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityRequestList.this, ActivityRequestMap.class);
@@ -119,6 +150,8 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         });
     }
 
+
+
     /**
      * called when request list data changes
      */
@@ -126,6 +159,7 @@ public class ActivityRequestList extends ActivityLoggedInActionBar {
         Log.i("trace", "ActivityRequestList.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         requestListAdapter.notifyDataSetChanged();
+        checkStatuses();
     }
 
 
