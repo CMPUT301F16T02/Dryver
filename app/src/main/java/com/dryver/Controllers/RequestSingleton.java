@@ -169,7 +169,6 @@ public class RequestSingleton {
      * @see ICallBack
      */
     public void pushRequest(Request request) {
-        Log.i("trace", "RequestSingleton.addRequest()");
         if (ES.updateRequest(request)) {
             int position = requests.indexOf(request);
             requests.remove(position);
