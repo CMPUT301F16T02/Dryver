@@ -29,6 +29,9 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <permission
+        android:name="com.truiton.supportmapfragment.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -43,13 +46,15 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_api_key"/>
 
-        <activity android:name=".Activities.ActivityOpeningPage">
+
+        <activity android:name=".Activities.ActivityRequestMap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.ActivityOpeningPage" />
         <activity android:name=".Activities.ActivityLogin"/>
         <activity android:name=".Activities.ActivityRegistration"/>
         <activity android:name=".Activities.ActivitySelection"/>
