@@ -168,6 +168,7 @@ public class ElasticSearchTests {
         assertEquals(esRequest.getCost(), esRequest2.getCost());
 
         ES.deleteRequest(esRequest2);
+
         Thread.sleep(2000);
     }
 
