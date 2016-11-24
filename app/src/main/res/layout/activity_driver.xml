@@ -53,9 +53,12 @@
             android:layout_weight="1"
             android:id="@+id/requestButtonCurrentLocation"/>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/buttonLinearLayout">
 
         <LinearLayout
@@ -76,20 +79,22 @@
         </LinearLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeContainerDriver"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/requestSpinnerLayout">
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/requestListViewRequest"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/requestSpinnerLayout"
-                android:layout_above="@+id/requestButtonNewRequest"
                 android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:focusableInTouchMode="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true">
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
     </RelativeLayout>
 </RelativeLayout>
