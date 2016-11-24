@@ -31,13 +31,10 @@ import android.widget.TextView;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
-import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.dryver.R;
-import com.dryver.Utility.ICallBack;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -50,21 +47,16 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView titleTextView;
-    private TextView riderNameTextView;
     private TextView fromLocationTextView;
     private TextView toLocationTextView;
     private TextView requestSelectionDate;
     private TextView statusTextView;
-    private Button deleteButton;
-    private Button acceptButton;
     private Button cancelButton;
     private Button viewDriversButton;
     private SimpleDateFormat sdf;
     private Request request;
     private Location fromLocation;
     private Location toLocation;
-    private User activeUser;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
@@ -81,92 +73,31 @@ public class ActivityRequestSelection extends Activity {
         sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
-        String rider_name = (activeUser.getFirstName() + " " + activeUser.getLastName()); // Breaks here in offline mode
+        String rider_name = (userController.getActiveUser().getFirstName() + " "
+                            + userController.getActiveUser().getLastName()); // Breaks here in offline mode
 
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
-        titleTextView = (TextView) findViewById(R.id.requestSelectionTitle);
-        riderNameTextView = (TextView) findViewById(R.id.requestSelectionRiderName);
         fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
         toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
         statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
 
-        deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
+        cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        setGenericListeners();
-
-        titleTextView.setText("Request Details");
-        riderNameTextView.setText("Rider Name: " + rider_name);
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
 
         statusTextView.setText("Status: " + request.statusCodeToString());
-        checkUserType();
-    }
-
-    /**
-     * Sets the listeners appropriate for both rider and driver. This includes: the rider name's
-     * textview
-     */
-    public void setGenericListeners() {
-        riderNameTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userController.viewUserProfile(ES.getUserByString(request.getRiderId()), ActivityRequestSelection.this);
-            }
-        });
-    }
-
-    /**
-     * Checks whether the user is a driver or a rider, hides or shows appropriate UI elements and
-     * calls the proper listener initialization
-     */
-    public void checkUserType() {
-        activeUser = userController.getActiveUser();
-        if (activeUser instanceof Rider) {
-            cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
-            setRiderListeners();
-        } else if (activeUser instanceof Driver) {
-            acceptButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
-            acceptButton.setText("Accept Request");
-            deleteButton.setText("View Rider");
-            viewDriversButton.setVisibility(View.INVISIBLE);
-            setDriverListeners();
-        } else {
-            activeUser = null;
-            Log.wtf("UHH", "excuse me?");
-        }
-    }
-
-    /**
-     * Sets the appripriate listeners for the rider. This includes: the delete button's click,
-     * the cancel button's click, and the view drivers button's click.
-     */
-    public void setRiderListeners() {
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestSingleton.removeRequest(request, new ICallBack() {
-                    @Override
-                    public void execute() {
-                        finish();
-                    }
-                });
-            }
-        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 request.setStatus(RequestStatus.CANCELLED);
-
-                if (ES.updateRequest(request)) {
-                    Log.e("ERROR", "Request not updated on server correctly");
-                }
+                requestSingleton.pushRequest(request);
                 statusTextView.setText("Status: " + request.statusCodeToString());
             }
         });
@@ -176,21 +107,6 @@ public class ActivityRequestSelection extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-    /**
-     * sets the appropriate listeners for the driver. These include: the accept button's click
-     */
-    public void setDriverListeners() {
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                request.addDriver(activeUser.getId());
-                request.setStatus(RequestStatus.DRIVERS_FOUND);
-                statusTextView.setText(request.statusCodeToString());
-                ES.updateRequest(request);
             }
         });
     }
