@@ -45,8 +45,8 @@ public class ActivityRequest extends Activity {
     private Location testFromLocation = new Location("from");
     private Location testToLocation = new Location("to");
 
-    private Location fromLocation = new Location("from");
-    private Location toLocation = new Location("to");
+    private Location fromLocation;
+    private Location toLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,9 @@ public class ActivityRequest extends Activity {
         HelpMe.setTimePicker(calendar, timePicker);
         HelpMe.setDatePicker(calendar, datePicker);
 
+        fromLocation = requestSingleton.getTempFromLocation();
+        toLocation = requestSingleton.getTempToLocation();
+
         // TODO: 2016-11-14 Set these locations through the map map.
         // set default locations for now
         testFromLocation.setLatitude(54.523869);
@@ -79,6 +82,7 @@ public class ActivityRequest extends Activity {
 
         findViewById(R.id.requestTripPrice).requestFocus();
 
+<<<<<<< HEAD
         setListeners();
     }
 
@@ -87,6 +91,9 @@ public class ActivityRequest extends Activity {
      * click
      */
     public void setListeners(){
+=======
+        /*
+>>>>>>> NewMapBranch
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +101,7 @@ public class ActivityRequest extends Activity {
                 startActivity(intent);
             }
         });
+        */
 
         submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +110,7 @@ public class ActivityRequest extends Activity {
                     // TODO: 2016-11-14 limit the number of decimal places to 2
                     Double price = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
+<<<<<<< HEAD
                     requestSingleton.addRequest(rider.getId(), calendar, testFromLocation, testToLocation, price, new IBooleanCallBack() {
                         @Override
                         public void success() {
@@ -114,6 +123,10 @@ public class ActivityRequest extends Activity {
                         }
                     });
 
+=======
+                    requestSingleton.addRequest(rider.getId(), calendar, fromLocation, toLocation, price);
+                    finish();
+>>>>>>> NewMapBranch
                 }
             }
         });
@@ -122,8 +135,8 @@ public class ActivityRequest extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        fromLocationText.setText("From: Lat: " + testFromLocation.getLatitude() + " Long: " + testFromLocation.getLongitude());
-        toLocationText.setText("To  : Lat: " + testToLocation.getLatitude() + " Long: " + testToLocation.getLongitude());
+        fromLocationText.setText("From: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
+        toLocationText.setText("To  : Lat: " + toLocation.getLatitude() + " Long: " + toLocation.getLongitude());
     }
 
     // TODO: 2016-11-14 implement checker. if intent: get request and edit, otherwise: make new request

@@ -58,8 +58,13 @@ public class RequestSingleton {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
 
+<<<<<<< HEAD
     private RequestSingleton() {
     }
+=======
+    private Location tempFromLocation;
+    private Location tempToLocation;
+>>>>>>> NewMapBranch
 
     public static RequestSingleton getInstance() {
         return ourInstance;
@@ -238,6 +243,7 @@ public class RequestSingleton {
         });
     }
 
+<<<<<<< HEAD
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
@@ -246,6 +252,26 @@ public class RequestSingleton {
      */
     public void selectDriver(Request request, String driverID) {
         request.acceptOffer(driverID);
+=======
+    public Location getTempFromLocation() {
+        return tempFromLocation;
+    }
+
+    public void setTempFromLocation(Location tempFromLocation) {
+        this.tempFromLocation = tempFromLocation;
+    }
+
+    public Location getTempToLocation() {
+        return tempToLocation;
+    }
+
+    public void setTempToLocation(Location tempToLocation) {
+        this.tempToLocation = tempToLocation;
+    }
+
+    public void selectDriver(Request request, String driverID){
+        request.setAcceptedDriverID(driverID);
+>>>>>>> NewMapBranch
         request.setStatus(RequestStatus.FINALIZED);
         ES.updateRequest(request);
     }
