@@ -27,13 +27,10 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.Request;
 import com.dryver.Models.User;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -58,14 +55,6 @@ public class ElasticSearchTests {
     private final static Location fromLocation = new Location("from");
     private final static Double cost = 12.00;
     private final static Request testRequest = new Request(username, calendar, toLocation, fromLocation, cost);
-
-//    @AfterClass
-//    public static void removeTestUsers() throws ExecutionException, InterruptedException {
-//        ElasticSearchController elasticSearchController = ElasticSearchController.getInstance();
-//        elasticSearchController.deleteUser(testUser);
-//        elasticSearchController.deleteRequestByRiderID(testRequest);
-//    }
-
 
     /**
      * Tests Adding and then deleting a User from the Database
@@ -128,9 +117,8 @@ public class ElasticSearchTests {
         assertTrue(ES.addRequest(testRequest));
         Thread.sleep(2000);
         assertFalse(ES.addRequest(testRequest));
-        assertTrue(ES.deleteRequest(testRequest));
+//        assertTrue(ES.deleteRequest(testRequest));
 
-        Thread.sleep(2000);
     }
 
     @Test
@@ -144,7 +132,7 @@ public class ElasticSearchTests {
         assertEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
         assertEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
         assertEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
-        assertEquals(testRequest.getCost(), esRequest.getCost());
+        assertEquals(testRequest.getPrice(), esRequest.getPrice());
 
         Location toLocation = new Location("To");
         toLocation.setLatitude(10);
@@ -155,14 +143,14 @@ public class ElasticSearchTests {
 
         esRequest.setToLocation(toLocation);
         esRequest.setFromLocation(fromLocation);
-        esRequest.setCost(15);
+        esRequest.setPrice(15);
 
 
         assertNotEquals(testRequest.getToLocation().getLatitude(), esRequest.getToLocation().getLatitude());
         assertNotEquals(testRequest.getToLocation().getLongitude(), esRequest.getToLocation().getLongitude());
         assertNotEquals(testRequest.getFromLocation().getLatitude(), esRequest.getFromLocation().getLatitude());
         assertNotEquals(testRequest.getFromLocation().getLongitude(), esRequest.getFromLocation().getLongitude());
-        assertNotEquals(testRequest.getCost(), esRequest.getCost());
+        assertNotEquals(testRequest.getPrice(), esRequest.getPrice());
 
 
         assertTrue(ES.updateRequest(esRequest));
@@ -173,7 +161,7 @@ public class ElasticSearchTests {
         assertEquals(esRequest.getToLocation().getLongitude(), esRequest2.getToLocation().getLongitude());
         assertEquals(esRequest.getFromLocation().getLatitude(), esRequest2.getFromLocation().getLatitude());
         assertEquals(esRequest.getFromLocation().getLongitude(), esRequest2.getFromLocation().getLongitude());
-        assertEquals(esRequest.getCost(), esRequest2.getCost());
+        assertEquals(esRequest.getPrice(), esRequest2.getPrice());
 
         ES.deleteRequest(esRequest2);
         Thread.sleep(2000);

@@ -209,7 +209,7 @@ public class RequestSingleton {
         Collections.sort(requests, new Comparator<Request>() {
             @Override
             public int compare(Request lhs, Request rhs) {
-                return Double.compare(lhs.getRate(), rhs.getRate());
+                return Double.compare(lhs.getPrice(), rhs.getPrice());
             }
         });
     }
@@ -261,7 +261,7 @@ public class RequestSingleton {
      */
     public void updateViewedRequest(Request request, ICallBack callBack) {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
-        Request updatedRequest = ES.getRequestByID(request.getId());
+        Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
             viewedRequest = updatedRequest;
             callBack.execute();

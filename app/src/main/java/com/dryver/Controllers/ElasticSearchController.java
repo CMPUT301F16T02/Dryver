@@ -82,18 +82,22 @@ public class ElasticSearchController {
      * Static instance of the client
      */
     private static JestDroidClient client;
+
     /**
      * String URL pointing to the server
      */
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
+
     /**
      * The primary index name
      */
     private static final String INDEX = "cmput301f16t02";
+
     /**
      * User type for server
      */
     private static final String USER = "user";
+
     /**
      * Request type for the server
      */
@@ -122,7 +126,7 @@ public class ElasticSearchController {
 
     }
 
-    // ==============           USER               ===============
+    // ==============           PUBLIC USER               ===============
 
     public boolean addUser(User user) {
         if (getUserByString(user.getId()) == null) {
@@ -163,6 +167,8 @@ public class ElasticSearchController {
         }
         return temp;
     }
+
+    // ==============           PRIVATE USER               ===============
 
     /**
      * Adds a user to the database.
@@ -262,101 +268,27 @@ public class ElasticSearchController {
             return users;
         }
     }
-    // ==============           REQUEST             ===============
 
-    /**
-     * adds a request to Elasitc Search
-     *
-     * @param request
-     * @return boolean
-     * @see AddRequestTask
-     */
+    // ==============           PUBLIC REQUEST             ===============
+
     public boolean addRequest(Request request) {
-        Log.i("trace", "ElasticSearchController.addRequest()");
-        AddRequestTask addTask = new AddRequestTask(request);
-        addTask.execute();
-
-        boolean added = false;
-        try {
-            added = addTask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            return added;
+        if (getRequestByString(request.getId()) == null) {
+            AddRequestTask addTask = new AddRequestTask();
+            addTask.execute(request);
+            return true;
         }
+        return false;
     }
 
-    /**
-     * Deletes a request from ES
-     *
-     * @param request
-     * @return boolean
-     * @see DeleteRequestTask
-     */
     public boolean deleteRequest(Request request) {
-        Log.i("trace", "ElasticSearchController.deleteRequest()");
-        DeleteRequestTask deleteTask = new DeleteRequestTask(request);
-        deleteTask.execute();
-
-        //you cant return in try catch >.>
-        boolean deleted = false;
-        try {
-            deleted = deleteTask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            return deleted;
-        }
-
-    }
-
-    /**
-     * deletes a request using it's ID
-     *
-     * @param request
-     * @return boolean
-     * @see DeleteRequestTask
-     */
-    public boolean deleteRequestByID(Request request) {
-        Log.i("trace", "ElasticSearchController.deleteRequestByID()");
-        if (getRequestByID(request.getId()) != null) {
-            DeleteRequestTask deleteTask = new DeleteRequestTask(request);
-            deleteTask.execute();
+        if (getRequestByString(request.getId()) != null) {
+            DeleteRequestTask deleteTask = new DeleteRequestTask();
+            deleteTask.execute(request);
             return true;
         }
         return false;
     }
 
-    /**
-     * Deletes all requests for a given user
-     *
-     * @param request
-     * @return boolean
-     * @see DeleteRequestTask
-     */
-    public boolean deleteRequestByRiderID(Request request) {
-        Log.i("trace", "ElasticSearchController.deleteRequestByRiderID()");
-        Request testRequest;
-        if ((testRequest = getRequestByRiderID(request)) != null) {
-            DeleteRequestTask deleteTask = new DeleteRequestTask(request);
-            deleteTask.execute();
-            deleteRequest(request); //recursively delete all similar requests to remove redundancy.
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Updates a request in ES using it's new values
-     *
-     * @param request
-     * @return boolean
-     * @see UpdateRequestTask
-     */
     public boolean updateRequest(Request request) {
         Log.i("trace", "ElasticSearchController.updateRequest()");
         Request tempRequest = request;
@@ -383,18 +315,17 @@ public class ElasticSearchController {
      * @see Request
      * @see GetRequestTask
      */
-    public Request getRequestByID(String requestID) {
-        Log.i("trace", "ElasticSearchController.getRequestByID()");
+    public Request getRequestByString(String requestID) {
         GetRequestTask getTask = new GetRequestTask();
-        Request request = null;
+        Request temp = null;
         try {
-            request = getTask.execute(requestID).get();
+            temp = getTask.execute(requestID).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return request;
+        return temp;
     }
 
     /**
@@ -511,48 +442,20 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * A class for getting the list of requests associated with a rider on the Elastic Search server
-     *
-     * @return boolean
-     * @see Request
-     */
-    private static class AddRequestTask extends AsyncTask<Void, Void, Boolean> {
-        private Request request;
-        private boolean canAdd = true;
+    // ==============           PRIVATE REQUEST             ===============
 
-        /**
-         * initializes the task with a request
-         *
-         * @param request
-         */
-        AddRequestTask(Request request) {
-            this.request = request;
-        }
-
-        /**
-         * overridden method, checks for match before starting
-         */
+    private static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
         @Override
-        protected void onPreExecute() {
-            canAdd = getRequestByMatch(request) == null;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... search_parameters) {
-            if (!canAdd) return false;
-
+        protected Boolean doInBackground(Request... search_parameters) {
             verifySettings();
+
             boolean addable = false;
-            Index index = new Index.Builder(request).index(INDEX).type(REQUEST).build();
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(REQUEST).build();
 
             try {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
-                    request.setId(result.getId());
                     addable = true;
-                } else {
-                    Log.i("Error", "Elastic search was not able to add the user.");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -561,57 +464,19 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * A class for deleting a request by it's ElasticSearch ID
-     *
-     * @return boolean
-     * @see Request
-     */
-    private static class DeleteRequestTask extends AsyncTask<Void, Void, Boolean> {
-        private Request request;
-        private boolean canDelete = true;
-
-        /**
-         * initializes the task with a request
-         *
-         * @param request
-         */
-        DeleteRequestTask(Request request) {
-            this.request = request;
-        }
-
-        /**
-         * overridded method checks for match before start
-         */
+    private static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
         @Override
-        protected void onPreExecute() {
-            canDelete = getRequestByMatch(request) != null;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(Void... search_parameters) {
+        protected Boolean doInBackground(Request... search_parameters) {
             verifySettings();
 
-            if (!canDelete) {
-                return false;
-            }
-
-            boolean deleted = false;
-
-            Delete delete = new Delete.Builder(request.getId()).index(INDEX).type(REQUEST).id(request.getId()).build();
+            Delete delete = new Delete.Builder(search_parameters[0].getId()).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
 
             try {
-                //TODO: use the result?
-                DocumentResult result = client.execute(delete);
-                if (result.isSucceeded()) {
-                    deleted = true;
-                }
+                client.execute(delete);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                return deleted;
             }
+            return true;
         }
     }
 
@@ -666,7 +531,6 @@ public class ElasticSearchController {
             return request;
         }
     }
-
 
     private static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override

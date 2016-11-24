@@ -71,7 +71,7 @@ public class RequestTests {
         DEFAULT_TO_ADDRESS.setLongitude(-113.506537);
         Request request = new Request(DEFAULT_RIDER.getId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         // test cost
-        assertEquals(DEFAULT_COST, request.getCost(), 0.001);
+        assertEquals(DEFAULT_COST, request.getPrice(), 0.001);
         // test ids
         assertEquals(DEFAULT_RIDER_ID, request.getRiderId());
         // test driver list.

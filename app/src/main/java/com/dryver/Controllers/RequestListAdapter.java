@@ -70,7 +70,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
-        requestCost.setText("Cost: $" + request.getRate());
+        requestCost.setText("Cost: $" + request.getPrice());
 
 
         return convertView;

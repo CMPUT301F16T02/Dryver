@@ -142,7 +142,7 @@ public class ActivityRequest extends Activity {
             Log.i("has intent", "stuff");
             if ((position = intent.getIntExtra("position", -1)) != -1) {
                 Request request = requestSingleton.getUpdatedRequests().get(position);
-                tripPrice.setText(Double.toString(request.getRate()));
+                tripPrice.setText(Double.toString(request.getPrice()));
                 HelpMe.setTimePicker(request.getDate(), timePicker);
                 HelpMe.setDatePicker(request.getDate(), datePicker);
             }
