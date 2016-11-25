@@ -104,7 +104,7 @@ public class ActivityRequestMap extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_map);
 
-        mRoute = new ArrayList<Marker>();
+        mRoute = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -169,16 +169,15 @@ public class ActivityRequestMap extends FragmentActivity implements
                     fromLocation.setLongitude(mRoute.get(0).getPosition().longitude);
                     toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
                     toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
-                    requestSingleton.setTempFromLocation(fromLocation);
-                    requestSingleton.setTempToLocation(toLocation);
+
+                    requestSingleton.getMakeRequest().setFromLocation(fromLocation);
+                    requestSingleton.getMakeRequest().setToLocation(toLocation);
 
                     map.clear();
                     mRoute.clear();
-                    Intent intent = new Intent(ActivityRequestMap.this, ActivityRequest.class);
-                    startActivity(intent);
+
                     finish();
-                }
-                else {
+                } else {
                     Toast.makeText(ActivityRequestMap.this, "Make sure you have selected 2 points!!!",
                             Toast.LENGTH_SHORT).show();
                 }

@@ -43,6 +43,7 @@ public class ActivityEditProfile extends Activity {
 
     private UserController userController = UserController.getInstance();
     private User user;
+    private Driver driver;
     private TextView titleTextView;
     private EditText emailEditText;
     private EditText phoneEditText;
@@ -55,6 +56,7 @@ public class ActivityEditProfile extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         user = userController.getViewedUser();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
@@ -85,6 +87,7 @@ public class ActivityEditProfile extends Activity {
             vehicleDesriptionTextView.setVisibility(View.GONE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
         } else if(user instanceof Driver) {
+            driver = (Driver) userController.getViewedUser();
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
             //this is bad, I'm sorry
@@ -123,6 +126,8 @@ public class ActivityEditProfile extends Activity {
         {
             user.setPhoneNumber(phoneEditText.getText().toString());
             user.setEmail(emailEditText.getText().toString());
+            driver.setVehicleDescription(vehicleDescriptionEditText.getText().toString());
+
             updated = userController.updateActiveUser();
         }
         return updated;

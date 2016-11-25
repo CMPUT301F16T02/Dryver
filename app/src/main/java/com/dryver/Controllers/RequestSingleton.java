@@ -54,11 +54,9 @@ public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
     private static RequestSingleton ourInstance = new RequestSingleton();
     private static ArrayList<Request> requests = new ArrayList<Request>();
-    private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
-    private Location tempFromLocation;
-    private Location tempToLocation;
+    private Request makeRequest;
 
     private RequestSingleton() {
     }
@@ -104,28 +102,6 @@ public class RequestSingleton {
     }
 
     /**
-     * Gets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @return Request
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public Request getViewedRequest() {
-        return viewedRequest;
-    }
-
-    /**
-     * Sets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @param viewedRequest
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public void setViewedRequest(Request viewedRequest) {
-        this.viewedRequest = viewedRequest;
-    }
-
-    /**
      * A simple method for fetching an updated request list via Elastic Search. Executes callback after
      *
      * @param callBack
@@ -157,6 +133,17 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
+    public void setMakeRequest(Request makeRequest) {
+        this.makeRequest = makeRequest;
+    }
+
+    public Request getMakeRequest() {
+        return this.makeRequest;
+    }
+
+    public void pushMakeRequest() {
+        pushRequest(this.makeRequest);
+    }
 
     /**
      * Updates a request if it's id matches, otherwise creates a brand new request.
@@ -178,16 +165,13 @@ public class RequestSingleton {
      * Elastic Search see deleteRequestById() in ESC
      *
      * @param request
-     * @param callBack
      * @return Boolean
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void removeRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.removeRequest()");
+    public void removeRequest(Request request) {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
-            callBack.execute();
         }
     }
 
@@ -264,7 +248,7 @@ public class RequestSingleton {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
         Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
-            viewedRequest = updatedRequest;
+            makeRequest = updatedRequest;
             callBack.execute();
         }
     }
@@ -324,27 +308,6 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-
-    /** GETTERS AND SETTERS
-     *
-     * @return
-     */
-    public Location getTempFromLocation() {
-        return tempFromLocation;
-    }
-
-    public void setTempFromLocation(Location tempFromLocation) {
-        this.tempFromLocation = tempFromLocation;
-    }
-
-    public Location getTempToLocation() {
-        return tempToLocation;
-    }
-
-    public void setTempToLocation(Location tempToLocation) {
-        this.tempToLocation = tempToLocation;
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline

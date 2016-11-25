@@ -80,15 +80,15 @@
     <string name="activity_request_text_tripcost">Enter trip cost</string>
     <string name="activity_request_button_submit">Submit</string>
     <string name="activity_request_button_location">Set Route</string>
+    <string name="activity_request_location">Location</string>
 
     <string name="activity_request_selection_RequestDetails">Request Details</string>
     <string name="activity_request_selection_Name">Rider Name</string>
-    <string name="activity_request_selection_FromLocation">From Location</string>
-    <string name="activity_request_selection_ToLocation">To Location</string>
+    <string name="activity_request_selection_location">Location</string>
     <string name="activity_request_selection_Date">Date Created</string>
-    <string name="activity_request_selection_Delete">Delete Request</string>
     <string name="activity_request_selection_Edit">Edit Request</string>
     <string name="activity_request_selection_Cancel">Cancel Request</string>
+    <string name="activity_request_selection_Delete">Delete Request</string>
     <string name="activity_request_selection_ViewDriver">View Drivers</string>
 
     <string name="activity_email_subject">Subject...</string>
