@@ -39,8 +39,6 @@ import com.dryver.R;
  * and save it.
  */
 public class ActivityEditProfile extends Activity {
-    //Paypal? Bitcoin Wallets? Cash is an easy default cus then we can ignore everything lol
-
     private UserController userController = UserController.getInstance();
     private User user;
     private Driver driver;

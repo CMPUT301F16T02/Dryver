@@ -21,25 +21,15 @@ package com.dryver.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
-import com.dryver.Controllers.UserController;
-import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
-import com.dryver.Models.User;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
@@ -71,10 +61,11 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
 
         checkCancelled();
+        
+        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
+        requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
-        HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationTextView);
-        requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(requestSingleton.getMakeRequest().getDate()));
-        statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
 
         setListeneres();
     }
@@ -91,18 +82,18 @@ public class ActivityRequestSelection extends Activity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.getMakeRequest().setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushMakeRequest();
+                requestSingleton.getTempRequest().setStatus(RequestStatus.CANCELLED);
+                requestSingleton.pushTempRequest();
                 checkCancelled();
-                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.removeRequest(requestSingleton.getMakeRequest());
-                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
+                requestSingleton.removeRequest(requestSingleton.getTempRequest());
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
                 finish();
             }
         });
@@ -111,11 +102,11 @@ public class ActivityRequestSelection extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        requestSingleton.setMakeRequest(null);
+        requestSingleton.setTempRequest(null);
     }
 
     private void checkCancelled() {
-        if (requestSingleton.getMakeRequest().getStatus().equals(RequestStatus.CANCELLED)) {
+        if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
             cancelButton.setEnabled(false);
         }
     }
