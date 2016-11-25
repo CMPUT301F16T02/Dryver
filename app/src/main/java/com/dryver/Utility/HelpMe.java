@@ -148,7 +148,7 @@ public class HelpMe extends Activity {
                 timePicker.getCurrentMinute());
     }
 
-    static public String getStringDate(Calendar cal) {
+    static public String getDateString(Calendar cal) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
         sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
         return sdf.format(cal.getTime());

@@ -28,7 +28,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.dryver.Controllers.RequestListAdapter;
+import com.dryver.Controllers.RequestMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Utility.ICallBack;
@@ -44,11 +44,11 @@ import java.util.Calendar;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestMain extends ActivityLoggedInActionBar {
+public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Button mAddRequest;
     private ListView requestListView;
-    private RequestListAdapter requestListAdapter;
+    private RequestMainAdapter requestMainAdapter;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
@@ -59,9 +59,9 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("info", "ActivityRequestMain.onCreate()");
+        Log.i("info", "ActivityRyderMain.onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_main);
+        setContentView(R.layout.activity_ryder_main);
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
@@ -69,8 +69,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
-        requestListView.setAdapter(requestListAdapter);
+        requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getUpdatedRequests());
+        requestListView.setAdapter(requestMainAdapter);
 
         setListeners();
     }
@@ -83,8 +83,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
-                requestSingleton.setMakeRequest(new Request(rider.getId(), Calendar.getInstance()));
+                Intent intent = new Intent(ActivityRyderMain.this, ActivityRequest.class);
+                requestSingleton.setTempRequest(new Request(rider.getId(), Calendar.getInstance()));
                 startActivity(intent);
             }
         });
@@ -93,8 +93,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Request request = (Request) requestListView.getItemAtPosition(position);
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
-                requestSingleton.setMakeRequest(request);
+                Intent intent = new Intent(ActivityRyderMain.this, ActivityRequest.class);
+                requestSingleton.setTempRequest(request);
                 startActivity(intent);
                 return true;
             }
@@ -127,9 +127,9 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
      * called when request list data changes
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        requestListAdapter.notifyDataSetChanged();
+        requestMainAdapter.notifyDataSetChanged();
     }
 
 
@@ -140,7 +140,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
 
     @Override
     public void onResume() {
-        Log.i("info", "ActivityRequestMain.onResume()");
+        Log.i("info", "ActivityRyderMain.onResume()");
         super.onResume();
         refreshRequestList();
     }
