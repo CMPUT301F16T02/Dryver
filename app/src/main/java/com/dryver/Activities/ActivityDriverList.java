@@ -1,6 +1,5 @@
 package com.dryver.Activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -23,7 +22,7 @@ import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
-public class ActivityDriverList extends Activity {
+public class ActivityDriverList extends ActivityLoggedInActionBar {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
@@ -31,7 +30,7 @@ public class ActivityDriverList extends Activity {
 
     private ListView driverListView;
     private Request request;
-    private ArrayList<String> driverIds;
+    private ArrayList<String> drivers;
     private ArrayAdapter<String> adapter;
     private SwipeRefreshLayout swipeContainer;
 
@@ -40,11 +39,10 @@ public class ActivityDriverList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_list);
 
-        request = requestSingleton.getViewedRequest();
-        driverIds = request.getDrivers();
+        drivers = requestSingleton.getTempRequest().getDrivers();
 
         driverListView = (ListView)findViewById(R.id.driver_list);
-        adapter = new ArrayAdapter<String>(this, R.layout.list_item, driverIds);
+        adapter = new ArrayAdapter<String>(this, R.layout.driver_list, drivers);
         driverListView.setAdapter(adapter);
 
         registerForContextMenu(driverListView);
@@ -95,7 +93,7 @@ public class ActivityDriverList extends Activity {
      * Called after data in driver list has changed
      */
     private void refreshDriverList() {
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
     }

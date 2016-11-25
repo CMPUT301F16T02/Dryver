@@ -13,10 +13,7 @@ import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * A custom Array Adapter for listing requests as strings properly.
@@ -42,7 +39,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.setMakeRequest(request);
+                requestSingleton.setTempRequest(request);
                 Intent intent = new Intent(mContext, ActivityRequestSelection.class);
                 mContext.startActivity(intent);
             }
@@ -58,7 +55,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         requestName.setText("Ride Request");
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
-        requestDate.setText("Date: "+ HelpMe.getStringDate(request.getDate()));
+        requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         requestCost.setText("Cost: $" + request.getCost());
 
 
