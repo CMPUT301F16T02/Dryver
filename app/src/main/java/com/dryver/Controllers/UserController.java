@@ -20,6 +20,7 @@
 package com.dryver.Controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 
@@ -94,23 +95,23 @@ public class UserController {
     /**
      * A method for viewing and editing your own profile
      *
-     * @param currentActivity the current activity
+     * @param context the current activity
      */
-    public void editUserProfile(Activity currentActivity) {
+    public void editUserProfile(Context context) {
         viewedUser = activeUser;
-        Intent intent = new Intent(currentActivity, ActivityEditProfile.class);
-        currentActivity.startActivity(intent);
+        Intent intent = new Intent(context, ActivityEditProfile.class);
+        context.startActivity(intent);
     }
 
     /**
      * a method for viewing others' profiles
      * @param user
-     * @param currentActivity
+     * @param context
      */
-    public void viewUserProfile(User user, Activity currentActivity){
+    public void viewUserProfile(User user, Context context){
         viewedUser = user;
-        Intent intent = new Intent(currentActivity, ActivityViewProfile.class);
-        currentActivity.startActivity(intent);
+        Intent intent = new Intent(context, ActivityViewProfile.class);
+        context.startActivity(intent);
     }
 
     /**
@@ -209,7 +210,10 @@ public class UserController {
         setCached(false);
     }
 
-
+    /**
+     * Checks whether there is a cached user
+     * @return boolean - Is the user chached?
+     */
     public boolean isCached() {
         return cached;
     }

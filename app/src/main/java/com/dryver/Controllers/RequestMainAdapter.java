@@ -39,9 +39,7 @@ public class RequestMainAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.setTempRequest(request);
-                Intent intent = new Intent(mContext, ActivityRequestSelection.class);
-                mContext.startActivity(intent);
+                requestSingleton.viewRequest(mContext, request);
             }
 
         });

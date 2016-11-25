@@ -20,6 +20,8 @@
 package com.dryver.Activities;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -83,6 +85,29 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         checkStatuses();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        refreshRequestList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mClient.isConnected()) {
+            mClient.disconnect();
+        }
+    }
+
+    /**
+     * Assigns all UI elements to the actual views
+     */
     private void assignElements(){
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
@@ -98,9 +123,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         //requestSingleton.setRequestsAll();
         dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
         driverListView.setAdapter(dryverMainAdapter);
-
-        setListeners();
-
     }
 
     /**
@@ -133,6 +155,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         });
     }
 
+    /**
+     * does some mappy type stuff
+     */
     private void setMapStuff(){
         //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
@@ -151,6 +176,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         //==============================================
     }
 
+    /**
+     * Checks the statuses of the requests the driver is viewing
+     */
     public void checkStatuses(){
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
@@ -158,33 +186,49 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     notifyComplete();
                 } else if(request.getStatus() == RequestStatus.DRIVER_SELECTED &&
                         request.getAcceptedDriverID() == userController.getActiveUser().getId()){
-                    notifySelected();
+                    notifySelected(request);
                 }
 
             }
         }
     }
 
+    /**
+     * Notifies if the status of a request that the driver is a part of is somplete
+     */
     private void notifyComplete(){
-        //popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title);
+
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
     }
 
-    private void notifySelected(){
-        //popup
-    }
+    /**
+     * Notifies that the driver has been choses to fulfill the user's request
+     * @param request
+     */
+    private void notifySelected(final Request request){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.dryver_selected_message)
+                .setTitle(R.string.dryver_selected_title);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mClient.connect();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mClient.isConnected()) {
-            mClient.disconnect();
-        }
+        builder.setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                requestSingleton.viewRequest(ActivityDryverMain.this, request);
+            }
+        });
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
     }
 
     /**
@@ -270,9 +314,5 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         dryverMainAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onResume () {
-        super.onResume();
-        refreshRequestList();
-    }
+
 }

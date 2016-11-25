@@ -92,6 +92,6 @@ public class ActivityRequest extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        requestSingleton.setTempRequest(null);
+        requestSingleton.clearTempRequest();
     }
 }

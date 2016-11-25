@@ -69,15 +69,23 @@ public class ActivityRequestSelection extends Activity {
         setListeneres();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        requestSingleton.clearTempRequest();
+    }
+
     private void setListeneres(){
+
+        //Clicking this opens the driver list through the controller
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
-                startActivity(intent);
+                requestSingleton.viewRequestDrivers(ActivityRequestSelection.this, requestSingleton.getTempRequest());
             }
         });
 
+        //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +96,7 @@ public class ActivityRequestSelection extends Activity {
             }
         });
 
+        //Deletes the request
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +107,9 @@ public class ActivityRequestSelection extends Activity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        requestSingleton.setTempRequest(null);
-    }
-
+    /**
+     * Checks if the request is already cancelled.
+     */
     private void checkCancelled() {
         if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
             cancelButton.setEnabled(false);

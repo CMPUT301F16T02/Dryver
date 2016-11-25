@@ -21,7 +21,6 @@ package com.dryver.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -49,7 +48,7 @@ import java.util.Calendar;
 
 public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
-    private Button mAddRequest;
+    private Button addRequestButton;
     private ListView requestListView;
     private RequestMainAdapter requestMainAdapter;
 
@@ -74,27 +73,34 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         checkStatuses();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.i("info", "ActivityRyderMain.onResume()");
+        super.onResume();
+        refreshRequestList();
+    }
+
     /**
      * Sets the listeners for the add request button's click and the long click of the request list's
      * items
      */
     public void setListeners(){
-        mAddRequest.setOnClickListener(new View.OnClickListener() {
+        addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRyderMain.this, ActivityRequest.class);
-                requestSingleton.setTempRequest(new Request(rider.getId(), Calendar.getInstance()));
-                startActivity(intent);
+                requestSingleton.editRequest(ActivityRyderMain.this, new Request(rider.getId(), Calendar.getInstance()));
             }
         });
 
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Request request = (Request) requestListView.getItemAtPosition(position);
-                Intent intent = new Intent(ActivityRyderMain.this, ActivityRequest.class);
-                requestSingleton.setTempRequest(request);
-                startActivity(intent);
+                requestSingleton.editRequest(ActivityRyderMain.this, (Request) requestListView.getItemAtPosition(position));
                 return true;
             }
         });
@@ -113,7 +119,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Assigns the elements that are held in the UI that will be accessed or used later.
      */
     public void assignElements(){
-        mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
+        addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
         requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getUpdatedRequests());
@@ -129,32 +135,52 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.DRIVERS_FOUND){
                     requestListView.getChildAt(requestMainAdapter.getPosition(request));
-                    notifyDriversAvailable();
+                    notifyDriversAvailable(request);
+                }
+                else if(request.getStatus() == RequestStatus.COMPLETE){
+                    requestListView.getChildAt(requestMainAdapter.getPosition(request));
+                    notifyDriversAvailable(request);
                 }
             }
         }
     }
 
-    private void notifyDriversAvailable(){
+    /**
+     * Notifies the Rider if any drivers have accepted their request offer. Handshake request accepted
+     * @param request
+     */
+    private void notifyDriversAvailable(final Request request){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setMessage(R.string.drivers_found_message)
                 .setTitle(R.string.drivers_found_title);
 
         builder.setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
+                requestSingleton.viewRequestDrivers(ActivityRyderMain.this, request);
             }
         });
-        builder.setNegativeButton(R.string.drivers_found_close, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
+                dialog.dismiss();
             }
         });
         builder.create();
     }
 
+    /**
+     * notifies the ryder if the request is complete
+     */
     private void notifyComplete(){
-        //popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title);
+
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
     }
 
     /**
@@ -178,18 +204,5 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         swipeContainer.setRefreshing(false);
         requestMainAdapter.notifyDataSetChanged();
         checkStatuses();
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        Log.i("info", "ActivityRyderMain.onResume()");
-        super.onResume();
-        refreshRequestList();
     }
 }

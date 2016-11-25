@@ -19,10 +19,16 @@
 
 package com.dryver.Controllers;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
+import com.dryver.Activities.ActivityDriverList;
+import com.dryver.Activities.ActivityRequest;
+import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -146,17 +152,50 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void setTempRequest(Request tempRequest) {
-        this.tempRequest = tempRequest;
+    public void clearTempRequest() {
+        tempRequest = null;
     }
 
     public Request getTempRequest() {
-        return this.tempRequest;
+        return tempRequest;
     }
 
     public void pushTempRequest() {
-        pushRequest(this.tempRequest);
+        pushRequest(tempRequest);
         saveRequests();
+    }
+
+    /**
+     * Opens the activity for viewing a request
+     * @param context
+     * @param request
+     */
+    public void viewRequest(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityRequestSelection.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * opens the activity for editing or making a request
+     * @param context
+     * @param request
+     */
+    public void editRequest(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityRequest.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * opens the activity for viewing a list of drivers
+     * @param context
+     * @param request
+     */
+    public void viewRequestDrivers(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityDriverList.class);
+        context.startActivity(intent);
     }
 
     /**
