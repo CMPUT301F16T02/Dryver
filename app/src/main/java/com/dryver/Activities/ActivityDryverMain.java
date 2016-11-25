@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.dryver.Controllers.DriverListAdapter;
+import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
@@ -50,7 +51,7 @@ import com.google.android.gms.location.LocationServices;
 public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
     private ListView driverListView;
-    private DriverListAdapter driverListAdapter;
+    private DryverMainAdapter dryverMainAdapter;
 
     private Button currentLocationButton;
     private Spinner sortSpinner;
@@ -71,7 +72,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         setContentView(R.layout.activity_driver);
 
         currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
+//        currentLocationButton.setVisibility(View.INVISIBLE);
 
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
@@ -86,8 +87,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.requestListViewRequest);
         requestSingleton.setRequestsAll();
-//        driverListAdapter = new DriverListAdapter(this, requestSingleton.getRequests());
-//        driverListView.setAdapter(driverListAdapter);
+        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getRequests());
+        driverListView.setAdapter(dryverMainAdapter);
 
         setListeners();
 
@@ -192,7 +193,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Proximity")) {
             requestSingleton.sortRequestsByProximity(currentLocation);
         }
-        driverListAdapter.notifyDataSetChanged();
+        dryverMainAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -233,7 +234,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private void refreshRequestList(){
         Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        driverListAdapter.notifyDataSetChanged();
+        dryverMainAdapter.notifyDataSetChanged();
     }
 
     @Override

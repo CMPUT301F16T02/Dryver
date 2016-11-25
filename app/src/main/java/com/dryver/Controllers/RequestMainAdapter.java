@@ -19,11 +19,11 @@ import java.util.ArrayList;
  * A custom Array Adapter for listing requests as strings properly.
  * @see Request
  */
-public class RequestListAdapter extends ArrayAdapter<Request> {
+public class RequestMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
-    public RequestListAdapter(Context context, ArrayList<Request> requestArrayList) {
+    public RequestMainAdapter(Context context, ArrayList<Request> requestArrayList) {
         super(context, 0, requestArrayList);
         this.mContext = context;
     }
@@ -33,7 +33,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         final Request request = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_item, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_main_item, null);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {

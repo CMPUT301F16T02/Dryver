@@ -7,35 +7,34 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dryver.Models.Request;
 import com.dryver.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by drei on 2016-11-24.
- */
 
-public class DriverListAdapter extends ArrayAdapter<String> {
+
+public class DryverMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
 
-    public DriverListAdapter(Context context, ArrayList<String> driverArrayList) {
-        super(context, 0, driverArrayList);
+    public DryverMainAdapter(Context context, ArrayList<Request> requestsArrayList) {
+        super(context, 0, requestsArrayList);
         this.mContext = context;
     }
 
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final String driverId = getItem(position);
+        final Request request = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.driver_item, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.dryver_main_item, null);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2016-11-24 implement view driver profile here. 
+                // TODO: 2016-11-24 implement view driver profile here.
 //                RequestSingleton RS = RequestSingleton.getInstance();
 //
 //                RS.setViewedRequest(request);
@@ -48,7 +47,7 @@ public class DriverListAdapter extends ArrayAdapter<String> {
 
         TextView driverIdTextView = (TextView) convertView.findViewById(R.id.driver_item_driverid);
 
-        driverIdTextView.setText(driverId);
+//        driverIdTextView.setText(driverId);
         return convertView;
     }
 }

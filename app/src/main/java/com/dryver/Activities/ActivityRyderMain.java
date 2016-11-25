@@ -28,7 +28,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.dryver.Controllers.RequestListAdapter;
+import com.dryver.Controllers.RequestMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Utility.ICallBack;
@@ -48,7 +48,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Button mAddRequest;
     private ListView requestListView;
-    private RequestListAdapter requestListAdapter;
+    private RequestMainAdapter requestMainAdapter;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
@@ -69,8 +69,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         mAddRequest = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getUpdatedRequests());
-        requestListView.setAdapter(requestListAdapter);
+        requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getUpdatedRequests());
+        requestListView.setAdapter(requestMainAdapter);
 
         setListeners();
     }
@@ -129,7 +129,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     private void refreshRequestList(){
         Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        requestListAdapter.notifyDataSetChanged();
+        requestMainAdapter.notifyDataSetChanged();
     }
 
 
