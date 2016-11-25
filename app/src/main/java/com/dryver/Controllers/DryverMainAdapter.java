@@ -14,12 +14,12 @@ import com.dryver.Utility.HelpMe;
 import java.util.ArrayList;
 
 
-
 public class DryverMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
+    RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
-    public DryverMainAdapter(Context context, ArrayList<Request> requestsArrayList) {
-        super(context, 0, requestsArrayList);
+    public DryverMainAdapter(Context context, ArrayList<Request> requestArrayList) {
+        super(context, 0, requestArrayList);
         this.mContext = context;
     }
 
@@ -34,9 +34,8 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2016-11-24 implement view driver profile here.
-//                RequestSingleton RS = RequestSingleton.getInstance();
-//
+                // TODO: 2016-11-24 implement view driver profile here
+
 //                RS.setViewedRequest(request);
 //                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
 //                intent.putExtra("position", position);
@@ -48,13 +47,11 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
 
         TextView riderText = (TextView) convertView.findViewById(R.id.dryverItemRiderID);
         TextView destinationText = (TextView) convertView.findViewById(R.id.dryverItemDestination);
-        TextView statusText = (TextView) convertView.findViewById(R.id.dryverItemStatus);
         TextView dateText = (TextView) convertView.findViewById(R.id.dryverItemDate);
         TextView costText = (TextView) convertView.findViewById(R.id.dryverItemCost);
 
         riderText.setText("Rider: "+ request.getRiderId());
         destinationText.setText("Destination: " + request.getToLocation());
-        statusText.setText("Status: " + request.statusCodeToString());
         dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         costText.setText("Cost: $" + request.getCost());
 

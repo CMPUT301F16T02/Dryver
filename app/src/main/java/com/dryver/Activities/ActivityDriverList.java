@@ -87,14 +87,12 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
      * Begins the refreshing of the driver list
      */
     public void beginRefresh() {
-<<<<<<< HEAD
-=======
-         requestSingleton.updateViewedRequest(request, new ICallBack() {
-            @Override
-            public void execute() {
-                refreshDriverList();
-            }
-        });
+//         requestSingleton.updateViewedRequest(request, new ICallBack() {
+//            @Override
+//            public void execute() {
+//                refreshDriverList();
+//            }
+//        });
     }
 
     /**
@@ -104,7 +102,6 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
         Log.i("trace", "ActivityRequestMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
->>>>>>> master
     }
 
 }

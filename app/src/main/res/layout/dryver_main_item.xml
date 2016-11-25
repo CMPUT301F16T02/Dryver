@@ -33,17 +33,10 @@
             android:text="destination" />
 
         <TextView
-            android:id="@+id/dryverItemStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dryverItemDestination"
-            android:text="Status" />
-
-        <TextView
             android:id="@+id/dryverItemDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dryverItemStatus"
+            android:layout_below="@+id/dryverItemDestination"
             android:text="Date" />
         <TextView
             android:id="@+id/dryverItemCost"

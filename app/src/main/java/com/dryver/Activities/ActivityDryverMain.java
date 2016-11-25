@@ -32,7 +32,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.dryver.Controllers.DriverListAdapter;
 import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
@@ -69,10 +68,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver);
+        setContentView(R.layout.activity_dryver_main);
 
         currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-//        currentLocationButton.setVisibility(View.INVISIBLE);
+        currentLocationButton.setVisibility(View.INVISIBLE);
 
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
@@ -85,9 +84,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
-        driverListView = (ListView) findViewById(R.id.requestListViewRequest);
-        requestSingleton.setRequestsAll();
-        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getRequests());
+        driverListView = (ListView) findViewById(R.id.dryverMainListView);
+//        requestSingleton.setRequestsAll();
+        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
         driverListView.setAdapter(dryverMainAdapter);
 
         setListeners();

@@ -64,12 +64,12 @@ public class RequestSingleton {
     }
 
     public void setRequestsAll() {
-        ES.getAllRequests();
-        loadRequests();
+        requests = ES.getAllRequests();
+//        loadRequests();
     }
 
     public ArrayList<Request> getRequests() {
-        loadRequests();
+//        loadRequests();
         return requests;
     }
 
@@ -141,6 +141,7 @@ public class RequestSingleton {
 
     public void pushTempRequest() {
         pushRequest(this.tempRequest);
+        saveRequests();
     }
 
     /**
@@ -156,6 +157,7 @@ public class RequestSingleton {
         } else if (ES.addRequest(request)) {
             requests.add(request);
         }
+        saveRequests();
     }
 
     /**
@@ -171,6 +173,7 @@ public class RequestSingleton {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
         }
+        saveRequests();
     }
 
     /**
@@ -246,7 +249,7 @@ public class RequestSingleton {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
         Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
-            makeRequest = updatedRequest;
+            request = updatedRequest;
             callBack.execute();
         }
     }
