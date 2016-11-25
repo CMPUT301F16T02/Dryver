@@ -98,6 +98,7 @@ public class ActivityRequestMap extends FragmentActivity implements
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private String routeURL;
     private ArrayList<Polyline> polylineArrayList = new ArrayList<Polyline>();
+    private int routeDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -331,8 +332,19 @@ public class ActivityRequestMap extends FragmentActivity implements
             }
             List<LatLng> routePoly = decodePoly(result);
             for (int i = 0; i < (routePoly.size() - 1); i++) {
+                LatLng point1 = routePoly.get(i);
+                LatLng point2 = routePoly.get(i+1);
+
+                Location location1 = new Location("1");
+                location1.setLatitude(point1.latitude);
+                location1.setLongitude(point1.longitude);
+                Location location2 = new Location("2");
+                location2.setLatitude(point2.latitude);
+                location2.setLongitude(point2.longitude);
+
+                routeDistance += location1.distanceTo(location2);
                 polylineArrayList.add(map.addPolyline(new PolylineOptions()
-                        .add(routePoly.get(i), routePoly.get(i+1))
+                        .add(point1, point2)
                         .width(5)
                         .color(Color.RED)));
             }
