@@ -38,6 +38,8 @@ import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 
+import java.util.Calendar;
+
 
 /**
  * The activity that acts as the main rider activity. Lists requests, you can create requests here,
@@ -61,7 +63,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("info", "ActivityRequestMain.onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_list);
+        setContentView(R.layout.activity_request_main);
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
@@ -112,7 +114,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequestMap.class);
+                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
+                requestSingleton.setMakeRequest(new Request(rider.getId(), Calendar.getInstance()));
                 startActivity(intent);
             }
         });
@@ -120,9 +123,9 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Request intentRequest = (Request) requestListView.getItemAtPosition(position);
+                Request request = (Request) requestListView.getItemAtPosition(position);
                 Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
-                intent.putExtra("requestId", intentRequest.getId());
+                requestSingleton.setMakeRequest(request);
                 startActivity(intent);
                 return true;
             }

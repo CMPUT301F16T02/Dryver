@@ -24,11 +24,17 @@ import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.dryver.Models.Request;
+
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
@@ -140,5 +146,20 @@ public class HelpMe extends Activity {
                 datePicker.getDayOfMonth(),
                 timePicker.getCurrentHour(),
                 timePicker.getCurrentMinute());
+    }
+
+    static public String getStringDate(Calendar cal) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
+        return sdf.format(cal.getTime());
+    }
+
+    static public void formatLocationTextView(Request request,  TextView textView) {
+        textView.setText("From Coordinates: \nLat: "
+                        + request.getFromLocation().getLatitude() + "\nLong: "
+                        + request.getFromLocation().getLongitude()
+                        + "\n\nTo Coordinates: \nLat: "
+                        + request.getToLocation().getLatitude() + "\nLong: "
+                        + request.getToLocation().getLongitude());
     }
 }

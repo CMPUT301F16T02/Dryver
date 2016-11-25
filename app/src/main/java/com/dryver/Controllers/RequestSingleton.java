@@ -57,8 +57,7 @@ public class RequestSingleton {
     private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
-    private Location tempFromLocation;
-    private Location tempToLocation;
+    private Request makeRequest;
 
     private RequestSingleton() {
     }
@@ -157,16 +156,22 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
+    public void setMakeRequest(Request makeRequest) {
+        this.makeRequest = makeRequest;
+    }
+
+    public Request getMakeRequest() {
+        return this.makeRequest;
+    }
+
+    public void pushMakeRequest() {
+        pushRequest(this.makeRequest);
+    }
+
     /**
-     * A method that forces a request into the ES by either updating an existing request or adding a new one.
+     * Updates a request if it's id matches, otherwise creates a brand new request.
      *
-     * @param riderID
-     * @param date
-     * @param fromLocation
-     * @param toLocation
-     * @param rate
-     * @see ElasticSearchController
-     * @see ICallBack
+     * @param request the request
      */
     public void pushRequest(Request request) {
         if (ES.updateRequest(request)) {
@@ -183,16 +188,13 @@ public class RequestSingleton {
      * Elastic Search see deleteRequestById() in ESC
      *
      * @param request
-     * @param callBack
      * @return Boolean
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void removeRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.removeRequest()");
+    public void removeRequest(Request request) {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
-            callBack.execute();
         }
     }
 
@@ -329,43 +331,6 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Returns true or false if there are cached requests.
-     */
-    public boolean hasCacheRequests() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV).isFile();
-        } else return false;
-    }
-
-    /**
-     * Syncs all locally stored requests with the server.
-     */
-    public void syncRequests() {
-        //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
-    }
-
-    /** GETTERS AND SETTERS
-     *
-     * @return
-     */
-    public Location getTempFromLocation() {
-        return tempFromLocation;
-    }
-
-    public void setTempFromLocation(Location tempFromLocation) {
-        this.tempFromLocation = tempFromLocation;
-    }
-
-    public Location getTempToLocation() {
-        return tempToLocation;
-    }
-
-    public void setTempToLocation(Location tempToLocation) {
-        this.tempToLocation = tempToLocation;
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
