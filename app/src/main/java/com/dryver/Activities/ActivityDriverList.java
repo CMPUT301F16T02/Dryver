@@ -23,7 +23,7 @@ import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
-public class ActivityDriverList extends Activity{
+public class ActivityDriverList extends Activity {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private ElasticSearchController ES = ElasticSearchController.getInstance();

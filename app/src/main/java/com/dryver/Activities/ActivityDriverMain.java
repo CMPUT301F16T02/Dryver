@@ -53,9 +53,10 @@ import com.google.android.gms.location.LocationServices;
 public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
     private ListView driverListView;
+    private DriverListAdapter driverListAdapter;
+
     private Button currentLocationButton;
     private Spinner sortSpinner;
-    private DriverListAdapter driverListAdapter;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
 
@@ -103,9 +104,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(ActivityDriverMain.this, ActivityDriverSelection.class);
-                requestSingleton.setViewedRequest((Request)driverListView.getItemAtPosition(position));
-                startActivity(intent);
+//                Intent intent = new Intent(ActivityDriverMain.this, ActivityDriverSelection.class);
                 return true;
             }
         });
