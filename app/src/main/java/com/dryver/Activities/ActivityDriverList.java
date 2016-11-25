@@ -40,7 +40,7 @@ public class ActivityDriverList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_list);
 
-        request = requestSingleton.getViewedRequest();
+        request = requestSingleton.getMakeRequest();
         driverIds = request.getDrivers();
 
         driverListView = (ListView)findViewById(R.id.driver_list);
@@ -85,7 +85,6 @@ public class ActivityDriverList extends Activity {
          requestSingleton.updateViewedRequest(request, new ICallBack() {
             @Override
             public void execute() {
-                request = requestSingleton.getViewedRequest();
                 refreshDriverList();
             }
         });

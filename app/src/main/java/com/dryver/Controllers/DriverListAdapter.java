@@ -46,7 +46,7 @@ public class DriverListAdapter extends ArrayAdapter<Request> {
             public void onClick(View v) {
                 RequestSingleton RS = RequestSingleton.getInstance();
 
-                RS.setViewedRequest(request);
+                RS.setMakeRequest(request);
                 Intent intent = new Intent(mContext, ActivityDriverSelection.class);
                 intent.putExtra("position", position);
                 mContext.startActivity(intent);

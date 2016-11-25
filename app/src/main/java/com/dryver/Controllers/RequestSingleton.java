@@ -54,7 +54,6 @@ public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
     private static RequestSingleton ourInstance = new RequestSingleton();
     private static ArrayList<Request> requests = new ArrayList<Request>();
-    private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private Request makeRequest;
@@ -100,28 +99,6 @@ public class RequestSingleton {
         });
 
         return requests;
-    }
-
-    /**
-     * Gets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @return Request
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public Request getViewedRequest() {
-        return viewedRequest;
-    }
-
-    /**
-     * Sets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @param viewedRequest
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public void setViewedRequest(Request viewedRequest) {
-        this.viewedRequest = viewedRequest;
     }
 
     /**
@@ -271,7 +248,7 @@ public class RequestSingleton {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
         Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
-            viewedRequest = updatedRequest;
+            makeRequest = updatedRequest;
             callBack.execute();
         }
     }
