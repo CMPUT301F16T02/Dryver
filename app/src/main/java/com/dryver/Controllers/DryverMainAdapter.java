@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dryver.Models.Request;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,6 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         super(context, 0, requestsArrayList);
         this.mContext = context;
     }
-
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -45,9 +45,19 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
 
         });
 
-        TextView driverIdTextView = (TextView) convertView.findViewById(R.id.driver_item_driverid);
 
-//        driverIdTextView.setText(driverId);
+        TextView riderText = (TextView) convertView.findViewById(R.id.dryverItemRiderID);
+        TextView destinationText = (TextView) convertView.findViewById(R.id.dryverItemDestination);
+        TextView statusText = (TextView) convertView.findViewById(R.id.dryverItemStatus);
+        TextView dateText = (TextView) convertView.findViewById(R.id.dryverItemDate);
+        TextView costText = (TextView) convertView.findViewById(R.id.dryverItemCost);
+
+        riderText.setText("Rider: "+ request.getRiderId());
+        destinationText.setText("Destination: " + request.getToLocation());
+        statusText.setText("Status: " + request.statusCodeToString());
+        dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
+        costText.setText("Cost: $" + request.getCost());
+
         return convertView;
     }
 }

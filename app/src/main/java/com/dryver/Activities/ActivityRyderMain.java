@@ -61,7 +61,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("info", "ActivityRyderMain.onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_main);
+        setContentView(R.layout.activity_ryder_main);
 
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
