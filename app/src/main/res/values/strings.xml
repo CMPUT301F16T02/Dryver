@@ -108,4 +108,5 @@
     <string name="action_forward">Action Forward</string>
     <string name="action_delete">Action Delete</string>
     <string name="action_search">Action Search</string>
+    <string name="action_direction">Action Direction</string>
 </resources>
