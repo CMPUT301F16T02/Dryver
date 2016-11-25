@@ -284,9 +284,11 @@ public class Request implements Serializable {
             return "No Drivers Found";
         } else if (status == RequestStatus.DRIVERS_FOUND) {
             return "Drivers Available";
-        } else if (status == RequestStatus.FINALIZED) {
+        } else if (status == RequestStatus.DRIVER_SELECTED) {
             return "Driver Selected";
-        } else {
+        } else if (status == RequestStatus.COMPLETE) {
+            return "Request Complete!";
+        } else{
             return "Unknown Status String";
         }
     }

@@ -74,27 +74,32 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
 
-        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
+        requestSingleton.setRequestsAll();
 
+        driver = new Driver(userController.getActiveUser());
+        userController.setActiveUser(driver);
+
+        assignElements();
+        setListeners();
+        setMapStuff();
+        checkStatuses();
+    }
+
+    private void assignElements(){
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
 
-        driver = new Driver(userController.getActiveUser());
-        userController.setActiveUser(driver);
-
+        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
+        currentLocationButton.setVisibility(View.INVISIBLE);
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.requestListViewRequest);
-        requestSingleton.setRequestsAll();
+
         driverListAdapter = new DriverListAdapter(this, requestSingleton.getRequests());
         driverListView.setAdapter(driverListAdapter);
-
-        setListeners();
-
     }
 
     /**
@@ -117,6 +122,17 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
             }
         });
 
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
+    }
+
+    private void setMapStuff(){
         //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
         mClient = new GoogleApiClient.Builder(ActivityDriverMain.this)
@@ -132,15 +148,6 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
                 })
                 .build();
         //==============================================
-
-        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                beginRefresh();
-            }
-        });
     }
 
     public void checkStatuses(){

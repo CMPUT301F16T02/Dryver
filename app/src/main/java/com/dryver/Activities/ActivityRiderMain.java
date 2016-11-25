@@ -19,6 +19,8 @@
 
 package com.dryver.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -91,6 +93,7 @@ public class ActivityRiderMain extends ActivityLoggedInActionBar {
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.DRIVERS_FOUND){
+                    requestListView.getChildAt(requestListAdapter.getPosition(request));
                     notifyDriversAvailable();
                 }
             }
@@ -98,7 +101,21 @@ public class ActivityRiderMain extends ActivityLoggedInActionBar {
     }
 
     private void notifyDriversAvailable(){
-        //popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.drivers_found_message)
+                .setTitle(R.string.drivers_found_title);
+
+        builder.setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        builder.setNegativeButton(R.string.drivers_found_close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+        builder.create();
     }
 
     private void notifyComplete(){

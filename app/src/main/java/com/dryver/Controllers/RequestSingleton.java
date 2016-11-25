@@ -236,7 +236,7 @@ public class RequestSingleton {
      */
     public void selectDriver(Request request, String driverID) {
         request.acceptOffer(driverID);
-        request.setStatus(RequestStatus.FINALIZED);
+        request.setStatus(RequestStatus.DRIVER_SELECTED);
         ES.updateRequest(request);
     }
 
