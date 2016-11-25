@@ -56,6 +56,18 @@ public class Request implements Serializable {
     private double cost;
     private double rate;
 
+    public Request(String riderId, Calendar date) {
+        this.riderId = riderId;
+        this.date = date;
+        this.fromCoordinates = new SimpleCoordinates(0.0, 0.0, "from");
+        this.toCoordinates = new SimpleCoordinates(0.0, 0.0, "to");
+        this.drivers = new ArrayList<String>();
+        this.acceptedDriverID = null;
+        this.cost = 0;
+        this.status = RequestStatus.NO_DRIVERS;
+        this.id = UUID.randomUUID().toString();
+    }
+
     /**
      * Instantiates a new Request.
      *
@@ -272,9 +284,11 @@ public class Request implements Serializable {
             return "No Drivers Found";
         } else if (status == RequestStatus.DRIVERS_FOUND) {
             return "Drivers Available";
-        } else if (status == RequestStatus.FINALIZED) {
+        } else if (status == RequestStatus.DRIVER_SELECTED) {
             return "Driver Selected";
-        } else {
+        } else if (status == RequestStatus.COMPLETE) {
+            return "Request Complete!";
+        } else{
             return "Unknown Status String";
         }
     }
@@ -292,9 +306,8 @@ public class Request implements Serializable {
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return id.hashCode();
     }
-
 }
 
 // REFERENCES

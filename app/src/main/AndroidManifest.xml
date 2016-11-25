@@ -44,7 +44,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDxMI1GZi5tHemo-GMK_WHyj72dGMWO2P4" />
+            android:value="AIzaSyDlq1iPQg_fEFHKek5tFy2r9PdlsTakdZ8" />
 
         <activity android:name=".Activities.ActivityOpeningPage">
             <intent-filter>
@@ -53,11 +53,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ActivityLogin" />
         <activity android:name=".Activities.ActivityRegistration" />
         <activity android:name=".Activities.ActivitySelection" />
-        <activity android:name=".Activities.ActivityDriverMain" />
-        <activity android:name=".Activities.ActivityRequestMain" />
+        <activity android:name=".Activities.ActivityDryverMain" />
+        <activity android:name=".Activities.ActivityRyderMain" />
         <activity android:name=".Activities.ActivityEditProfile" />
         <activity android:name=".Activities.ActivityRequestSelection" />
         <activity android:name=".Activities.ActivityRequestMap" />

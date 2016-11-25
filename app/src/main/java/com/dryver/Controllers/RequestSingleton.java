@@ -19,15 +19,20 @@
 
 package com.dryver.Controllers;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
+import com.dryver.Activities.ActivityDriverList;
+import com.dryver.Activities.ActivityRequest;
+import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
-import com.dryver.Utility.IBooleanCallBack;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,7 +48,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -54,11 +58,14 @@ public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
     private static RequestSingleton ourInstance = new RequestSingleton();
     private static ArrayList<Request> requests = new ArrayList<Request>();
-    private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
-    private Location tempFromLocation;
-    private Location tempToLocation;
+
+    /**
+     * The request passed on request selection or editing. Also used to make request. It is the request
+     * of context at any given tim, given there is one.
+     */
+    private Request tempRequest;
 
     private RequestSingleton() {
     }
@@ -68,12 +75,12 @@ public class RequestSingleton {
     }
 
     public void setRequestsAll() {
-        ES.getAllRequests();
-        loadRequests();
+        requests = ES.getAllRequests();
+//        loadRequests();
     }
 
     public ArrayList<Request> getRequests() {
-        loadRequests();
+//        loadRequests();
         return requests;
     }
 
@@ -104,28 +111,6 @@ public class RequestSingleton {
     }
 
     /**
-     * Gets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @return Request
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public Request getViewedRequest() {
-        return viewedRequest;
-    }
-
-    /**
-     * Sets the currently viewed request (I.E open in RequestSelection)
-     *
-     * @param viewedRequest
-     * @see Request
-     * @see com.dryver.Activities.ActivityRequestSelection
-     */
-    public void setViewedRequest(Request viewedRequest) {
-        this.viewedRequest = viewedRequest;
-    }
-
-    /**
      * A simple method for fetching an updated request list via Elastic Search. Executes callback after
      *
      * @param callBack
@@ -135,6 +120,9 @@ public class RequestSingleton {
     public void updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
 
+        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+
         if (userController.getActiveUser() instanceof Rider) {
             ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
             for (Request newRequest : newRequests) {
@@ -143,10 +131,17 @@ public class RequestSingleton {
                 }
                 for (Request oldRequest : requests) {
                     if (!newRequests.contains(oldRequest)) {
-                        requests.remove(oldRequest);
+                        indicesToRemove.add(requests.indexOf(oldRequest));
                     }
                 }
             }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+
+
             saveRequests();
             callBack.execute();
         } else if (userController.getActiveUser() instanceof Driver) {
@@ -157,16 +152,56 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
+    public void clearTempRequest() {
+        tempRequest = null;
+    }
+
+    public Request getTempRequest() {
+        return tempRequest;
+    }
+
+    public void pushTempRequest() {
+        pushRequest(tempRequest);
+        saveRequests();
+    }
+
     /**
-     * A method that forces a request into the ES by either updating an existing request or adding a new one.
+     * Opens the activity for viewing a request
+     * @param context
+     * @param request
+     */
+    public void viewRequest(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityRequestSelection.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * opens the activity for editing or making a request
+     * @param context
+     * @param request
+     */
+    public void editRequest(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityRequest.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * opens the activity for viewing a list of drivers
+     * @param context
+     * @param request
+     */
+    public void viewRequestDrivers(Context context, Request request){
+        tempRequest = request;
+        Intent intent = new Intent(context, ActivityDriverList.class);
+        context.startActivity(intent);
+    }
+
+    /**
+     * Updates a request if it's id matches, otherwise creates a brand new request.
      *
-     * @param riderID
-     * @param date
-     * @param fromLocation
-     * @param toLocation
-     * @param rate
-     * @see ElasticSearchController
-     * @see ICallBack
+     * @param request the request
      */
     public void pushRequest(Request request) {
         if (ES.updateRequest(request)) {
@@ -176,6 +211,7 @@ public class RequestSingleton {
         } else if (ES.addRequest(request)) {
             requests.add(request);
         }
+        saveRequests();
     }
 
     /**
@@ -183,17 +219,15 @@ public class RequestSingleton {
      * Elastic Search see deleteRequestById() in ESC
      *
      * @param request
-     * @param callBack
      * @return Boolean
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void removeRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.removeRequest()");
+    public void removeRequest(Request request) {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
-            callBack.execute();
         }
+        saveRequests();
     }
 
     /**
@@ -254,25 +288,10 @@ public class RequestSingleton {
      */
     public void selectDriver(Request request, String driverID) {
         request.acceptOffer(driverID);
-        request.setStatus(RequestStatus.FINALIZED);
+        request.setStatus(RequestStatus.DRIVER_SELECTED);
         ES.updateRequest(request);
     }
 
-    /**
-     * Updates the current viewed request. Called by ActivityDriverList to update the driver list
-     *
-     * @param request
-     * @param callBack
-     * @see ICallBack
-     */
-    public void updateViewedRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.updateViewedRequest()");
-        Request updatedRequest = ES.getRequestByString(request.getId());
-        if (updatedRequest != null) {
-            viewedRequest = updatedRequest;
-            callBack.execute();
-        }
-    }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 
     /**
@@ -330,43 +349,5 @@ public class RequestSingleton {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Returns true or false if there are cached requests.
-     */
-    public boolean hasCacheRequests() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV).isFile();
-        } else return false;
-    }
-
-    /**
-     * Syncs all locally stored requests with the server.
-     */
-    public void syncRequests() {
-        //TODO Sync requests with ES and local storage. Should use timestamps for versioning.
-    }
-
-    /** GETTERS AND SETTERS
-     *
-     * @return
-     */
-    public Location getTempFromLocation() {
-        return tempFromLocation;
-    }
-
-    public void setTempFromLocation(Location tempFromLocation) {
-        this.tempFromLocation = tempFromLocation;
-    }
-
-    public Location getTempToLocation() {
-        return tempToLocation;
-    }
-
-    public void setTempToLocation(Location tempToLocation) {
-        this.tempToLocation = tempToLocation;
-    }
-
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }
