@@ -61,12 +61,16 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
 
         checkCancelled();
-
-
+        
         HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
         requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
         statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
+
+        setListeneres();
+    }
+
+    private void setListeneres(){
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -41,6 +41,7 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
 
         drivers = requestSingleton.getTempRequest().getDrivers();
 
+
         driversListView = (ListView) findViewById(R.id.drivers_list);
         adapter = new DriverListAdapter(this, drivers);
         driversListView.setAdapter(adapter);
@@ -86,6 +87,24 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
      * Begins the refreshing of the driver list
      */
     public void beginRefresh() {
+<<<<<<< HEAD
+=======
+         requestSingleton.updateViewedRequest(request, new ICallBack() {
+            @Override
+            public void execute() {
+                refreshDriverList();
+            }
+        });
+    }
+
+    /**
+     * Called after data in driver list has changed
+     */
+    private void refreshDriverList() {
+        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        swipeContainer.setRefreshing(false);
+        adapter.notifyDataSetChanged();
+>>>>>>> master
     }
 
 }

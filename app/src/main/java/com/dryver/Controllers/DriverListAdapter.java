@@ -42,6 +42,7 @@ public class DriverListAdapter extends ArrayAdapter<String> {
 //                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
 //                intent.putExtra("position", position);
 //                mContext.startActivity(intent);
+
             }
 
         });
