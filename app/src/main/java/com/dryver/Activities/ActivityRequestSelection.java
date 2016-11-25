@@ -35,6 +35,7 @@ import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.User;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -53,7 +54,6 @@ public class ActivityRequestSelection extends Activity {
     private TextView statusTextView;
     private Button cancelButton;
     private Button viewDriversButton;
-    private SimpleDateFormat sdf;
     private Request request;
     private Location fromLocation;
     private Location toLocation;
@@ -70,12 +70,6 @@ public class ActivityRequestSelection extends Activity {
 
         request = requestSingleton.getViewedRequest();
 
-        sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
-
-        String rider_name = (userController.getActiveUser().getFirstName() + " "
-                            + userController.getActiveUser().getLastName()); // Breaks here in offline mode
-
         fromLocation = request.getFromLocation();
         toLocation = request.getToLocation();
 
@@ -89,7 +83,7 @@ public class ActivityRequestSelection extends Activity {
 
         fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
         toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
+        requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(request.getDate()));
 
         statusTextView.setText("Status: " + request.statusCodeToString());
 

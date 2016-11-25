@@ -27,8 +27,11 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
@@ -140,5 +143,11 @@ public class HelpMe extends Activity {
                 datePicker.getDayOfMonth(),
                 timePicker.getCurrentHour(),
                 timePicker.getCurrentMinute());
+    }
+
+    static public String getStringDate(Calendar cal) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
+        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
+        return sdf.format(cal.getTime());
     }
 }
