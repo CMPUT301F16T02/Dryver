@@ -41,26 +41,19 @@
             android:id="@+id/requestSelectionTitle"/>
 
         <TextView
-            android:text="@string/activity_request_selection_FromLocation"
+            android:text="@string/activity_request_selection_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestSelectionTitle"
             android:padding="20dp"
-            android:id="@+id/requestSelectionFromLocation"/>
-
-        <TextView
-            android:text="@string/activity_request_selection_ToLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/requestSelectionFromLocation"
-            android:padding="20dp"
-            android:id="@+id/requestSelectionToLocation"/>
+            android:id="@+id/requestSelectionLocation"
+            android:maxLines="7"/>
 
         <TextView
             android:text="@string/activity_request_selection_Date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/requestSelectionToLocation"
+            android:layout_below="@+id/requestSelectionLocation"
             android:padding="20dp"
             android:id="@+id/requestSelectionDate"/>
 

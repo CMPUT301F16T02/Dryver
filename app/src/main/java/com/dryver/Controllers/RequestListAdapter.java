@@ -24,6 +24,7 @@ import java.util.TimeZone;
  */
 public class RequestListAdapter extends ArrayAdapter<Request> {
     private Context mContext;
+    private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     public RequestListAdapter(Context context, ArrayList<Request> requestArrayList) {
         super(context, 0, requestArrayList);
@@ -41,11 +42,8 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestSingleton RS = RequestSingleton.getInstance();
-
-                RS.setViewedRequest(request);
+                requestSingleton.setMakeRequest(request);
                 Intent intent = new Intent(mContext, ActivityRequestSelection.class);
-                intent.putExtra("position", position);
                 mContext.startActivity(intent);
             }
 

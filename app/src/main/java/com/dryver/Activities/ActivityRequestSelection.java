@@ -48,51 +48,39 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView fromLocationTextView;
-    private TextView toLocationTextView;
+    private TextView locationTextView;
     private TextView requestSelectionDate;
     private TextView statusTextView;
+
     private Button cancelButton;
     private Button viewDriversButton;
-    private Request request;
-    private Location fromLocation;
-    private Location toLocation;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
-
-    private UserController userController = UserController.getInstance();
-    private ElasticSearchController ES = ElasticSearchController.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_selection);
 
-        request = requestSingleton.getViewedRequest();
-
-        fromLocation = request.getFromLocation();
-        toLocation = request.getToLocation();
-
-        fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
-        toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
+        locationTextView = (TextView) findViewById(R.id.requestSelectionLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
         statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
 
         cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
 
-        fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(request.getDate()));
+        HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationTextView);
 
-        statusTextView.setText("Status: " + request.statusCodeToString());
+        requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(requestSingleton.getMakeRequest().getDate()));
+
+        statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request.setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushRequest(request);
-                statusTextView.setText("Status: " + request.statusCodeToString());
+                requestSingleton.getMakeRequest().setStatus(RequestStatus.CANCELLED);
+                requestSingleton.pushMakeRequest();
+                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
             }
         });
 

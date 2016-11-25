@@ -61,8 +61,6 @@ public class ActivityRequest extends Activity {
         timePicker.setVisibility(View.INVISIBLE);
         datePicker.setVisibility(View.INVISIBLE);
 
-        checkIntent();
-
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,26 +89,6 @@ public class ActivityRequest extends Activity {
     public void onResume() {
         super.onResume();
         HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationText);
-    }
-
-    /**
-     * Checks the intent of the ......... <SOMEONE WRITE WTF THIS IS SUPPOSED TO DO>
-     */
-    public void checkIntent() {
-        Request request;
-        String intentString;
-        Intent intent = getIntent();
-        if (intent.hasExtra("requestId")) {
-            intentString = intent.getStringExtra("requestId");
-            if ((request = requestSingleton.getRequestById(intentString)) != null) {
-                tripPrice.setText(Double.toString(request.getCost()));
-                HelpMe.setTimePicker(request.getDate(), timePicker);
-                HelpMe.setDatePicker(request.getDate(), datePicker);
-            }
-        } else {
-            request = new Request(rider.getId(), calendar);
-        }
-        requestSingleton.setMakeRequest(request);
     }
 
     @Override
