@@ -47,18 +47,11 @@
                 android:id="@+id/requestButtonLocation" />
 
             <TextView
-                android:text="@string/activity_request_selection_FromLocation"
+                android:text="@string/activity_request_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/requestFromLocation"
-                android:maxLines="3" />
-
-            <TextView
-                android:text="@string/activity_request_selection_ToLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/requestToLocation"
-                android:maxLines="3"/>
+                android:id="@+id/requestLocation"
+                android:maxLines="7" />
 
             <TimePicker
                 android:layout_width="match_parent"

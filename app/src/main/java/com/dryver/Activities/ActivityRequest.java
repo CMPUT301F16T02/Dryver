@@ -32,17 +32,13 @@ public class ActivityRequest extends Activity {
     private TimePicker timePicker;
     private DatePicker datePicker;
     private EditText tripPrice;
-    private TextView fromLocationText;
-    private TextView toLocationText;
+    private TextView locationText;
 
     private Calendar calendar = Calendar.getInstance();
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     private Rider rider;
-
-    private Location fromLocation;
-    private Location toLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +51,7 @@ public class ActivityRequest extends Activity {
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
-        fromLocationText = (TextView) findViewById(R.id.requestFromLocation);
-        toLocationText = (TextView) findViewById(R.id.requestToLocation);
+        locationText = (TextView) findViewById(R.id.requestLocation);
 
         timePicker = (TimePicker) findViewById(R.id.requestTimePicker);
         datePicker = (DatePicker) findViewById(R.id.requestDatePicker);
@@ -65,9 +60,6 @@ public class ActivityRequest extends Activity {
 
         timePicker.setVisibility(View.INVISIBLE);
         datePicker.setVisibility(View.INVISIBLE);
-
-        fromLocation = requestSingleton.getTempFromLocation();
-        toLocation = requestSingleton.getTempToLocation();
 
         checkIntent();
 
@@ -98,8 +90,7 @@ public class ActivityRequest extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        fromLocationText.setText("From Coordinates: \nLat: " + fromLocation.getLatitude() + "\nLong: " + fromLocation.getLongitude());
-        toLocationText.setText("To Coordinates: \nLat: " + toLocation.getLatitude() + "\nLong: " + toLocation.getLongitude());
+        HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationText);
     }
 
     /**
@@ -117,7 +108,7 @@ public class ActivityRequest extends Activity {
                 HelpMe.setDatePicker(request.getDate(), datePicker);
             }
         } else {
-            request = new Request(rider.getId(), calendar, fromLocation, toLocation, 0);
+            request = new Request(rider.getId(), calendar);
         }
         requestSingleton.setMakeRequest(request);
     }

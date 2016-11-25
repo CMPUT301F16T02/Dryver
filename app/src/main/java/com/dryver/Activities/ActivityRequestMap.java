@@ -80,7 +80,7 @@ public class ActivityRequestMap extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_map);
 
-        mRoute = new ArrayList<Marker>();
+        mRoute = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
