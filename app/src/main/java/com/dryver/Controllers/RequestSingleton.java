@@ -292,21 +292,6 @@ public class RequestSingleton {
         ES.updateRequest(request);
     }
 
-    /**
-     * Updates the current viewed request. Called by ActivityDriverList to update the driver list
-     *
-     * @param request
-     * @param callBack
-     * @see ICallBack
-     */
-    public void updateViewedRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.updateViewedRequest()");
-        Request updatedRequest = ES.getRequestByString(request.getId());
-        if (updatedRequest != null) {
-            request = updatedRequest;
-            callBack.execute();
-        }
-    }
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 
     /**
@@ -364,6 +349,5 @@ public class RequestSingleton {
             e.printStackTrace();
         }
     }
-
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }
