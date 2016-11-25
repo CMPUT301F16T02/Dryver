@@ -24,6 +24,7 @@ package com.dryver.UITests;
  * @see com.dryver.Activities.ActivityOpeningPage
  */
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -31,22 +32,36 @@ import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
-import com.dryver.Activities.ActivityLogin;
 import com.dryver.Activities.ActivityOpeningPage;
 import com.dryver.Activities.ActivityRegistration;
+import com.dryver.Activities.ActivitySelection;
+import com.dryver.Controllers.ElasticSearchController;
+import com.dryver.Models.User;
+import com.dryver.R;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class ActivityOpeningPageTests{
+    private ElasticSearchController ES = ElasticSearchController.getInstance();
+    private String testUserName = "TestyMcTesterton";
+    private User testUser = new User(testUserName, "fTest", "lTest", "5555555555", "Test@Test.com");
+
     @Rule
     public IntentsTestRule<ActivityOpeningPage> OPActivityRule = new IntentsTestRule<ActivityOpeningPage>(
             ActivityOpeningPage.class);
+
+    @Before
+    public void addUserToES(){
+        ES.addUser(testUser);
+    }
 
     /**
      * Tests selecting the registration button whcich goes to the registration Activity
@@ -64,14 +79,18 @@ public class ActivityOpeningPageTests{
 
     /**
      * Tests selecting the login button which goes to the Login Activity
-     * @see ActivityLogin
+     * @see ActivitySelection
      */
     @Test
-    public void TestSelectLogin() {
-        onView(withText("Existing user?")).check(ViewAssertions.matches(isDisplayed()));
 
-        onView(withText("Sign In")).perform(click());
+    public void TestLogin() {
+        onView(withText("Login")).check(ViewAssertions.matches(isDisplayed()));
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityLogin.class)));
+        onView(withId(R.id.username_edittext)).perform(typeText(testUserName));
+        onView(withText(testUserName)).check(ViewAssertions.matches(isDisplayed()));
+
+        onView(withText("Login")).perform(click());
+
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
     }
 }
