@@ -72,11 +72,14 @@ public class ActivityRequestSelection extends Activity {
 
         checkCancelled();
 
-
         HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationTextView);
         requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(requestSingleton.getMakeRequest().getDate()));
         statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
 
+        setListeneres();
+    }
+
+    private void setListeneres(){
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
