@@ -59,7 +59,7 @@ public class RequestSingleton {
      * The request passed on request selection or editing. Also used to make request. It is the request
      * of context at any given tim, given there is one.
      */
-    private Request activeRequest;
+    private Request tempRequest;
 
     private RequestSingleton() {
     }
@@ -69,12 +69,12 @@ public class RequestSingleton {
     }
 
     public void setRequestsAll() {
-        ES.getAllRequests();
-        loadRequests();
+        requests = ES.getAllRequests();
+//        loadRequests();
     }
 
     public ArrayList<Request> getRequests() {
-        loadRequests();
+//        loadRequests();
         return requests;
     }
 
@@ -136,16 +136,17 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void setActiveRequest(Request activeRequest) {
-        this.activeRequest = activeRequest;
+    public void setTempRequest(Request tempRequest) {
+        this.tempRequest = tempRequest;
     }
 
-    public Request getActiveRequest() {
-        return this.activeRequest;
+    public Request getTempRequest() {
+        return this.tempRequest;
     }
 
-    public void pushActiveRequest() {
-        pushRequest(this.activeRequest);
+    public void pushTempRequest() {
+        pushRequest(this.tempRequest);
+        saveRequests();
     }
 
     /**
@@ -161,6 +162,7 @@ public class RequestSingleton {
         } else if (ES.addRequest(request)) {
             requests.add(request);
         }
+        saveRequests();
     }
 
     /**
@@ -176,6 +178,7 @@ public class RequestSingleton {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
         }
+        saveRequests();
     }
 
     /**
@@ -251,7 +254,7 @@ public class RequestSingleton {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
         Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
-            activeRequest = updatedRequest;
+            request = updatedRequest;
             callBack.execute();
         }
     }

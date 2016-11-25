@@ -28,7 +28,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dryver.Activities.ActivityRiderMain">
+    tools:context="com.dryver.Activities.ActivityRyderMain">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,55 +46,43 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/requestButtonStatus"/>
-        <Button
-            android:text="@string/activity_driver_CurrentLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonCurrentLocation"/>
+
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/buttonLinearLayout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/requestSpinnerLayout">
-            <TextView
-                android:padding="20dp"
-                android:text="@string/activity_rider_request_Sort"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/requestSortText"/>
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/activity_driver_spinner"
-                android:id="@+id/requestSortSpinner"/>
-        </LinearLayout>
-
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeContainerDriver"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainerRider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/requestSpinnerLayout">
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/requestButtonNewRequest">
+
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/requestListViewRequest"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentEnd="true"
+                android:layout_above="@+id/requestButtonNewRequest">
             </ListView>
+
         </android.support.v4.widget.SwipeRefreshLayout>
 
-
+        <Button
+            android:text="@string/activity_rider_request_NewRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/requestButtonNewRequest"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
 
     </RelativeLayout>
+
 </RelativeLayout>

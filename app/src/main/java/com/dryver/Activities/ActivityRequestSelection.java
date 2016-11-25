@@ -61,10 +61,10 @@ public class ActivityRequestSelection extends Activity {
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
 
         checkCancelled();
-
-        HelpMe.formatLocationTextView(requestSingleton.getActiveRequest(), locationTextView);
-        requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(requestSingleton.getActiveRequest().getDate()));
-        statusTextView.setText("Status: " + requestSingleton.getActiveRequest().statusCodeToString());
+        
+        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
+        requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
         setListeneres();
     }
@@ -81,18 +81,18 @@ public class ActivityRequestSelection extends Activity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.getActiveRequest().setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushActiveRequest();
+                requestSingleton.getTempRequest().setStatus(RequestStatus.CANCELLED);
+                requestSingleton.pushTempRequest();
                 checkCancelled();
-                statusTextView.setText("Status: " + requestSingleton.getActiveRequest().statusCodeToString());
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.removeRequest(requestSingleton.getActiveRequest());
-                statusTextView.setText("Status: " + requestSingleton.getActiveRequest().statusCodeToString());
+                requestSingleton.removeRequest(requestSingleton.getTempRequest());
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
                 finish();
             }
         });
@@ -101,11 +101,11 @@ public class ActivityRequestSelection extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        requestSingleton.setActiveRequest(null);
+        requestSingleton.setTempRequest(null);
     }
 
     private void checkCancelled() {
-        if (requestSingleton.getActiveRequest().getStatus().equals(RequestStatus.CANCELLED)) {
+        if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
             cancelButton.setEnabled(false);
         }
     }

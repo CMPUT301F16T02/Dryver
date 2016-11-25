@@ -74,9 +74,9 @@ public class ActivityRequest extends Activity {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
 
-                    requestSingleton.getActiveRequest().setCost(cost);
-                    requestSingleton.getActiveRequest().setDate(calendar);
-                    requestSingleton.pushActiveRequest();
+                    requestSingleton.getTempRequest().setCost(cost);
+                    requestSingleton.getTempRequest().setDate(calendar);
+                    requestSingleton.pushTempRequest();
                     finish();
                 }
             }
@@ -86,12 +86,12 @@ public class ActivityRequest extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        HelpMe.formatLocationTextView(requestSingleton.getActiveRequest(), locationText);
+        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationText);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        requestSingleton.setActiveRequest(null);
+        requestSingleton.setTempRequest(null);
     }
 }
