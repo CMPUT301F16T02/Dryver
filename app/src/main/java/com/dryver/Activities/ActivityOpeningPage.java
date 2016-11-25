@@ -23,11 +23,16 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.dryver.Controllers.UserController;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
+
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -35,8 +40,11 @@ import com.dryver.R;
  */
 public class ActivityOpeningPage extends Activity {
 
+    private EditText usernameEditText;
     private Button signinButton;
     private Button getStartedButton;
+
+    private UserController userController = UserController.getInstance();
 
     //TODO: Logout method. I.E remove cached uses so it isn't found on next startup (userController probs)
 
@@ -45,6 +53,10 @@ public class ActivityOpeningPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opening_page);
 
+        //Needed to make thread safe network calls
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         /* Check if their is an existing cached user. Otherwise prompt for login. */
         if (UserController.getInstance().isCached()) {
             UserController.getInstance().loadUser();
@@ -52,10 +64,14 @@ public class ActivityOpeningPage extends Activity {
             ActivityOpeningPage.this.startActivity(intent);
         }
 
+        assignElements();
+        setListeners();
+    }
+
+    private void assignElements(){
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
-
-        setListeners();
+        usernameEditText = (EditText) findViewById(R.id.username_edittext);
     }
 
     /**
@@ -65,8 +81,22 @@ public class ActivityOpeningPage extends Activity {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivityOpeningPage.this, ActivityLogin.class);
-                ActivityOpeningPage.this.startActivity(intent);
+                if (!HelpMe.isEmptyTextField(usernameEditText)) {
+                    try {
+                        if (userController.login(usernameEditText.getText().toString())) {
+                            Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
+                            ActivityOpeningPage.this.startActivity(intent);
+                        } else {
+                            usernameEditText.setError("Username does not exist.");
+                        }
+                    }
+                    catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 

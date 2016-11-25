@@ -11,22 +11,19 @@ import android.widget.TextView;
 import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * A custom Array Adapter for listing requests as strings properly.
  * @see Request
  */
-public class RequestListAdapter extends ArrayAdapter<Request> {
-
-    private SimpleDateFormat sdf;
+public class RequestMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
+    private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
-    public RequestListAdapter(Context context, ArrayList<Request> requestArrayList) {
+    public RequestMainAdapter(Context context, ArrayList<Request> requestArrayList) {
         super(context, 0, requestArrayList);
         this.mContext = context;
     }
@@ -36,24 +33,16 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         final Request request = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_item, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_main_item, null);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestSingleton RS = RequestSingleton.getInstance();
-
-                RS.setViewedRequest(request);
-                Intent intent = new Intent(mContext, ActivityRequestSelection.class);
-                intent.putExtra("position", position);
-                mContext.startActivity(intent);
+                requestSingleton.viewRequest(mContext, request);
             }
 
         });
-
-        sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
 
         TextView requestName = (TextView) convertView.findViewById(R.id.requestItemName);
         TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
@@ -64,7 +53,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         requestName.setText("Ride Request");
         requestDestination.setText("Destination: " +request.getToLocation());
         requestStatus.setText("Status: " + request.statusCodeToString());
-        requestDate.setText("Date: "+ sdf.format(request.getDate().getTime()));
+        requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         requestCost.setText("Cost: $" + request.getCost());
 
 

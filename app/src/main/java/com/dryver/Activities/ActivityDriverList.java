@@ -1,6 +1,5 @@
 package com.dryver.Activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -13,6 +12,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.dryver.Controllers.DriverListAdapter;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
@@ -23,15 +23,14 @@ import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
-public class ActivityDriverList extends Activity{
+public class ActivityDriverList extends ActivityLoggedInActionBar {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
 
-    private ListView driverListView;
-    private Request request;
-    private ArrayList<String> driverIds;
+    private ListView driversListView;
+    private ArrayList<String> drivers;
     private ArrayAdapter<String> adapter;
     private SwipeRefreshLayout swipeContainer;
 
@@ -40,15 +39,21 @@ public class ActivityDriverList extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_list);
 
-        request = requestSingleton.getViewedRequest();
-        driverIds = request.getDrivers();
+        drivers = requestSingleton.getTempRequest().getDrivers();
 
-        driverListView = (ListView)findViewById(R.id.driver_list);
-        adapter = new ArrayAdapter<String>(this, R.layout.list_item, driverIds);
-        driverListView.setAdapter(adapter);
+        driversListView = (ListView) findViewById(R.id.drivers_list);
+        adapter = new DriverListAdapter(this, drivers);
+        driversListView.setAdapter(adapter);
 
-        registerForContextMenu(driverListView);
-        setListeners();
+        registerForContextMenu(driversListView);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
     }
 
     @Override
@@ -65,10 +70,10 @@ public class ActivityDriverList extends Activity{
         int position = info.position;
         switch (item.getItemId()) {
             case R.id.chooseDriver:
-                requestSingleton.selectDriver(request, (String)driverListView.getItemAtPosition(position));
+                requestSingleton.selectDriver(requestSingleton.getTempRequest(), (String) driversListView.getItemAtPosition(position));
                 return true;
             case R.id.viewTheirProfile:
-                String selectedDriver = (String)driverListView.getItemAtPosition(position);
+                String selectedDriver = (String)driversListView.getItemAtPosition(position);
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
                 userController.viewUserProfile(driver, ActivityDriverList.this);
                 return true;
@@ -79,45 +84,23 @@ public class ActivityDriverList extends Activity{
 
     /**
      * Begins the refreshing of the driver list
-     * @see ICallBack
      */
     public void beginRefresh() {
-         requestSingleton.updateViewedRequest(request, new ICallBack() {
-            @Override
-            public void execute() {
-                request = requestSingleton.getViewedRequest();
-                refreshDriverList();
-            }
-        });
+//         requestSingleton.updateViewedRequest(request, new ICallBack() {
+//            @Override
+//            public void execute() {
+//                refreshDriverList();
+//            }
+//        });
     }
 
     /**
      * Called after data in driver list has changed
      */
     private void refreshDriverList() {
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRiderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
     }
 
-    /**
-     * sets the event listeners for the driver list items as well as the refresh swipe
-     */
-    private void setListeners() {
-        driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-                openContextMenu(v);
-            }
-        });
-
-        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                beginRefresh();
-            }
-        });
-    }
 }

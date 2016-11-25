@@ -20,7 +20,8 @@
 package com.dryver.Activities;
 
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,11 +34,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.dryver.Controllers.RequestListAdapter;
+import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,12 +51,13 @@ import com.google.android.gms.location.LocationServices;
 /**
  * This activities deals with providing the driver with UI for requests.
  */
-public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
+public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
-    private ListView requestListView;
+    private ListView driverListView;
+    private DryverMainAdapter dryverMainAdapter;
+
     private Button currentLocationButton;
     private Spinner sortSpinner;
-    private RequestListAdapter requestListAdapter;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
 
@@ -69,29 +72,57 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver);
+        setContentView(R.layout.activity_dryver_main);
 
-        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
+        requestSingleton.setRequestsAll();
 
+        driver = new Driver(userController.getActiveUser());
+        userController.setActiveUser(driver);
+
+        assignElements();
+        setListeners();
+        setMapStuff();
+        checkStatuses();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        refreshRequestList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mClient.isConnected()) {
+            mClient.disconnect();
+        }
+    }
+
+    /**
+     * Assigns all UI elements to the actual views
+     */
+    private void assignElements(){
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
 
-        driver = new Driver(userController.getActiveUser());
-        userController.setActiveUser(driver);
-
+        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
+        currentLocationButton.setVisibility(View.INVISIBLE);
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
-        requestListView = (ListView) findViewById(R.id.requestListViewRequest);
-        requestSingleton.setRequestsAll();
-        requestListAdapter = new RequestListAdapter(this, requestSingleton.getRequests());
-        requestListView.setAdapter(requestListAdapter);
-
-        setListeners();
-
+        driverListView = (ListView) findViewById(R.id.dryverMainListView);
+        //requestSingleton.setRequestsAll();
+        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
+        driverListView.setAdapter(dryverMainAdapter);
     }
 
     /**
@@ -99,12 +130,10 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
      * button, the refresh swipe, and also does some google maps stuff **Maybe maps should be moved**
      */
     private void setListeners(){
-        requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(ActivityDriverMain.this, ActivityRequestSelection.class);
-                requestSingleton.setViewedRequest((Request)requestListView.getItemAtPosition(position));
-                startActivity(intent);
+//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDriverSelection.class);
                 return true;
             }
         });
@@ -116,9 +145,23 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
             }
         });
 
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
+    }
+
+    /**
+     * does some mappy type stuff
+     */
+    private void setMapStuff(){
         //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
-        mClient = new GoogleApiClient.Builder(ActivityDriverMain.this)
+        mClient = new GoogleApiClient.Builder(ActivityDryverMain.this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -131,29 +174,61 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
                 })
                 .build();
         //==============================================
+    }
 
-        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                beginRefresh();
+    /**
+     * Checks the statuses of the requests the driver is viewing
+     */
+    public void checkStatuses(){
+        if(requestSingleton.getRequests().size() != 0){
+            for (Request request : requestSingleton.getRequests()){
+                if(request.getStatus() == RequestStatus.COMPLETE){
+                    notifyComplete();
+                } else if(request.getStatus() == RequestStatus.DRIVER_SELECTED &&
+                        request.getAcceptedDriverID() == userController.getActiveUser().getId()){
+                    notifySelected(request);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Notifies if the status of a request that the driver is a part of is somplete
+     */
+    private void notifyComplete(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title);
+
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
             }
         });
+        builder.create();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mClient.connect();
-    }
+    /**
+     * Notifies that the driver has been choses to fulfill the user's request
+     * @param request
+     */
+    private void notifySelected(final Request request){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.dryver_selected_message)
+                .setTitle(R.string.dryver_selected_title);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mClient.isConnected()) {
-            mClient.disconnect();
-        }
+        builder.setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                requestSingleton.viewRequest(ActivityDryverMain.this, request);
+            }
+        });
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
     }
 
     /**
@@ -161,13 +236,13 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
      */
     public void findCurrentLocation() {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
-        Log.i("ActivityDriverMain: ", "CURRENT LOCATION: " + currentLocation);
+        Log.i("ActivityDryverMain: ", "CURRENT LOCATION: " + currentLocation);
 
         //CODE BELOW IS FOR CONTINUOUSLY UPDATING USER LOCATION
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("ActivityDriverMain: ", "NEW LOCATION: " + location);
+                Log.i("ActivityDryverMain: ", "NEW LOCATION: " + location);
             }
         });
     }
@@ -195,7 +270,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Proximity")) {
             requestSingleton.sortRequestsByProximity(currentLocation);
         }
-        requestListAdapter.notifyDataSetChanged();
+        dryverMainAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -234,14 +309,10 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
      * The method called after data has changed in the request list
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityDryverMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        requestListAdapter.notifyDataSetChanged();
+        dryverMainAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onResume () {
-        super.onResume();
-        refreshRequestList();
-    }
+
 }

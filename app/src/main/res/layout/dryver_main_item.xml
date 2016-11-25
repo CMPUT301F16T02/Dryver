@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:longClickable="true"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="false"
+        android:id="@+id/requestItemTextRelativeLayout"
+        android:focusableInTouchMode="false">
+
+        <TextView
+            android:id="@+id/dryverItemRiderID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:text="RiderID" />
+
+        <TextView
+            android:id="@+id/dryverItemDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dryverItemRiderID"
+            android:text="destination" />
+
+        <TextView
+            android:id="@+id/dryverItemDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dryverItemDestination"
+            android:text="Date" />
+        <TextView
+            android:id="@+id/dryverItemCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dryverItemDate"
+            android:text="Cost" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -24,8 +24,8 @@ android {
     buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId 'com.dryver'
-        minSdkVersion 18
-        targetSdkVersion 18
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

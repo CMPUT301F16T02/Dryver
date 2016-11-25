@@ -21,24 +21,15 @@ package com.dryver.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
-import com.dryver.Controllers.UserController;
-import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
-import com.dryver.Models.User;
 import com.dryver.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
+import com.dryver.Utility.HelpMe;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
@@ -47,67 +38,81 @@ import java.util.TimeZone;
 
 public class ActivityRequestSelection extends Activity {
 
-    private TextView fromLocationTextView;
-    private TextView toLocationTextView;
+    private TextView locationTextView;
     private TextView requestSelectionDate;
     private TextView statusTextView;
+
     private Button cancelButton;
     private Button viewDriversButton;
-    private SimpleDateFormat sdf;
-    private Request request;
-    private Location fromLocation;
-    private Location toLocation;
+    private Button deleteButton;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
-
-    private UserController userController = UserController.getInstance();
-    private ElasticSearchController ES = ElasticSearchController.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_selection);
 
-        request = requestSingleton.getViewedRequest();
-
-        sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("US/Mountain"));
-
-        String rider_name = (userController.getActiveUser().getFirstName() + " "
-                            + userController.getActiveUser().getLastName()); // Breaks here in offline mode
-
-        fromLocation = request.getFromLocation();
-        toLocation = request.getToLocation();
-
-        fromLocationTextView = (TextView) findViewById(R.id.requestSelectionFromLocation);
-        toLocationTextView = (TextView) findViewById(R.id.requestSelectionToLocation);
+        locationTextView = (TextView) findViewById(R.id.requestSelectionLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
         statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
-
-        cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
+        cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
+        deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
 
-        fromLocationTextView.setText("From Coordinates: Lat: " + fromLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        toLocationTextView.setText("To Coordinates: Lat: " + toLocation.getLatitude() + " Long: " + fromLocation.getLongitude());
-        requestSelectionDate.setText("Request Date: " + sdf.format(request.getDate().getTime()));
+        checkCancelled();
+        
+        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
+        requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
-        statusTextView.setText("Status: " + request.statusCodeToString());
+        setListeneres();
+    }
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                request.setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushRequest(request);
-                statusTextView.setText("Status: " + request.statusCodeToString());
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        requestSingleton.clearTempRequest();
+    }
 
+    private void setListeneres(){
+
+        //Clicking this opens the driver list through the controller
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestSelection.this, ActivityDriverList.class);
-                startActivity(intent);
+                requestSingleton.viewRequestDrivers(ActivityRequestSelection.this, requestSingleton.getTempRequest());
             }
         });
+
+        //Cancels the request
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSingleton.getTempRequest().setStatus(RequestStatus.CANCELLED);
+                requestSingleton.pushTempRequest();
+                checkCancelled();
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
+            }
+        });
+
+        //Deletes the request
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSingleton.removeRequest(requestSingleton.getTempRequest());
+                statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
+                finish();
+            }
+        });
+    }
+
+    /**
+     * Checks if the request is already cancelled.
+     */
+    private void checkCancelled() {
+        if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
+            cancelButton.setEnabled(false);
+        }
     }
 }
