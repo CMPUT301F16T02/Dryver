@@ -57,6 +57,7 @@ public class RequestSingleton {
     private Request viewedRequest;
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
+    private Request makeRequest;
     private Location tempFromLocation;
     private Location tempToLocation;
 
@@ -157,6 +158,17 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
+    public void setMakeRequest(Request makeRequest) {
+        this.makeRequest = makeRequest;
+    }
+
+    public Request getMakeRequest() {
+        return this.makeRequest;
+    }
+
+    public void pushMakeRequest() {
+        pushRequest(this.makeRequest);
+    }
 
     /**
      * Updates a request if it's id matches, otherwise creates a brand new request.

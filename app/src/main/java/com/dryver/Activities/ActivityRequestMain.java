@@ -81,7 +81,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         mAddRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequestMap.class);
+                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
                 startActivity(intent);
             }
         });
