@@ -54,6 +54,7 @@ public class ActivityRequestSelection extends Activity {
 
     private Button cancelButton;
     private Button viewDriversButton;
+    private Button deleteButton;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
@@ -65,24 +66,16 @@ public class ActivityRequestSelection extends Activity {
         locationTextView = (TextView) findViewById(R.id.requestSelectionLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
         statusTextView = (TextView) findViewById(R.id.requestSelectionToStatus);
-
-        cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
+        cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
+        deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
+
+        checkCancelled();
+
 
         HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationTextView);
-
         requestSelectionDate.setText("Request Date: " + HelpMe.getStringDate(requestSingleton.getMakeRequest().getDate()));
-
         statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestSingleton.getMakeRequest().setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushMakeRequest();
-                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
-            }
-        });
 
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,5 +84,36 @@ public class ActivityRequestSelection extends Activity {
                 startActivity(intent);
             }
         });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSingleton.getMakeRequest().setStatus(RequestStatus.CANCELLED);
+                requestSingleton.pushMakeRequest();
+                checkCancelled();
+                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSingleton.removeRequest(requestSingleton.getMakeRequest());
+                statusTextView.setText("Status: " + requestSingleton.getMakeRequest().statusCodeToString());
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        requestSingleton.setMakeRequest(null);
+    }
+
+    private void checkCancelled() {
+        if (requestSingleton.getMakeRequest().getStatus().equals(RequestStatus.CANCELLED)) {
+            cancelButton.setEnabled(false);
+        }
     }
 }

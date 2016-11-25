@@ -58,8 +58,6 @@ public class RequestSingleton {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private Request makeRequest;
-    private Location tempFromLocation;
-    private Location tempToLocation;
 
     private RequestSingleton() {
     }
@@ -190,16 +188,13 @@ public class RequestSingleton {
      * Elastic Search see deleteRequestById() in ESC
      *
      * @param request
-     * @param callBack
      * @return Boolean
      * @see ElasticSearchController
      * @see ICallBack
      */
-    public void removeRequest(Request request, ICallBack callBack) {
-        Log.i("trace", "RequestSingleton.removeRequest()");
+    public void removeRequest(Request request) {
         if (ES.deleteRequest(request)) {
             requests.remove(request);
-            callBack.execute();
         }
     }
 
@@ -336,27 +331,6 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-
-    /** GETTERS AND SETTERS
-     *
-     * @return
-     */
-    public Location getTempFromLocation() {
-        return tempFromLocation;
-    }
-
-    public void setTempFromLocation(Location tempFromLocation) {
-        this.tempFromLocation = tempFromLocation;
-    }
-
-    public Location getTempToLocation() {
-        return tempToLocation;
-    }
-
-    public void setTempToLocation(Location tempToLocation) {
-        this.tempToLocation = tempToLocation;
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
