@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.dryver.Activities.ActivityDriverSelection;
-import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
 
@@ -46,7 +45,7 @@ public class DriverListAdapter extends ArrayAdapter<Request> {
             public void onClick(View v) {
                 RequestSingleton RS = RequestSingleton.getInstance();
 
-                RS.setMakeRequest(request);
+                RS.setActiveRequest(request);
                 Intent intent = new Intent(mContext, ActivityDriverSelection.class);
                 intent.putExtra("position", position);
                 mContext.startActivity(intent);

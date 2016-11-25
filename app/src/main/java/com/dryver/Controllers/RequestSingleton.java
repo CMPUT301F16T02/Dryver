@@ -27,7 +27,6 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
-import com.dryver.Utility.IBooleanCallBack;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,7 +42,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -56,7 +54,12 @@ public class RequestSingleton {
     private static ArrayList<Request> requests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
-    private Request makeRequest;
+
+    /**
+     * The request passed on request selection or editing. Also used to make request. It is the request
+     * of context at any given tim, given there is one.
+     */
+    private Request activeRequest;
 
     private RequestSingleton() {
     }
@@ -133,16 +136,16 @@ public class RequestSingleton {
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void setMakeRequest(Request makeRequest) {
-        this.makeRequest = makeRequest;
+    public void setActiveRequest(Request activeRequest) {
+        this.activeRequest = activeRequest;
     }
 
-    public Request getMakeRequest() {
-        return this.makeRequest;
+    public Request getActiveRequest() {
+        return this.activeRequest;
     }
 
-    public void pushMakeRequest() {
-        pushRequest(this.makeRequest);
+    public void pushActiveRequest() {
+        pushRequest(this.activeRequest);
     }
 
     /**
@@ -248,7 +251,7 @@ public class RequestSingleton {
         Log.i("trace", "RequestSingleton.updateViewedRequest()");
         Request updatedRequest = ES.getRequestByString(request.getId());
         if (updatedRequest != null) {
-            makeRequest = updatedRequest;
+            activeRequest = updatedRequest;
             callBack.execute();
         }
     }

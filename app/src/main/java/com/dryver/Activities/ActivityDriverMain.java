@@ -39,6 +39,7 @@ import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -142,6 +143,28 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
         });
     }
 
+    public void checkStatuses(){
+        if(requestSingleton.getRequests().size() != 0){
+            for (Request request : requestSingleton.getRequests()){
+                if(request.getStatus() == RequestStatus.COMPLETE){
+                    notifyComplete();
+                } else if(request.getStatus() == RequestStatus.DRIVER_SELECTED &&
+                        request.getAcceptedDriverID() == userController.getActiveUser().getId()){
+                    notifySelected();
+                }
+
+            }
+        }
+    }
+
+    private void notifyComplete(){
+        //popup
+    }
+
+    private void notifySelected(){
+        //popup
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -234,7 +257,7 @@ public class ActivityDriverMain extends ActivityLoggedInActionBar implements OnI
      * The method called after data has changed in the request list
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRiderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         driverListAdapter.notifyDataSetChanged();
     }

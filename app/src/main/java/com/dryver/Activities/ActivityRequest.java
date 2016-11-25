@@ -3,7 +3,6 @@ package com.dryver.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,6 @@ import android.widget.TimePicker;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Utility.HelpMe;
-import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 
@@ -76,9 +74,9 @@ public class ActivityRequest extends Activity {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
                     HelpMe.setCalendar(calendar, datePicker, timePicker);
 
-                    requestSingleton.getMakeRequest().setCost(cost);
-                    requestSingleton.getMakeRequest().setDate(calendar);
-                    requestSingleton.pushMakeRequest();
+                    requestSingleton.getActiveRequest().setCost(cost);
+                    requestSingleton.getActiveRequest().setDate(calendar);
+                    requestSingleton.pushActiveRequest();
                     finish();
                 }
             }
@@ -88,12 +86,12 @@ public class ActivityRequest extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        HelpMe.formatLocationTextView(requestSingleton.getMakeRequest(), locationText);
+        HelpMe.formatLocationTextView(requestSingleton.getActiveRequest(), locationText);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        requestSingleton.setMakeRequest(null);
+        requestSingleton.setActiveRequest(null);
     }
 }

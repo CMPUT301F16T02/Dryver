@@ -13,10 +13,7 @@ import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * A custom Array Adapter for listing requests as strings properly.
@@ -42,7 +39,7 @@ public class RequestListAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.setMakeRequest(request);
+                requestSingleton.setActiveRequest(request);
                 Intent intent = new Intent(mContext, ActivityRequestSelection.class);
                 mContext.startActivity(intent);
             }

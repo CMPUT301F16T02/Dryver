@@ -129,8 +129,8 @@ public class ActivityRequestMap extends FragmentActivity implements
                     toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
                     toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
 
-                    requestSingleton.getMakeRequest().setFromLocation(fromLocation);
-                    requestSingleton.getMakeRequest().setToLocation(toLocation);
+                    requestSingleton.getActiveRequest().setFromLocation(fromLocation);
+                    requestSingleton.getActiveRequest().setToLocation(toLocation);
 
                     map.clear();
                     mRoute.clear();

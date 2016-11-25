@@ -40,7 +40,7 @@ public class ActivityDriverList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_list);
 
-        request = requestSingleton.getMakeRequest();
+        request = requestSingleton.getActiveRequest();
         driverIds = request.getDrivers();
 
         driverListView = (ListView)findViewById(R.id.driver_list);
@@ -94,7 +94,7 @@ public class ActivityDriverList extends Activity {
      * Called after data in driver list has changed
      */
     private void refreshDriverList() {
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRiderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
     }

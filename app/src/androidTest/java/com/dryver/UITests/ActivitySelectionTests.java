@@ -5,7 +5,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityDriverMain;
 import com.dryver.Activities.ActivityEditProfile;
-import com.dryver.Activities.ActivityRequestMain;
+import com.dryver.Activities.ActivityRiderMain;
 import com.dryver.Activities.ActivitySelection;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
@@ -56,7 +56,7 @@ public class ActivitySelectionTests {
     public void TestSelectRyder(){
         onView(withText("Ryde")).perform(click());
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRequestMain.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRiderMain.class)));
     }
 
 }

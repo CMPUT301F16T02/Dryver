@@ -46,7 +46,7 @@ import java.util.Calendar;
  * and select requests to inspect a request.
  */
 
-public class ActivityRequestMain extends ActivityLoggedInActionBar {
+public class ActivityRiderMain extends ActivityLoggedInActionBar {
 
     private Button addRequestButton;
     private ListView requestListView;
@@ -61,7 +61,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("info", "ActivityRequestMain.onCreate()");
+        Log.i("info", "ActivityRiderMain.onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_main);
 
@@ -88,23 +88,23 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
      * Sets correct background colors for listview items based on the status of the request.
      */
     public void checkStatuses(){
-        for (Request request : requestSingleton.getRequests()){
-            switch (request.getStatus()){
-                case CANCELLED:
-                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.RED);
-                    break;
-                case NO_DRIVERS:
-                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.YELLOW);
-                    break;
-                case DRIVERS_FOUND:
-                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.GREEN);
-                    break;
-                case FINALIZED:
-                    requestListView.getChildAt(requestListAdapter.getPosition(request)).setBackgroundColor(Color.BLUE);
-                    break;
+        if(requestSingleton.getRequests().size() != 0){
+            for (Request request : requestSingleton.getRequests()){
+                if(request.getStatus() == RequestStatus.DRIVERS_FOUND){
+                    notifyDriversAvailable();
+                }
             }
         }
     }
+
+    private void notifyDriversAvailable(){
+        //popup
+    }
+
+    private void notifyComplete(){
+        //popup
+    }
+
 
     /**
      * Sets the listeners for the add request button's click and the long click of the request list's
@@ -114,8 +114,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
-                requestSingleton.setMakeRequest(new Request(rider.getId(), Calendar.getInstance()));
+                Intent intent = new Intent(ActivityRiderMain.this, ActivityRequest.class);
+                requestSingleton.setActiveRequest(new Request(rider.getId(), Calendar.getInstance()));
                 startActivity(intent);
             }
         });
@@ -124,8 +124,8 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Request request = (Request) requestListView.getItemAtPosition(position);
-                Intent intent = new Intent(ActivityRequestMain.this, ActivityRequest.class);
-                requestSingleton.setMakeRequest(request);
+                Intent intent = new Intent(ActivityRiderMain.this, ActivityRequest.class);
+                requestSingleton.setActiveRequest(request);
                 startActivity(intent);
                 return true;
             }
@@ -160,7 +160,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
      * called when request list data changes
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRiderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         requestListAdapter.notifyDataSetChanged();
         checkStatuses();
@@ -174,7 +174,7 @@ public class ActivityRequestMain extends ActivityLoggedInActionBar {
 
     @Override
     public void onResume() {
-        Log.i("info", "ActivityRequestMain.onResume()");
+        Log.i("info", "ActivityRiderMain.onResume()");
         super.onResume();
         refreshRequestList();
     }
