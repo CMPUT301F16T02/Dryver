@@ -183,9 +183,9 @@ public class RequestSingleton {
      *
      * @param driverID
      */
-    public void selectDriverFromTempRequest(String driverID) {
+    public void selectDriverFromTempRequest(String driverID, ICallBack callBack) {
         tempRequest.acceptOffer(driverID);
-        pushTempRequest();
+        pushTempRequest(callBack);
     }
 
     public void authorizePayment(Request request) {

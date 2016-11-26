@@ -12,6 +12,7 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
@@ -55,8 +56,12 @@ public class DryverListAdapter extends ArrayAdapter<String> {
         acceptDriverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestSingleton.selectDriverFromTempRequest(userController.getActiveUser().getId());
-                isAccepted();
+                requestSingleton.selectDriverFromTempRequest(userController.getActiveUser().getId(), new ICallBack() {
+                    @Override
+                    public void execute() {
+                        isAccepted();
+                    }
+                });
             }
         });
         driverIdTextView.setText(driverID);

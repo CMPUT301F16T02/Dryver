@@ -55,31 +55,6 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.driver_list_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        int position = info.position;
-        switch (item.getItemId()) {
-            case R.id.chooseDriver:
-                requestSingleton.selectDriverFromTempRequest((String) driversListView.getItemAtPosition(position));
-                return true;
-            case R.id.viewTheirProfile:
-                String selectedDriver = (String)driversListView.getItemAtPosition(position);
-                Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
-                userController.viewUserProfile(driver, ActivityRequestDriverList.this);
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
     public void onResume () {
         super.onResume();
         refreshDriverList();
