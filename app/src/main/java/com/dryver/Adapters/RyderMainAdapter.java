@@ -58,7 +58,6 @@ public class RyderMainAdapter extends ArrayAdapter<Request> {
         requestCost.setText("Total Cost: $" + request.getCost());
         requestRate.setText("Rate: $" + request.getRate() + "/km");
 
-
         return convertView;
     }
 }
