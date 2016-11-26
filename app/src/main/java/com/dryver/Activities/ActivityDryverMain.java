@@ -166,7 +166,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     public void execute() {
                         refreshRequestList();
                     }
-                });
+                }, searchByEditText);
             }
         });
 
@@ -334,7 +334,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             public void execute() {
                 refreshRequestList();
             }
-        });
+        }, searchByEditText);
     }
 
     /**

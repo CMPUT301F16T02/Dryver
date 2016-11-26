@@ -446,7 +446,7 @@ public class ElasticSearchController {
         return requestList;
     }
 
-    public ArrayList<Request> getDriverRequestsKeyword(String keyword) {
+    public ArrayList<Request> getRequestsKeyword(String keyword) {
         Log.i("trace", "ElasticSearchController.getDriverRequests()");
         GetRequestsKeywordTask getTask = new GetRequestsKeywordTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
@@ -460,12 +460,12 @@ public class ElasticSearchController {
         return requestList;
     }
 
-    public ArrayList<Request> getDriverRequestsRate(String driverID) {
+    public ArrayList<Request> getRequestsRate(String rate) {
         Log.i("trace", "ElasticSearchController.getDriverRequests()");
         GetRequestsRateTask getTask = new GetRequestsRateTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
-            requestList = getTask.execute(driverID).get();
+            requestList = getTask.execute(rate).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -598,7 +598,7 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRiderRequestsTask.doInBackground()");
-            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"rate\": \"" + search_parameters[0] + "\"}}}";
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"range\": {\"rate\": {\"gte\": \"" + search_parameters[0] + "\"}}}}";
 
             return getRequests(search_string);
         }
