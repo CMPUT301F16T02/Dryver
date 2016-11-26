@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ActivityRegistration" />
-        <activity android:name=".Activities.ActivitySelection" />
+        <activity android:name=".Activities.ActivityRydeOrDryve" />
         <activity android:name=".Activities.ActivityDryverMain" />
         <activity android:name=".Activities.ActivityRyderMain" />
         <activity android:name=".Activities.ActivityEditProfile" />
