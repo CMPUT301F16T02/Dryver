@@ -34,7 +34,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.dryver.Controllers.DryverMainAdapter;
+import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.ActivityDryverMainState;
@@ -150,7 +150,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDriverSelection.class);
+//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDryverSelection.class);
                 return true;
             }
         });

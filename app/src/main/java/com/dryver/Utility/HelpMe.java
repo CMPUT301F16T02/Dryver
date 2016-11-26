@@ -30,6 +30,7 @@ import android.widget.TimePicker;
 import com.dryver.Models.Request;
 
 import java.net.InetAddress;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,7 +43,7 @@ import java.util.TimeZone;
  */
 public class HelpMe extends Activity {
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
-
+    private DecimalFormat decimalFormatter = new DecimalFormat("0.00");
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -162,4 +163,20 @@ public class HelpMe extends Activity {
                         + request.getToLocation().getLatitude() + "\nLong: "
                         + request.getToLocation().getLongitude());
     }
+
+    static public String formatDestinationLocation(Request request) {
+        String locationString = "Destination ";
+        DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+        locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        return locationString;
+    }
+
+    static public String formatPickupLocation(Request request) {
+        String locationString = "Pickup At: ";
+        DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+        locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        return locationString;
+    }
+
+
 }

@@ -53,8 +53,9 @@ public class Request implements Serializable {
     private SimpleCoordinates fromCoordinates;
     private SimpleCoordinates toCoordinates;
 
-    private double cost;
-    private double rate;
+    private double cost = 5.00;
+    private double rate = 0.70;
+    private double distance;
 
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
@@ -86,13 +87,6 @@ public class Request implements Serializable {
         this.cost = cost;
         this.status = RequestStatus.NO_DRIVERS;
         this.id = UUID.randomUUID().toString();
-    }
-
-    public boolean hasID() {
-        if (getId() != null) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -155,19 +149,26 @@ public class Request implements Serializable {
 
     /**
      * Returns the accepted driver's ID
+     *
      * @return String
      */
     public String getAcceptedDriverID() {
         return this.acceptedDriverID;
     }
 
-    /**
-     * Sets the accepted Driver's ID
-     * @param driverID
-     */
+    public boolean isAcceptedDriver(String driverID) {
+        if (acceptedDriverID == null) {
+            return false;
+        }
+        if (acceptedDriverID.equals(driverID)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Accapts an offer, and sets the accepted Driver
+     *
      * @param driverID
      */
     public void acceptOffer(String driverID) {
@@ -244,6 +245,7 @@ public class Request implements Serializable {
     public void setDate(Calendar date) {
         this.date = date;
     }
+
     /**
      * Get the request's date of creation
      *
@@ -288,11 +290,22 @@ public class Request implements Serializable {
             return "Driver Chosen";
         } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
             return "Payment Authorized";
-        } else if(status == RequestStatus.PAYMENT_ACCEPTED){
+        } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
             return "Request Complete!";
-        } else{
+        } else {
             return "Unknown Status String";
         }
+    }
+
+    public boolean hasDriver(String driverID) {
+        if (drivers.contains(driverID)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void removeDriver(String driverID) {
+        drivers.remove(driverID);
     }
 
     @Override
@@ -309,6 +322,14 @@ public class Request implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
 
