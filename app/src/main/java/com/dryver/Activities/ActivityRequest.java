@@ -13,10 +13,12 @@ import android.widget.TimePicker;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Utility.HelpMe;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
 
 
@@ -51,13 +53,7 @@ public class ActivityRequest extends Activity {
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
         locationText = (TextView) findViewById(R.id.requestLocation);
 
-        timePicker = (TimePicker) findViewById(R.id.requestTimePicker);
-        datePicker = (DatePicker) findViewById(R.id.requestDatePicker);
-        HelpMe.setTimePicker(calendar, timePicker);
-        HelpMe.setDatePicker(calendar, datePicker);
-
-        timePicker.setVisibility(View.INVISIBLE);
-        datePicker.setVisibility(View.INVISIBLE);
+        tripPrice.setText(getEstimate());
 
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +68,6 @@ public class ActivityRequest extends Activity {
             public void onClick(View v) {
                 if (!HelpMe.isEmptyTextField(tripPrice)) {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
-                    HelpMe.setCalendar(calendar, datePicker, timePicker);
-
                     requestSingleton.getTempRequest().setCost(cost);
                     requestSingleton.getTempRequest().setDate(calendar);
                     requestSingleton.pushTempRequest();
@@ -87,11 +81,20 @@ public class ActivityRequest extends Activity {
     public void onResume() {
         super.onResume();
         HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationText);
+        tripPrice.setText(getEstimate());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         requestSingleton.clearTempRequest();
+    }
+
+    /**
+     * Formats the price as a 2 float currency
+     */
+    public String getEstimate() {
+        NumberFormat formatter = new DecimalFormat("#.##");
+        return formatter.format(requestSingleton.getEstimate());
     }
 }

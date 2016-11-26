@@ -274,7 +274,28 @@ public class RequestSingleton {
         Log.i("info", "RequestSingleton updateRequests()");
 
         if (userController.getActiveUser() instanceof Rider) {
+<<<<<<< HEAD
+            ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    requests.add(newRequest);
+                }
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for (int index : indicesToRemove) {
+                requests.remove(index);
+            }
+
+
+=======
             requests = ES.getRequests(userController.getActiveUser().getId());
+>>>>>>> master
             saveRequests();
             callBack.execute();
         } else if (userController.getActiveUser() instanceof Driver) {
