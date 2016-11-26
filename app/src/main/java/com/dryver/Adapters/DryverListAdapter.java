@@ -1,4 +1,4 @@
-package com.dryver.Controllers;
+package com.dryver.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dryver.Controllers.ElasticSearchController;
+import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 import java.util.ArrayList;

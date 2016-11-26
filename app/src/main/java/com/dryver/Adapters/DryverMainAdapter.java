@@ -1,4 +1,4 @@
-package com.dryver.Controllers;
+package com.dryver.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.dryver.Activities.ActivityDryverSelection;
+import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;

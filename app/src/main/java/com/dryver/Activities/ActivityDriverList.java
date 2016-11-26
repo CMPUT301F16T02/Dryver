@@ -11,7 +11,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.dryver.Controllers.DryverListAdapter;
+import com.dryver.Adapters.DryverListAdapter;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
