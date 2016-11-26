@@ -53,8 +53,9 @@ public class Request implements Serializable {
     private SimpleCoordinates fromCoordinates;
     private SimpleCoordinates toCoordinates;
 
-    private double cost;
-    private double rate;
+    private double cost = 5.00;
+    private double rate = 0.70;
+    private double distance;
 
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
@@ -148,6 +149,7 @@ public class Request implements Serializable {
 
     /**
      * Returns the accepted driver's ID
+     *
      * @return String
      */
     public String getAcceptedDriverID() {
@@ -166,6 +168,7 @@ public class Request implements Serializable {
 
     /**
      * Accapts an offer, and sets the accepted Driver
+     *
      * @param driverID
      */
     public void acceptOffer(String driverID) {
@@ -242,6 +245,7 @@ public class Request implements Serializable {
     public void setDate(Calendar date) {
         this.date = date;
     }
+
     /**
      * Get the request's date of creation
      *
@@ -286,9 +290,9 @@ public class Request implements Serializable {
             return "Driver Chosen";
         } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
             return "Payment Authorized";
-        } else if(status == RequestStatus.PAYMENT_ACCEPTED){
+        } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
             return "Request Complete!";
-        } else{
+        } else {
             return "Unknown Status String";
         }
     }
@@ -318,6 +322,14 @@ public class Request implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
 
