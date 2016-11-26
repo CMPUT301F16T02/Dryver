@@ -27,11 +27,11 @@ import android.util.Log;
 
 import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
+import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Activities.ActivityRyderSelection;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
-import com.dryver.Models.Rider;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -105,15 +105,6 @@ public class RequestSingleton {
      * @see Request
      * @see ICallBack
      */
-    public ArrayList<Request> getUpdatedRequests() {
-        updateRequests(new ICallBack() {
-            @Override
-            public void execute() {
-            }
-        });
-
-        return requests;
-    }
 
 //  ================================== tempRequest Stuff ===========================================
 
@@ -264,19 +255,98 @@ public class RequestSingleton {
 
     /**
      * A simple method for fetching an updated request list via Elastic Search. Executes callback after
-     *
+     * Do not change thse huge things please!
      * @param callBack
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateRequests(ICallBack callBack) {
-        Log.i("info", "RequestSingleton updateRequests()");
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
+        ArrayList<Request> newRequests = new ArrayList<Request>();
 
+        if(status == ActivityDryverMainState.ALL){
+            newRequests = ES.getAllRequests();
+        } else if (status == ActivityDryverMainState.PENDING){
+            newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
+        } else if (status == ActivityDryverMainState.GEOLOCATION){
+
+        } else if (status == ActivityDryverMainState.KEYWORD){
+
+        } else if (status == ActivityDryverMainState.RATE){
+
+<<<<<<< HEAD
         if (userController.getActiveUser() instanceof Rider) {
             requests = ES.getRequests(userController.getActiveUser().getId());
         } else if (userController.getActiveUser() instanceof Driver) {
             requests = ES.getAllRequests();
         }
+=======
+        }
+
+        //Compares two lists
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else{
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    indicesToAdd.add(newRequests.indexOf(newRequest));
+                }
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+            for(int index : indicesToAdd){
+                requests.add(newRequests.get(index));
+            }
+        }
+
+        saveRequests();
+        callBack.execute();
+
+        //TODO: Implement a way of searching for requests in a certain area or something for drivers
+    }
+
+    public void updateRiderRequests(ICallBack callBack) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
+        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
+        ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else {
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    indicesToAdd.add(newRequests.indexOf(newRequest));
+                }
+
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+            for(int index : indicesToAdd){
+                requests.add(newRequests.get(index));
+            }
+        }
+
+>>>>>>> master
         saveRequests();
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers

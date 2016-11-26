@@ -364,16 +364,39 @@ public class ElasticSearchController {
      *
      * @param riderID
      * @return ArrayList<Request>
-     * @see GetRequestsTask
+     * @see GetRiderRequestsTask
      * @see Request
      * @see com.dryver.Models.Rider
      */
-    public ArrayList<Request> getRequests(String riderID) {
-        Log.i("trace", "ElasticSearchController.getRequests()");
-        GetRequestsTask getTask = new GetRequestsTask();
+    public ArrayList<Request> getRiderRequests(String riderID) {
+        Log.i("trace", "ElasticSearchController.getRiderRequests()");
+        GetRiderRequestsTask getTask = new GetRiderRequestsTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
             requestList = getTask.execute(riderID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    /**
+     * gets All requests for a given rider using acceptedDriverID
+     *
+     * @param driverID
+     * @return ArrayList<Request>
+     * @see GetDriverRequestsTask
+     * @see Request
+     * @see com.dryver.Models.Rider
+     */
+    public ArrayList<Request> getDriverRequests(String driverID) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetDriverRequestsTask getTask = new GetDriverRequestsTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(driverID).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -409,7 +432,47 @@ public class ElasticSearchController {
 
     // ==============         PUBLIC SORTING REQUESTS       ===============
 
-    
+    public ArrayList<Request> getRequestsGeolocation(String distance) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsGeolocationTask getTask = new GetRequestsGeolocationTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(distance).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    public ArrayList<Request> getDriverRequestsKeyword(String keyword) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsKeywordTask getTask = new GetRequestsKeywordTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(keyword).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    public ArrayList<Request> getDriverRequestsRate(String driverID) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsRateTask getTask = new GetRequestsRateTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(driverID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
 
     // ==============           PRIVATE REQUEST             ===============
 
@@ -479,43 +542,105 @@ public class ElasticSearchController {
     /**
      * A Task that gets all requests associated with a rider's id from ES asynchronously
      */
-    private static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
+    private static class GetRiderRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
-            Log.i("trace", "GetRequestsTask.doInBackground()");
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
 
-            verifySettings();
-            Search search = new Search.Builder(search_string)
-                    .addIndex(INDEX)
-                    .addType(REQUEST)
-                    .build();
+            return getRequests(search_string);
+        }
+    }
 
-            ArrayList<Request> requests = new ArrayList<Request>();
-            try {
-                JestResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    requests.addAll(result.getSourceAsObjectList(Request.class));
-                    JsonObject resultObj = result.getJsonObject();
-                    JsonArray hitsArray = resultObj
-                            .get("hits")
-                            .getAsJsonObject()
-                            .get("hits")
-                            .getAsJsonArray();
+    /**
+     * A task that gets all requests with a certain acceptedDriverID from ES asynchronously
+     */
+    private static class GetDriverRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetDriverRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"acceptedDriverID\": \"" + search_parameters[0] + "\"}}}";
 
-                    for (int i = 0; i < hitsArray.size(); i++) {
-                        requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
-                    }
+            return getRequests(search_string);
+        }
+    }
 
+    /**
+     * A Task that gets all requests based on geolocation
+     */
+    private static class GetRequestsGeolocationTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
 
-                    return requests;
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on a keyword
+     */
+    private static class GetRequestsKeywordTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on a certain rate
+     */
+    private static class GetRequestsRateTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"rate\": \"" + search_parameters[0] + "\"}}}";
+
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * Gets requests with a certain search_string
+     * @param search_string
+     * @return
+     */
+    private static ArrayList<Request> getRequests(String search_string){
+        Log.i("trace", "ElasticSearchController().getRequests()");
+        verifySettings();
+        Search search = new Search.Builder(search_string)
+                .addIndex(INDEX)
+                .addType(REQUEST)
+                .build();
+
+        ArrayList<Request> requests = new ArrayList<Request>();
+        try {
+            JestResult result = client.execute(search);
+            if (result.isSucceeded()) {
+                requests.addAll(result.getSourceAsObjectList(Request.class));
+                JsonObject resultObj = result.getJsonObject();
+                JsonArray hitsArray = resultObj
+                        .get("hits")
+                        .getAsJsonObject()
+                        .get("hits")
+                        .getAsJsonArray();
+
+                for (int i = 0; i < hitsArray.size(); i++) {
+                    requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                return requests;
             }
-            return requests;
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return requests;
     }
 
     /**
@@ -557,7 +682,6 @@ public class ElasticSearchController {
             return requests;
         }
     }
-
     //TODO: getDriverRequests
 
 }

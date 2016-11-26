@@ -75,7 +75,13 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         assignElements();
         setListeners();
         checkStatuses();
-        setTimer();
+
+        requestSingleton.updateRiderRequests(new ICallBack() {
+            @Override
+            public void execute() {
+                refreshRequestList();
+            }
+        });
     }
 
     @Override
@@ -88,6 +94,14 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         Log.i("info", "ActivityRyderMain.onResume()");
         super.onResume();
         refreshRequestList();
+        setTimer();
+    }
+
+    @Override
+    public void onPause(){
+        Log.i("info", "ActivityRyderMain.onPause()");
+        super.onPause();
+        timer.cancel();
     }
 
     /**
@@ -127,7 +141,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        ryderMainAdapter = new RyderMainAdapter(this, requestSingleton.getUpdatedRequests());
+        ryderMainAdapter = new RyderMainAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(ryderMainAdapter);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerRider);
     }
@@ -193,7 +207,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * @see ICallBack
      */
     public void beginRefresh() {
-        requestSingleton.updateRequests(new ICallBack() {
+        requestSingleton.updateRiderRequests(new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();
