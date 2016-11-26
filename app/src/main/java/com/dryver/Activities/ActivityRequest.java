@@ -10,18 +10,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Utility.HelpMe;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 
 /**
@@ -55,9 +53,7 @@ public class ActivityRequest extends Activity {
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
         locationText = (TextView) findViewById(R.id.requestLocation);
 
-        Double cost = new Double(requestSingleton.getEstimate());
-        Toast.makeText(this, cost.toString(), Toast.LENGTH_SHORT);
-        tripPrice.setText(cost.toString());
+        tripPrice.setText(getEstimate());
 
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +83,7 @@ public class ActivityRequest extends Activity {
     public void onResume() {
         super.onResume();
         HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationText);
-        Double price = new Double(requestSingleton.getEstimate());
-        tripPrice.setText(price.toString());
-        Toast.makeText(this, new Double(price).toString(), Toast.LENGTH_SHORT);
+        tripPrice.setText(getEstimate());
     }
 
     @Override
@@ -98,4 +92,11 @@ public class ActivityRequest extends Activity {
         requestSingleton.clearTempRequest();
     }
 
+    /**
+     * Formats the price as a 2 float currency
+     */
+    public String getEstimate() {
+        NumberFormat formatter = new DecimalFormat("#.##");
+        return formatter.format(requestSingleton.getEstimate());
+    }
 }

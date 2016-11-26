@@ -73,6 +73,7 @@ public class RequestSingleton {
 
     /**
      * Gets the instance of the singleton for use throughout the App
+     *
      * @return
      */
     public static RequestSingleton getInstance() {
@@ -89,6 +90,7 @@ public class RequestSingleton {
 
     /**
      * Gets the request list currently held by the singleton
+     *
      * @return
      */
     public ArrayList<Request> getRequests() {
@@ -136,10 +138,11 @@ public class RequestSingleton {
 
     /**
      * Opens the activity for viewing a request
+     *
      * @param context
      * @param request
      */
-    public void viewRequest(Context context, Request request){
+    public void viewRequest(Context context, Request request) {
         tempRequest = request;
         Intent intent = new Intent(context, ActivityRequestSelection.class);
         context.startActivity(intent);
@@ -147,10 +150,11 @@ public class RequestSingleton {
 
     /**
      * opens the activity for editing or making a request
+     *
      * @param context
      * @param request
      */
-    public void editRequest(Context context, Request request){
+    public void editRequest(Context context, Request request) {
         tempRequest = request;
         Intent intent = new Intent(context, ActivityRequest.class);
         context.startActivity(intent);
@@ -158,10 +162,11 @@ public class RequestSingleton {
 
     /**
      * opens the activity for viewing a list of drivers
+     *
      * @param context
      * @param request
      */
-    public void viewRequestDrivers(Context context, Request request){
+    public void viewRequestDrivers(Context context, Request request) {
         tempRequest = request;
         Intent intent = new Intent(context, ActivityDriverList.class);
         context.startActivity(intent);
@@ -173,10 +178,11 @@ public class RequestSingleton {
 
     /**
      * Adds a driver to the request. Called when a driver chooses to accept a request
+     *
      * @param request
      * @param driverID
      */
-    public void addDriver(Request request, String driverID){
+    public void addDriver(Request request, String driverID) {
         request.addDriver(driverID);
         ES.updateRequest(request);
     }
@@ -197,7 +203,7 @@ public class RequestSingleton {
         ES.updateRequest(request);
     }
 
-    public void acceptPayment(Request request){
+    public void acceptPayment(Request request) {
         request.setStatus(RequestStatus.PAYMENT_ACCEPTED);
         ES.updateRequest(request);
     }
@@ -235,7 +241,7 @@ public class RequestSingleton {
     }
 
     public Request getRequestById(String id, ICallBack callBack) {
-        for (Request req: requests) {
+        for (Request req : requests) {
             if (req.getId().equals(id)) {
                 return req;
 
@@ -246,11 +252,12 @@ public class RequestSingleton {
 
     /**
      * Gets the most up to date version of the Temp Request;
+     *
      * @param callBack
      */
-    public void updateTempRequest(ICallBack callBack){
+    public void updateTempRequest(ICallBack callBack) {
         Request updatedRequest = ES.getRequestByString(tempRequest.getId());
-        if(updatedRequest != null){
+        if (updatedRequest != null) {
             tempRequest = updatedRequest;
             callBack.execute();
         }
@@ -283,7 +290,7 @@ public class RequestSingleton {
             }
 
             Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
+            for (int index : indicesToRemove) {
                 requests.remove(index);
             }
 
@@ -350,12 +357,15 @@ public class RequestSingleton {
         });
     }
 
-//  ========================= Offline Serialization Stuff ==========================================
-
+    /**
+     * Calculates an estimated cost of the trip based on distance and rate.
+     */
     public double getEstimate() {
         Log.i("Calculating cost", "requestSingleton.getEstimate()");
-        return tempRequest.getCost() + tempRequest.getDistance() * tempRequest.getRate();
+        return tempRequest.getCost() + ((tempRequest.getDistance() / 1000) * tempRequest.getRate());
     }
+//  ========================= Offline Serialization Stuff ==========================================
+
 
     /**
      * Saves the current ArrayList of requests to local storage
@@ -411,10 +421,6 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setDistance(double distance) {
-        tempRequest.setDistance(distance);
     }
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
