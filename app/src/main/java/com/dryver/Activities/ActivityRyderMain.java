@@ -139,11 +139,11 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     public void checkStatuses(){
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.DRIVERS_FOUND){
+                if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
                     requestListView.getChildAt(requestMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                 }
-                else if(request.getStatus() == RequestStatus.COMPLETE){
+                else if(request.getStatus() == RequestStatus.PAYMENT_ACCEPTED){
                     requestListView.getChildAt(requestMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                 }

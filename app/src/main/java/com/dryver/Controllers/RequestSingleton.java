@@ -163,7 +163,19 @@ public class RequestSingleton {
         context.startActivity(intent);
     }
 
-//  =========================== Elastic Search Related Methods =====================================
+//  ==================================== Request State Changes =====================================
+
+    //Push request pushes new request with NO_DRIVERS state
+
+    /**
+     * Adds a driver to the request. Called when a driver chooses to accept a request
+     * @param request
+     * @param driverID
+     */
+    public void addDriver(Request request, String driverID){
+        request.addDriver(driverID);
+        ES.updateRequest(request);
+    }
 
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
@@ -173,7 +185,16 @@ public class RequestSingleton {
      */
     public void selectDriver(Request request, String driverID) {
         request.acceptOffer(driverID);
-        request.setStatus(RequestStatus.DRIVER_SELECTED);
+        ES.updateRequest(request);
+    }
+
+    public void authorizePayment(Request request) {
+        request.setStatus(RequestStatus.PAYMENT_AUTHORIZED);
+        ES.updateRequest(request);
+    }
+
+    public void acceptPayment(Request request){
+        request.setStatus(RequestStatus.PAYMENT_ACCEPTED);
         ES.updateRequest(request);
     }
 

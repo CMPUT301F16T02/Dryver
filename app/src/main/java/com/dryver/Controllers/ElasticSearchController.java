@@ -407,6 +407,10 @@ public class ElasticSearchController {
         }
     }
 
+    // ==============         PUBLIC SORTING REQUESTS       ===============
+
+    
+
     // ==============           PRIVATE REQUEST             ===============
 
     /**

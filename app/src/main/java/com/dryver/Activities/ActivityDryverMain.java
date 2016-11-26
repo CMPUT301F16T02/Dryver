@@ -188,9 +188,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     public void checkStatuses(){
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.COMPLETE){
-                    notifyComplete();
-                } else if(request.getStatus() == RequestStatus.DRIVER_SELECTED &&
+                if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
+                    notifyPayment();
+                } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
                         request.getAcceptedDriverID() == userController.getActiveUser().getId()){
                     notifySelected(request);
                 }
@@ -200,9 +200,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * Notifies if the status of a request that the driver is a part of is somplete
+     * Notifies if the status of a request that the driver is a part of has payment authorized
      */
-    private void notifyComplete(){
+    private void notifyPayment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title);

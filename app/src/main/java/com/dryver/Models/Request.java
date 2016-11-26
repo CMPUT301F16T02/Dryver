@@ -282,11 +282,13 @@ public class Request implements Serializable {
             return "Cancelled";
         } else if (status == RequestStatus.NO_DRIVERS) {
             return "No Drivers Found";
-        } else if (status == RequestStatus.DRIVERS_FOUND) {
+        } else if (status == RequestStatus.DRIVERS_AVAILABLE) {
             return "Drivers Available";
-        } else if (status == RequestStatus.DRIVER_SELECTED) {
-            return "Driver Selected";
-        } else if (status == RequestStatus.COMPLETE) {
+        } else if (status == RequestStatus.DRIVER_CHOSEN) {
+            return "Driver Chosen";
+        } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
+            return "Payment Authorized";
+        } else if(status == RequestStatus.PAYMENT_ACCEPTED){
             return "Request Complete!";
         } else{
             return "Unknown Status String";
