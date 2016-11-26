@@ -16,6 +16,7 @@ import com.dryver.Controllers.UserController;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
+import com.dryver.Utility.ICallBack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -70,8 +71,12 @@ public class ActivityRequest extends Activity {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
                     requestSingleton.getTempRequest().setCost(cost);
                     requestSingleton.getTempRequest().setDate(calendar);
-                    requestSingleton.pushTempRequest();
-                    finish();
+                    requestSingleton.pushTempRequest(new ICallBack(){
+                        @Override
+                        public void execute(){
+                            finish();
+                        }
+                    });
                 }
             }
         });
