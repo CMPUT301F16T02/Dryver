@@ -22,6 +22,7 @@ package com.dryver.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,8 @@ import com.dryver.Models.Rider;
 import com.dryver.R;
 
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -59,6 +62,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Rider rider;
 
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("info", "ActivityRyderMain.onCreate()");
@@ -71,6 +76,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         assignElements();
         setListeners();
         checkStatuses();
+        setTimer();
     }
 
     @Override
@@ -204,5 +210,23 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         swipeContainer.setRefreshing(false);
         requestMainAdapter.notifyDataSetChanged();
         checkStatuses();
+    }
+
+    /**
+     * Handles the asynchronous polling of ES for requests.
+     */
+    private void setTimer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginRefresh();
+                    }
+                });
+            }
+        }, 0, 30000);//put here time 1000 milliseconds=1 second
     }
 }

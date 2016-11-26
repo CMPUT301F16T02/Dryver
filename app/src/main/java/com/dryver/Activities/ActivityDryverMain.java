@@ -47,6 +47,9 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  * This activities deals with providing the driver with UI for requests.
@@ -69,6 +72,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private Driver driver;
     private GoogleApiClient mClient;
 
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +88,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         setListeners();
         setMapStuff();
         checkStatuses();
+        setTimer();
     }
 
     @Override
@@ -314,5 +320,19 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         dryverMainAdapter.notifyDataSetChanged();
     }
 
+    private void setTimer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginRefresh();
+                    }
+                });
+            }
+        }, 0, 30000);//put here time 1000 milliseconds=1 second
+    }
 
 }

@@ -209,13 +209,26 @@ public class RequestSingleton {
         saveRequests();
     }
 
-    public Request getRequestById(String id) {
+    public Request getRequestById(String id, ICallBack callBack) {
         for (Request req: requests) {
             if (req.getId().equals(id)) {
                 return req;
+
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the most up to date version of the Temp Request;
+     * @param callBack
+     */
+    public void updateTempRequest(ICallBack callBack){
+        Request updatedRequest = ES.getRequestByString(tempRequest.getId());
+        if(updatedRequest != null){
+            tempRequest = updatedRequest;
+            callBack.execute();
+        }
     }
 
     /**
