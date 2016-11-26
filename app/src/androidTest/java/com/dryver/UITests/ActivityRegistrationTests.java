@@ -24,7 +24,7 @@ import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityRegistration;
-import com.dryver.Activities.ActivitySelection;
+import com.dryver.Activities.ActivityRydeOrDryve;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 import com.dryver.R;
@@ -87,7 +87,7 @@ public class ActivityRegistrationTests {
      * Simply inputs a presumably valid string for all EditTexts and attempts to select register.
      * Uses the mock ESController, so although the strings are validated, it is not actually pushed
      * to the ES server. Registration leads to the Selection Activity.
-     * @see ActivitySelection
+     * @see ActivityRydeOrDryve
      */
     @Test
     public void TestRegister() throws InterruptedException {
@@ -112,7 +112,7 @@ public class ActivityRegistrationTests {
 
         Thread.sleep(1000);
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRydeOrDryve.class)));
     }
 
     /**

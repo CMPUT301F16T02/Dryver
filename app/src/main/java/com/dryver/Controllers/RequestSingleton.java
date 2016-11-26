@@ -27,7 +27,7 @@ import android.util.Log;
 
 import com.dryver.Activities.ActivityDriverList;
 import com.dryver.Activities.ActivityRequest;
-import com.dryver.Activities.ActivityRequestSelection;
+import com.dryver.Activities.ActivityRyderSelection;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -141,7 +141,7 @@ public class RequestSingleton {
      */
     public void viewRequest(Context context, Request request){
         tempRequest = request;
-        Intent intent = new Intent(context, ActivityRequestSelection.class);
+        Intent intent = new Intent(context, ActivityRyderSelection.class);
         context.startActivity(intent);
     }
 

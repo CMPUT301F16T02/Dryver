@@ -54,18 +54,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ActivityRegistration" />
-        <activity android:name=".Activities.ActivitySelection" />
+        <activity android:name=".Activities.ActivityRydeOrDryve" />
         <activity android:name=".Activities.ActivityDryverMain" />
         <activity android:name=".Activities.ActivityRyderMain" />
         <activity android:name=".Activities.ActivityEditProfile" />
-        <activity android:name=".Activities.ActivityRequestSelection" />
+        <activity android:name=".Activities.ActivityRyderSelection" />
         <activity android:name=".Activities.ActivityRequestMap" />
         <activity android:name=".Activities.ActivityRequest" />
         <activity android:name=".Activities.ActivityLoggedInActionBar" />
         <activity android:name=".Utility.HelpMe" />
         <activity android:name=".Activities.ActivityViewProfile" />
         <activity android:name=".Activities.ActivityDriverList" />
-        <activity android:name=".Activities.ActivityDriverSelection"></activity>
+        <activity android:name=".Activities.ActivityDryverSelection"></activity>
     </application>
 
 </manifest>

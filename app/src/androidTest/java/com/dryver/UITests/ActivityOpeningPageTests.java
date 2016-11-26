@@ -34,7 +34,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityOpeningPage;
 import com.dryver.Activities.ActivityRegistration;
-import com.dryver.Activities.ActivitySelection;
+import com.dryver.Activities.ActivityRydeOrDryve;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 import com.dryver.R;
@@ -79,7 +79,7 @@ public class ActivityOpeningPageTests{
 
     /**
      * Tests selecting the login button which goes to the Login Activity
-     * @see ActivitySelection
+     * @see ActivityRydeOrDryve
      */
     @Test
 
@@ -91,6 +91,6 @@ public class ActivityOpeningPageTests{
 
         onView(withText("Login")).perform(click());
 
-        intended(hasComponent(new ComponentName(getTargetContext(), ActivitySelection.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), ActivityRydeOrDryve.class)));
     }
 }

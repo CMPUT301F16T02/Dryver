@@ -139,7 +139,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDriverSelection.class);
+//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDryverSelection.class);
                 return true;
             }
         });

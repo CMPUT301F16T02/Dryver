@@ -35,7 +35,7 @@ import com.dryver.Utility.HelpMe;
  * Allows you to cancel requests, as well as view the drivers associated with a request.
  */
 
-public class ActivityRequestSelection extends Activity {
+public class ActivityRyderSelection extends Activity {
 
     private TextView locationTextView;
     private TextView requestSelectionDate;
@@ -50,7 +50,7 @@ public class ActivityRequestSelection extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_selection);
+        setContentView(R.layout.activity_ryder_selection);
 
         locationTextView = (TextView) findViewById(R.id.requestSelectionLocation);
         requestSelectionDate = (TextView) findViewById(R.id.requestSelectionDate);
@@ -80,7 +80,7 @@ public class ActivityRequestSelection extends Activity {
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.viewRequestDrivers(ActivityRequestSelection.this, requestSingleton.getTempRequest());
+                requestSingleton.viewRequestDrivers(ActivityRyderSelection.this, requestSingleton.getTempRequest());
             }
         });
 

@@ -6,7 +6,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import com.dryver.Activities.ActivityDryverMain;
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityRyderMain;
-import com.dryver.Activities.ActivitySelection;
+import com.dryver.Activities.ActivityRydeOrDryve;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
 
@@ -24,7 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Tests the UI for the Role Selection Activity using Espresso
- * @see ActivitySelection
+ * @see ActivityRydeOrDryve
  */
 
 public class ActivitySelectionTests {
@@ -32,8 +32,8 @@ public class ActivitySelectionTests {
     private User user = new User("SuperCoolGuy312", "Hugh", "Mungus", "780-912-9045", "guy@place.xxx");
 
     @Rule
-    public IntentsTestRule<ActivitySelection> OPActivityRule = new IntentsTestRule<ActivitySelection>(
-            ActivitySelection.class);
+    public IntentsTestRule<ActivityRydeOrDryve> OPActivityRule = new IntentsTestRule<ActivityRydeOrDryve>(
+            ActivityRydeOrDryve.class);
 
     @Test
     public void TestOpenUserProfile(){
