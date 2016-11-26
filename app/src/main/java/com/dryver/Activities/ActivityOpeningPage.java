@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -72,6 +73,7 @@ public class ActivityOpeningPage extends Activity {
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
+        usernameEditText.setInputType(0);
     }
 
     /**

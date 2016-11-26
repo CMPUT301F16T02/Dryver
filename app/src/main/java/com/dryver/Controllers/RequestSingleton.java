@@ -24,12 +24,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
 import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Activities.ActivityRyderSelection;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Utility.ICallBack;
@@ -183,9 +183,9 @@ public class RequestSingleton {
      *
      * @param driverID
      */
-    public void selectDriverFromTempRequest(String driverID) {
+    public void selectDriverFromTempRequest(String driverID, ICallBack callBack) {
         tempRequest.acceptOffer(driverID);
-        pushTempRequest();
+        pushTempRequest(callBack);
     }
 
     public void authorizePayment(Request request) {
@@ -261,7 +261,7 @@ public class RequestSingleton {
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack) {
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
@@ -272,11 +272,11 @@ public class RequestSingleton {
         } else if (status == ActivityDryverMainState.PENDING){
             newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
         } else if (status == ActivityDryverMainState.GEOLOCATION){
-
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD){
-
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.RATE){
-
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
         }
 
         //Compares two lists

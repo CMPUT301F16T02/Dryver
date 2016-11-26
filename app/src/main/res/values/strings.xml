@@ -28,11 +28,11 @@
     <string name="dryve">Dryve</string>
     <string name="save_changes">Save</string>
     <string name="choose_driver">Accept as Driver</string>
-    <string name="kilometers">Kilometers</string>
+    <string name="kilometers">Kilometers Radius</string>
     <string name="search">Search</string>
     <string name="empty">Leave Empty</string>
     <string name="keyword">Keyword</string>
-    <string name="rate">Rate ($/km)</string>
+    <string name="rate">Minimum Rate ($/km)</string>
 
 
     <string name="view_profile">View Profile</string>

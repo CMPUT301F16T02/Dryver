@@ -53,22 +53,22 @@ public class ActivityEditProfile extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        user = userController.getViewedUser();
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        this.titleTextView = (TextView)findViewById(R.id.profile_name);
+        user = userController.getViewedUser();
+
+        titleTextView = (TextView)findViewById(R.id.profile_name);
         titleTextView.setText(user.getId() + "'s Profile");
 
-        this.emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
-        this.phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
-        this.paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
-        this.paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
-        this.vehicleDesriptionTextView = (TextView)findViewById(R.id.activity_edit_profile_vehicle_textview);
-        this.vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
-        this.saveChangesButton = (Button)findViewById(R.id.save_changes);
+        emailEditText = (EditText)findViewById(R.id.profileEditTextEmail);
+        phoneEditText = (EditText)findViewById(R.id.profileEditTextPhoneNumber);
+        paymentText = (TextView)findViewById(R.id.profileTextViewPaymentMethod);
+        paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
+        vehicleDesriptionTextView = (TextView)findViewById(R.id.activity_edit_profile_vehicle_textview);
+        vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
+        vehicleDescriptionEditText.setInputType(0);
+        saveChangesButton = (Button)findViewById(R.id.save_changes);
 
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
@@ -120,8 +120,7 @@ public class ActivityEditProfile extends Activity {
         user = userController.getActiveUser();
 
         boolean updated = false;
-        if(HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText))
-        {
+        if(HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText)) {
             user.setPhoneNumber(phoneEditText.getText().toString());
             user.setEmail(emailEditText.getText().toString());
             driver.setVehicleDescription(vehicleDescriptionEditText.getText().toString());
