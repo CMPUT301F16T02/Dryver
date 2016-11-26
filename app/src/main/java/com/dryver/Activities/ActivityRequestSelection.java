@@ -20,7 +20,6 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,13 +59,13 @@ public class ActivityRequestSelection extends Activity {
         cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
 
-        checkCancelled();
+        isCancelled();
         
         HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
         requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
         statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
-        setListeneres();
+        setListeners();
     }
 
     @Override
@@ -75,7 +74,7 @@ public class ActivityRequestSelection extends Activity {
         requestSingleton.clearTempRequest();
     }
 
-    private void setListeneres(){
+    private void setListeners(){
 
         //Clicking this opens the driver list through the controller
         viewDriversButton.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +90,7 @@ public class ActivityRequestSelection extends Activity {
             public void onClick(View v) {
                 requestSingleton.getTempRequest().setStatus(RequestStatus.CANCELLED);
                 requestSingleton.pushTempRequest();
-                checkCancelled();
+                isCancelled();
                 statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
             }
         });
@@ -110,7 +109,7 @@ public class ActivityRequestSelection extends Activity {
     /**
      * Checks if the request is already cancelled.
      */
-    private void checkCancelled() {
+    private void isCancelled() {
         if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
             cancelButton.setEnabled(false);
         }
