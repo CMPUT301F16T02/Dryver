@@ -81,7 +81,7 @@
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
-    <string name="ryder_main_title">Your Open Requests</string>
+    <string name="ryder_main_title">Open Requests:</string>
 
     <!--Dialog popup Strings-->
     <string name="drivers_found_message">Drivers have been found for one of your requests! Either view the list of divers, or close this window.</string>
@@ -138,4 +138,5 @@
     <string name="activity_dryver_selection_RequestDetails">Request Details</string>
     <string name="activity_dryver_selection_riderID">Rider ID</string>
     <string name="activity_dryver_selection_Description">implement Description for request</string>
+    <string name="requestDriverListDriverID">driver id goes here</string>
 </resources>

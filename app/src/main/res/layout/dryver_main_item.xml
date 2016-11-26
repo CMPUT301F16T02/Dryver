@@ -15,7 +15,8 @@
         android:orientation="vertical"
         android:focusable="false"
         android:id="@+id/requestItemTextRelativeLayout"
-        android:focusableInTouchMode="false">
+        android:focusableInTouchMode="false"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/dryverItemRiderID"
