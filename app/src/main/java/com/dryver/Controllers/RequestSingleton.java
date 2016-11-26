@@ -266,28 +266,8 @@ public class RequestSingleton {
     public void updateRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateRequests()");
 
-        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
-        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
-
         if (userController.getActiveUser() instanceof Rider) {
-            ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
-            for (Request newRequest : newRequests) {
-                if (!requests.contains(newRequest)) {
-                    requests.add(newRequest);
-                }
-                for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest)) {
-                        indicesToRemove.add(requests.indexOf(oldRequest));
-                    }
-                }
-            }
-
-            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
-                requests.remove(index);
-            }
-
-
+            requests = ES.getRequests(userController.getActiveUser().getId());
             saveRequests();
             callBack.execute();
         } else if (userController.getActiveUser() instanceof Driver) {
