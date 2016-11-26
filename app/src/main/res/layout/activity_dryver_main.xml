@@ -30,48 +30,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
 
     tools:context="com.dryver.Activities.ActivityRyderMain">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonLinearLayout">
-
-        <Button
-            android:text="@string/activity_rider_request_Request"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonRequest"/>
-        <Button
-            android:text="@string/activity_rider_request_Status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonStatus"/>
-        <Button
-            android:text="@string/activity_driver_CurrentLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonCurrentLocation"/>
-    </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/buttonLinearLayout">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/requestSpinnerLayout">
             <TextView
                 android:padding="20dp"
-                android:text="@string/activity_rider_request_Sort"
+                android:text="@string/activity_rider_request_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/requestSortText"/>
+
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,20 +58,38 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainerDriver"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/requestSpinnerLayout">
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="50dp">
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/dryverMainListView"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true">
+                android:layout_height="match_parent">
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <Button
+            android:text="@string/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:layout_below="@+id/requestSpinnerLayout"
+            android:layout_toEndOf="@+id/searchWith"/>
+
+        <EditText
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/searchWith"
+            android:layout_below="@+id/requestSpinnerLayout"
+            android:layout_alignParentStart="true"
+            android:layout_height="48dp"
+            android:layout_width="273dp"/>
 
 
     </RelativeLayout>
+
 </RelativeLayout>

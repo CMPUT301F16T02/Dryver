@@ -432,12 +432,12 @@ public class ElasticSearchController {
 
     // ==============         PUBLIC SORTING REQUESTS       ===============
 
-    public ArrayList<Request> getRequestsGeolocation(String geolocation) {
+    public ArrayList<Request> getRequestsGeolocation(String distance) {
         Log.i("trace", "ElasticSearchController.getDriverRequests()");
         GetRequestsGeolocationTask getTask = new GetRequestsGeolocationTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
-            requestList = getTask.execute(geolocation).get();
+            requestList = getTask.execute(distance).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

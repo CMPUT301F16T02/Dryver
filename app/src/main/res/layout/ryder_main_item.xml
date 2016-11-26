@@ -64,15 +64,6 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1" />
 
-<<<<<<< HEAD:app/src/main/res/layout/request_main_item.xml
-        <TextView
-            android:id="@+id/requestItemRate"
-            android:layout_height="wrap_content"
-            android:text="@string/request_item_Rate"
-            android:layout_width="191dp"
-            android:layout_below="@+id/requestItemDate"
-            android:layout_alignParentEnd="true"/>
-=======
             <TextView
                 android:id="@+id/requestItemRate"
                 android:layout_height="wrap_content"
@@ -82,7 +73,5 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1" />
         </LinearLayout>
-
->>>>>>> master:app/src/main/res/layout/ryder_main_item.xml
     </RelativeLayout>
 </RelativeLayout>

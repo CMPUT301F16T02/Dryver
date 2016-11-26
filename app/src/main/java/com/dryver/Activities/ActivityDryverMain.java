@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -62,10 +63,11 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
 
-    private Button currentLocationButton;
     private Spinner sortSpinner;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
+
+    private EditText searchByEditText;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -131,9 +133,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
+        searchByEditText = (EditText) findViewById(R.id.searchWith);
 
-        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.dryverMainListView);
@@ -152,13 +153,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Intent intent = new Intent(ActivityDryverMain.this, ActivityDryverSelection.class);
                 return true;
-            }
-        });
-
-        currentLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findCurrentLocation();
             }
         });
 
@@ -279,14 +273,18 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             state = ALL;
         }
         else if (sortSelection.equals("Pending")) {
+            searchByEditText.setHint(R.string.empty);
             state = PENDING;
         }
         else if (sortSelection.equals("Geolocation")) {
+            searchByEditText.setHint(R.string.kilometers);
             state = GEOLOCATION;
         }
         else if (sortSelection.equals("Keyword")) {
+            searchByEditText.setHint(R.string.keyword);
             state = KEYWORD;
         } else if(sortSelection.equals("Rate")){
+            searchByEditText.setHint(R.string.rate);
             state = RATE;
         }
         requestSingleton.updateDriverRequests(state, new ICallBack() {
