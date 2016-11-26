@@ -63,6 +63,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
 
+    private Button searchButton;
     private Spinner sortSpinner;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
@@ -134,6 +135,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
         searchByEditText = (EditText) findViewById(R.id.searchWith);
+        searchButton = (Button) findViewById(R.id.searchButton);
 
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
@@ -153,6 +155,18 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Intent intent = new Intent(ActivityDryverMain.this, ActivityDryverSelection.class);
                 return true;
+            }
+        });
+
+        searchButton.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                requestSingleton.updateDriverRequests(state, new ICallBack() {
+                    @Override
+                    public void execute() {
+                        refreshRequestList();
+                    }
+                });
             }
         });
 
@@ -287,12 +301,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             searchByEditText.setHint(R.string.rate);
             state = RATE;
         }
-        requestSingleton.updateDriverRequests(state, new ICallBack() {
-            @Override
-            public void execute() {
-                refreshRequestList();
-            }
-        });
     }
 
     /**
