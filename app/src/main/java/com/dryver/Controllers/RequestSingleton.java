@@ -190,12 +190,11 @@ public class RequestSingleton {
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
-     * @param request
      * @param driverID
      */
-    public void selectDriver(Request request, String driverID) {
-        request.acceptOffer(driverID);
-        ES.updateRequest(request);
+    public void selectDriverFromTempRequest(String driverID) {
+        tempRequest.acceptOffer(driverID);
+        pushTempRequest();
     }
 
     public void authorizePayment(Request request) {

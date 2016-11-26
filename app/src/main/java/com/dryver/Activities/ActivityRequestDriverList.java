@@ -40,7 +40,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_list);
+        setContentView(R.layout.activity_request_driver_list);
 
         drivers = requestSingleton.getTempRequest().getDrivers();
 
@@ -68,7 +68,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
         int position = info.position;
         switch (item.getItemId()) {
             case R.id.chooseDriver:
-                requestSingleton.selectDriver(requestSingleton.getTempRequest(), (String) driversListView.getItemAtPosition(position));
+                requestSingleton.selectDriverFromTempRequest((String) driversListView.getItemAtPosition(position));
                 return true;
             case R.id.viewTheirProfile:
                 String selectedDriver = (String)driversListView.getItemAtPosition(position);

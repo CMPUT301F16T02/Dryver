@@ -49,13 +49,12 @@ public class Request implements Serializable {
     //Status: 0 for cancelled, 1 for Pending, 2 for Accepted
     private RequestStatus status;
 
-    // [Latitude, Longitude]
     private SimpleCoordinates fromCoordinates;
     private SimpleCoordinates toCoordinates;
 
-    private double cost = 5.00;
+    private double cost;
     private double rate = 0.70;
-    private double distance;
+    private double distance = 0.00;
 
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
