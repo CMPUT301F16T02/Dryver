@@ -294,6 +294,11 @@ public class RequestSingleton {
 
     // TODO: 2016-10-29 Check for duplicate requests from the same user.
 
+    public double getEstimate() {
+        Log.i("Calculating cost", "requestSingleton.getEstimate()");
+        return tempRequest.getCost() + tempRequest.getDistance() * tempRequest.getRate();
+    }
+
     /**
      * Saves the current ArrayList of requests to local storage
      */
@@ -349,5 +354,10 @@ public class RequestSingleton {
             e.printStackTrace();
         }
     }
+
+    public void setDistance(double distance) {
+        tempRequest.setDistance(distance);
+    }
+
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }

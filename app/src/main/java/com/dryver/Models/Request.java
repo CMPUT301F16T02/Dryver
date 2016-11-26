@@ -53,8 +53,9 @@ public class Request implements Serializable {
     private SimpleCoordinates fromCoordinates;
     private SimpleCoordinates toCoordinates;
 
-    private double cost;
-    private double rate;
+    private double cost = 5.00;
+    private double rate = 0.70;
+    public double distance;
 
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
@@ -307,6 +308,14 @@ public class Request implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
 

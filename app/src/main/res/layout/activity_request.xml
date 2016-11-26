@@ -31,6 +31,13 @@
             android:orientation="vertical"
             android:focusable="false">
 
+            <TextView
+                android:text="Estimated Cost:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/estimatedCostTextView"
+                android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,16 +60,6 @@
                 android:id="@+id/requestLocation"
                 android:maxLines="7" />
 
-            <TimePicker
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/requestTimePicker" />
-
-            <DatePicker
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/requestDatePicker"
-                android:focusable="false" />
         </LinearLayout>
     </ScrollView>
 
