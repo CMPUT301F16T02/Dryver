@@ -276,13 +276,6 @@ public class RequestSingleton {
 
         } else if (status == ActivityDryverMainState.RATE){
 
-<<<<<<< HEAD
-        if (userController.getActiveUser() instanceof Rider) {
-            requests = ES.getRequests(userController.getActiveUser().getId());
-        } else if (userController.getActiveUser() instanceof Driver) {
-            requests = ES.getAllRequests();
-        }
-=======
         }
 
         //Compares two lists
@@ -346,6 +339,9 @@ public class RequestSingleton {
             }
         }
 
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
         saveRequests();
         callBack.execute();
