@@ -432,7 +432,47 @@ public class ElasticSearchController {
 
     // ==============         PUBLIC SORTING REQUESTS       ===============
 
-    
+    public ArrayList<Request> getRequestsGeolocation(String geolocation) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsGeolocationTask getTask = new GetRequestsGeolocationTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(geolocation).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    public ArrayList<Request> getDriverRequestsKeyword(String keyword) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsKeywordTask getTask = new GetRequestsKeywordTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(keyword).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    public ArrayList<Request> getDriverRequestsRate(String driverID) {
+        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        GetRequestsRateTask getTask = new GetRequestsRateTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(driverID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
 
     // ==============           PRIVATE REQUEST             ===============
 
@@ -520,6 +560,45 @@ public class ElasticSearchController {
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetDriverRequestsTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"acceptedDriverID\": \"" + search_parameters[0] + "\"}}}";
+
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on geolocation
+     */
+    private static class GetRequestsGeolocationTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on a keyword
+     */
+    private static class GetRequestsKeywordTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on a certain rate
+     */
+    private static class GetRequestsRateTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"rate\": \"" + search_parameters[0] + "\"}}}";
 
             return getRequests(search_string);
         }

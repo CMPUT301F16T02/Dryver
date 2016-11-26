@@ -53,7 +53,6 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
 
         assignElements();
         setListeners();
-        setTimer();
     }
 
     @Override
@@ -80,6 +79,20 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        refreshDriverList();
+        setTimer();
+    }
+
+    @Override
+    public void onPause(){
+        Log.i("trace", "ActivityDryverMain.onPause()");
+        super.onPause();
+        timer.cancel();
     }
 
     private void assignElements(){

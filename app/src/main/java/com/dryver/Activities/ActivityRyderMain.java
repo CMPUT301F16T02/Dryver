@@ -72,17 +72,16 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
 
+        assignElements();
+        setListeners();
+        checkStatuses();
+
         requestSingleton.updateRiderRequests(new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();
             }
         });
-
-        assignElements();
-        setListeners();
-        checkStatuses();
-        setTimer();
     }
 
     @Override
@@ -95,12 +94,13 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         Log.i("info", "ActivityRyderMain.onResume()");
         super.onResume();
         refreshRequestList();
+        setTimer();
     }
 
     @Override
-    public void onBackPressed(){
-        Log.i("info", "ActivityRyderMain.onBackPressed()");
-        super.onBackPressed();
+    public void onPause(){
+        Log.i("info", "ActivityRyderMain.onPause()");
+        super.onPause();
         timer.cancel();
     }
 

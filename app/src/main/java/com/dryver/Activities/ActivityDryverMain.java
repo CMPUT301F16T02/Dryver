@@ -37,7 +37,7 @@ import android.widget.Spinner;
 import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.ActivityDryverMainStatus;
+import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -51,7 +51,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.dryver.Models.ActivityDryverMainStatus.*;
+import static com.dryver.Models.ActivityDryverMainState.*;
 
 
 /**
@@ -76,7 +76,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private GoogleApiClient mClient;
 
     private Timer timer;
-    private ActivityDryverMainStatus status = ALL;
+    private ActivityDryverMainState state = ALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +88,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         driver = new Driver(userController.getActiveUser());
         userController.setActiveUser(driver);
 
-
         assignElements();
         setListeners();
         setMapStuff();
         checkStatuses();
-        setTimer();
     }
 
     @Override
@@ -106,6 +104,14 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     public void onResume () {
         super.onResume();
         refreshRequestList();
+        setTimer();
+    }
+
+    @Override
+    public void onPause(){
+        Log.i("trace", "ActivityDryverMain.onPause()");
+        super.onPause();
+        timer.cancel();
     }
 
     @Override
@@ -114,13 +120,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         if (mClient.isConnected()) {
             mClient.disconnect();
         }
-    }
-
-    @Override
-    public void onBackPressed(){
-        Log.i("trace", "ActivityDryverMain.onBackPressed()");
-        super.onBackPressed();
-        timer.cancel();
     }
 
     /**
@@ -184,7 +183,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(Bundle bundle) {
-                        currentLocationButton.setVisibility(View.VISIBLE);
+                        findCurrentLocation();
                     }
                     @Override
                     public void onConnectionSuspended(int i) {
@@ -206,13 +205,12 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                         request.getAcceptedDriverID() == userController.getActiveUser().getId()){
                     notifySelected(request);
                 }
-
             }
         }
     }
 
     /**
-     * Notifies if the status of a request that the driver is a part of has payment authorized
+     * Notifies if the state of a request that the driver is a part of has payment authorized
      */
     private void notifyPayment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
@@ -278,20 +276,20 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         Log.i("trace", "ActivityDryverMain.onItemSelected()");
         String sortSelection = parent.getItemAtPosition(pos).toString();
         if (sortSelection.equals("All")) {
-            status = ALL;
+            state = ALL;
         }
         else if (sortSelection.equals("Pending")) {
-            status = PENDING;
+            state = PENDING;
         }
         else if (sortSelection.equals("Geolocation")) {
-            status = GEOLOCATION;
+            state = GEOLOCATION;
         }
         else if (sortSelection.equals("Keyword")) {
-            status = KEYWORD;
+            state = KEYWORD;
         } else if(sortSelection.equals("Rate")){
-            status = RATE;
+            state = RATE;
         }
-        requestSingleton.updateDriverRequests(status, new ICallBack() {
+        requestSingleton.updateDriverRequests(state, new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();
@@ -325,7 +323,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      */
     public void beginRefresh() {
         Log.i("trace", "ActivityDryverMain.beginRefresh()");
-        requestSingleton.updateDriverRequests(status, new ICallBack() {
+        requestSingleton.updateDriverRequests(state, new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();
