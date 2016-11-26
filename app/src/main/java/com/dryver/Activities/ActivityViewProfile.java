@@ -51,8 +51,7 @@ public class ActivityViewProfile extends Activity {
         phoneTextView.setText(user.getPhoneNumber());
 
         checkUserType();
-
-       setListeners();
+        setListeners();
     }
 
     /**
