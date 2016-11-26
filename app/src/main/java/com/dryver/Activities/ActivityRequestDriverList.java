@@ -43,8 +43,8 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
         setContentView(R.layout.activity_request_driver_list);
 
         drivers = requestSingleton.getTempRequest().getDrivers();
-
         driversListView = (ListView) findViewById(R.id.drivers_list);
+
         adapter = new DryverListAdapter(this, drivers);
         driversListView.setAdapter(adapter);
 
