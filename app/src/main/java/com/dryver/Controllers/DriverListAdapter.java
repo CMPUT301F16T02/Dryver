@@ -35,14 +35,9 @@ public class DriverListAdapter extends ArrayAdapter<String> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2016-11-24 implement view driver profile here. 
-//                RequestSingleton RS = RequestSingleton.getInstance();
-//
-//                RS.setViewedRequest(request);
-//                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
-//                intent.putExtra("position", position);
-//                mContext.startActivity(intent);
-
+                //TODO: TEST THIS MFs
+                // Not sure if this works or not, It should though
+                UserController.getInstance().viewUserProfile(ElasticSearchController.getInstance().getUserByString(getItem(position)), mContext);
             }
 
         });

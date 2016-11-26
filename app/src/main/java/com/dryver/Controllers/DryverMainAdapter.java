@@ -34,12 +34,7 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2016-11-24 implement view driver profile here
-
-//                RS.setViewedRequest(request);
-//                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
-//                intent.putExtra("position", position);
-//                mContext.startActivity(intent);
+            //TODO: Tell me wtf goes here pleas -ADAM
             }
 
         });
