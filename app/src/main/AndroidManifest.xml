@@ -58,7 +58,7 @@
         <activity android:name=".Activities.ActivityDryverMain" />
         <activity android:name=".Activities.ActivityRyderMain" />
         <activity android:name=".Activities.ActivityEditProfile" />
-        <activity android:name=".Activities.ActivityRequestSelection" />
+        <activity android:name=".Activities.ActivityRyderSelection" />
         <activity android:name=".Activities.ActivityRequestMap" />
         <activity android:name=".Activities.ActivityRequest" />
         <activity android:name=".Activities.ActivityLoggedInActionBar" />

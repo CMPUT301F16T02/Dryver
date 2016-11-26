@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.dryver.Activities.ActivityDriverSelection;
-import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
