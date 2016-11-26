@@ -53,6 +53,8 @@ public class UserController {
     private User viewedUser;
     private boolean cached = false;
 
+//  ======================= Standard Getters, Setters, Constructor =================================
+
     /**
      * Gets instance of the User.
      *
@@ -92,6 +94,8 @@ public class UserController {
         saveUser();
     }
 
+//  ================================= Open Various Related Activities ==============================
+
     /**
      * A method for viewing and editing your own profile
      *
@@ -113,6 +117,8 @@ public class UserController {
         Intent intent = new Intent(context, ActivityViewProfile.class);
         context.startActivity(intent);
     }
+
+//  ================================= Stateish Stuff ===============================================
 
     /**
      * Login the user by userid they provide in the text field.
@@ -144,6 +150,8 @@ public class UserController {
     public boolean updateActiveUser(){
         return ES.updateUser(activeUser);
     }
+
+//  ============================ Offline Serialization and Caching Stuff ===========================
 
     /**
      * Save the current active user's profile to the local storage
