@@ -32,7 +32,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonLinearLayout">
+        android:id="@+id/buttonLinearLayout"
+        android:paddingBottom="10dp">
 
         <TextView
             android:text="@string/ryder_main_title"

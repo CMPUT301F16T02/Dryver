@@ -113,6 +113,8 @@
 
     <string name="activity_driver_list_title">Drivers</string>
 
+    <string name="request_item_pickup">Pickup Location</string>
+    <string name="request_item_Rate">Rate</string>
     <string name="request_item_Cost">Cost</string>
     <string name="google_api_key">AIzaSyCUdfcLLIkGiLLkF95uGQHww8Y0whSX2a4</string>
     <string name="activity_driver_CurrentLocation">Get Location</string>
@@ -123,4 +125,12 @@
     <string name="action_delete">Action Delete</string>
     <string name="action_search">Action Search</string>
     <string name="action_direction">Action Direction</string>
+    <string name="activity_dryver_selection_location">location</string>
+    <string name="activity_dryver_selection_Date">date</string>
+    <string name="activity_dryver_selection_Status">status</string>
+    <string name="activity_dryver_selection_AcceptRequest">Accept Request</string>
+    <string name="activity_dryver_selection_CancelRequest">Cancel Request</string>
+    <string name="activity_dryver_selection_RequestDetails">Request Details</string>
+    <string name="activity_dryver_selection_riderID">Rider ID</string>
+    <string name="activity_dryver_selection_Description">implement Description for request</string>
 </resources>

@@ -34,7 +34,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.dryver.Controllers.DryverMainAdapter;
+import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
@@ -46,6 +46,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -69,6 +72,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private Driver driver;
     private GoogleApiClient mClient;
 
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +88,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         setListeners();
         setMapStuff();
         checkStatuses();
+        setTimer();
     }
 
     @Override
@@ -133,7 +139,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDriverSelection.class);
+//                Intent intent = new Intent(ActivityDryverMain.this, ActivityDryverSelection.class);
                 return true;
             }
         });
@@ -182,9 +188,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     public void checkStatuses(){
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.COMPLETE){
-                    notifyComplete();
-                } else if(request.getStatus() == RequestStatus.DRIVER_SELECTED &&
+                if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
+                    notifyPayment();
+                } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
                         request.getAcceptedDriverID() == userController.getActiveUser().getId()){
                     notifySelected(request);
                 }
@@ -194,9 +200,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * Notifies if the status of a request that the driver is a part of is somplete
+     * Notifies if the status of a request that the driver is a part of has payment authorized
      */
-    private void notifyComplete(){
+    private void notifyPayment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title);
@@ -314,5 +320,19 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         dryverMainAdapter.notifyDataSetChanged();
     }
 
+    private void setTimer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginRefresh();
+                    }
+                });
+            }
+        }, 0, 30000);//put here time 1000 milliseconds=1 second
+    }
 
 }

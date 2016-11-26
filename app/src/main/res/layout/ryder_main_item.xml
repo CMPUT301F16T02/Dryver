@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:longClickable="true"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusable="false"
+        android:id="@+id/requestItemTextRelativeLayout"
+        android:focusableInTouchMode="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/requestItemPickup"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/request_item_pickup"
+            android:layout_below="@+id/requestItemName"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/requestItemDestination"
+            android:layout_height="wrap_content"
+            android:text="@string/request_item_Destination"
+            android:layout_below="@+id/requestItemPickup"
+            android:layout_alignParentEnd="true"
+            android:layout_width="match_parent"/>
+
+        <TextView
+            android:id="@+id/requestItemStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemDestination"
+            android:text="@string/request_item_StatusName"/>
+
+        <TextView
+            android:id="@+id/requestItemDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemStatus"
+            android:text="@string/request_item_Date"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/requestItemDate">
+
+            <TextView
+                android:id="@+id/requestItemCost"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/requestItemDate"
+                android:text="@string/request_item_Cost"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/requestItemRate"
+                android:layout_height="wrap_content"
+                android:text="@string/request_item_Rate"
+                android:layout_below="@+id/requestItemDate"
+                android:layout_alignStart="@+id/requestItemDestination"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

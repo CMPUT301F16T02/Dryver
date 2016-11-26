@@ -60,7 +60,7 @@ public class ActivityOpeningPage extends Activity {
         /* Check if their is an existing cached user. Otherwise prompt for login. */
         if (UserController.getInstance().isCached()) {
             UserController.getInstance().loadUser();
-            Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
+            Intent intent = new Intent(ActivityOpeningPage.this, ActivityRydeOrDryve.class);
             ActivityOpeningPage.this.startActivity(intent);
         }
 
@@ -84,7 +84,7 @@ public class ActivityOpeningPage extends Activity {
                 if (!HelpMe.isEmptyTextField(usernameEditText)) {
                     try {
                         if (userController.login(usernameEditText.getText().toString())) {
-                            Intent intent = new Intent(ActivityOpeningPage.this, ActivitySelection.class);
+                            Intent intent = new Intent(ActivityOpeningPage.this, ActivityRydeOrDryve.class);
                             ActivityOpeningPage.this.startActivity(intent);
                         } else {
                             usernameEditText.setError("Username does not exist.");
