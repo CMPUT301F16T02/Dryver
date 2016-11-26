@@ -54,7 +54,7 @@ public class Request implements Serializable {
 
     private double cost;
     private double rate = 0.70;
-    private double distance = 0.00;
+    private double distance = 1.00;
 
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
@@ -259,6 +259,7 @@ public class Request implements Serializable {
     }
 
     public void setCost(Double cost) {
+        this.rate = cost/(distance/1000);
         this.cost = cost;
     }
 

@@ -339,10 +339,6 @@ public class RequestSingleton {
             }
         }
 
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
         saveRequests();
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
