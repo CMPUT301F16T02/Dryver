@@ -31,7 +31,7 @@ public class RequestMainAdapter extends ArrayAdapter<Request> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        DecimalFormat formater = new DecimalFormat("0.00");
+        DecimalFormat formatter = new DecimalFormat("0.00");
 
         final Request request = getItem(position);
 
@@ -55,9 +55,9 @@ public class RequestMainAdapter extends ArrayAdapter<Request> {
         TextView requestCost = (TextView) convertView.findViewById(R.id.requestItemCost);
         TextView requestRate = (TextView) convertView.findViewById(R.id.requestItemRate);
 
-        requestName.setText("Ride Request");
-        requestDestination.setText("Destination: " + formater.format(request.getToLocation().getLatitude()) + ", " + formater.format(request.getToLocation().getLongitude()));
-        requestPickup.setText("Pickup At: " + formater.format(request.getToLocation().getLatitude()) + ", " + formater.format(request.getToLocation().getLongitude()));
+        requestDestination.setText(HelpMe.formatDestinationLocation(request));
+        requestPickup.setText(HelpMe.formatPickupLocation(request));
+
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         requestCost.setText("Total Cost: $" + request.getCost());

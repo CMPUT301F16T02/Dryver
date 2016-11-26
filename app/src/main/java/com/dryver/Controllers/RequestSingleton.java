@@ -123,6 +123,10 @@ public class RequestSingleton {
         return tempRequest;
     }
 
+    public void setTempRequest(Request request) {
+        this.tempRequest = request;
+    }
+
     public void pushTempRequest() {
         pushRequest(tempRequest);
         saveRequests();
