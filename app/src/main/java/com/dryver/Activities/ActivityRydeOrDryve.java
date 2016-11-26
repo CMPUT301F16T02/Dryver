@@ -29,14 +29,14 @@ import com.dryver.R;
 /**
  * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
  */
-public class ActivitySelection extends ActivityLoggedInActionBar {
+public class ActivityRydeOrDryve extends ActivityLoggedInActionBar {
     private Button dryveButton;
     private Button rydeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selection);
+        setContentView(R.layout.activity_ryde_or_dryve);
 
         dryveButton = (Button) findViewById(R.id.driver_button);
         rydeButton = (Button) findViewById(R.id.request_button);
@@ -51,7 +51,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
         dryveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivitySelection.this, ActivityDryverMain.class);
+                Intent intent = new Intent(ActivityRydeOrDryve.this, ActivityDryverMain.class);
                 startActivity(intent);
             }
         });
@@ -60,7 +60,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ActivitySelection.this, ActivityRyderMain.class);
+                Intent intent = new Intent(ActivityRydeOrDryve.this, ActivityRyderMain.class);
                 startActivity(intent);
             }
         });

@@ -7,23 +7,22 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.dryver.Controllers.DriverListAdapter;
+import com.dryver.Adapters.DryverListAdapter;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
-import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class ActivityDriverList extends ActivityLoggedInActionBar {
 
@@ -46,7 +45,7 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
         drivers = requestSingleton.getTempRequest().getDrivers();
 
         driversListView = (ListView) findViewById(R.id.drivers_list);
-        adapter = new DriverListAdapter(this, drivers);
+        adapter = new DryverListAdapter(this, drivers);
         driversListView.setAdapter(adapter);
 
         registerForContextMenu(driversListView);

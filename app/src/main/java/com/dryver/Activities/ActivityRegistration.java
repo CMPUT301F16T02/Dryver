@@ -94,7 +94,7 @@ public class ActivityRegistration extends Activity {
                     if (ES.addUser(user)) {
                         Log.i("Info", "User added succesfully via ElasticSearch Controller");
                         userController.setActiveUser(user);
-                        Intent intent = new Intent(ActivityRegistration.this, ActivitySelection.class);
+                        Intent intent = new Intent(ActivityRegistration.this, ActivityRydeOrDryve.class);
                         ActivityRegistration.this.startActivity(intent);
                     } else {
                         usernameEditText.setError("Username is taken. Try something else.");

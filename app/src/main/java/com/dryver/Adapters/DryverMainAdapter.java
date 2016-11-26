@@ -1,4 +1,4 @@
-package com.dryver.Controllers;
+package com.dryver.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.dryver.Activities.ActivityDriverSelection;
-import com.dryver.Activities.ActivityRequestSelection;
+import com.dryver.Activities.ActivityDryverSelection;
+import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -48,7 +48,7 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
             @Override
             public void onClick(View v) {
                 requestSingleton.setTempRequest(request);
-                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
+                Intent intent = new Intent(mContext, ActivityDryverSelection.class);
                 mContext.startActivity(intent);
             }
         });

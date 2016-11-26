@@ -89,13 +89,6 @@ public class Request implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
-    public boolean hasID() {
-        if (getId() != null) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Gets elastic search user id.
      *
@@ -163,10 +156,15 @@ public class Request implements Serializable {
         return this.acceptedDriverID;
     }
 
-    /**
-     * Sets the accepted Driver's ID
-     * @param driverID
-     */
+    public boolean isAcceptedDriver(String driverID) {
+        if (acceptedDriverID == null) {
+            return false;
+        }
+        if (acceptedDriverID.equals(driverID)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Accapts an offer, and sets the accepted Driver
@@ -297,6 +295,17 @@ public class Request implements Serializable {
         } else {
             return "Unknown Status String";
         }
+    }
+
+    public boolean hasDriver(String driverID) {
+        if (drivers.contains(driverID)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void removeDriver(String driverID) {
+        drivers.remove(driverID);
     }
 
     @Override

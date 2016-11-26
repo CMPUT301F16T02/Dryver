@@ -22,7 +22,6 @@ package com.dryver.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +29,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.dryver.Controllers.RequestMainAdapter;
+import com.dryver.Adapters.RyderMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.RequestStatus;
@@ -53,7 +52,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Button addRequestButton;
     private ListView requestListView;
-    private RequestMainAdapter requestMainAdapter;
+    private RyderMainAdapter ryderMainAdapter;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
@@ -128,8 +127,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getUpdatedRequests());
-        requestListView.setAdapter(requestMainAdapter);
+        ryderMainAdapter = new RyderMainAdapter(this, requestSingleton.getUpdatedRequests());
+        requestListView.setAdapter(ryderMainAdapter);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerRider);
     }
 
@@ -140,11 +139,11 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
-                    requestListView.getChildAt(requestMainAdapter.getPosition(request));
+                    requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                 }
                 else if(request.getStatus() == RequestStatus.PAYMENT_ACCEPTED){
-                    requestListView.getChildAt(requestMainAdapter.getPosition(request));
+                    requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                 }
             }
@@ -208,7 +207,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     private void refreshRequestList(){
         Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
-        requestMainAdapter.notifyDataSetChanged();
+        ryderMainAdapter.notifyDataSetChanged();
         checkStatuses();
     }
 
