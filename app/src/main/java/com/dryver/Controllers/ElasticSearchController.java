@@ -129,6 +129,11 @@ public class ElasticSearchController {
 
     // ==============           PUBLIC USER               ===============
 
+    /**
+     * Adds a user to ES
+     * @param user
+     * @return boolean - successfully executed
+     */
     public boolean addUser(User user) {
         if (getUserByString(user.getId()) == null) {
             AddUserTask addTask = new AddUserTask();
@@ -138,6 +143,11 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Delete a user from ES
+     * @param user
+     * @return boolean - successfully executed
+     */
     public boolean deleteUser(User user) {
         if (getUserByString(user.getId()) != null) {
             DeleteUserTask deleteTask = new DeleteUserTask();
@@ -147,6 +157,11 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Updates an existing user in ES
+     * @param user
+     * @return boolean - successfully executed
+     */
     public boolean updateUser(User user) {
         if (getUserByString(user.getId()) != null) {
             AddUserTask addTask = new AddUserTask();
@@ -156,6 +171,11 @@ public class ElasticSearchController {
         return false;
     }
 
+    /**
+     * Gets a user with the user's ID from ES. Used for signin in particular
+     * @param username
+     * @return User - the user fetched from ES
+     */
     public User getUserByString(String username) {
         GetUserTask getTask = new GetUserTask();
         User temp = null;
@@ -387,8 +407,15 @@ public class ElasticSearchController {
         }
     }
 
+    // ==============         PUBLIC SORTING REQUESTS       ===============
+
+    
+
     // ==============           PRIVATE REQUEST             ===============
 
+    /**
+     * A Task that adds requests to ES asynchronously
+     */
     private static class AddRequestTask extends AsyncTask<Request, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
@@ -409,6 +436,9 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A task that deleted requests from ES asynchronously via it's ES id
+     */
     private static class DeleteRequestTask extends AsyncTask<Request, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Request... search_parameters) {
@@ -425,6 +455,9 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A task that gets a single request from ES with it's id
+     */
     private static class GetRequestTask extends AsyncTask<String, Void, Request> {
 
         @Override
@@ -443,6 +476,9 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A Task that gets all requests associated with a rider's id from ES asynchronously
+     */
     private static class GetRequestsTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
@@ -482,6 +518,9 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * An asynchronous task that gets all of the requests on ES
+     */
     private static class GetAllRequestsTask extends AsyncTask<Void, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(Void... search_parameters) {

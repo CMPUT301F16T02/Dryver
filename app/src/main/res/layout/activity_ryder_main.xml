@@ -34,18 +34,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonLinearLayout">
 
-        <Button
-            android:text="@string/activity_rider_request_Request"
+        <TextView
+            android:text="@string/ryder_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textView9"
             android:layout_weight="1"
-            android:id="@+id/requestButtonRequest"/>
-        <Button
-            android:text="@string/activity_rider_request_Status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/requestButtonStatus"/>
+            android:textAppearance="@android:style/TextAppearance.Material.Large"/>
 
     </LinearLayout>
 

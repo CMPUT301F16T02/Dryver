@@ -31,14 +31,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.dryver.Activities.ActivityOpeningPage">
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/signin_button"
-        android:layout_marginBottom="94dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/activity_openingpage_login"/>
 
     <Button
         android:text="@string/activity_openingpage_register"
@@ -57,19 +49,38 @@
         android:layout_above="@+id/getstarted_button"
         android:layout_alignStart="@+id/getstarted_button"/>
 
-    <TextView
-        android:text="@string/existing_user"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/signin_button"
-        android:id="@+id/textView7"
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:layout_alignStart="@+id/signin_button"/>
-
     <ImageView
         android:src="@drawable/logo_full"
         android:layout_height="130dp"
         android:layout_width="250dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:text="@string/existing_user"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:layout_below="@+id/getstarted_button"
+        android:layout_alignStart="@+id/getstarted_button"
+        android:layout_marginTop="35dp"/>
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:hint="@string/activity_login_username"
+        android:id="@+id/username_edittext"
+        android:layout_below="@+id/textView7"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/signin_button"
+        android:text="@string/activity_openingpage_login"
+        android:layout_below="@+id/username_edittext"
+        android:layout_alignStart="@+id/textView7"/>
 </RelativeLayout>

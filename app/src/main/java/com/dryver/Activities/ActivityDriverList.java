@@ -22,6 +22,8 @@ import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ActivityDriverList extends ActivityLoggedInActionBar {
 
@@ -34,6 +36,8 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
     private ArrayAdapter<String> adapter;
     private SwipeRefreshLayout swipeContainer;
 
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +45,15 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
 
         drivers = requestSingleton.getTempRequest().getDrivers();
 
-
         driversListView = (ListView) findViewById(R.id.drivers_list);
         adapter = new DriverListAdapter(this, drivers);
         driversListView.setAdapter(adapter);
 
         registerForContextMenu(driversListView);
 
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                beginRefresh();
-            }
-        });
+        assignElements();
+        setListeners();
+        setTimer();
     }
 
     @Override
@@ -83,25 +82,53 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
         }
     }
 
+    private void assignElements(){
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+    }
+
+    private void setListeners(){
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
+    }
+
     /**
      * Begins the refreshing of the driver list
      */
     public void beginRefresh() {
-//         requestSingleton.updateViewedRequest(request, new ICallBack() {
-//            @Override
-//            public void execute() {
-//                refreshDriverList();
-//            }
-//        });
+         requestSingleton.updateTempRequest(new ICallBack() {
+            @Override
+            public void execute() {
+                refreshDriverList();
+            }
+        });
     }
 
     /**
      * Called after data in driver list has changed
      */
     private void refreshDriverList() {
-        Log.i("trace", "ActivityRequestMain.refreshRequestList()");
+        Log.i("trace", "ActivityRiderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         adapter.notifyDataSetChanged();
+    }
+
+    private void setTimer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginRefresh();
+                    }
+                });
+            }
+        }, 0, 30000);//put here time 1000 milliseconds=1 second
     }
 
 }

@@ -20,6 +20,8 @@
 package com.dryver.Activities;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,12 +38,17 @@ import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Driver;
+import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -65,32 +72,63 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private Driver driver;
     private GoogleApiClient mClient;
 
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dryver_main);
 
-        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
+        requestSingleton.setRequestsAll();
 
+        driver = new Driver(userController.getActiveUser());
+        userController.setActiveUser(driver);
+
+        assignElements();
+        setListeners();
+        setMapStuff();
+        checkStatuses();
+        setTimer();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        refreshRequestList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mClient.isConnected()) {
+            mClient.disconnect();
+        }
+    }
+
+    /**
+     * Assigns all UI elements to the actual views
+     */
+    private void assignElements(){
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
 
-        driver = new Driver(userController.getActiveUser());
-        userController.setActiveUser(driver);
-
+        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
+        currentLocationButton.setVisibility(View.INVISIBLE);
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.dryverMainListView);
-//        requestSingleton.setRequestsAll();
+        //requestSingleton.setRequestsAll();
         dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
         driverListView.setAdapter(dryverMainAdapter);
-
-        setListeners();
-
     }
 
     /**
@@ -113,6 +151,20 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             }
         });
 
+        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                beginRefresh();
+            }
+        });
+    }
+
+    /**
+     * does some mappy type stuff
+     */
+    private void setMapStuff(){
         //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
         mClient = new GoogleApiClient.Builder(ActivityDryverMain.this)
@@ -128,29 +180,61 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                 })
                 .build();
         //==============================================
+    }
 
-        //https://guides.codepath.com/android/Implementing-Pull-to-Refresh-Guide
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                beginRefresh();
+    /**
+     * Checks the statuses of the requests the driver is viewing
+     */
+    public void checkStatuses(){
+        if(requestSingleton.getRequests().size() != 0){
+            for (Request request : requestSingleton.getRequests()){
+                if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
+                    notifyPayment();
+                } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
+                        request.getAcceptedDriverID() == userController.getActiveUser().getId()){
+                    notifySelected(request);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Notifies if the status of a request that the driver is a part of has payment authorized
+     */
+    private void notifyPayment(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title);
+
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
             }
         });
+        builder.create();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mClient.connect();
-    }
+    /**
+     * Notifies that the driver has been choses to fulfill the user's request
+     * @param request
+     */
+    private void notifySelected(final Request request){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage(R.string.dryver_selected_message)
+                .setTitle(R.string.dryver_selected_title);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mClient.isConnected()) {
-            mClient.disconnect();
-        }
+        builder.setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                requestSingleton.viewRequest(ActivityDryverMain.this, request);
+            }
+        });
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.create();
     }
 
     /**
@@ -231,14 +315,24 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * The method called after data has changed in the request list
      */
     private void refreshRequestList(){
-        Log.i("trace", "ActivityRyderMain.refreshRequestList()");
+        Log.i("trace", "ActivityDryverMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         dryverMainAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onResume () {
-        super.onResume();
-        refreshRequestList();
+    private void setTimer(){
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginRefresh();
+                    }
+                });
+            }
+        }, 0, 30000);//put here time 1000 milliseconds=1 second
     }
+
 }

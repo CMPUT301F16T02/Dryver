@@ -1,12 +1,15 @@
 package com.dryver.Controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.dryver.Activities.ActivityDriverSelection;
+import com.dryver.Activities.ActivityRequestSelection;
 import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -31,20 +34,6 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.dryver_main_item, null);
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 2016-11-24 implement view driver profile here
-
-//                RS.setViewedRequest(request);
-//                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
-//                intent.putExtra("position", position);
-//                mContext.startActivity(intent);
-            }
-
-        });
-
-
         TextView riderText = (TextView) convertView.findViewById(R.id.dryverItemRiderID);
         TextView destinationText = (TextView) convertView.findViewById(R.id.dryverItemDestination);
         TextView dateText = (TextView) convertView.findViewById(R.id.dryverItemDate);
@@ -54,6 +43,22 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         destinationText.setText("Destination: " + request.getToLocation());
         dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         costText.setText("Cost: $" + request.getCost());
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSingleton.setTempRequest(request);
+                Intent intent = new Intent(mContext, ActivityDriverSelection.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        riderText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: 2016-11-26 clickable username.
+            }
+        });
 
         return convertView;
     }

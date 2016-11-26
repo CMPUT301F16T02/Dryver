@@ -59,6 +59,7 @@ public class ActivitySelection extends ActivityLoggedInActionBar {
         rydeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(ActivitySelection.this, ActivityRyderMain.class);
                 startActivity(intent);
             }

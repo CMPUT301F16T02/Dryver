@@ -5,5 +5,10 @@ package com.dryver.Models;
  */
 
 public enum RequestStatus {
-    CANCELLED, NO_DRIVERS, DRIVERS_FOUND, FINALIZED
+    CANCELLED,
+    NO_DRIVERS,
+    DRIVERS_AVAILABLE,
+    DRIVER_CHOSEN,
+    PAYMENT_AUTHORIZED,
+    PAYMENT_ACCEPTED
 }

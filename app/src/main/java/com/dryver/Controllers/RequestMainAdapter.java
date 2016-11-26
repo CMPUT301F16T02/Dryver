@@ -13,6 +13,7 @@ import com.dryver.Models.Request;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +31,8 @@ public class RequestMainAdapter extends ArrayAdapter<Request> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        DecimalFormat formatter = new DecimalFormat("0.00");
+
         final Request request = getItem(position);
 
         if (convertView == null) {
@@ -39,24 +42,26 @@ public class RequestMainAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.setTempRequest(request);
-                Intent intent = new Intent(mContext, ActivityRequestSelection.class);
-                mContext.startActivity(intent);
+                requestSingleton.viewRequest(mContext, request);
             }
 
         });
 
         TextView requestName = (TextView) convertView.findViewById(R.id.requestItemName);
+        TextView requestPickup = (TextView) convertView.findViewById(R.id.requestItemPickup);
         TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
         TextView requestStatus = (TextView) convertView.findViewById(R.id.requestItemStatus);
         TextView requestDate = (TextView) convertView.findViewById(R.id.requestItemDate);
         TextView requestCost = (TextView) convertView.findViewById(R.id.requestItemCost);
+        TextView requestRate = (TextView) convertView.findViewById(R.id.requestItemRate);
 
-        requestName.setText("Ride Request");
-        requestDestination.setText("Destination: " +request.getToLocation());
+        requestDestination.setText(HelpMe.formatDestinationLocation(request));
+        requestPickup.setText(HelpMe.formatPickupLocation(request));
+
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));
-        requestCost.setText("Cost: $" + request.getCost());
+        requestCost.setText("Total Cost: $" + request.getCost());
+        requestRate.setText("Rate: $" + request.getRate() + "/km");
 
 
         return convertView;

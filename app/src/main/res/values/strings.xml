@@ -76,6 +76,20 @@
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
+    <string name="ryder_main_title">Your Open Requests</string>
+
+    <!--Dialog popup Strings-->
+    <string name="drivers_found_message">Drivers have been found for one of your requests! Either view the list of divers, or close this window.</string>
+    <string name="drivers_found_title">Drivers Found</string>
+    <string name="close">Close</string>
+    <string name="drivers_found_view">View Driver List</string>
+
+    <string name="complete_title">Request Complete</string>
+    <string name="complete_message">A request you are involved in has been completed!</string>
+
+    <string name="dryver_selected_message">You have been selected by a ryder to fill their request!</string>
+    <string name="dryver_selected_title">You Were Selected</string>
+    <string name="dryver_selected_view">View Request</string>
 
     <string name="activity_request_text_tripcost">Enter trip cost</string>
     <string name="activity_request_button_submit">Submit</string>
@@ -99,6 +113,8 @@
 
     <string name="activity_driver_list_title">Drivers</string>
 
+    <string name="request_item_pickup">Pickup Location</string>
+    <string name="request_item_Rate">Rate</string>
     <string name="request_item_Cost">Cost</string>
     <string name="google_api_key">AIzaSyCUdfcLLIkGiLLkF95uGQHww8Y0whSX2a4</string>
     <string name="activity_driver_CurrentLocation">Get Location</string>
