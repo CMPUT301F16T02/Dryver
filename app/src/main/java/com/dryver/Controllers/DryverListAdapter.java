@@ -11,14 +11,11 @@ import com.dryver.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by drei on 2016-11-24.
- */
 
-public class DriverListAdapter extends ArrayAdapter<String> {
+public class DryverListAdapter extends ArrayAdapter<String> {
     private Context mContext;
 
-    public DriverListAdapter(Context context, ArrayList<String> driverArrayList) {
+    public DryverListAdapter(Context context, ArrayList<String> driverArrayList) {
         super(context, 0, driverArrayList);
         this.mContext = context;
     }
