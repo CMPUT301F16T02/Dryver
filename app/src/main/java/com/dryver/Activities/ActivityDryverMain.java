@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import com.dryver.Controllers.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.ActivityDryverMainStatus;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -49,6 +50,8 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.dryver.Models.ActivityDryverMainStatus.*;
 
 
 /**
@@ -73,6 +76,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private GoogleApiClient mClient;
 
     private Timer timer;
+    private ActivityDryverMainStatus status = ALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
         driver = new Driver(userController.getActiveUser());
         userController.setActiveUser(driver);
+
 
         assignElements();
         setListeners();
@@ -111,6 +116,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        Log.i("trace", "ActivityDryverMain.onBackPressed()");
+        super.onBackPressed();
+        timer.cancel();
+    }
+
     /**
      * Assigns all UI elements to the actual views
      */
@@ -127,7 +139,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.dryverMainListView);
         //requestSingleton.setRequestsAll();
-        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
+        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getRequests());
         driverListView.setAdapter(dryverMainAdapter);
     }
 
@@ -263,20 +275,28 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param id
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        Log.i("trace", "ActivityDryverMain.onItemSelected()");
         String sortSelection = parent.getItemAtPosition(pos).toString();
-        if (sortSelection.equals("Date")) {
-            requestSingleton.sortRequestByDate();
+        if (sortSelection.equals("All")) {
+            status = ALL;
         }
-        else if (sortSelection.equals("Distance")) {
-            requestSingleton.sortRequestByDistance();
+        else if (sortSelection.equals("Pending")) {
+            status = PENDING;
         }
-        else if (sortSelection.equals("Cost")) {
-            requestSingleton.sortRequestByCost();
+        else if (sortSelection.equals("Geolocation")) {
+            status = GEOLOCATION;
         }
-        else if (sortSelection.equals("Proximity")) {
-            requestSingleton.sortRequestsByProximity(currentLocation);
+        else if (sortSelection.equals("Keyword")) {
+            status = KEYWORD;
+        } else if(sortSelection.equals("Rate")){
+            status = RATE;
         }
-        dryverMainAdapter.notifyDataSetChanged();
+        requestSingleton.updateDriverRequests(status, new ICallBack() {
+            @Override
+            public void execute() {
+                refreshRequestList();
+            }
+        });
     }
 
     /**
@@ -292,6 +312,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param LOCATION_INTERVAL
      */
     public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+        Log.i("trace", "ActivityDryverMain.initializeLocationRequest()");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setNumUpdates(LOCATION_UPDATES);
@@ -303,7 +324,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @see ICallBack
      */
     public void beginRefresh() {
-        requestSingleton.updateRequests(new ICallBack() {
+        Log.i("trace", "ActivityDryverMain.beginRefresh()");
+        requestSingleton.updateDriverRequests(status, new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();

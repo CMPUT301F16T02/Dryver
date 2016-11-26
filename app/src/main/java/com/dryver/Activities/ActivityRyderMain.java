@@ -22,7 +22,6 @@ package com.dryver.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -73,6 +72,13 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         rider = new Rider(userController.getActiveUser());
         userController.setActiveUser(rider);
 
+        requestSingleton.updateRiderRequests(new ICallBack() {
+            @Override
+            public void execute() {
+                refreshRequestList();
+            }
+        });
+
         assignElements();
         setListeners();
         checkStatuses();
@@ -89,6 +95,13 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         Log.i("info", "ActivityRyderMain.onResume()");
         super.onResume();
         refreshRequestList();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Log.i("info", "ActivityRyderMain.onBackPressed()");
+        super.onBackPressed();
+        timer.cancel();
     }
 
     /**
@@ -128,7 +141,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
-        requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getUpdatedRequests());
+        requestMainAdapter = new RequestMainAdapter(this, requestSingleton.getRequests());
         requestListView.setAdapter(requestMainAdapter);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerRider);
     }
@@ -194,7 +207,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * @see ICallBack
      */
     public void beginRefresh() {
-        requestSingleton.updateRequests(new ICallBack() {
+        requestSingleton.updateRiderRequests(new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();

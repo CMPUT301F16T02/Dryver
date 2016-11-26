@@ -28,6 +28,7 @@ import android.util.Log;
 import com.dryver.Activities.ActivityDriverList;
 import com.dryver.Activities.ActivityRequest;
 import com.dryver.Activities.ActivityRequestSelection;
+import com.dryver.Models.ActivityDryverMainStatus;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -45,6 +46,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,15 +105,6 @@ public class RequestSingleton {
      * @see Request
      * @see ICallBack
      */
-    public ArrayList<Request> getUpdatedRequests() {
-        updateRequests(new ICallBack() {
-            @Override
-            public void execute() {
-            }
-        });
-
-        return requests;
-    }
 
 //  ================================== tempRequest Stuff ===========================================
 
@@ -259,14 +252,26 @@ public class RequestSingleton {
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateRequests(ICallBack callBack) {
-        Log.i("info", "RequestSingleton updateRequests()");
-
-        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
+    public void updateDriverRequests(ActivityDryverMainStatus status, ICallBack callBack) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        ArrayList<Request> newRequests = new ArrayList<Request>();
 
-        if (userController.getActiveUser() instanceof Rider) {
-            ArrayList<Request> newRequests = ES.getRequests(userController.getActiveUser().getId());
+        if(status == ActivityDryverMainStatus.ALL){
+            newRequests = ES.getAllRequests();
+        } else if (status == ActivityDryverMainStatus.PENDING){
+            newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
+        } else if (status == ActivityDryverMainStatus.GEOLOCATION){
+
+        } else if (status == ActivityDryverMainStatus.KEYWORD){
+
+        } else if (status == ActivityDryverMainStatus.RATE){
+
+        }
+
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else{
             for (Request newRequest : newRequests) {
                 if (!requests.contains(newRequest)) {
                     requests.add(newRequest);
@@ -282,15 +287,43 @@ public class RequestSingleton {
             for(int index : indicesToRemove){
                 requests.remove(index);
             }
-
-
-            saveRequests();
-            callBack.execute();
-        } else if (userController.getActiveUser() instanceof Driver) {
-            requests = ES.getAllRequests();
-            saveRequests();
-            callBack.execute();
         }
+
+        saveRequests();
+        callBack.execute();
+
+        //TODO: Implement a way of searching for requests in a certain area or something for drivers
+    }
+
+    public void updateRiderRequests(ICallBack callBack) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
+        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+
+        ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else {
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    requests.add(newRequest);
+                }
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+        }
+
+        saveRequests();
+        callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
