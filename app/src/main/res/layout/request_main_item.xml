@@ -63,19 +63,11 @@
             android:layout_alignParentStart="true"/>
 
         <TextView
-            android:id="@+id/requestItemCost"
-            android:layout_width="191dp"
-            android:layout_height="wrap_content"
-            android:text="@string/request_item_Cost"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"/>
-
-        <TextView
             android:id="@+id/requestItemRate"
             android:layout_height="wrap_content"
             android:text="@string/request_item_Rate"
+            android:layout_width="191dp"
             android:layout_below="@+id/requestItemDate"
-            android:layout_alignStart="@+id/requestItemDestination"
-            android:layout_width="191dp"/>
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 </RelativeLayout>
