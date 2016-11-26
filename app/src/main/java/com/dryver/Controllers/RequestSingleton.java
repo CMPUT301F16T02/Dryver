@@ -120,8 +120,8 @@ public class RequestSingleton {
         this.tempRequest = request;
     }
 
-    public void pushTempRequest() {
-        pushRequest(tempRequest);
+    public void pushTempRequest(ICallBack callBack) {
+        pushRequest(tempRequest, callBack);
         saveRequests();
     }
 
@@ -204,7 +204,7 @@ public class RequestSingleton {
      *
      * @param request the request
      */
-    public void pushRequest(Request request) {
+    public void pushRequest(Request request, ICallBack callBack) {
         if (ES.updateRequest(request)) {
             int position = requests.indexOf(request);
             requests.remove(position);
@@ -212,6 +212,7 @@ public class RequestSingleton {
         } else if (ES.addRequest(request)) {
             requests.add(request);
         }
+        callBack.execute();
         saveRequests();
     }
 

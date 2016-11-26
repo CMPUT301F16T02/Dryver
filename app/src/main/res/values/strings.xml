@@ -30,9 +30,9 @@
     <string name="choose_driver">Accept as Driver</string>
     <string name="kilometers">Kilometers</string>
     <string name="search">Search</string>
-    <string name="empty">Search</string>
-    <string name="keyword">Search</string>
-    <string name="rate">Search</string>
+    <string name="empty">Leave Empty</string>
+    <string name="keyword">Keyword</string>
+    <string name="rate">Rate ($/km)</string>
 
 
     <string name="view_profile">View Profile</string>

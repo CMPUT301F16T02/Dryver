@@ -11,6 +11,7 @@ import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
+import com.dryver.Utility.ICallBack;
 
 
 public class ActivityDryverSelection extends Activity {
@@ -54,7 +55,12 @@ public class ActivityDryverSelection extends Activity {
             @Override
             public void onClick(View v) {
                 requestSingleton.getTempRequest().addDriver(userController.getActiveUser().getId());
-                requestSingleton.pushTempRequest();
+                requestSingleton.pushTempRequest(new ICallBack() {
+                    @Override
+                    public void execute() {
+                        finish();
+                    }
+                });
                 setDriverStatus();
             }
         });
@@ -64,7 +70,12 @@ public class ActivityDryverSelection extends Activity {
             @Override
             public void onClick(View v) {
                 requestSingleton.getTempRequest().removeDriver(userController.getActiveUser().getId());
-                requestSingleton.pushTempRequest();
+                requestSingleton.pushTempRequest(new ICallBack() {
+                    @Override
+                    public void execute() {
+                        finish();
+                    }
+                });
                 setDriverStatus();
             }
         });

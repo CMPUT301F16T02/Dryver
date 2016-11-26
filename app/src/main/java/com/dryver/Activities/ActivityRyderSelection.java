@@ -29,6 +29,7 @@ import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
+import com.dryver.Utility.ICallBack;
 
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
@@ -89,7 +90,12 @@ public class ActivityRyderSelection extends Activity {
             @Override
             public void onClick(View v) {
                 requestSingleton.getTempRequest().setStatus(RequestStatus.CANCELLED);
-                requestSingleton.pushTempRequest();
+                requestSingleton.pushTempRequest(new ICallBack() {
+                    @Override
+                    public void execute() {
+                        finish();
+                    }
+                });
                 isCancelled();
                 statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
             }
