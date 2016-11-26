@@ -178,5 +178,10 @@ public class HelpMe extends Activity {
         return locationString;
     }
 
+    static public String formatCurrency(Double value) {
+        DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+        return "$" + decimalFormatter.format(value);
+    }
+
 
 }

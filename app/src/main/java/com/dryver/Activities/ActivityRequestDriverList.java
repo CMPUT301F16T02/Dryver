@@ -24,7 +24,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class ActivityDriverList extends ActivityLoggedInActionBar {
+public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
@@ -40,7 +40,7 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_list);
+        setContentView(R.layout.activity_request_driver_list);
 
         drivers = requestSingleton.getTempRequest().getDrivers();
 
@@ -55,8 +55,7 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.driver_list_context, menu);
@@ -68,12 +67,12 @@ public class ActivityDriverList extends ActivityLoggedInActionBar {
         int position = info.position;
         switch (item.getItemId()) {
             case R.id.chooseDriver:
-                requestSingleton.selectDriver(requestSingleton.getTempRequest(), (String) driversListView.getItemAtPosition(position));
+                requestSingleton.selectDriverFromTempRequest((String) driversListView.getItemAtPosition(position));
                 return true;
             case R.id.viewTheirProfile:
                 String selectedDriver = (String)driversListView.getItemAtPosition(position);
                 Driver driver = (new Driver(ES.getUserByString(selectedDriver)));
-                userController.viewUserProfile(driver, ActivityDriverList.this);
+                userController.viewUserProfile(driver, ActivityRequestDriverList.this);
                 return true;
             default:
                 return false;

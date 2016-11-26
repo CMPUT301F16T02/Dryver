@@ -64,7 +64,7 @@
         <activity android:name=".Activities.ActivityLoggedInActionBar" />
         <activity android:name=".Utility.HelpMe" />
         <activity android:name=".Activities.ActivityViewProfile" />
-        <activity android:name=".Activities.ActivityDriverList" />
+        <activity android:name=".Activities.ActivityRequestDriverList" />
         <activity android:name=".Activities.ActivityDryverSelection"></activity>
     </application>
 

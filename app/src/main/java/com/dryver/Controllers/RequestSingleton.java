@@ -26,7 +26,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.dryver.Activities.ActivityDriverList;
+import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
 import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Activities.ActivityRyderSelection;
@@ -159,7 +159,7 @@ public class RequestSingleton {
      */
     public void viewRequestDrivers(Context context, Request request) {
         tempRequest = request;
-        Intent intent = new Intent(context, ActivityDriverList.class);
+        Intent intent = new Intent(context, ActivityRequestDriverList.class);
         context.startActivity(intent);
     }
 
@@ -181,12 +181,11 @@ public class RequestSingleton {
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
-     * @param request
      * @param driverID
      */
-    public void selectDriver(Request request, String driverID) {
-        request.acceptOffer(driverID);
-        ES.updateRequest(request);
+    public void selectDriverFromTempRequest(String driverID) {
+        tempRequest.acceptOffer(driverID);
+        pushTempRequest();
     }
 
     public void authorizePayment(Request request) {
