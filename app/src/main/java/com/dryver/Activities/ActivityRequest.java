@@ -68,8 +68,6 @@ public class ActivityRequest extends Activity {
             public void onClick(View v) {
                 if (!HelpMe.isEmptyTextField(tripPrice)) {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
-                    HelpMe.setCalendar(calendar, datePicker, timePicker);
-
                     requestSingleton.getTempRequest().setCost(cost);
                     requestSingleton.getTempRequest().setDate(calendar);
                     requestSingleton.pushTempRequest();
