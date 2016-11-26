@@ -55,7 +55,6 @@ public class ActivityDryverSelection extends Activity {
                 requestSingleton.getTempRequest().addDriver(userController.getActiveUser().getId());
                 requestSingleton.pushTempRequest();
                 setDriverStatus();
-
             }
         });
 
@@ -79,10 +78,10 @@ public class ActivityDryverSelection extends Activity {
     private void setDriverStatus() {
         if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
             statusTextView.setText("Status: " + "Pending Rider confirmation");
-            acceptButton.setEnabled(false);
+            isAcceptedButtonToggle(true);
         } else {
             statusTextView.setText("Status: " + "Can Accept");
-            cancelButton.setEnabled(false);
+            isAcceptedButtonToggle(false);
         }
 
         if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId())) {
@@ -100,5 +99,11 @@ public class ActivityDryverSelection extends Activity {
 
 
         }
+    }
+
+    private void isAcceptedButtonToggle(boolean bool) {
+        acceptButton.setEnabled(!bool);
+        cancelButton.setEnabled(bool);
+
     }
 }

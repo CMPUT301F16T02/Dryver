@@ -34,15 +34,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dryverSelectionTitle"
-                android:padding="20dp"
-                android:id="@+id/dryverSelectionRiderID" />
+                android:id="@+id/dryverSelectionRiderID"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" />
 
             <TextView
                 android:text="@string/activity_dryver_selection_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dryverSelectionRiderID"
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:id="@+id/dryverSelectionLocation"
                 android:maxLines="7"/>
 
@@ -51,7 +55,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dryverSelectionLocation"
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:id="@+id/dryverSelectionDate"/>
 
             <TextView
@@ -59,7 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dryverSelectionDate"
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:id="@+id/dryverSelectionDescription"/>
 
             <TextView
@@ -67,7 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dryverSelectionDescription"
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:id="@+id/dryverSelectionToStatus"/>
 
             <RelativeLayout
