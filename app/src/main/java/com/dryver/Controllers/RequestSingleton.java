@@ -25,7 +25,7 @@ import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
-import com.dryver.Activities.ActivityDriverList;
+import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
 import com.dryver.Activities.ActivityRyderSelection;
 import com.dryver.Models.Driver;
@@ -163,7 +163,7 @@ public class RequestSingleton {
      */
     public void viewRequestDrivers(Context context, Request request){
         tempRequest = request;
-        Intent intent = new Intent(context, ActivityDriverList.class);
+        Intent intent = new Intent(context, ActivityRequestDriverList.class);
         context.startActivity(intent);
     }
 
@@ -268,13 +268,11 @@ public class RequestSingleton {
 
         if (userController.getActiveUser() instanceof Rider) {
             requests = ES.getRequests(userController.getActiveUser().getId());
-            saveRequests();
-            callBack.execute();
         } else if (userController.getActiveUser() instanceof Driver) {
             requests = ES.getAllRequests();
-            saveRequests();
-            callBack.execute();
         }
+        saveRequests();
+        callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
