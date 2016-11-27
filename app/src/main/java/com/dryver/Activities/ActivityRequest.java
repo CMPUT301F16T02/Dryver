@@ -52,7 +52,6 @@ public class ActivityRequest extends Activity {
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
-        tripPrice.setInputType(0);
         locationText = (TextView) findViewById(R.id.requestLocation);
 
         tripPrice.setText(getEstimate());
