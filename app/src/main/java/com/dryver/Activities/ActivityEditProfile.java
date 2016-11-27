@@ -89,7 +89,7 @@ public class ActivityEditProfile extends Activity {
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
             //this is bad, I'm sorry
-            vehicleDescriptionEditText.setText(((Driver) user).getVehicleDescription());
+            vehicleDescriptionEditText.setText(user.getVehicleDescription());
         } else{
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
