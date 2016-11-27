@@ -81,6 +81,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private Timer timer;
     private ActivityDryverMainState state = ALL;
 
+    private AlertDialog alertDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,13 +209,17 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * Checks the statuses of the requests the driver is viewing
      */
     public void checkStatuses(){
-        if(requestSingleton.getRequests().size() != 0){
+        if(alertDialog != null && alertDialog.isShowing()){
+            return;
+        } else if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
                     notifyPayment();
+                    break;
                 } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
-                        request.getAcceptedDriverID() == userController.getActiveUser().getId()){
+                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())){
                     notifySelected(request);
+                    break;
                 }
             }
         }
@@ -222,7 +229,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * Notifies if the state of a request that the driver is a part of has payment authorized
      */
     private void notifyPayment(){
-        new AlertDialog.Builder(getApplicationContext())
+        alertDialog = new AlertDialog.Builder(getApplicationContext())
                 .setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title)
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -231,8 +238,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .create()
-                .show();
+                .create();
+        alertDialog.show();
     }
 
     /**
@@ -240,7 +247,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param request
      */
     private void notifySelected(final Request request){
-        new AlertDialog.Builder(ActivityDryverMain.this)
+        alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.dryver_selected_message)
                 .setTitle(R.string.dryver_selected_title)
                 .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
@@ -254,8 +261,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .create()
-                .show();
+                .create();
+        alertDialog.show();
     }
 
     /**

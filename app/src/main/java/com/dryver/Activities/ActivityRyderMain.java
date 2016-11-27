@@ -64,6 +64,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Timer timer;
 
+    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("info", "ActivityRyderMain.onCreate()");
@@ -145,7 +147,9 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Sets correct background colors for listview items based on the status of the request.
      */
     public void checkStatuses(){
-        if(requestSingleton.getRequests().size() != 0){
+        if(alertDialog != null && alertDialog.isShowing()){
+            return;
+        } else if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
                     requestListView.getChildAt(ryderMainAdapter.getPosition(request));
@@ -166,7 +170,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * @param request
      */
     private void notifyDriversAvailable(final Request request){
-        new AlertDialog.Builder(ActivityRyderMain.this)
+        alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
                 .setMessage(R.string.drivers_found_message)
                 .setTitle(R.string.drivers_found_title)
                 .setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
@@ -180,15 +184,15 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .create()
-                .show();
+                .create();
+        alertDialog.show();
     }
 
     /**
      * notifies the ryder if the request is complete
      */
     private void notifyComplete(){
-        new AlertDialog.Builder(ActivityRyderMain.this)
+        alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
                 .setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title)
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -197,8 +201,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
                             }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .create()
-                .show();
+                .create();
+        alertDialog.show();
     }
 
     /**
