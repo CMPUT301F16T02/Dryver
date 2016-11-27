@@ -85,7 +85,7 @@ public class ActivityDryverMap extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        mapUtil.initializeLocationRequest(mLocationRequest, 100 ,1000);
+        initializeLocationRequest(100, 1000);
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -132,5 +132,12 @@ public class ActivityDryverMap extends FragmentActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
+        mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
 }

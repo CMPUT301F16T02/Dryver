@@ -71,13 +71,6 @@ public class MapUtil {
         return encodedPoly;
     }
 
-    public void initializeLocationRequest(LocationRequest locationRequest, int LOCATION_UPDATES, int LOCATION_INTERVAL) {
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setNumUpdates(LOCATION_UPDATES);
-        locationRequest.setInterval(LOCATION_INTERVAL);
-    }
-
     public void moveMap(GoogleMap map, Location location, int zoom) {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         map.moveCamera(CameraUpdateFactory.newLatLng(latlng));
