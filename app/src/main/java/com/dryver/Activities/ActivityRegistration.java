@@ -66,13 +66,6 @@ public class ActivityRegistration extends Activity {
         phoneEditText = (EditText) findViewById(R.id.phone_edittext);
         emailEditText = (EditText) findViewById(R.id.email_edittext);
 
-        usernameEditText.setInputType(0);
-        lastnameEditText.setInputType(0);
-        firstnameEditText.setInputType(0);
-        phoneEditText.setInputType(0);
-        emailEditText.setInputType(0);
-        
-
         findViewById(R.id.username_edittext).requestFocus();
 
         doneButton = (Button) findViewById(R.id.done_button);

@@ -15,7 +15,6 @@ public class SimpleCoordinates implements Serializable {
     private Double[] location = new Double[2];
     private String locationName;
 
-
     /**
      * initializes the coords
      * @param latitude
@@ -67,6 +66,10 @@ public class SimpleCoordinates implements Serializable {
         tempLocation.setLatitude(getLatitude());
         tempLocation.setLongitude(getLongitude());
         return tempLocation;
+    }
+
+    public String getLocationName() {
+        return locationName;
     }
 
     @Override

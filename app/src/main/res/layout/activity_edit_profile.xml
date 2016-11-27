@@ -115,5 +115,23 @@
         android:layout_alignParentStart="true"
         />
 
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save_changes"
+        android:layout_alignParentStart="true"
+        android:id="@+id/ratingBar3"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:stepSize="0.1"/>
+
+    <TextView
+        android:text="@string/activity_driver_profile_ratings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ratingBar3"
+        android:layout_alignParentStart="true"
+        android:id="@+id/edit_profile_rating_title"/>
+
 
 </RelativeLayout>

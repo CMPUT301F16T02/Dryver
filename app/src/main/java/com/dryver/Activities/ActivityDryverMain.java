@@ -22,6 +22,8 @@ package com.dryver.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
@@ -44,10 +47,16 @@ import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -77,9 +86,20 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     private Driver driver;
     private GoogleApiClient mClient;
+    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final int REQUEST_SELECT_PLACE = 0;
+    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
+
+    //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
+    //You can access many information regarding the location such as address, coordinates, etc
+    private Location searchLocation;
+    private String searchAddress;
 
     private Timer timer;
     private ActivityDryverMainState state = ALL;
+
+    private AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +155,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
         searchByEditText = (EditText) findViewById(R.id.searchWith);
-        searchByEditText.setInputType(0);
         searchButton = (Button) findViewById(R.id.searchButton);
 
         //TODO: Change this in future
@@ -181,6 +200,22 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         });
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SELECT_PLACE) {
+            if(resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                searchLocation = new Location("Search Location");
+                searchLocation.setLatitude(place.getLatLng().latitude);
+                searchLocation.setLongitude(place.getLatLng().longitude);
+                searchAddress = place.getAddress().toString();
+
+                Toast.makeText(ActivityDryverMain.this,"Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     /**
      * does some mappy type stuff
      */
@@ -206,13 +241,17 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * Checks the statuses of the requests the driver is viewing
      */
     public void checkStatuses(){
-        if(requestSingleton.getRequests().size() != 0){
+        if(alertDialog != null && alertDialog.isShowing()){
+            return;
+        } else if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
-                    notifyPayment();
+                    notifyPayment(request);
+                    break;
                 } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
-                        request.getAcceptedDriverID() == userController.getActiveUser().getId()){
+                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())){
                     notifySelected(request);
+                    break;
                 }
             }
         }
@@ -221,17 +260,23 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     /**
      * Notifies if the state of a request that the driver is a part of has payment authorized
      */
-    private void notifyPayment(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.complete_message)
-                .setTitle(R.string.complete_title);
-
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
+    private void notifyPayment(final Request request){
+        alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
+                .setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title)
+                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequest(ActivityDryverMain.this, request);
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+        alertDialog.show();
     }
 
     /**
@@ -239,21 +284,22 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param request
      */
     private void notifySelected(final Request request){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.dryver_selected_message)
-                .setTitle(R.string.dryver_selected_title);
-
-        builder.setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                requestSingleton.viewRequest(ActivityDryverMain.this, request);
-            }
-        });
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
+        alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
+                .setMessage(R.string.dryver_selected_message)
+                .setTitle(R.string.dryver_selected_title)
+                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequest(ActivityDryverMain.this, request);
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+        alertDialog.show();
     }
 
     /**
@@ -298,6 +344,17 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Keyword")) {
             searchByEditText.setHint(R.string.keyword);
             state = KEYWORD;
+            try {
+                Intent intent = new PlaceAutocomplete.IntentBuilder
+                        (PlaceAutocomplete.MODE_OVERLAY)
+                        .setBoundsBias(edmontonBounds)
+                        .build(ActivityDryverMain.this);
+                startActivityForResult(intent, REQUEST_SELECT_PLACE);
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            }
         } else if(sortSelection.equals("Rate")){
             searchByEditText.setHint(R.string.rate);
             state = RATE;

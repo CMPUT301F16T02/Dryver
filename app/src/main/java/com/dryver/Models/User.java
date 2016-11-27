@@ -19,8 +19,8 @@
 
 package com.dryver.Models;
 
-
 import java.io.Serializable;
+import java.util.Collection;
 
 import io.searchbox.annotations.JestId;
 
@@ -41,7 +41,7 @@ public class User implements Serializable {
     private String id = null;
 
     private String vehicleDescription;
-    private double Rating;
+    private Rating rating;
 
     // TODO: anything else for user info?
 
@@ -68,6 +68,16 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.rating = new Rating();
+        this.vehicleDescription = new String();
+    }
+
+    public float getRating() {
+        return rating.getAverage();
+    }
+
+    public void addRating(float rating) {
+        this.rating.addRating(rating);
     }
 
     public String getVehicleDescription() {

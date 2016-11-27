@@ -73,7 +73,6 @@ public class ActivityOpeningPage extends Activity {
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
-        usernameEditText.setInputType(0);
     }
 
     /**

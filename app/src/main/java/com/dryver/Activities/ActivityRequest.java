@@ -4,6 +4,7 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -52,7 +53,6 @@ public class ActivityRequest extends Activity {
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
-        tripPrice.setInputType(0);
         locationText = (TextView) findViewById(R.id.requestLocation);
 
         tripPrice.setText(getEstimate());
@@ -75,6 +75,7 @@ public class ActivityRequest extends Activity {
                     requestSingleton.pushTempRequest(new ICallBack(){
                         @Override
                         public void execute(){
+                            Log.i("CALLBACK", "Make Request");
                             finish();
                         }
                     });
