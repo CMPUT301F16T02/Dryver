@@ -433,7 +433,7 @@ public class ElasticSearchController {
     // ==============         PUBLIC SORTING REQUESTS       ===============
 
     public ArrayList<Request> getRequestsGeolocation(String distance) {
-        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        Log.i("trace", "ElasticSearchController.getRequestsGeolocation()");
         GetRequestsGeolocationTask getTask = new GetRequestsGeolocationTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
@@ -447,7 +447,7 @@ public class ElasticSearchController {
     }
 
     public ArrayList<Request> getRequestsKeyword(String keyword) {
-        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        Log.i("trace", "ElasticSearchController.getRequestsKeyword()");
         GetRequestsKeywordTask getTask = new GetRequestsKeywordTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
@@ -461,11 +461,25 @@ public class ElasticSearchController {
     }
 
     public ArrayList<Request> getRequestsRate(String rate) {
-        Log.i("trace", "ElasticSearchController.getDriverRequests()");
+        Log.i("trace", "ElasticSearchController.getRequestsRate()");
         GetRequestsRateTask getTask = new GetRequestsRateTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
             requestList = getTask.execute(rate).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    public ArrayList<Request> getRequestsCost(String cost) {
+        Log.i("trace", "ElasticSearchController.getRequestsCost()");
+        GetRequestsCostTask getTask = new GetRequestsCostTask();
+        ArrayList<Request> requestList = new ArrayList<Request>();
+        try {
+            requestList = getTask.execute(cost).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -561,6 +575,7 @@ public class ElasticSearchController {
             Log.i("trace", "GetDriverRequestsTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"acceptedDriverID\": \"" + search_parameters[0] + "\"}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -571,12 +586,15 @@ public class ElasticSearchController {
     private static class GetRequestsGeolocationTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
-            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
+
+
 
     /**
      * A Task that gets all requests based on a keyword
@@ -584,9 +602,21 @@ public class ElasticSearchController {
     private static class GetRequestsKeywordTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
-            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
-            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+            Log.i("trace", "GetRequestsKeywordTask.doInBackground()");
+            String search_string = "{" +
+                                        "\"query\": {" +
+                                            "\"bool\": {" +
+                                                "\"should\": [" +
+                                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
+                                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
+                                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
+                                                "]," +
+                                                "\"minimum_should_match\" : 1" +
+                                            "}" +
+                                        "}" +
+                                    "}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -597,9 +627,24 @@ public class ElasticSearchController {
     private static class GetRequestsRateTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
-            Log.i("trace", "GetRiderRequestsTask.doInBackground()");
+            Log.i("trace", "GetRequestsRateTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"range\": {\"rate\": {\"gte\": \"" + search_parameters[0] + "\"}}}}";
 
+            Log.i("QUERY", search_string);
+            return getRequests(search_string);
+        }
+    }
+
+    /**
+     * A Task that gets all requests based on a certain cost
+     */
+    private static class GetRequestsCostTask extends AsyncTask<String, Void, ArrayList<Request>> {
+        @Override
+        protected ArrayList<Request> doInBackground(String... search_parameters) {
+            Log.i("trace", "GetRequestsCostTask.doInBackground()");
+            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"range\": {\"cost\": {\"gte\": \"" + search_parameters[0] + "\"}}}}";
+
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -632,7 +677,6 @@ public class ElasticSearchController {
                 for (int i = 0; i < hitsArray.size(); i++) {
                     requests.get(i).setId(hitsArray.get(i).getAsJsonObject().get("_id").toString().replace("\"", ""));
                 }
-
 
                 return requests;
             }

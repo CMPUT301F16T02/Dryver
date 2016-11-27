@@ -135,7 +135,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
         searchByEditText = (EditText) findViewById(R.id.searchWith);
-        searchByEditText.setInputType(0);
         searchButton = (Button) findViewById(R.id.searchButton);
 
         //TODO: Change this in future
@@ -301,6 +300,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         } else if(sortSelection.equals("Rate")){
             searchByEditText.setHint(R.string.rate);
             state = RATE;
+        } else if(sortSelection.equals("Cost")){
+            searchByEditText.setHint(R.string.cost);
+            state = COST;
         }
     }
 
