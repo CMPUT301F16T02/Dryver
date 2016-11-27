@@ -24,10 +24,21 @@ import static junit.framework.Assert.assertTrue;
 public class OfflineTests {
 
 
+    /**
+     * http://stackoverflow.com/questions/3930990/android-how-to-enable-disable-wifi-or-internet-connection-programmatically
+     * Accessed: 2016-11-27
+     */
     public void enableWifi() throws InterruptedException {
         WifiManager wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.setWifiEnabled(true);
+
     }
+
+    /**
+     * http://stackoverflow.com/questions/3930990/android-how-to-enable-disable-wifi-or-internet-connection-programmatically
+     * Accessed: 2016-11-27
+     */
+
     public void disableWifi() throws InterruptedException {
         WifiManager wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.setWifiEnabled(false);
