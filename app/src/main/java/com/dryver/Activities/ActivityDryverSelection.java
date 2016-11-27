@@ -20,7 +20,6 @@ public class ActivityDryverSelection extends Activity {
     private TextView riderIdTextView;
     private TextView locationTextView;
     private TextView dryverSelectionDate;
-    private TextView statusTextView;
     private TextView requestDescription;
 
     private Button acceptButton;
@@ -38,7 +37,6 @@ public class ActivityDryverSelection extends Activity {
         riderIdTextView = (TextView) findViewById(R.id.dryverSelectionRiderID);
         locationTextView = (TextView) findViewById(R.id.dryverSelectionLocation);
         dryverSelectionDate = (TextView) findViewById(R.id.dryverSelectionDate);
-        statusTextView = (TextView) findViewById(R.id.dryverSelectionToStatus);
         requestDescription = (TextView) findViewById(R.id.dryverSelectionDescription);
 
         viewMapButton = (Button) findViewById(R.id.dryverSelectionMapButton);
@@ -46,7 +44,7 @@ public class ActivityDryverSelection extends Activity {
         cancelButton = (Button) findViewById(R.id.dryverSelectionCancelButton);
 
         riderIdTextView.setText("Rider Username: " + requestSingleton.getTempRequest().getRiderId());
-        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
+        locationTextView.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
         dryverSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
         setListeners();
         setDriverStatus();
@@ -104,7 +102,7 @@ public class ActivityDryverSelection extends Activity {
                 requestSingleton.getTempRequest().getStatus() == RequestStatus.NO_DRIVERS)){
             isAcceptedButtonToggle(false);
         }
-        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
+//        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
         if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
                 requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {

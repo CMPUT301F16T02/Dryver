@@ -87,7 +87,7 @@ public class ActivityRequest extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationText);
+        locationText.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
         tripPrice.setText(getEstimate());
     }
 

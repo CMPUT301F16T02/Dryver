@@ -1,14 +1,12 @@
 package com.dryver.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.dryver.Activities.ActivityDryverSelection;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Models.Request;
 import com.dryver.R;
@@ -41,7 +39,7 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         TextView rateText = (TextView) convertView.findViewById(R.id.dryverItemRate);
 
         riderText.setText("Rider: "+ request.getRiderId());
-        destinationText.setText("Pick Up: " + request.getFromAddress() + "\nDestination: " + request.getToAddress());
+        destinationText.setText(HelpMe.formatLocation(request));
         dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         costText.setText("Cost: " + HelpMe.formatCurrency(request.getCost()));
         rateText.setText("Rate: " + HelpMe.formatCurrency(request.getRate()));

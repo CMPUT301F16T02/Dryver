@@ -43,15 +43,13 @@ public class RyderMainAdapter extends ArrayAdapter<Request> {
 
         });
 
-        TextView requestPickup = (TextView) convertView.findViewById(R.id.requestItemPickup);
-        TextView requestDestination = (TextView) convertView.findViewById(R.id.requestItemDestination);
+        TextView locationTextView = (TextView) convertView.findViewById(R.id.requestItemLocation);
         TextView requestStatus = (TextView) convertView.findViewById(R.id.requestItemStatus);
         TextView requestDate = (TextView) convertView.findViewById(R.id.requestItemDate);
         TextView requestCost = (TextView) convertView.findViewById(R.id.requestItemCost);
         TextView requestRate = (TextView) convertView.findViewById(R.id.requestItemRate);
 
-        requestDestination.setText(HelpMe.formatDestinationLocation(request));
-        requestPickup.setText(HelpMe.formatPickupLocation(request));
+        locationTextView.setText(HelpMe.formatLocation(request));
 
         requestStatus.setText("Status: " + request.statusCodeToString());
         requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));

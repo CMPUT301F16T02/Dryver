@@ -155,13 +155,8 @@ public class HelpMe extends Activity {
         return sdf.format(cal.getTime());
     }
 
-    static public void formatLocationTextView(Request request,  TextView textView) {
-        textView.setText("From Coordinates: \nLat: "
-                        + request.getFromLocation().getLatitude() + "\nLong: "
-                        + request.getFromLocation().getLongitude()
-                        + "\n\nTo Coordinates: \nLat: "
-                        + request.getToLocation().getLatitude() + "\nLong: "
-                        + request.getToLocation().getLongitude());
+    static public String formatLocation(Request request) {
+        return formatPickupLocation(request) + "\n" + formatDestinationLocation(request);
     }
 
     static public String formatDestinationLocation(Request request) {
