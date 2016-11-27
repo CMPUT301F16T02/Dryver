@@ -213,7 +213,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         } else if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
-                    notifyPayment();
+                    notifyPayment(request);
                     break;
                 } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
                         request.getAcceptedDriverID().equals(userController.getActiveUser().getId())){
@@ -227,10 +227,15 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     /**
      * Notifies if the state of a request that the driver is a part of has payment authorized
      */
-    private void notifyPayment(){
-        alertDialog = new AlertDialog.Builder(getApplicationContext())
+    private void notifyPayment(final Request request){
+        alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title)
+                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequest(ActivityDryverMain.this, request);
+                    }
+                })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();

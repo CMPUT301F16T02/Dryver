@@ -26,12 +26,15 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.dryver.Activities.ActivityDryverSelection;
 import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
 import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Activities.ActivityRyderSelection;
+import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
+import com.dryver.Models.Rider;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -134,9 +137,16 @@ public class RequestSingleton {
      * @param request
      */
     public void viewRequest(Context context, Request request) {
-        tempRequest = request;
-        Intent intent = new Intent(context, ActivityRyderSelection.class);
-        context.startActivity(intent);
+        if(userController.getActiveUser() instanceof Rider){
+            tempRequest = request;
+            Intent intent = new Intent(context, ActivityRyderSelection.class);
+            context.startActivity(intent);
+        } else if(userController.getActiveUser() instanceof Driver){
+            tempRequest = request;
+            Intent intent = new Intent(context, ActivityDryverSelection.class);
+            context.startActivity(intent);
+        }
+
     }
 
     /**
@@ -176,14 +186,23 @@ public class RequestSingleton {
         pushTempRequest(callBack);
     }
 
-    public void authorizePayment(Request request) {
-        request.setStatus(RequestStatus.PAYMENT_AUTHORIZED);
-        ES.updateRequest(request);
+    public void authorizePayment(ICallBack callBack) {
+        tempRequest.setStatus(RequestStatus.PAYMENT_AUTHORIZED);
+        ES.updateRequest(tempRequest);
+        callBack.execute();
     }
 
-    public void acceptPayment(Request request) {
-        request.setStatus(RequestStatus.PAYMENT_ACCEPTED);
-        ES.updateRequest(request);
+    public void acceptPayment(ICallBack callBack) {
+        tempRequest.setStatus(RequestStatus.PAYMENT_ACCEPTED);
+        ES.updateRequest(tempRequest);
+        callBack.execute();
+    }
+
+    public void sendRating(ICallBack callBack, float rating){
+        tempRequest.setStatus(RequestStatus.RATED);
+        ES.updateRequest(tempRequest);
+        userController.rateDriver(rating, tempRequest.getAcceptedDriverID());
+        callBack.execute();
     }
 
     /**

@@ -307,7 +307,9 @@ public class Request implements Serializable {
         } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
             return "Payment Authorized";
         } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
-            return "Request Complete!";
+            return "Payment Accepted!";
+        } else if(status == RequestStatus.RATED){
+            return "Rating Acknowledged";
         } else {
             return "Unknown Status String";
         }
