@@ -144,17 +144,18 @@ public class ActivityRequestMap extends FragmentActivity implements
 
             case R.id.action_forward:
                 if (mRoute.size() == 2) {
-                    Location fromLocation = new Location("Start");
-                    Location toLocation = new Location("End");
+                    ArrayList<Location> locations = mRouteToLocation();
+                    ArrayList<String> addresses = mRouteToAddress();
+                    if ((addresses.get(0) != null) && (addresses.get(1) != null)) {
+                        Log.i("REQUEST MAP: ", "From Address: " + addresses.get(0));
+                        Log.i("REQUEST MAP: ", "To Address: " + addresses.get(1));
+                    }
 
-                    fromLocation.setLatitude(mRoute.get(0).getPosition().latitude);
-                    fromLocation.setLongitude(mRoute.get(0).getPosition().longitude);
-                    toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
-                    toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
-
-                    requestSingleton.getTempRequest().setFromLocation(fromLocation);
-                    requestSingleton.getTempRequest().setToLocation(toLocation);
+                    requestSingleton.getTempRequest().setFromLocation(locations.get(0));
+                    requestSingleton.getTempRequest().setToLocation(locations.get(1));
                     requestSingleton.getTempRequest().setDistance(routeDistance);
+                    requestSingleton.getTempRequest().setFromAddress(addresses.get(0));
+                    requestSingleton.getTempRequest().setToAddress(addresses.get(1));
                     Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
 
                     mMap.clear();
@@ -232,12 +233,6 @@ public class ActivityRequestMap extends FragmentActivity implements
                     removePolylines();
                     ArrayList<Location> locations = mRouteToLocation();
                     drawRoute(locations.get(0), locations.get(1));
-
-                    ArrayList<String> addresses = mRouteToAddress();
-                    if ((addresses.get(0) != null) && (addresses.get(1) != null)) {
-                        Log.i("REQUEST MAP: ", "From Address: " + addresses.get(0));
-                        Log.i("REQUEST MAP: ", "To Address: " + addresses.get(1));
-                    }
                 }
             }
         });

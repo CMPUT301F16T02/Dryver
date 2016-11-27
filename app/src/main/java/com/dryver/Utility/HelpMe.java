@@ -165,16 +165,24 @@ public class HelpMe extends Activity {
     }
 
     static public String formatDestinationLocation(Request request) {
-        String locationString = "Destination ";
-        DecimalFormat decimalFormatter = new DecimalFormat("0.00");
-        locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        String locationString = "Destination: ";
+        if (request.getToAddress() != null) {
+            locationString += request.getToAddress();
+        } else {
+            DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+            locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        }
         return locationString;
     }
 
     static public String formatPickupLocation(Request request) {
         String locationString = "Pickup At: ";
-        DecimalFormat decimalFormatter = new DecimalFormat("0.00");
-        locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        if (request.getToAddress() != null) {
+            locationString += request.getFromAddress();
+        } else {
+            DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+            locationString += decimalFormatter.format(request.getToLocation().getLatitude()) + ", " + decimalFormatter.format(request.getToLocation().getLongitude());
+        }
         return locationString;
     }
 

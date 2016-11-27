@@ -138,7 +138,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
         searchByEditText = (EditText) findViewById(R.id.searchWith);
-        searchByEditText.setInputType(0);
         searchButton = (Button) findViewById(R.id.searchButton);
 
         //TODO: Change this in future

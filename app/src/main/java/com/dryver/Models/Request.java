@@ -215,6 +215,20 @@ public class Request implements Serializable {
         this.fromCoordinates.setLocationName(fromLocation.getProvider());
     }
 
+    public void setFromAddress(String address) {
+        this.fromCoordinates.setLocationName(address);
+    }
+
+    public void setToAddress(String address) {
+        this.toCoordinates.setLocationName(address);
+    }
+    public String getFromAddress() {
+        return this.fromCoordinates.getLocationName();
+    }
+    public String getToAddress() {
+        return this.toCoordinates.getLocationName();
+    }
+
     /**
      * Sets user's to-location.
      *
