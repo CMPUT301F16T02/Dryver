@@ -301,6 +301,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         } else if(sortSelection.equals("Rate")){
             searchByEditText.setHint(R.string.rate);
             state = RATE;
+        } else if(sortSelection.equals("Cost")){
+            searchByEditText.setHint(R.string.cost);
+            state = COST;
         }
     }
 

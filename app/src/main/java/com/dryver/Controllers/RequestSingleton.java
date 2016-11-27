@@ -272,11 +272,13 @@ public class RequestSingleton {
         } else if (status == ActivityDryverMainState.PENDING){
             newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
         } else if (status == ActivityDryverMainState.GEOLOCATION){
-            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+            newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD){
-            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+            newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.RATE){
             newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+        } else if (status == ActivityDryverMainState.COST){
+            newRequests = ES.getRequestsCost(searchEditText.getText().toString());
         }
 
         //Compares two lists
@@ -288,7 +290,8 @@ public class RequestSingleton {
                     indicesToAdd.add(newRequests.indexOf(newRequest));
                 }
                 for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest)) {
+                    if (!newRequests.contains(oldRequest) &&
+                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
                         indicesToRemove.add(requests.indexOf(oldRequest));
                     }
                 }
@@ -325,7 +328,8 @@ public class RequestSingleton {
                 }
 
                 for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest)) {
+                    if (!newRequests.contains(oldRequest) &&
+                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
                         indicesToRemove.add(requests.indexOf(oldRequest));
                     }
                 }
