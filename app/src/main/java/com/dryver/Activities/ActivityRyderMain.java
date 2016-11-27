@@ -20,6 +20,7 @@
 package com.dryver.Activities;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -63,6 +64,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private Timer timer;
 
+    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("info", "ActivityRyderMain.onCreate()");
@@ -74,14 +77,8 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
         assignElements();
         setListeners();
+        beginRefresh();
         checkStatuses();
-
-        requestSingleton.updateRiderRequests(new ICallBack() {
-            @Override
-            public void execute() {
-                refreshRequestList();
-            }
-        });
     }
 
     @Override
@@ -150,15 +147,14 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Sets correct background colors for listview items based on the status of the request.
      */
     public void checkStatuses(){
-        if(requestSingleton.getRequests().size() != 0){
+        if(alertDialog != null && alertDialog.isShowing()){
+            return;
+        } else if(requestSingleton.getRequests().size() != 0){
             for (Request request : requestSingleton.getRequests()){
                 if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
                     requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
-                }
-                else if(request.getStatus() == RequestStatus.PAYMENT_ACCEPTED){
-                    requestListView.getChildAt(ryderMainAdapter.getPosition(request));
-                    notifyDriversAvailable(request);
+                    break;
                 }
             }
         }
@@ -169,37 +165,22 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * @param request
      */
     private void notifyDriversAvailable(final Request request){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.drivers_found_message)
-                .setTitle(R.string.drivers_found_title);
-
-        builder.setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                requestSingleton.viewRequestDrivers(ActivityRyderMain.this, request);
-            }
-        });
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
-    }
-
-    /**
-     * notifies the ryder if the request is complete
-     */
-    private void notifyComplete(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.complete_message)
-                .setTitle(R.string.complete_title);
-
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
+        alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
+                .setMessage(R.string.drivers_found_message)
+                .setTitle(R.string.drivers_found_title)
+                .setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequestDrivers(ActivityRyderMain.this, request);
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+        alertDialog.show();
     }
 
     /**

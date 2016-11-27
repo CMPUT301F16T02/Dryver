@@ -20,12 +20,15 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.media.Rating;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
+import com.dryver.Controllers.UserController;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -46,6 +49,8 @@ public class ActivityRyderSelection extends Activity {
     private Button viewDriversButton;
     private Button deleteButton;
 
+    private RatingBar ratingBar;
+
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
     @Override
@@ -59,13 +64,15 @@ public class ActivityRyderSelection extends Activity {
         viewDriversButton = (Button) findViewById(R.id.requestSelectionButtonViewList);
         cancelButton = (Button) findViewById(R.id.requestSelectionButtonCancel);
         deleteButton = (Button) findViewById(R.id.requestSelectionButtonDelete);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar2);
 
         isCancelled();
         
         HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
         requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
-        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
+        setStatusTextView();
 
+        configureUI();
         setListeners();
     }
 
@@ -75,16 +82,65 @@ public class ActivityRyderSelection extends Activity {
         requestSingleton.clearTempRequest();
     }
 
-    private void setListeners(){
+    private void configureUI(){
+        cancelButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+        viewDriversButton.setEnabled(false);
+        viewDriversButton.setText("View Drivers");
+        ratingBar.setVisibility(View.GONE);
 
         //Clicking this opens the driver list through the controller
-        viewDriversButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestSingleton.viewRequestDrivers(ActivityRyderSelection.this, requestSingleton.getTempRequest());
-            }
-        });
+        if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE){
+            viewDriversButton.setEnabled(true);
+            viewDriversButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestSingleton.viewRequestDrivers(ActivityRyderSelection.this, requestSingleton.getTempRequest());
+                }
+            });
+        } else if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
+            cancelButton.setEnabled(false);
+            deleteButton.setEnabled(false);
 
+            viewDriversButton.setEnabled(true);
+            viewDriversButton.setText("Authorize Payment");
+            viewDriversButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewDriversButton.setEnabled(false);
+                    setStatusTextView();
+                    requestSingleton.authorizePayment(new ICallBack() {
+                        @Override
+                        public void execute() {
+                            finish();
+                        }
+                    });
+                }
+            });
+        } else if( requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_ACCEPTED){
+            ratingBar.setVisibility(View.VISIBLE);
+            cancelButton.setEnabled(false);
+
+            viewDriversButton.setEnabled(true);
+            viewDriversButton.setText("Send Rating");
+            viewDriversButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewDriversButton.setEnabled(false);
+                    setStatusTextView();
+                    requestSingleton.sendRating(new ICallBack() {
+                        @Override
+                        public void execute() {
+                            ratingBar.setEnabled(false);
+                            viewDriversButton.setEnabled(false);
+                        }
+                    }, ratingBar.getRating());
+                }
+            });
+        }
+    }
+
+    private void setListeners(){
         //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,5 +175,9 @@ public class ActivityRyderSelection extends Activity {
         if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.CANCELLED)) {
             cancelButton.setEnabled(false);
         }
+    }
+
+    private void setStatusTextView(){
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
     }
 }

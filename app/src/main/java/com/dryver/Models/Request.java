@@ -145,6 +145,7 @@ public class Request implements Serializable {
      * @param driver the driver
      */
     public void addDriver(String driver) {
+        status = RequestStatus.DRIVERS_AVAILABLE;
         drivers.add(driver);
     }
 
@@ -174,6 +175,7 @@ public class Request implements Serializable {
      */
     public void acceptOffer(String driverID) {
         if (drivers.contains(driverID)) {
+            status = RequestStatus.DRIVER_CHOSEN;
             this.acceptedDriverID = driverID;
         } else {
             this.acceptedDriverID = null;
@@ -307,7 +309,9 @@ public class Request implements Serializable {
         } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
             return "Payment Authorized";
         } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
-            return "Request Complete!";
+            return "Payment Accepted!";
+        } else if(status == RequestStatus.RATED){
+            return "Rating Acknowledged";
         } else {
             return "Unknown Status String";
         }

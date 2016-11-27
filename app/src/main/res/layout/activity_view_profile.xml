@@ -85,5 +85,15 @@
         android:layout_marginTop="21dp"
         android:id="@+id/ratings_title"
         android:layout_below="@+id/driver_profile_vehicle_info"
-        android:layout_alignEnd="@+id/textView3"/>
+        />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_below="@+id/ratings_title"
+        android:layout_alignParentStart="true"
+        android:isIndicator="true"
+        android:max="5"
+        android:stepSize="0.01"/>
 </RelativeLayout>

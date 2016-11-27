@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
@@ -96,16 +97,18 @@ public class ActivityDryverSelection extends Activity {
     }
 
     private void setDriverStatus() {
-        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
-            statusTextView.setText("Status: " + "Pending Rider confirmation");
+        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId()) &&
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
             isAcceptedButtonToggle(true);
-        } else {
-            statusTextView.setText("Status: " + "Can Accept");
+        } else if((requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE ||
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.NO_DRIVERS)){
             isAcceptedButtonToggle(false);
         }
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
-        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId())) {
-            acceptButton.setText("Finalize Ride");
+        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
+            acceptButton.setText("Accept Payment");
             acceptButton.setEnabled(true);
             acceptButton.setOnClickListener(null);
             cancelButton.setVisibility(View.INVISIBLE);
@@ -113,7 +116,12 @@ public class ActivityDryverSelection extends Activity {
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: 2016-11-26 handle finalized acceptance between driver and user.
+                    requestSingleton.acceptPayment(new ICallBack() {
+                        @Override
+                        public void execute() {
+                            finish();
+                        }
+                    });
                 }
             });
         }

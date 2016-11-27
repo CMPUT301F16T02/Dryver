@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,8 +49,10 @@ public class ActivityEditProfile extends Activity {
     private TextView paymentText;
     private Spinner paymentSpinner;
     private TextView vehicleDesriptionTextView;
+    private TextView ratingTextView;
     private EditText vehicleDescriptionEditText;
     private Button saveChangesButton;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class ActivityEditProfile extends Activity {
         vehicleDesriptionTextView = (TextView)findViewById(R.id.activity_edit_profile_vehicle_textview);
         vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
         saveChangesButton = (Button)findViewById(R.id.save_changes);
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar3);
+        ratingTextView = (TextView)findViewById(R.id.edit_profile_rating_title);
 
         emailEditText.setText(user.getEmail());
         phoneEditText.setText(user.getPhoneNumber());
@@ -83,15 +88,16 @@ public class ActivityEditProfile extends Activity {
         if(user instanceof Rider){
             vehicleDesriptionTextView.setVisibility(View.GONE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
+            ratingTextView.setVisibility(View.GONE);
         } else if(user instanceof Driver) {
             driver = (Driver) userController.getViewedUser();
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
-            //this is bad, I'm sorry
             vehicleDescriptionEditText.setText(user.getVehicleDescription());
-        } else{
-            vehicleDesriptionTextView.setVisibility(View.VISIBLE);
-            vehicleDescriptionEditText.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.VISIBLE);
+            ratingTextView.setVisibility(View.VISIBLE);
+            ratingBar.setRating(5);
         }
     }
 
