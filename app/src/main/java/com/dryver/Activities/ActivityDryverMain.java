@@ -22,6 +22,8 @@ package com.dryver.Activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
@@ -44,10 +47,16 @@ import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -77,6 +86,14 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     private Driver driver;
     private GoogleApiClient mClient;
+    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final int REQUEST_SELECT_PLACE = 0;
+    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
+
+    //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
+    //You can access many information regarding the location such as address, coordinates, etc
+    private Location searchLocation;
+    private String searchAddress;
 
     private Timer timer;
     private ActivityDryverMainState state = ALL;
@@ -181,6 +198,22 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                 beginRefresh();
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SELECT_PLACE) {
+            if(resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                searchLocation = new Location("Search Location");
+                searchLocation.setLatitude(place.getLatLng().latitude);
+                searchLocation.setLongitude(place.getLatLng().longitude);
+                searchAddress = place.getAddress().toString();
+
+                Toast.makeText(ActivityDryverMain.this,"Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /**
@@ -311,6 +344,17 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Keyword")) {
             searchByEditText.setHint(R.string.keyword);
             state = KEYWORD;
+            try {
+                Intent intent = new PlaceAutocomplete.IntentBuilder
+                        (PlaceAutocomplete.MODE_OVERLAY)
+                        .setBoundsBias(edmontonBounds)
+                        .build(ActivityDryverMain.this);
+                startActivityForResult(intent, REQUEST_SELECT_PLACE);
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            }
         } else if(sortSelection.equals("Rate")){
             searchByEditText.setHint(R.string.rate);
             state = RATE;
