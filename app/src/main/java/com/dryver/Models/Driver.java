@@ -25,27 +25,12 @@ package com.dryver.Models;
  */
 
 public class Driver extends User {
-    private String vehicleDescription;
-
     public Driver(User user) {
         super(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhoneNumber(),
                 user.getEmail());
-    }
-
-    public String getVehicleDescription() {
-        return vehicleDescription;
-    }
-
-    /**
-     * Gets the driver's vehicle description
-     * //TODO: Make this work properly with ES
-     * @param vehicleDescription
-     */
-    public void setVehicleDescription(String vehicleDescription) {
-        this.vehicleDescription = vehicleDescription;
     }
 
     @Override

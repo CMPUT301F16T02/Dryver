@@ -67,7 +67,7 @@ public class ActivityViewProfile extends Activity {
             vehicleInfoTextView.setVisibility(View.VISIBLE);
             ratingsTitleTextView.setVisibility(View.VISIBLE);
             //this is bad, I'm sorry
-            vehicleInfoTextView.setText(((Driver) user).getVehicleDescription());
+            vehicleInfoTextView.setText(user.getVehicleDescription());
         } else{
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.GONE);

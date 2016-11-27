@@ -39,6 +39,10 @@ public class User implements Serializable {
     private String userBio;
     @JestId
     private String id = null;
+
+    private String vehicleDescription;
+    private double Rating;
+
     // TODO: anything else for user info?
 
     /**
@@ -66,18 +70,18 @@ public class User implements Serializable {
         this.email = email;
     }
 
-//    /**
-//     * Gets user id.
-//     *
-//     * @return the user id of the user.
-//     */
-//    public String getUsername() {
-//        return username;
-//    }
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
 
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
+    /**
+     * Gets the driver's vehicle description
+     * //TODO: Make this work properly with ES
+     * @param vehicleDescription
+     */
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
+    }
 
     /**
      * Gets first name.
