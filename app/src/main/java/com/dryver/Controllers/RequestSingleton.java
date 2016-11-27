@@ -166,18 +166,6 @@ public class RequestSingleton {
 //  ==================================== Request State Changes =====================================
 
     //Push request pushes new request with NO_DRIVERS state
-
-    /**
-     * Adds a driver to the request. Called when a driver chooses to accept a request
-     *
-     * @param request
-     * @param driverID
-     */
-    public void addDriver(Request request, String driverID) {
-        request.addDriver(driverID);
-        ES.updateRequest(request);
-    }
-
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
@@ -204,12 +192,12 @@ public class RequestSingleton {
      * @param request the request
      */
     public void pushRequest(Request request, ICallBack callBack) {
+        Log.i("trace", "RequestSingleton.pushRequest()");
         if (ES.updateRequest(request)) {
             int position = requests.indexOf(request);
             requests.remove(position);
             requests.add(request);
         } else if (ES.addRequest(request)) {
-            requests.add(request);
         }
         callBack.execute();
         saveRequests();
@@ -235,7 +223,6 @@ public class RequestSingleton {
         for (Request req : requests) {
             if (req.getId().equals(id)) {
                 return req;
-
             }
         }
         return null;

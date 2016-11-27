@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
@@ -27,6 +28,7 @@ public class ActivityViewProfile extends Activity {
     private TextView vehicleInfoTitleTextView;
     private TextView vehicleInfoTextView;
     private TextView ratingsTitleTextView;
+    private RatingBar ratingBar;
     //TODO: How to represent ratings?? Is there a 5 star widget?
 
     private UserController userController = UserController.getInstance();
@@ -45,6 +47,7 @@ public class ActivityViewProfile extends Activity {
         vehicleInfoTitleTextView = (TextView)findViewById(R.id.description_title);
         vehicleInfoTextView = (TextView)findViewById(R.id.driver_profile_vehicle_info);
         ratingsTitleTextView = (TextView)findViewById(R.id.ratings_title);
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
 
         titleTextView.setText(user.getId() + "'s Profile");
         emailTextView.setText(user.getEmail());
@@ -62,16 +65,19 @@ public class ActivityViewProfile extends Activity {
             vehicleInfoTitleTextView.setVisibility(View.GONE);
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
         } else if(user instanceof Driver) {
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.VISIBLE);
             ratingsTitleTextView.setVisibility(View.VISIBLE);
-            //this is bad, I'm sorry
+            ratingBar.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setText(user.getVehicleDescription());
+            ratingBar.setRating(user.getRating());
         } else{
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
         }
     }
 

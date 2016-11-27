@@ -88,12 +88,11 @@ public class ActivityDryverSelection extends Activity {
 
     private void setDriverStatus() {
         if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
-            statusTextView.setText("Status: " + "Pending Rider confirmation");
             isAcceptedButtonToggle(true);
         } else {
-            statusTextView.setText("Status: " + "Can Accept");
             isAcceptedButtonToggle(false);
         }
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
         if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId())) {
             acceptButton.setText("Finalize Ride");

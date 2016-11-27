@@ -41,7 +41,7 @@ public class User implements Serializable {
     private String id = null;
 
     private String vehicleDescription;
-    private double Rating;
+    private float Rating;
 
     // TODO: anything else for user info?
 
@@ -68,6 +68,14 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    public float getRating() {
+        return Rating;
+    }
+
+    public void setRating(float rating) {
+        Rating = rating;
     }
 
     public String getVehicleDescription() {

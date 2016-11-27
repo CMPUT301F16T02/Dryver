@@ -222,16 +222,17 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * Notifies if the state of a request that the driver is a part of has payment authorized
      */
     private void notifyPayment(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.complete_message)
-                .setTitle(R.string.complete_title);
-
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
+        new AlertDialog.Builder(getApplicationContext())
+                .setMessage(R.string.complete_message)
+                .setTitle(R.string.complete_title)
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create()
+                .show();
     }
 
     /**
@@ -239,21 +240,22 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param request
      */
     private void notifySelected(final Request request){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage(R.string.dryver_selected_message)
-                .setTitle(R.string.dryver_selected_title);
-
-        builder.setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                requestSingleton.viewRequest(ActivityDryverMain.this, request);
-            }
-        });
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-        builder.create();
+        new AlertDialog.Builder(ActivityDryverMain.this)
+                .setMessage(R.string.dryver_selected_message)
+                .setTitle(R.string.dryver_selected_title)
+                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequest(ActivityDryverMain.this, request);
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create()
+                .show();
     }
 
     /**

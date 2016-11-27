@@ -143,6 +143,7 @@ public class Request implements Serializable {
      * @param driver the driver
      */
     public void addDriver(String driver) {
+        status = RequestStatus.DRIVERS_AVAILABLE;
         drivers.add(driver);
     }
 
@@ -172,6 +173,7 @@ public class Request implements Serializable {
      */
     public void acceptOffer(String driverID) {
         if (drivers.contains(driverID)) {
+            status = RequestStatus.DRIVER_CHOSEN;
             this.acceptedDriverID = driverID;
         } else {
             this.acceptedDriverID = null;
