@@ -46,7 +46,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDlq1iPQg_fEFHKek5tFy2r9PdlsTakdZ8" />
 
-        <activity android:name=".Activities.ActivityOpeningPage">
+        <activity
+            android:name=".Activities.ActivityOpeningPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
