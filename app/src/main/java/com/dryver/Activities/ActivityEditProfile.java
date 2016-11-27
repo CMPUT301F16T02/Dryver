@@ -67,7 +67,6 @@ public class ActivityEditProfile extends Activity {
         paymentSpinner = (Spinner)findViewById(R.id.profileSpinnerPaymentMethod);
         vehicleDesriptionTextView = (TextView)findViewById(R.id.activity_edit_profile_vehicle_textview);
         vehicleDescriptionEditText = (EditText)findViewById(R.id.edit_profile_vehicle_description);
-        vehicleDescriptionEditText.setInputType(0);
         saveChangesButton = (Button)findViewById(R.id.save_changes);
 
         emailEditText.setText(user.getEmail());

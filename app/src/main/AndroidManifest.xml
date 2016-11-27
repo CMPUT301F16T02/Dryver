@@ -47,26 +47,39 @@
             android:value="AIzaSyDlq1iPQg_fEFHKek5tFy2r9PdlsTakdZ8" />
 
         <activity
-            android:name=".Activities.ActivityOpeningPage">
+            android:name=".Activities.ActivityOpeningPage"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ActivityRegistration" />
-        <activity android:name=".Activities.ActivityRydeOrDryve" />
-        <activity android:name=".Activities.ActivityDryverMain" />
-        <activity android:name=".Activities.ActivityRyderMain" />
-        <activity android:name=".Activities.ActivityEditProfile" />
-        <activity android:name=".Activities.ActivityRyderSelection" />
-        <activity android:name=".Activities.ActivityRequestMap" />
-        <activity android:name=".Activities.ActivityRequest" />
-        <activity android:name=".Activities.ActivityLoggedInActionBar" />
+        <activity android:name=".Activities.ActivityRegistration"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRydeOrDryve"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityDryverMain"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRyderMain"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityEditProfile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRyderSelection"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRequestMap"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRequest"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityLoggedInActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Utility.HelpMe" />
-        <activity android:name=".Activities.ActivityViewProfile" />
-        <activity android:name=".Activities.ActivityRequestDriverList" />
-        <activity android:name=".Activities.ActivityDryverSelection"></activity>
+        <activity android:name=".Activities.ActivityViewProfile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityRequestDriverList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ActivityDryverSelection"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
