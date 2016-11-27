@@ -272,11 +272,13 @@ public class RequestSingleton {
         } else if (status == ActivityDryverMainState.PENDING){
             newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
         } else if (status == ActivityDryverMainState.GEOLOCATION){
-            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+            newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD){
-            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+            newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.RATE){
             newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+        } else if (status == ActivityDryverMainState.COST){
+            newRequests = ES.getRequestsCost(searchEditText.getText().toString());
         }
 
         //Compares two lists
@@ -294,10 +296,12 @@ public class RequestSingleton {
                 }
             }
 
-            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
-                requests.remove(index);
-            }
+            try {
+                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+                for (int index : indicesToRemove) {
+                    requests.remove(index);
+                }
+            } catch(IndexOutOfBoundsException e){}
             for(int index : indicesToAdd){
                 requests.add(newRequests.get(index));
             }
@@ -331,10 +335,12 @@ public class RequestSingleton {
                 }
             }
 
-            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
-                requests.remove(index);
-            }
+            try{
+                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+                for(int index : indicesToRemove){
+                    requests.remove(index);
+                }
+            } catch(IndexOutOfBoundsException e){}
             for(int index : indicesToAdd){
                 requests.add(newRequests.get(index));
             }

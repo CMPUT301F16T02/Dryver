@@ -32,7 +32,8 @@
     <string name="search">Search</string>
     <string name="empty">Leave Empty</string>
     <string name="keyword">Keyword</string>
-    <string name="rate">Minimum Rate ($/km)</string>
+    <string name="rate">Minimum Rate($/km)</string>
+    <string name="cost">Minimum Cost($)</string>
 
 
     <string name="view_profile">View Profile</string>

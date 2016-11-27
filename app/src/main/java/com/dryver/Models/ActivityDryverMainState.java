@@ -9,5 +9,6 @@ public enum ActivityDryverMainState {
     PENDING,
     GEOLOCATION,
     KEYWORD,
-    RATE
+    RATE,
+    COST
 }
