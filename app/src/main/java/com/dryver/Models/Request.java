@@ -220,6 +220,12 @@ public class Request implements Serializable {
     public void setToAddress(String address) {
         this.toCoordinates.setLocationName(address);
     }
+    public String getFromAddress() {
+        return this.fromCoordinates.getLocationName();
+    }
+    public String getToAddress() {
+        return this.toCoordinates.getLocationName();
+    }
 
     /**
      * Sets user's to-location.
