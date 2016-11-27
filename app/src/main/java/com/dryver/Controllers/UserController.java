@@ -26,7 +26,9 @@ import android.os.Environment;
 
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityViewProfile;
+import com.dryver.Models.Driver;
 import com.dryver.Models.User;
+import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -150,6 +152,9 @@ public class UserController {
     public boolean updateActiveUser(){
         return ES.updateUser(activeUser);
     }
+    public boolean updateViewedUser(){
+            return viewedUser != null && ES.updateUser(viewedUser);
+    }
 
 //  ============================ Offline Serialization and Caching Stuff ===========================
 
@@ -225,5 +230,11 @@ public class UserController {
         if(f.exists() && !f.isDirectory()) {
            return true;
         } else return false;
+    }
+
+    public void rateDriver(float rating, String driverID){
+        User driverToRate = ES.getUserByString(driverID);
+        driverToRate.addRating(rating);
+        ES.updateUser(driverToRate);
     }
 }

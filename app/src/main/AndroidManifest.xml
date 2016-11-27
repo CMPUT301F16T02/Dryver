@@ -80,6 +80,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Activities.ActivityDryverSelection"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.ActivityDryverMap"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

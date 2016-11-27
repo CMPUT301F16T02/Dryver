@@ -32,7 +32,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/requestSelectionButtonViewList"
         android:layout_alignParentTop="true">
 
         <ScrollView
@@ -112,5 +111,19 @@
         android:layout_above="@+id/requestSelectionButtonCancel"
         android:layout_alignParentStart="true" />
 
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/requestSelectionButtonViewList"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ratingBar2"
+        android:stepSize="0.1"
+        android:numStars="5"/><![CDATA[
 
+    ;
+        android:layout_above="@+id/requestSelectionButtonViewList"
+        android:layout_alignParentStart="true"/>
+
+
+]]>
 </RelativeLayout>

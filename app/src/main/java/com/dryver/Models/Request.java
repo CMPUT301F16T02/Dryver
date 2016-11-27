@@ -56,6 +56,8 @@ public class Request implements Serializable {
     private double rate = 0.70;
     private double distance = 1.00;
 
+    private String encodedPolyline = null;
+
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
         this.date = date;
@@ -143,6 +145,7 @@ public class Request implements Serializable {
      * @param driver the driver
      */
     public void addDriver(String driver) {
+        status = RequestStatus.DRIVERS_AVAILABLE;
         drivers.add(driver);
     }
 
@@ -172,6 +175,7 @@ public class Request implements Serializable {
      */
     public void acceptOffer(String driverID) {
         if (drivers.contains(driverID)) {
+            status = RequestStatus.DRIVER_CHOSEN;
             this.acceptedDriverID = driverID;
         } else {
             this.acceptedDriverID = null;
@@ -219,6 +223,12 @@ public class Request implements Serializable {
 
     public void setToAddress(String address) {
         this.toCoordinates.setLocationName(address);
+    }
+    public String getFromAddress() {
+        return this.fromCoordinates.getLocationName();
+    }
+    public String getToAddress() {
+        return this.toCoordinates.getLocationName();
     }
 
     /**
@@ -299,7 +309,9 @@ public class Request implements Serializable {
         } else if (status == RequestStatus.PAYMENT_AUTHORIZED) {
             return "Payment Authorized";
         } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
-            return "Request Complete!";
+            return "Payment Accepted!";
+        } else if(status == RequestStatus.RATED){
+            return "Rating Acknowledged";
         } else {
             return "Unknown Status String";
         }
@@ -338,6 +350,14 @@ public class Request implements Serializable {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getEncodedPolyline() {
+        return encodedPolyline;
+    }
+
+    public void setEncodedPolyline(String encodedPolyline) {
+        this.encodedPolyline = encodedPolyline;
     }
 }
 

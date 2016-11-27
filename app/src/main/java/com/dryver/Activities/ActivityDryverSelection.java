@@ -1,6 +1,7 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
@@ -23,6 +25,7 @@ public class ActivityDryverSelection extends Activity {
 
     private Button acceptButton;
     private Button cancelButton;
+    private Button viewMapButton;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
@@ -38,7 +41,7 @@ public class ActivityDryverSelection extends Activity {
         statusTextView = (TextView) findViewById(R.id.dryverSelectionToStatus);
         requestDescription = (TextView) findViewById(R.id.dryverSelectionDescription);
 
-
+        viewMapButton = (Button) findViewById(R.id.dryverSelectionMapButton);
         acceptButton = (Button) findViewById(R.id.dryverSelectionAcceptButton);
         cancelButton = (Button) findViewById(R.id.dryverSelectionCancelButton);
 
@@ -50,6 +53,13 @@ public class ActivityDryverSelection extends Activity {
     }
 
     private void setListeners(){
+        viewMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityDryverSelection.this, ActivityDryverMap.class);
+                startActivity(intent);
+            }
+        });
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,16 +97,18 @@ public class ActivityDryverSelection extends Activity {
     }
 
     private void setDriverStatus() {
-        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
-            statusTextView.setText("Status: " + "Pending Rider confirmation");
+        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId()) &&
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
             isAcceptedButtonToggle(true);
-        } else {
-            statusTextView.setText("Status: " + "Can Accept");
+        } else if((requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE ||
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.NO_DRIVERS)){
             isAcceptedButtonToggle(false);
         }
+        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 
-        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId())) {
-            acceptButton.setText("Finalize Ride");
+        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
+                requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
+            acceptButton.setText("Accept Payment");
             acceptButton.setEnabled(true);
             acceptButton.setOnClickListener(null);
             cancelButton.setVisibility(View.INVISIBLE);
@@ -104,17 +116,19 @@ public class ActivityDryverSelection extends Activity {
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: 2016-11-26 handle finalized acceptance between driver and user.
+                    requestSingleton.acceptPayment(new ICallBack() {
+                        @Override
+                        public void execute() {
+                            finish();
+                        }
+                    });
                 }
             });
-
-
         }
     }
 
     private void isAcceptedButtonToggle(boolean bool) {
         acceptButton.setEnabled(!bool);
         cancelButton.setEnabled(bool);
-
     }
 }

@@ -4,6 +4,7 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -74,6 +75,7 @@ public class ActivityRequest extends Activity {
                     requestSingleton.pushTempRequest(new ICallBack(){
                         @Override
                         public void execute(){
+                            Log.i("CALLBACK", "Make Request");
                             finish();
                         }
                     });

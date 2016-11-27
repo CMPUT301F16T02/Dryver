@@ -47,9 +47,7 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.setTempRequest(request);
-                Intent intent = new Intent(mContext, ActivityDryverSelection.class);
-                mContext.startActivity(intent);
+                requestSingleton.viewRequest(mContext, request);
             }
         });
 
