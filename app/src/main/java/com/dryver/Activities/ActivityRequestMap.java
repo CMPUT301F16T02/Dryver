@@ -21,6 +21,8 @@ package com.dryver.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -67,6 +69,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
@@ -77,12 +81,12 @@ public class ActivityRequestMap extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         PlaceSelectionListener {
 
-    private GoogleMap map;
+    private GoogleMap mMap;
     private GoogleApiClient mClient;
     private ArrayList<Marker> mRoute;
+    private LocationRequest mLocationRequest;
 
     private Location currentLocation;
-    private LocationRequest mLocationRequest;
     private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
     private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
@@ -120,21 +124,6 @@ public class ActivityRequestMap extends FragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_direction:
-                //TODO generate direction
-                if (mRoute.size() == 2) {
-                    Location fromLocation = new Location("Start");
-                    Location toLocation = new Location("End");
-
-                    fromLocation.setLatitude(mRoute.get(0).getPosition().latitude);
-                    fromLocation.setLongitude(mRoute.get(0).getPosition().longitude);
-                    toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
-                    toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
-                    generateRouteURL(fromLocation, toLocation);
-                    new FetchItemsTask().execute();
-                }
-                return true;
-
             case R.id.action_search:
                 try {
                     Intent intent = new PlaceAutocomplete.IntentBuilder
@@ -149,7 +138,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                 }
                 return true;
             case R.id.action_delete:
-                map.clear();
+                mMap.clear();
                 mRoute.clear();
                 return true;
 
@@ -168,7 +157,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                     requestSingleton.getTempRequest().setDistance(routeDistance);
                     Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
 
-                    map.clear();
+                    mMap.clear();
                     mRoute.clear();
 
                     finish();
@@ -212,46 +201,101 @@ public class ActivityRequestMap extends FragmentActivity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.setMyLocationEnabled(true);
-        map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng point) {
                 if (mRoute.size() == 0) {
                     //Start location
-                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("Start Location")
+                    mRoute.add(mMap.addMarker(new MarkerOptions().position(point).title("Start Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
                 } else if (mRoute.size() == 1) {
                     //End location
-                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("End Location")
+                    mRoute.add(mMap.addMarker(new MarkerOptions().position(point).title("End Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
+                    ArrayList<Location> locations = mRouteToLocation();
+                    drawRoute(locations.get(0), locations.get(1));
+
+                    ArrayList<String> addresses = mRouteToAddress();
+                    if ((addresses.get(0) != null) && (addresses.get(1) != null)) {
+                        Log.i("REQUEST MAP: ", "From Address: " + addresses.get(0));
+                        Log.i("REQUEST MAP: ", "To Address: " + addresses.get(1));
+                    }
                 } else {
                     Marker removeMarker = mRoute.get(1);
                     mRoute.remove(removeMarker);
                     removeMarker.remove();
-                    mRoute.add(map.addMarker(new MarkerOptions().position(point).title("End Location")
+                    mRoute.add(mMap.addMarker(new MarkerOptions().position(point).title("End Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
                     removePolylines();
+                    ArrayList<Location> locations = mRouteToLocation();
+                    drawRoute(locations.get(0), locations.get(1));
+
+                    ArrayList<String> addresses = mRouteToAddress();
+                    if ((addresses.get(0) != null) && (addresses.get(1) != null)) {
+                        Log.i("REQUEST MAP: ", "From Address: " + addresses.get(0));
+                        Log.i("REQUEST MAP: ", "To Address: " + addresses.get(1));
+                    }
                 }
             }
         });
     }
 
+    public ArrayList<Location> mRouteToLocation() {
+        ArrayList<Location> returnLocationArrayList = new ArrayList<Location>();
+        Location fromLocation = new Location("Start");
+        Location toLocation = new Location("End");
+
+        fromLocation.setLatitude(mRoute.get(0).getPosition().latitude);
+        fromLocation.setLongitude(mRoute.get(0).getPosition().longitude);
+        toLocation.setLatitude(mRoute.get(1).getPosition().latitude);
+        toLocation.setLongitude(mRoute.get(1).getPosition().longitude);
+
+        returnLocationArrayList.add(fromLocation);
+        returnLocationArrayList.add(toLocation);
+
+        return returnLocationArrayList;
+    }
+
+    public ArrayList<String> mRouteToAddress() {
+        String fromAddress = null;
+        String toAddress = null;
+        getAddressTask fromAddressTask;
+        getAddressTask toAddressTask;
+        ArrayList<Location> toFromLocation = mRouteToLocation();
+        ArrayList<String> returnAddressArrayList = new ArrayList<String>();
+
+        fromAddressTask = new getAddressTask(toFromLocation.get(0));
+        toAddressTask = new getAddressTask(toFromLocation.get(1));
+        fromAddressTask.execute();
+        toAddressTask.execute();
+
+        try {
+            fromAddress = fromAddressTask.get();
+            toAddress = toAddressTask.get();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        } catch (ExecutionException ee) {
+            ee.printStackTrace();
+        }
+
+        returnAddressArrayList.add(fromAddress);
+        returnAddressArrayList.add(toAddress);
+
+        return returnAddressArrayList;
+    }
+
+    public void drawRoute(Location fromLocation, Location toLocation) {
+        generateRouteURL(fromLocation, toLocation);
+        new FetchItemsTask().execute();
+    }
+
     public void moveMap(Location location) {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
@@ -335,11 +379,36 @@ public class ActivityRequestMap extends FragmentActivity implements
                 location2.setLongitude(point2.longitude);
 
                 routeDistance += location1.distanceTo(location2);
-                polylineArrayList.add(map.addPolyline(new PolylineOptions()
+                polylineArrayList.add(mMap.addPolyline(new PolylineOptions()
                         .add(point1, point2)
                         .width(5)
                         .color(Color.RED)));
             }
+        }
+    }
+
+    private class getAddressTask extends AsyncTask<String, String, String> {
+        double latitude;
+        double longitude;
+
+        public getAddressTask(Location location) {
+            this.latitude = location.getLatitude();
+            this.longitude = location.getLongitude();
+        }
+
+        protected String doInBackground(String... params) {
+            String result = "";
+            Geocoder geocoder = new Geocoder(ActivityRequestMap.this, Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                result = addresses.get(0).getAddressLine(0);
+            } catch (IOException ioe) {
+                Log.e("REQUEST MAP: ", "Failed to get address", ioe);
+            }
+            return result;
+        }
+
+        protected void onPostExecute(String result) {
         }
     }
 
@@ -402,6 +471,16 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     @Override
     public void onError(Status status) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 }
