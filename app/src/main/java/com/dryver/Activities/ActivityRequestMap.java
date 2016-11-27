@@ -24,9 +24,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.v4.app.FragmentActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,7 +47,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -59,12 +56,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-import com.google.gson.stream.JsonReader;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,7 +65,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +89,7 @@ public class ActivityRequestMap extends FragmentActivity implements
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private String routeURL;
     private ArrayList<Polyline> polylineArrayList = new ArrayList<Polyline>();
-    private int routeDistance;
+    private double routeDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +108,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -130,7 +122,7 @@ public class ActivityRequestMap extends FragmentActivity implements
         switch (item.getItemId()) {
             case R.id.action_direction:
                 //TODO generate direction
-                if (mRoute.size() == 2 ) {
+                if (mRoute.size() == 2) {
                     Location fromLocation = new Location("Start");
                     Location toLocation = new Location("End");
 
@@ -173,6 +165,8 @@ public class ActivityRequestMap extends FragmentActivity implements
 
                     requestSingleton.getTempRequest().setFromLocation(fromLocation);
                     requestSingleton.getTempRequest().setToLocation(toLocation);
+                    requestSingleton.getTempRequest().setDistance(routeDistance);
+                    Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
 
                     map.clear();
                     mRoute.clear();
@@ -238,13 +232,11 @@ public class ActivityRequestMap extends FragmentActivity implements
                     //Start location
                     mRoute.add(map.addMarker(new MarkerOptions().position(point).title("Start Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
-                }
-                else if (mRoute.size() == 1) {
+                } else if (mRoute.size() == 1) {
                     //End location
                     mRoute.add(map.addMarker(new MarkerOptions().position(point).title("End Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
-                }
-                else {
+                } else {
                     Marker removeMarker = mRoute.get(1);
                     mRoute.remove(removeMarker);
                     removeMarker.remove();
@@ -289,9 +281,9 @@ public class ActivityRequestMap extends FragmentActivity implements
         Log.i("REQUEST MAP: ", "URL: " + routeURL);
     }
 
-    public String getDataFromUrl(String directionURL) throws IOException{
+    public String getDataFromUrl(String directionURL) throws IOException {
         URL url = new URL(directionURL);
-        HttpURLConnection urlConnection  = (HttpURLConnection) url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -299,7 +291,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
             if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 throw new IOException(urlConnection.getResponseMessage() +
-                    ": with " + directionURL);
+                        ": with " + directionURL);
             }
 
             int bytesRead = 0;
@@ -333,7 +325,7 @@ public class ActivityRequestMap extends FragmentActivity implements
             List<LatLng> routePoly = decodePoly(result);
             for (int i = 0; i < (routePoly.size() - 1); i++) {
                 LatLng point1 = routePoly.get(i);
-                LatLng point2 = routePoly.get(i+1);
+                LatLng point2 = routePoly.get(i + 1);
 
                 Location location1 = new Location("1");
                 location1.setLatitude(point1.latitude);
@@ -350,6 +342,7 @@ public class ActivityRequestMap extends FragmentActivity implements
             }
         }
     }
+
     //Code taken from http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
     private List<LatLng> decodePoly(String encoded) {
         List<LatLng> poly = new ArrayList<>();
@@ -383,7 +376,7 @@ public class ActivityRequestMap extends FragmentActivity implements
         return poly;
     }
 
-    public String toEncodedPoly (String json) {
+    public String toEncodedPoly(String json) {
         String encodedPoly = null;
         try {
             JSONObject jsonObject = new JSONObject(json).getJSONArray("routes").getJSONObject(0).getJSONObject("overview_polyline");

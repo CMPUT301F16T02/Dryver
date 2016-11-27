@@ -28,6 +28,11 @@
     <string name="dryve">Dryve</string>
     <string name="save_changes">Save</string>
     <string name="choose_driver">Accept as Driver</string>
+    <string name="kilometers">Kilometers Radius</string>
+    <string name="search">Search</string>
+    <string name="empty">Leave Empty</string>
+    <string name="keyword">Keyword</string>
+    <string name="rate">Minimum Rate ($/km)</string>
 
 
     <string name="view_profile">View Profile</string>
@@ -76,7 +81,7 @@
     <string name="activity_rider_request_Request">Request</string>
     <string name="activity_rider_request_Status">Status</string>
     <string name="activity_rider_request_NewRequest">Make Request</string>
-    <string name="ryder_main_title">Your Open Requests</string>
+    <string name="ryder_main_title">Open Requests:</string>
 
     <!--Dialog popup Strings-->
     <string name="drivers_found_message">Drivers have been found for one of your requests! Either view the list of divers, or close this window.</string>
@@ -109,7 +114,7 @@
     <string name="activity_email_body">Enter email body here...</string>
     <string name="activity_email_send">Send Email</string>
 
-    <string name="activity_rider_request_Sort">Sort By:</string>
+    <string name="activity_rider_request_search">Search By:</string>
 
     <string name="activity_driver_list_title">Drivers</string>
 
@@ -133,4 +138,5 @@
     <string name="activity_dryver_selection_RequestDetails">Request Details</string>
     <string name="activity_dryver_selection_riderID">Rider ID</string>
     <string name="activity_dryver_selection_Description">implement Description for request</string>
+    <string name="requestDriverListDriverID">driver id goes here</string>
 </resources>

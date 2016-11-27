@@ -24,14 +24,14 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.EditText;
 
-import com.dryver.Activities.ActivityDriverList;
+import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
+import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Activities.ActivityRyderSelection;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
-import com.dryver.Models.Rider;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -73,6 +73,7 @@ public class RequestSingleton {
 
     /**
      * Gets the instance of the singleton for use throughout the App
+     *
      * @return
      */
     public static RequestSingleton getInstance() {
@@ -89,6 +90,7 @@ public class RequestSingleton {
 
     /**
      * Gets the request list currently held by the singleton
+     *
      * @return
      */
     public ArrayList<Request> getRequests() {
@@ -103,15 +105,6 @@ public class RequestSingleton {
      * @see Request
      * @see ICallBack
      */
-    public ArrayList<Request> getUpdatedRequests() {
-        updateRequests(new ICallBack() {
-            @Override
-            public void execute() {
-            }
-        });
-
-        return requests;
-    }
 
 //  ================================== tempRequest Stuff ===========================================
 
@@ -127,8 +120,8 @@ public class RequestSingleton {
         this.tempRequest = request;
     }
 
-    public void pushTempRequest() {
-        pushRequest(tempRequest);
+    public void pushTempRequest(ICallBack callBack) {
+        pushRequest(tempRequest, callBack);
         saveRequests();
     }
 
@@ -136,10 +129,11 @@ public class RequestSingleton {
 
     /**
      * Opens the activity for viewing a request
+     *
      * @param context
      * @param request
      */
-    public void viewRequest(Context context, Request request){
+    public void viewRequest(Context context, Request request) {
         tempRequest = request;
         Intent intent = new Intent(context, ActivityRyderSelection.class);
         context.startActivity(intent);
@@ -147,10 +141,11 @@ public class RequestSingleton {
 
     /**
      * opens the activity for editing or making a request
+     *
      * @param context
      * @param request
      */
-    public void editRequest(Context context, Request request){
+    public void editRequest(Context context, Request request) {
         tempRequest = request;
         Intent intent = new Intent(context, ActivityRequest.class);
         context.startActivity(intent);
@@ -158,12 +153,13 @@ public class RequestSingleton {
 
     /**
      * opens the activity for viewing a list of drivers
+     *
      * @param context
      * @param request
      */
-    public void viewRequestDrivers(Context context, Request request){
+    public void viewRequestDrivers(Context context, Request request) {
         tempRequest = request;
-        Intent intent = new Intent(context, ActivityDriverList.class);
+        Intent intent = new Intent(context, ActivityRequestDriverList.class);
         context.startActivity(intent);
     }
 
@@ -173,10 +169,11 @@ public class RequestSingleton {
 
     /**
      * Adds a driver to the request. Called when a driver chooses to accept a request
+     *
      * @param request
      * @param driverID
      */
-    public void addDriver(Request request, String driverID){
+    public void addDriver(Request request, String driverID) {
         request.addDriver(driverID);
         ES.updateRequest(request);
     }
@@ -184,12 +181,11 @@ public class RequestSingleton {
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
-     * @param request
      * @param driverID
      */
-    public void selectDriver(Request request, String driverID) {
-        request.acceptOffer(driverID);
-        ES.updateRequest(request);
+    public void selectDriverFromTempRequest(String driverID, ICallBack callBack) {
+        tempRequest.acceptOffer(driverID);
+        pushTempRequest(callBack);
     }
 
     public void authorizePayment(Request request) {
@@ -197,7 +193,7 @@ public class RequestSingleton {
         ES.updateRequest(request);
     }
 
-    public void acceptPayment(Request request){
+    public void acceptPayment(Request request) {
         request.setStatus(RequestStatus.PAYMENT_ACCEPTED);
         ES.updateRequest(request);
     }
@@ -207,7 +203,7 @@ public class RequestSingleton {
      *
      * @param request the request
      */
-    public void pushRequest(Request request) {
+    public void pushRequest(Request request, ICallBack callBack) {
         if (ES.updateRequest(request)) {
             int position = requests.indexOf(request);
             requests.remove(position);
@@ -215,6 +211,7 @@ public class RequestSingleton {
         } else if (ES.addRequest(request)) {
             requests.add(request);
         }
+        callBack.execute();
         saveRequests();
     }
 
@@ -235,7 +232,7 @@ public class RequestSingleton {
     }
 
     public Request getRequestById(String id, ICallBack callBack) {
-        for (Request req: requests) {
+        for (Request req : requests) {
             if (req.getId().equals(id)) {
                 return req;
 
@@ -246,11 +243,12 @@ public class RequestSingleton {
 
     /**
      * Gets the most up to date version of the Temp Request;
+     *
      * @param callBack
      */
-    public void updateTempRequest(ICallBack callBack){
+    public void updateTempRequest(ICallBack callBack) {
         Request updatedRequest = ES.getRequestByString(tempRequest.getId());
-        if(updatedRequest != null){
+        if (updatedRequest != null) {
             tempRequest = updatedRequest;
             callBack.execute();
         }
@@ -258,23 +256,92 @@ public class RequestSingleton {
 
     /**
      * A simple method for fetching an updated request list via Elastic Search. Executes callback after
-     *
+     * Do not change thse huge things please!
      * @param callBack
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateRequests(ICallBack callBack) {
-        Log.i("info", "RequestSingleton updateRequests()");
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
+        ArrayList<Request> newRequests = new ArrayList<Request>();
 
-        if (userController.getActiveUser() instanceof Rider) {
-            requests = ES.getRequests(userController.getActiveUser().getId());
-            saveRequests();
-            callBack.execute();
-        } else if (userController.getActiveUser() instanceof Driver) {
-            requests = ES.getAllRequests();
-            saveRequests();
-            callBack.execute();
+        if(status == ActivityDryverMainState.ALL){
+            newRequests = ES.getAllRequests();
+        } else if (status == ActivityDryverMainState.PENDING){
+            newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
+        } else if (status == ActivityDryverMainState.GEOLOCATION){
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+        } else if (status == ActivityDryverMainState.KEYWORD){
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
+        } else if (status == ActivityDryverMainState.RATE){
+            newRequests = ES.getRequestsRate(searchEditText.getText().toString());
         }
+
+        //Compares two lists
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else{
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    indicesToAdd.add(newRequests.indexOf(newRequest));
+                }
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+            for(int index : indicesToAdd){
+                requests.add(newRequests.get(index));
+            }
+        }
+
+        saveRequests();
+        callBack.execute();
+
+        //TODO: Implement a way of searching for requests in a certain area or something for drivers
+    }
+
+    public void updateRiderRequests(ICallBack callBack) {
+        Log.i("info", "RequestSingleton updateDriverRequests()");
+        //This is necessary as you can't remove from a list you are currently iterating through /facepalm
+        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+        ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
+        ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+
+        if(newRequests.size() == 0){
+            requests.clear();
+        } else {
+            for (Request newRequest : newRequests) {
+                if (!requests.contains(newRequest)) {
+                    indicesToAdd.add(newRequests.indexOf(newRequest));
+                }
+
+                for (Request oldRequest : requests) {
+                    if (!newRequests.contains(oldRequest)) {
+                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    }
+                }
+            }
+
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
+            for(int index : indicesToAdd){
+                requests.add(newRequests.get(index));
+            }
+        }
+
+        saveRequests();
+        callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
@@ -330,7 +397,15 @@ public class RequestSingleton {
         });
     }
 
+    /**
+     * Calculates an estimated cost of the trip based on distance and rate.
+     */
+    public double getEstimate() {
+        Log.i("Calculating cost", "requestSingleton.getEstimate()");
+        return tempRequest.getCost() + ((tempRequest.getDistance() / 1000) * tempRequest.getRate());
+    }
 //  ========================= Offline Serialization Stuff ==========================================
+
 
     /**
      * Saves the current ArrayList of requests to local storage
@@ -387,5 +462,6 @@ public class RequestSingleton {
             e.printStackTrace();
         }
     }
+
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }

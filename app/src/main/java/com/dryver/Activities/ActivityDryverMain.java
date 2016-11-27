@@ -31,12 +31,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -50,6 +52,8 @@ import com.google.android.gms.location.LocationServices;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.dryver.Models.ActivityDryverMainState.*;
+
 
 /**
  * This activities deals with providing the driver with UI for requests.
@@ -59,10 +63,12 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
 
-    private Button currentLocationButton;
+    private Button searchButton;
     private Spinner sortSpinner;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
+
+    private EditText searchByEditText;
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -73,6 +79,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private GoogleApiClient mClient;
 
     private Timer timer;
+    private ActivityDryverMainState state = ALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +95,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         setListeners();
         setMapStuff();
         checkStatuses();
-        setTimer();
     }
 
     @Override
@@ -101,6 +107,14 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     public void onResume () {
         super.onResume();
         refreshRequestList();
+        setTimer();
+    }
+
+    @Override
+    public void onPause(){
+        Log.i("trace", "ActivityDryverMain.onPause()");
+        super.onPause();
+        timer.cancel();
     }
 
     @Override
@@ -120,14 +134,15 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
         sortSpinner.setOnItemSelectedListener(this);
+        searchByEditText = (EditText) findViewById(R.id.searchWith);
+        searchByEditText.setInputType(0);
+        searchButton = (Button) findViewById(R.id.searchButton);
 
-        currentLocationButton = (Button) findViewById(R.id.requestButtonCurrentLocation);
-        currentLocationButton.setVisibility(View.INVISIBLE);
         //TODO: Change this in future
         //sets the request singleton's requests lists to getAllRequests in ES Controller
         driverListView = (ListView) findViewById(R.id.dryverMainListView);
         //requestSingleton.setRequestsAll();
-        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getUpdatedRequests());
+        dryverMainAdapter = new DryverMainAdapter(this, requestSingleton.getRequests());
         driverListView.setAdapter(dryverMainAdapter);
     }
 
@@ -144,10 +159,15 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             }
         });
 
-        currentLocationButton.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                findCurrentLocation();
+            public void onClick(View view){
+                requestSingleton.updateDriverRequests(state, new ICallBack() {
+                    @Override
+                    public void execute() {
+                        refreshRequestList();
+                    }
+                }, searchByEditText);
             }
         });
 
@@ -172,7 +192,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(Bundle bundle) {
-                        currentLocationButton.setVisibility(View.VISIBLE);
+                        findCurrentLocation();
                     }
                     @Override
                     public void onConnectionSuspended(int i) {
@@ -194,13 +214,12 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                         request.getAcceptedDriverID() == userController.getActiveUser().getId()){
                     notifySelected(request);
                 }
-
             }
         }
     }
 
     /**
-     * Notifies if the status of a request that the driver is a part of has payment authorized
+     * Notifies if the state of a request that the driver is a part of has payment authorized
      */
     private void notifyPayment(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
@@ -263,20 +282,26 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param id
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        Log.i("trace", "ActivityDryverMain.onItemSelected()");
         String sortSelection = parent.getItemAtPosition(pos).toString();
-        if (sortSelection.equals("Date")) {
-            requestSingleton.sortRequestByDate();
+        if (sortSelection.equals("All")) {
+            state = ALL;
         }
-        else if (sortSelection.equals("Distance")) {
-            requestSingleton.sortRequestByDistance();
+        else if (sortSelection.equals("Pending")) {
+            searchByEditText.setHint(R.string.empty);
+            state = PENDING;
         }
-        else if (sortSelection.equals("Cost")) {
-            requestSingleton.sortRequestByCost();
+        else if (sortSelection.equals("Geolocation")) {
+            searchByEditText.setHint(R.string.kilometers);
+            state = GEOLOCATION;
         }
-        else if (sortSelection.equals("Proximity")) {
-            requestSingleton.sortRequestsByProximity(currentLocation);
+        else if (sortSelection.equals("Keyword")) {
+            searchByEditText.setHint(R.string.keyword);
+            state = KEYWORD;
+        } else if(sortSelection.equals("Rate")){
+            searchByEditText.setHint(R.string.rate);
+            state = RATE;
         }
-        dryverMainAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -292,6 +317,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param LOCATION_INTERVAL
      */
     public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+        Log.i("trace", "ActivityDryverMain.initializeLocationRequest()");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setNumUpdates(LOCATION_UPDATES);
@@ -303,12 +329,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @see ICallBack
      */
     public void beginRefresh() {
-        requestSingleton.updateRequests(new ICallBack() {
+        Log.i("trace", "ActivityDryverMain.beginRefresh()");
+        requestSingleton.updateDriverRequests(state, new ICallBack() {
             @Override
             public void execute() {
                 refreshRequestList();
             }
-        });
+        }, searchByEditText);
     }
 
     /**

@@ -28,10 +28,11 @@
     </string-array>
 
     <string-array name="activity_driver_spinner">
-        <item>Date</item>
-        <item>Distance</item>
-        <item>Cost</item>
-        <item>Proximity</item>
+        <item>All</item>
+        <item>Pending</item>
+        <item>Geolocation</item>
+        <item>Keyword</item>
+        <item>Rate</item>
     </string-array>
 
 </resources>
