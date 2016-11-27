@@ -14,6 +14,8 @@ import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
 
+import org.w3c.dom.Text;
+
 
 public class ActivityDryverSelection extends Activity {
 
@@ -21,6 +23,7 @@ public class ActivityDryverSelection extends Activity {
     private TextView locationTextView;
     private TextView dryverSelectionDate;
     private TextView requestDescription;
+    private TextView statusTextView;
 
     private Button acceptButton;
     private Button cancelButton;
@@ -38,10 +41,14 @@ public class ActivityDryverSelection extends Activity {
         locationTextView = (TextView) findViewById(R.id.dryverSelectionLocation);
         dryverSelectionDate = (TextView) findViewById(R.id.dryverSelectionDate);
         requestDescription = (TextView) findViewById(R.id.dryverSelectionDescription);
+        statusTextView = (TextView) findViewById(R.id.dryverSelectionToStatus);
 
         viewMapButton = (Button) findViewById(R.id.dryverSelectionMapButton);
         acceptButton = (Button) findViewById(R.id.dryverSelectionAcceptButton);
         cancelButton = (Button) findViewById(R.id.dryverSelectionCancelButton);
+
+        requestDescription.setText(requestSingleton.getTempRequest().getDescription());
+
 
         riderIdTextView.setText("Rider Username: " + requestSingleton.getTempRequest().getRiderId());
         locationTextView.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
@@ -72,7 +79,6 @@ public class ActivityDryverSelection extends Activity {
             }
         });
 
-        //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,33 +101,12 @@ public class ActivityDryverSelection extends Activity {
     }
 
     private void setDriverStatus() {
-        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId()) &&
-                requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
+        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
             isAcceptedButtonToggle(true);
-        } else if((requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE ||
-                requestSingleton.getTempRequest().getStatus() == RequestStatus.NO_DRIVERS)){
+            statusTextView.setText("Status: Ride is accepted.");
+        } else {
             isAcceptedButtonToggle(false);
-        }
-//        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
-
-        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
-                requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
-            acceptButton.setText("Accept Payment");
-            acceptButton.setEnabled(true);
-            acceptButton.setOnClickListener(null);
-            cancelButton.setVisibility(View.INVISIBLE);
-
-            acceptButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    requestSingleton.acceptPayment(new ICallBack() {
-                        @Override
-                        public void execute() {
-                            finish();
-                        }
-                    });
-                }
-            });
+            statusTextView.setText("Status: Can accept ride.");
         }
     }
 
@@ -129,4 +114,34 @@ public class ActivityDryverSelection extends Activity {
         acceptButton.setEnabled(!bool);
         cancelButton.setEnabled(bool);
     }
+        // TODO: 2016-11-27 should be a new class.
+//        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId()) &&
+//                requestSingleton.getTempRequest().getStatus().equals(RequestStatus.DRIVER_CHOSEN)) {
+//            isAcceptedButtonToggle(true);
+//        } else if((requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE ||
+//                requestSingleton.getTempRequest().getStatus().equals(RequestStatus.NO_DRIVERS))){
+//            isAcceptedButtonToggle(false);
+//        }
+////        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
+//
+//        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
+//                requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
+//            acceptButton.setText("Accept Payment");
+//            acceptButton.setEnabled(true);
+//            acceptButton.setOnClickListener(null);
+//            cancelButton.setVisibility(View.INVISIBLE);
+//
+//            acceptButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    requestSingleton.acceptPayment(new ICallBack() {
+//                        @Override
+//                        public void execute() {
+//                            finish();
+//                        }
+//                    });
+//                }
+//            });
+//        }
+
 }

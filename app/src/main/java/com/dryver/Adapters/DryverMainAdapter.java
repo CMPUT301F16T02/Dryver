@@ -41,8 +41,8 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         riderText.setText("Rider: "+ request.getRiderId());
         destinationText.setText(HelpMe.formatLocation(request));
         dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
-        costText.setText("Cost: " + HelpMe.formatCurrency(request.getCost()));
-        rateText.setText("Rate: " + HelpMe.formatCurrency(request.getRate()));
+        costText.setText("Cost: " + HelpMe.formatCurrencyToString(request.getCost()));
+        rateText.setText("Rate: " + HelpMe.formatCurrencyToString(request.getRate()));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
