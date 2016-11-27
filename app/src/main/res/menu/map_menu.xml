@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_direction"
-        android:icon="@drawable/directions"
-        android:title="@string/action_direction"
-        android:showAsAction="always" />
-    <item
         android:id="@+id/action_search"
         android:icon="@drawable/magnify"
         android:title="@string/action_search"
