@@ -140,4 +140,5 @@
     <string name="activity_dryver_selection_riderID">Rider ID</string>
     <string name="activity_dryver_selection_Description">implement Description for request</string>
     <string name="requestDriverListDriverID">driver id goes here</string>
+    <string name="activity_dryver_selection_Map">View Map</string>
 </resources>

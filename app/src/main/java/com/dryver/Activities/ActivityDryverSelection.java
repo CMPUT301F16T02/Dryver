@@ -1,6 +1,7 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class ActivityDryverSelection extends Activity {
 
     private Button acceptButton;
     private Button cancelButton;
+    private Button viewMapButton;
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private UserController userController = UserController.getInstance();
@@ -39,7 +41,7 @@ public class ActivityDryverSelection extends Activity {
         statusTextView = (TextView) findViewById(R.id.dryverSelectionToStatus);
         requestDescription = (TextView) findViewById(R.id.dryverSelectionDescription);
 
-
+        viewMapButton = (Button) findViewById(R.id.dryverSelectionMapButton);
         acceptButton = (Button) findViewById(R.id.dryverSelectionAcceptButton);
         cancelButton = (Button) findViewById(R.id.dryverSelectionCancelButton);
 
@@ -51,6 +53,13 @@ public class ActivityDryverSelection extends Activity {
     }
 
     private void setListeners(){
+        viewMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityDryverSelection.this, ActivityDryverMap.class);
+                startActivity(intent);
+            }
+        });
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,14 +124,11 @@ public class ActivityDryverSelection extends Activity {
                     });
                 }
             });
-
-
         }
     }
 
     private void isAcceptedButtonToggle(boolean bool) {
         acceptButton.setEnabled(!bool);
         cancelButton.setEnabled(bool);
-
     }
 }

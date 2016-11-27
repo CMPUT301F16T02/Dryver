@@ -56,6 +56,8 @@ public class Request implements Serializable {
     private double rate = 0.70;
     private double distance = 1.00;
 
+    private String encodedPolyline = null;
+
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
         this.date = date;
@@ -348,6 +350,14 @@ public class Request implements Serializable {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getEncodedPolyline() {
+        return encodedPolyline;
+    }
+
+    public void setEncodedPolyline(String encodedPolyline) {
+        this.encodedPolyline = encodedPolyline;
     }
 }
 

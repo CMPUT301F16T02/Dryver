@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.R;
+import com.dryver.Utility.MapUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -85,15 +86,17 @@ public class ActivityRequestMap extends FragmentActivity implements
     private GoogleApiClient mClient;
     private ArrayList<Marker> mRoute;
     private LocationRequest mLocationRequest;
-
     private Location currentLocation;
+
     private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
     private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
     private String routeURL;
+    private String encodedPolyline;
     private ArrayList<Polyline> polylineArrayList = new ArrayList<Polyline>();
     private double routeDistance;
+    private MapUtil mapUtil = new MapUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +159,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                     requestSingleton.getTempRequest().setDistance(routeDistance);
                     requestSingleton.getTempRequest().setFromAddress(addresses.get(0));
                     requestSingleton.getTempRequest().setToAddress(addresses.get(1));
+                    requestSingleton.getTempRequest().setEncodedPolyline(encodedPolyline);
                     Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
 
                     mMap.clear();
@@ -191,13 +195,13 @@ public class ActivityRequestMap extends FragmentActivity implements
             @Override
             public void onLocationChanged(Location location) {
                 currentLocation = location;
-                moveMap(currentLocation);
+                mapUtil.moveMap(mMap, currentLocation, 15);
             }
         });
 
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
         if (currentLocation != null) {
-            moveMap(currentLocation);
+            mapUtil.moveMap(mMap, currentLocation, 15);
         }
     }
 
@@ -217,7 +221,9 @@ public class ActivityRequestMap extends FragmentActivity implements
                     mRoute.add(mMap.addMarker(new MarkerOptions().position(point).title("End Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
                     ArrayList<Location> locations = mRouteToLocation();
-                    drawRoute(locations.get(0), locations.get(1));
+
+                    generateRouteURL(locations.get(0), locations.get(1));
+                    new FetchDirectionTask().execute();
 
                     ArrayList<String> addresses = mRouteToAddress();
                     if ((addresses.get(0) != null) && (addresses.get(1) != null)) {
@@ -230,9 +236,10 @@ public class ActivityRequestMap extends FragmentActivity implements
                     removeMarker.remove();
                     mRoute.add(mMap.addMarker(new MarkerOptions().position(point).title("End Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))));
-                    removePolylines();
+                    mapUtil.removePolylines(polylineArrayList);
                     ArrayList<Location> locations = mRouteToLocation();
-                    drawRoute(locations.get(0), locations.get(1));
+                    generateRouteURL(locations.get(0), locations.get(1));
+                    new FetchDirectionTask().execute();
                 }
             }
         });
@@ -282,24 +289,6 @@ public class ActivityRequestMap extends FragmentActivity implements
         return returnAddressArrayList;
     }
 
-    public void drawRoute(Location fromLocation, Location toLocation) {
-        generateRouteURL(fromLocation, toLocation);
-        new FetchItemsTask().execute();
-    }
-
-    public void moveMap(Location location) {
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-    }
-
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
@@ -308,7 +297,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                 Location location = new Location("place");
                 location.setLatitude(place.getLatLng().latitude);
                 location.setLongitude(place.getLatLng().longitude);
-                moveMap(location);
+                mapUtil.moveMap(mMap, location, 15);
             }
         }
     }
@@ -345,12 +334,12 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
-    private class FetchItemsTask extends AsyncTask<Void, Void, String> {
+    private class FetchDirectionTask extends AsyncTask<Void, Void, String> {
         protected String doInBackground(Void... params) {
             String encodedPoly = null;
             try {
                 String jsonResult = getDataFromUrl(routeURL);
-                encodedPoly = toEncodedPoly(jsonResult);
+                encodedPoly = mapUtil.toEncodedPoly(jsonResult);
             } catch (IOException ioe) {
                 Log.e("REQUEST MAP: ", "FAILED TO FETCH ITEMS", ioe);
             }
@@ -361,24 +350,10 @@ public class ActivityRequestMap extends FragmentActivity implements
             if (result == null) {
                 return;
             }
-            List<LatLng> routePoly = decodePoly(result);
-            for (int i = 0; i < (routePoly.size() - 1); i++) {
-                LatLng point1 = routePoly.get(i);
-                LatLng point2 = routePoly.get(i + 1);
+            encodedPolyline = result;
 
-                Location location1 = new Location("1");
-                location1.setLatitude(point1.latitude);
-                location1.setLongitude(point1.longitude);
-                Location location2 = new Location("2");
-                location2.setLatitude(point2.latitude);
-                location2.setLongitude(point2.longitude);
-
-                routeDistance += location1.distanceTo(location2);
-                polylineArrayList.add(mMap.addPolyline(new PolylineOptions()
-                        .add(point1, point2)
-                        .width(5)
-                        .color(Color.RED)));
-            }
+            List<LatLng> routePoly = mapUtil.decodePoly(result);
+            routeDistance = mapUtil.drawRoute(mMap, routePoly, polylineArrayList);
         }
     }
 
@@ -407,56 +382,11 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
-    //Code taken from http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
-    private List<LatLng> decodePoly(String encoded) {
-        List<LatLng> poly = new ArrayList<>();
-        int index = 0, len = encoded.length();
-        int lat = 0, lng = 0;
-
-        while (index < len) {
-            int b, shift = 0, result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
-
-            LatLng p = new LatLng((((double) lat / 1E5)),
-                    (((double) lng / 1E5)));
-            poly.add(p);
-        }
-        return poly;
-    }
-
-    public String toEncodedPoly(String json) {
-        String encodedPoly = null;
-        try {
-            JSONObject jsonObject = new JSONObject(json).getJSONArray("routes").getJSONObject(0).getJSONObject("overview_polyline");
-            encodedPoly = jsonObject.getString("points");
-        } catch (JSONException je) {
-            Log.e("REQUEST MAP: ", "Failed to parse JSON", je);
-        }
-        return encodedPoly;
-    }
-
-    public void removePolylines() {
-        if (polylineArrayList.size() != 0) {
-            for (Polyline polyline : polylineArrayList) {
-                polyline.remove();
-            }
-        }
+    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
+        mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
 
     @Override
