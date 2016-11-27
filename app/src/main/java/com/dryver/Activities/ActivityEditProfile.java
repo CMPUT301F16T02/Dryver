@@ -97,7 +97,7 @@ public class ActivityEditProfile extends Activity {
             vehicleDescriptionEditText.setText(user.getVehicleDescription());
             ratingBar.setVisibility(View.VISIBLE);
             ratingTextView.setVisibility(View.VISIBLE);
-            ratingBar.setRating(5);
+            ratingBar.setRating(user.getRating());
         }
     }
 
