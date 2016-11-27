@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dryverItemRiderID"
-            android:text="destination" />
+            android:text="destination"
+            android:maxLines="3"/>
 
         <TextView
             android:id="@+id/dryverItemDate"
@@ -39,12 +40,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dryverItemDestination"
             android:text="Date" />
-        <TextView
-            android:id="@+id/dryverItemCost"
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dryverItemDate"
-            android:text="Cost" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/dryverItemDate">
+
+            <TextView
+                android:id="@+id/dryverItemCost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cost"
+                android:layout_weight="1" />
+
+            <TextView
+                android:text="Rate"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/dryverItemRate"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

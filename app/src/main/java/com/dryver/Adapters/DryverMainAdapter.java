@@ -38,11 +38,13 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         TextView destinationText = (TextView) convertView.findViewById(R.id.dryverItemDestination);
         TextView dateText = (TextView) convertView.findViewById(R.id.dryverItemDate);
         TextView costText = (TextView) convertView.findViewById(R.id.dryverItemCost);
+        TextView rateText = (TextView) convertView.findViewById(R.id.dryverItemRate);
 
         riderText.setText("Rider: "+ request.getRiderId());
-        destinationText.setText("Destination: " + request.getToLocation());
+        destinationText.setText("Pick Up: " + request.getFromAddress() + "\nDestination: " + request.getToAddress());
         dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
         costText.setText("Cost: " + HelpMe.formatCurrency(request.getCost()));
+        rateText.setText("Rate: " + HelpMe.formatCurrency(request.getRate()));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
