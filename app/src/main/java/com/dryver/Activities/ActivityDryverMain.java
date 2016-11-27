@@ -94,6 +94,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     //You can access many information regarding the location such as address, coordinates, etc
     private Location searchLocation;
     private String searchAddress;
+    private String searchName;
 
     private Timer timer;
     private ActivityDryverMainState state = ALL;
@@ -212,6 +213,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
                 Toast.makeText(ActivityDryverMain.this,"Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
                         Toast.LENGTH_LONG).show();
+                searchByEditText.setText(place.getName());
             }
         }
     }
