@@ -83,6 +83,13 @@ public class ActivityRequest extends Activity {
                 }
             }
         });
+
+        requestDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestDescription.setText("");
+            }
+        });
     }
 
     @Override

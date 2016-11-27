@@ -9,12 +9,9 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
-
-import org.w3c.dom.Text;
 
 
 public class ActivityDryverSelection extends Activity {
@@ -47,8 +44,7 @@ public class ActivityDryverSelection extends Activity {
         acceptButton = (Button) findViewById(R.id.dryverSelectionAcceptButton);
         cancelButton = (Button) findViewById(R.id.dryverSelectionCancelButton);
 
-        requestDescription.setText(requestSingleton.getTempRequest().getDescription());
-
+        requestDescription.setText("Description: " + requestSingleton.getTempRequest().getDescription());
 
         riderIdTextView.setText("Rider Username: " + requestSingleton.getTempRequest().getRiderId());
         locationTextView.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
@@ -90,6 +86,13 @@ public class ActivityDryverSelection extends Activity {
                     }
                 });
                 setDriverStatus();
+            }
+        });
+
+        riderIdTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: 2016-11-27 set a view rider option.
             }
         });
     }
