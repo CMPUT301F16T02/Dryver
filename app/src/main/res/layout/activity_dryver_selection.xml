@@ -108,5 +108,14 @@
         android:layout_above="@+id/dryverSelectionCancelButton"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:text="@string/activity_dryver_selection_Map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/dryverSelectionMapButton"
+        android:layout_above="@+id/dryverSelectionAcceptButton"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
