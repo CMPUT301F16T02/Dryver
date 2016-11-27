@@ -607,9 +607,9 @@ public class ElasticSearchController {
                                         "\"query\": {" +
                                             "\"bool\": {" +
                                                 "\"should\": [" +
-                                                    "{\"term\": {\"riderId\": \"" + search_parameters + "\"}}," +
-                                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters + "\"}}," +
-                                                    "{\"term\": {\"description\": \"" + search_parameters + "\"}}" +
+                                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
+                                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
+                                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
                                                 "]," +
                                                 "\"minimum_should_match\" : 1" +
                                             "}" +
