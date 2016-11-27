@@ -59,7 +59,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:id="@+id/requestSelectionLocation"
-                    android:maxLines="7"/>
+                    android:maxLines="4"/>
 
                 <TextView
                     android:text="@string/activity_request_selection_Date"

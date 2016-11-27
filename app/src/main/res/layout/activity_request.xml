@@ -58,7 +58,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/requestLocation"
-                android:maxLines="7" />
+                android:maxLines="4" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/requestDescription"
+                android:hint="Ride Description" />
 
         </LinearLayout>
     </ScrollView>
