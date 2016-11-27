@@ -290,18 +290,17 @@ public class RequestSingleton {
                     indicesToAdd.add(newRequests.indexOf(newRequest));
                 }
                 for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest)) {
+                    if (!newRequests.contains(oldRequest) &&
+                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
                         indicesToRemove.add(requests.indexOf(oldRequest));
                     }
                 }
             }
 
-            try {
-                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-                for (int index : indicesToRemove) {
-                    requests.remove(index);
-                }
-            } catch(IndexOutOfBoundsException e){}
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
             for(int index : indicesToAdd){
                 requests.add(newRequests.get(index));
             }
@@ -329,18 +328,17 @@ public class RequestSingleton {
                 }
 
                 for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest)) {
+                    if (!newRequests.contains(oldRequest) &&
+                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
                         indicesToRemove.add(requests.indexOf(oldRequest));
                     }
                 }
             }
 
-            try{
-                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-                for(int index : indicesToRemove){
-                    requests.remove(index);
-                }
-            } catch(IndexOutOfBoundsException e){}
+            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+            for(int index : indicesToRemove){
+                requests.remove(index);
+            }
             for(int index : indicesToAdd){
                 requests.add(newRequests.get(index));
             }

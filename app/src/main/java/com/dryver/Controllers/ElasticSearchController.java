@@ -575,6 +575,7 @@ public class ElasticSearchController {
             Log.i("trace", "GetDriverRequestsTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"acceptedDriverID\": \"" + search_parameters[0] + "\"}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -588,9 +589,12 @@ public class ElasticSearchController {
             Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
+
+
 
     /**
      * A Task that gets all requests based on a keyword
@@ -599,12 +603,20 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRequestsKeywordTask.doInBackground()");
-            String search_string = "{\"query\": {\"bool\": {\"should\":[" +
-                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
-                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
-                    "{\"term\": {\"description\": \"" +  search_parameters[0] + "\"}}]," +
-                    "\"minimum_should_match\" : 1}}}";
+            String search_string = "{" +
+                                        "\"query\": {" +
+                                            "\"bool\": {" +
+                                                "\"should\": [" +
+                                                    "{\"term\": {\"riderId\": \"badmf\"}}," +
+                                                    "{\"term\": {\"acceptedDriverId\": \"badmf\"}}," +
+                                                    "{\"term\": {\"description\": \"badmf\"}}" +
+                                                "]," +
+                                                "\"minimum_should_match\" : 1" +
+                                            "}" +
+                                        "}" +
+                                    "}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -618,6 +630,7 @@ public class ElasticSearchController {
             Log.i("trace", "GetRequestsRateTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"range\": {\"rate\": {\"gte\": \"" + search_parameters[0] + "\"}}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
@@ -631,6 +644,7 @@ public class ElasticSearchController {
             Log.i("trace", "GetRequestsCostTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"range\": {\"cost\": {\"gte\": \"" + search_parameters[0] + "\"}}}}";
 
+            Log.i("QUERY", search_string);
             return getRequests(search_string);
         }
     }
