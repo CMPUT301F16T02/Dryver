@@ -19,8 +19,6 @@ import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Calendar;
 
 
@@ -31,8 +29,7 @@ import java.util.Calendar;
 public class ActivityRequest extends Activity {
     private Button setLocation;
     private Button submitRequest;
-    private TimePicker timePicker;
-    private DatePicker datePicker;
+    private EditText requestDescription;
     private EditText tripPrice;
     private TextView locationText;
 
@@ -53,10 +50,13 @@ public class ActivityRequest extends Activity {
         setLocation = (Button) findViewById(R.id.requestButtonLocation);
         submitRequest = (Button) findViewById(R.id.requestButtonSubmit);
         tripPrice = (EditText) findViewById(R.id.requestTripPrice);
+        requestDescription = (EditText) findViewById(R.id.requestDescription);
         locationText = (TextView) findViewById(R.id.requestLocation);
 
-        tripPrice.setText(getEstimate());
 
+        tripPrice.setText(HelpMe.formatCurrency(requestSingleton.getEstimate()));
+
+        toggleSubmitButton();
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +72,7 @@ public class ActivityRequest extends Activity {
                     Double cost = Double.parseDouble(tripPrice.getText().toString());
                     requestSingleton.getTempRequest().setCost(cost);
                     requestSingleton.getTempRequest().setDate(calendar);
+                    requestSingleton.getTempRequest().setDescription(requestDescription.getText().toString());
                     requestSingleton.pushTempRequest(new ICallBack(){
                         @Override
                         public void execute(){
@@ -82,13 +83,22 @@ public class ActivityRequest extends Activity {
                 }
             }
         });
+
+        requestDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestDescription.setText("");
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationText);
-        tripPrice.setText(getEstimate());
+        locationText.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
+        tripPrice.setText(HelpMe.formatCurrency(requestSingleton.getEstimate()));
+        requestDescription.setText(requestSingleton.getTempRequest().getDescription());
+        toggleSubmitButton();
     }
 
     @Override
@@ -97,11 +107,12 @@ public class ActivityRequest extends Activity {
         requestSingleton.clearTempRequest();
     }
 
-    /**
-     * Formats the price as a 2 float currency
-     */
-    public String getEstimate() {
-        NumberFormat formatter = new DecimalFormat("#.##");
-        return formatter.format(requestSingleton.getEstimate());
+    private void toggleSubmitButton() {
+        if (requestSingleton.getTempRequest().hasRoute()) {
+            submitRequest.setEnabled(true);
+        } else {
+            submitRequest.setEnabled(false);
+        }
     }
+
 }

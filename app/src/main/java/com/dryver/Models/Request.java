@@ -61,8 +61,8 @@ public class Request implements Serializable {
     public Request(String riderId, Calendar date) {
         this.riderId = riderId;
         this.date = date;
-        this.fromCoordinates = new SimpleCoordinates(0.0, 0.0, "from");
-        this.toCoordinates = new SimpleCoordinates(0.0, 0.0, "to");
+        this.fromCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
+        this.toCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
         this.cost = 0;
@@ -109,7 +109,10 @@ public class Request implements Serializable {
      * @return the description
      */
     public String getDescription() {
-        return description;
+        if (this.description == null) {
+            setDescription("");
+        }
+        return this.description;
     }
 
     /**
@@ -118,7 +121,11 @@ public class Request implements Serializable {
      * @param description the description
      */
     public void setDescription(String description) {
-        this.description = description;
+        if (!description.equals("")) {
+            this.description = description;
+        } else {
+            this.description = "Rider gave no description.";
+        }
     }
 
     /**
@@ -217,6 +224,13 @@ public class Request implements Serializable {
         this.fromCoordinates.setLocationName(fromLocation.getProvider());
     }
 
+    public boolean hasRoute() {
+        if (getDistance() > 1) {
+            return true;
+        }
+        return false;
+    }
+
     public void setFromAddress(String address) {
         this.fromCoordinates.setLocationName(address);
     }
@@ -224,9 +238,11 @@ public class Request implements Serializable {
     public void setToAddress(String address) {
         this.toCoordinates.setLocationName(address);
     }
+
     public String getFromAddress() {
         return this.fromCoordinates.getLocationName();
     }
+
     public String getToAddress() {
         return this.toCoordinates.getLocationName();
     }

@@ -20,7 +20,6 @@
 package com.dryver.Activities;
 
 import android.app.Activity;
-import android.media.Rating;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +27,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
-import com.dryver.Controllers.UserController;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -67,8 +65,8 @@ public class ActivityRyderSelection extends Activity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar2);
 
         isCancelled();
-        
-        HelpMe.formatLocationTextView(requestSingleton.getTempRequest(), locationTextView);
+
+        locationTextView.setText(HelpMe.formatLocation(requestSingleton.getTempRequest()));
         requestSelectionDate.setText("Request Date: " + HelpMe.getDateString(requestSingleton.getTempRequest().getDate()));
         setStatusTextView();
 

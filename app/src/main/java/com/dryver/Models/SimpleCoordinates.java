@@ -15,13 +15,19 @@ public class SimpleCoordinates implements Serializable {
     private Double[] location = new Double[2];
     private String locationName;
 
+    public SimpleCoordinates(Location location) {
+        this.location[0] = location.getLatitude();
+        this.location[1] = location.getLongitude();
+        this.locationName = location.getProvider();
+    }
+
     /**
      * initializes the coords
      * @param latitude
      * @param longitude
      * @param locationName
      */
-    SimpleCoordinates(Double latitude, Double longitude, String locationName) {
+    public SimpleCoordinates(Double latitude, Double longitude, String locationName) {
         this.location[0] = latitude;
         this.location[1] = longitude;
         this.locationName = locationName;

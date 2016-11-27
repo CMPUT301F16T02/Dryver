@@ -85,7 +85,7 @@ public class ActivityDryverMap extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        initializeLocationRequest(100, 1000);
+        initializeLocationRequest(1, 1000);
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
