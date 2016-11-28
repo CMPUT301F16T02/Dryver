@@ -668,7 +668,21 @@ public class ElasticSearchController {
             String[] latLon = search_parameters[0].split(", ");
 
             Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
-            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+            String search_string = "{" +
+                                    "\"query\": {" +
+                                    "\"filtered\": {" +
+                                        "\"filter\": {" +
+                                            "\"geo_distance\": {" +
+                                                "\"distance\": \"10000m\"," +
+                                                        "\"doubleToCoordinates\": {" +
+                                                            "\"lat\":" + latLon[0] + "," +
+                                                            "\"lon\":" + latLon[1] +
+                                                "}" +
+                                            "}" +
+                                        "}" +
+                                    "}" +
+                                "}" +
+                            "}";
 
             Log.i("QUERY", search_string);
             return getRequests(search_string);
