@@ -63,6 +63,7 @@ public class ElasticSearchTests {
      */
     @Test
     public void testAddDeleteUser() throws InterruptedException {
+        //This is testing if we can successfully remove users from the elastic server
         assertFalse(ES.deleteUser(testUser));
         assertTrue(ES.addUser(testUser));
         Thread.sleep(2000);
@@ -77,6 +78,8 @@ public class ElasticSearchTests {
      */
     @Test
     public void testUpdateUser() throws InterruptedException {
+        //This is testing US 03.01.01, 03.02.01, 03.03.01
+        //by ensuring the set and get methods are communicating with elastic search
         User user =  new User(username);
 
         assertFalse(ES.updateUser(user));
@@ -114,6 +117,8 @@ public class ElasticSearchTests {
 
     @Test
     public void testAddDeleteRequest() throws InterruptedException {
+        //This tests US 01.04.01
+        //Ensuring we can cancel and delete requests
         assertFalse(ES.deleteRequest(testRequest));
         assertTrue(ES.addRequest(testRequest));
         Thread.sleep(2000);
@@ -123,6 +128,8 @@ public class ElasticSearchTests {
 
     @Test
     public void testUpdateRequest() throws InterruptedException {
+        //This test is used for many tests in the US 01.0X range
+        //Ensuring we can change and update request information
         Request request = new Request(username, calendar, toLocation, fromLocation, cost);
         request.setId(requestId);
         ES.deleteRequest(request);
