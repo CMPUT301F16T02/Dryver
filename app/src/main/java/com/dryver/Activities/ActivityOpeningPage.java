@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -66,7 +65,7 @@ public class ActivityOpeningPage extends Activity {
         setListeners();
     }
 
-    private void assignElements(){
+    private void assignElements() {
         signinButton = (Button) findViewById(R.id.signin_button);
         getStartedButton = (Button) findViewById(R.id.getstarted_button);
         usernameEditText = (EditText) findViewById(R.id.username_edittext);
@@ -75,7 +74,7 @@ public class ActivityOpeningPage extends Activity {
     /**
      * Sets the listeners for the sign in button's click as well as the get started button's click
      */
-    private void setListeners(){
+    private void setListeners() {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,11 +86,9 @@ public class ActivityOpeningPage extends Activity {
                         } else {
                             usernameEditText.setError("Username does not exist.");
                         }
-                    }
-                    catch (ExecutionException e) {
+                    } catch (ExecutionException e) {
                         e.printStackTrace();
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

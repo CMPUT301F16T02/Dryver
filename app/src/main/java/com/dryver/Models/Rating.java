@@ -28,12 +28,12 @@ public class Rating {
         return average;
     }
 
-    public void addRating(float rating){
-        if(count == 0){
+    public void addRating(float rating) {
+        if (count == 0) {
             average = rating;
             count++;
-        } else{
-            average = ((average*count + rating) / count++);
+        } else {
+            average = ((average * count + rating) / count++);
         }
     }
 }

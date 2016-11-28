@@ -16,11 +16,9 @@
 
 package com.dryver.Activities;
 
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import com.dryver.Controllers.RequestSingleton;
@@ -43,7 +41,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,9 +118,9 @@ public class ActivityDryverMap extends FragmentActivity implements
         LatLng toLatLng = new LatLng(request.getToLocation().getLatitude(), request.getToLocation().getLongitude());
         mapUtil.moveMap(mMap, request.getFromLocation(), 15);
         mMap.addMarker(new MarkerOptions().position(fromLatLng).title(request.getFromAddress())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.addMarker(new MarkerOptions().position(toLatLng).title(request.getToAddress())
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
 
         decodedPolyline = mapUtil.decodePoly(request.getEncodedPolyline());
         mapUtil.drawRoute(mMap, decodedPolyline, polylineArrayList);

@@ -18,10 +18,8 @@ package com.dryver.Utility;
 
 
 import android.app.Activity;
-import android.net.ConnectivityManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.dryver.Models.Request;
@@ -41,6 +39,7 @@ import java.util.TimeZone;
 public class HelpMe extends Activity {
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -57,13 +56,13 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of an email within an editText
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidEmail(EditText editText)
-    {
+    static public boolean isValidEmail(EditText editText) {
         boolean valid = android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid email. Must be of form name@domain.extension");
         }
         return valid;
@@ -71,13 +70,13 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of a phone number within an edit text
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidPhone(EditText editText)
-    {
+    static public boolean isValidPhone(EditText editText) {
         boolean valid = android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid phone number.");
         }
         return valid;
@@ -85,6 +84,7 @@ public class HelpMe extends Activity {
 
     /**
      * Cnvert a date to a consistent form that is TBC
+     *
      * @param date
      */
     static public void dateToString(Date date) {
@@ -93,6 +93,7 @@ public class HelpMe extends Activity {
 
     /**
      * Convert a string to a date
+     *
      * @param stringDate
      */
     static public void stringToDate(String stringDate) {
@@ -101,6 +102,7 @@ public class HelpMe extends Activity {
 
     /**
      * Checks whether the internet is connected
+     *
      * @return boolean
      */
     static public boolean isInternetConnected() {
@@ -115,6 +117,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the date
+     *
      * @param cal
      * @param datePicker
      */
@@ -124,6 +127,7 @@ public class HelpMe extends Activity {
 
     /**
      * Set Time picker
+     *
      * @param cal
      * @param timePicker
      */
@@ -134,6 +138,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the calender
+     *
      * @param cal
      * @param datePicker
      * @param timePicker

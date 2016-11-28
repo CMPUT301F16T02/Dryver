@@ -54,9 +54,9 @@ public class DryverMainAdapter extends ArrayAdapter<Request> {
         TextView costText = (TextView) convertView.findViewById(R.id.dryverItemCost);
         TextView rateText = (TextView) convertView.findViewById(R.id.dryverItemRate);
 
-        riderText.setText("Rider: "+ request.getRiderId());
+        riderText.setText("Rider: " + request.getRiderId());
         destinationText.setText(HelpMe.formatLocation(request));
-        dateText.setText("Date: "+ HelpMe.getDateString(request.getDate()));
+        dateText.setText("Date: " + HelpMe.getDateString(request.getDate()));
         costText.setText("Cost: " + HelpMe.formatCurrencyToString(request.getCost()));
         rateText.setText("Rate: " + HelpMe.formatCurrencyToString(request.getRate()));
 

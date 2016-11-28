@@ -21,8 +21,6 @@ import android.location.Location;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import io.searchbox.indices.template.TemplateAction;
-
 /**
  * Simplified coordinate system for cleaner serialization
  */
@@ -39,6 +37,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * initializes the coords
+     *
      * @param latitude
      * @param longitude
      * @param locationName
@@ -51,6 +50,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Sets the location
+     *
      * @param latitude
      * @param longitude
      */
@@ -61,6 +61,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Sets the location name
+     *
      * @param locationName
      */
     public void setLocationName(String locationName) {
@@ -69,6 +70,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Gets the latitiude
+     *
      * @return Double
      */
     public Double getLatitude() {
@@ -77,6 +79,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Gets the logitude
+     *
      * @return Double
      */
     public Double getLongitude() {

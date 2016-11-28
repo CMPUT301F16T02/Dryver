@@ -57,13 +57,13 @@ public class ActivityViewProfile extends Activity {
 
         user = userController.getViewedUser();
 
-        titleTextView = (TextView)findViewById(R.id.profile_title);
-        phoneTextView = (TextView)findViewById(R.id.driver_profile_phone);
-        emailTextView = (TextView)findViewById(R.id.driver_profile_email);
-        vehicleInfoTitleTextView = (TextView)findViewById(R.id.description_title);
-        vehicleInfoTextView = (TextView)findViewById(R.id.driver_profile_vehicle_info);
-        ratingsTitleTextView = (TextView)findViewById(R.id.ratings_title);
-        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        titleTextView = (TextView) findViewById(R.id.profile_title);
+        phoneTextView = (TextView) findViewById(R.id.driver_profile_phone);
+        emailTextView = (TextView) findViewById(R.id.driver_profile_email);
+        vehicleInfoTitleTextView = (TextView) findViewById(R.id.description_title);
+        vehicleInfoTextView = (TextView) findViewById(R.id.driver_profile_vehicle_info);
+        ratingsTitleTextView = (TextView) findViewById(R.id.ratings_title);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         titleTextView.setText(user.getId() + "'s Profile");
         emailTextView.setText(user.getEmail());
@@ -76,20 +76,20 @@ public class ActivityViewProfile extends Activity {
     /**
      * Checks whether the user is a rider or driver and display or hide appropriate UI elements
      */
-    public void checkUserType(){
-        if(user instanceof Rider){
+    public void checkUserType() {
+        if (user instanceof Rider) {
             vehicleInfoTitleTextView.setVisibility(View.GONE);
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
             ratingBar.setVisibility(View.GONE);
-        } else if(user instanceof Driver) {
+        } else if (user instanceof Driver) {
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.VISIBLE);
             ratingsTitleTextView.setVisibility(View.VISIBLE);
             ratingBar.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setText(user.getVehicleDescription());
             ratingBar.setRating(user.getRating());
-        } else{
+        } else {
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
@@ -100,10 +100,10 @@ public class ActivityViewProfile extends Activity {
     /**
      * Sets the listeners for the email TextView, the phone number TextView
      */
-    public void setListeners(){
+    public void setListeners() {
         phoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View view) {
+            public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:" + phoneTextView.getText().toString()));
                 startActivity(intent);
@@ -112,7 +112,7 @@ public class ActivityViewProfile extends Activity {
 
         emailTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View view) {
+            public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:" + user.getEmail()));
                 Intent chooser = intent.createChooser(intent, "Send Email to " + user.getEmail());
@@ -121,9 +121,9 @@ public class ActivityViewProfile extends Activity {
                 ComponentName unsupportedAction = ComponentName.unflattenFromString("com.android.fallback/.Fallback");
                 boolean hasEmailApp = emailApp != null && !emailApp.equals(unsupportedAction);
 
-                if(hasEmailApp){
+                if (hasEmailApp) {
                     startActivity(chooser);
-                } else{
+                } else {
                     emailTextView.setError("Please login in chosen email application");
                 }
             }

@@ -17,7 +17,6 @@
 package com.dryver.Activities;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,11 +29,11 @@ import android.widget.ListView;
 import com.dryver.Adapters.RyderMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.RequestStatus;
-import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -92,7 +91,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.i("info", "ActivityRyderMain.onPause()");
         super.onPause();
         timer.cancel();
@@ -102,7 +101,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Sets the listeners for the add request button's click and the long click of the request list's
      * items
      */
-    public void setListeners(){
+    public void setListeners() {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +130,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Assigns the elements that are held in the UI that will be accessed or used later.
      */
-    public void assignElements(){
+    public void assignElements() {
         addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
@@ -143,12 +142,12 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Sets correct background colors for listview items based on the status of the request.
      */
-    public void checkStatuses(){
-        if(alertDialog != null && alertDialog.isShowing()){
+    public void checkStatuses() {
+        if (alertDialog != null && alertDialog.isShowing()) {
             return;
-        } else if(requestSingleton.getRequests().size() != 0){
-            for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
+        } else if (requestSingleton.getRequests().size() != 0) {
+            for (Request request : requestSingleton.getRequests()) {
+                if (request.getStatus() == RequestStatus.DRIVERS_AVAILABLE) {
                     requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                     break;
@@ -159,9 +158,10 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     /**
      * Notifies the Rider if any drivers have accepted their request offer. Handshake request accepted
+     *
      * @param request
      */
-    private void notifyDriversAvailable(final Request request){
+    private void notifyDriversAvailable(final Request request) {
         alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
                 .setMessage(R.string.drivers_found_message)
                 .setTitle(R.string.drivers_found_title)
@@ -182,6 +182,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     /**
      * Begins the refresh of the request list
+     *
      * @see ICallBack
      */
     public void beginRefresh() {
@@ -196,7 +197,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * called when request list data changes
      */
-    private void refreshRequestList(){
+    private void refreshRequestList() {
         Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         ryderMainAdapter.notifyDataSetChanged();
@@ -206,7 +207,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Handles the asynchronous polling of ES for requests.
      */
-    private void setTimer(){
+    private void setTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

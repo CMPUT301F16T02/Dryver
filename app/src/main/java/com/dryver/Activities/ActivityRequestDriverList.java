@@ -19,11 +19,6 @@ package com.dryver.Activities;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -31,7 +26,6 @@ import com.dryver.Adapters.DryverListAdapter;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 
@@ -69,24 +63,24 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
     }
 
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         refreshDriverList();
         setTimer();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.i("trace", "ActivityDryverMain.onPause()");
         super.onPause();
         timer.cancel();
     }
 
-    private void assignElements(){
+    private void assignElements() {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
     }
 
-    private void setListeners(){
+    private void setListeners() {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,7 +93,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
      * Begins the refreshing of the driver list
      */
     public void beginRefresh() {
-         requestSingleton.updateTempRequest(new ICallBack() {
+        requestSingleton.updateTempRequest(new ICallBack() {
             @Override
             public void execute() {
                 refreshDriverList();
@@ -116,7 +110,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
         adapter.notifyDataSetChanged();
     }
 
-    private void setTimer(){
+    private void setTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
