@@ -26,10 +26,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.Dryver;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
 
@@ -79,8 +81,10 @@ public class ActivityRequest extends Activity {
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivityRequest.this, ActivityRequestMap.class);
-                startActivity(intent);
+                if (new ConnectionCheck().isConnected(Dryver.getAppContext())) {
+                    Intent intent = new Intent(ActivityRequest.this, ActivityRequestMap.class);
+                    startActivity(intent);
+                }
             }
         });
 

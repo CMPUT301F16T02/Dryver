@@ -16,8 +16,6 @@
 
 package com.dryver.Controllers;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -36,7 +34,6 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
-import com.dryver.Models.User;
 import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
@@ -62,14 +59,11 @@ import java.util.Iterator;
  */
 public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
-    private static final String OFFLINE_SAV = "offline_requests.json";
     private static RequestSingleton instance = new RequestSingleton();
-    private static ArrayList<Request> requests = new ArrayList<Request>();
-    private static ArrayList<Request> offlineRequests = new ArrayList<Request>();
+    private ArrayList<Request> requests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private ConnectionCheck connectionCheck = new ConnectionCheck();
-    private boolean connectionReestablished = false;
 
     /**
      * The request passed on request selection or editing. Also used to make request. It is the request
@@ -97,7 +91,7 @@ public class RequestSingleton {
     public void setRequestsAll() {
         if(connectionCheck.isConnected(Dryver.getAppContext())) {
             requests = ES.getAllRequests();
-            saveRequests();
+
         } else {
             loadRequests();
         }
@@ -109,7 +103,7 @@ public class RequestSingleton {
      * @return
      */
     public ArrayList<Request> getRequests() {
-        return requests;
+        return this.requests;
     }
 
     /**
@@ -129,13 +123,8 @@ public class RequestSingleton {
         return tempRequest;
     }
 
-    public void setTempRequest(Request request) {
-        this.tempRequest = request;
-    }
-
     public void pushTempRequest(ICallBack callBack) {
         pushRequest(tempRequest, callBack);
-        saveRequests();
     }
 
 //  =========================== Opening Various Related Activities =================================
@@ -200,12 +189,14 @@ public class RequestSingleton {
     public void authorizePayment(ICallBack callBack) {
         tempRequest.setStatus(RequestStatus.PAYMENT_AUTHORIZED);
         ES.updateRequest(tempRequest);
+        saveRequests();
         callBack.execute();
     }
 
     public void acceptPayment(ICallBack callBack) {
         tempRequest.setStatus(RequestStatus.PAYMENT_ACCEPTED);
         ES.updateRequest(tempRequest);
+        saveRequests();
         callBack.execute();
     }
 
@@ -213,6 +204,7 @@ public class RequestSingleton {
         tempRequest.setStatus(RequestStatus.RATED);
         ES.updateRequest(tempRequest);
         userController.rateDriver(rating, tempRequest.getAcceptedDriverID());
+        saveRequests();
         callBack.execute();
     }
 
@@ -328,22 +320,21 @@ public class RequestSingleton {
             loadRequests();
         }
 
-        if(connectionCheck.isConnected(context)){
-            saveRequests();
-        }
         callBack.execute();
 
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void updateRiderRequests(ICallBack callBack, Context context) {
+    public void updateRiderRequests(ICallBack callBack) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         //This is necessary as you can't remove from a list you are currently iterating through /facepalm
-        ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
-        ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
-        ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+
         if(connectionCheck.isConnected(Dryver.getAppContext())) {
-            syncRiderRequests();
+            ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
+            ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
+            ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+
+            syncRiderRequests(newRequests);
             if (newRequests.size() == 0) {
                 requests.clear();
             } else {
@@ -366,16 +357,13 @@ public class RequestSingleton {
                 for (int index : indicesToAdd) {
                     requests.add(newRequests.get(index));
                 }
+                callBack.execute();
             }
         } else {
             loadRequests();
+            callBack.execute();
         }
 
-        if(new ConnectionCheck().isConnected(context)){
-            saveRequests();
-        }
-
-        callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
@@ -491,7 +479,7 @@ public class RequestSingleton {
                 // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
                 Type listType = new TypeToken<ArrayList<Request>>() {}.getType();
 
-                requests = gson.fromJson(bufferedReader, listType);
+                this.requests = gson.fromJson(bufferedReader, listType);
                 Toast.makeText(Dryver.getAppContext(), "Loading offline, total results: " + requests.size(), Toast.LENGTH_SHORT).show();
 
             }
@@ -500,9 +488,9 @@ public class RequestSingleton {
         }
     }
 
-    public void syncRiderRequests() {
+    public void syncRiderRequests(ArrayList<Request> pulledRequests) {
         Toast.makeText(Dryver.getAppContext(), "Syncing Rider Requests: " + requests.size(), Toast.LENGTH_SHORT).show();
-        ArrayList<Request> onlineRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+        ArrayList<Request> onlineRequests = pulledRequests;
         Iterator<Request> onlineIterator = onlineRequests.iterator();
         Iterator<Request> offlineIterator = requests.iterator();
 
