@@ -405,9 +405,6 @@ public class ElasticSearchController {
                 if (!iterator.next().hasDriver(user)) {
                     iterator.remove();
                 }
-                if (iterator.next().getAcceptedDriverID() != null) {
-                    iterator.remove();
-                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
