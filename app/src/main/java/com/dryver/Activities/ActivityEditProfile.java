@@ -119,7 +119,7 @@ public class ActivityEditProfile extends Activity {
 
     /**
      * updates the user's profile. This happens when they click save changes
-     * @return
+     * @return boolean to check whether or not the profile has been updated
      */
     private boolean updateUserProfile(){
         user = userController.getActiveUser();

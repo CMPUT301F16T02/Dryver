@@ -1,7 +1,7 @@
 package com.dryver.Models;
 
 /**
- * Created by Adam on 11/26/2016.
+ * Enum for denoting all possible states while in driver's view when searching for requests
  */
 
 public enum ActivityDryverMainState {

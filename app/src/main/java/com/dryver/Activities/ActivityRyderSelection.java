@@ -35,6 +35,8 @@ import com.dryver.Utility.ICallBack;
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
  * Allows you to cancel requests, as well as view the drivers associated with a request.
+ *
+ * @see RequestSingleton
  */
 
 public class ActivityRyderSelection extends Activity {
@@ -74,12 +76,18 @@ public class ActivityRyderSelection extends Activity {
         setListeners();
     }
 
+    /**
+     * Overriding {@link Activity} onDestroy clear temporary request
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         requestSingleton.clearTempRequest();
     }
 
+    /**
+     * Instantiates all UI elements and updates their view from temporary request
+     */
     private void configureUI(){
         cancelButton.setEnabled(true);
         deleteButton.setEnabled(true);
@@ -138,6 +146,9 @@ public class ActivityRyderSelection extends Activity {
         }
     }
 
+    /**
+     * sets all event listeners of UI elements
+     */
     private void setListeners(){
         //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +186,9 @@ public class ActivityRyderSelection extends Activity {
         }
     }
 
+    /**
+     * Sets status textview
+     */
     private void setStatusTextView(){
         statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
     }

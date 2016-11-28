@@ -16,7 +16,13 @@ import com.dryver.Utility.ICallBack;
 
 import java.util.ArrayList;
 
-
+/**
+ * Custom adapter to display driver list when viewed by a rider
+ *
+ * @see ArrayAdapter
+ * @see RequestSingleton
+ * @see UserController
+ */
 public class DryverListAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();

@@ -38,6 +38,8 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * This activity is the point for application and lets the user login or register.
+ *
+ * @see UserController
  */
 public class ActivityOpeningPage extends Activity {
 

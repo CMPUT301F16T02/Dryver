@@ -1,7 +1,9 @@
 package com.dryver.Models;
 
 /**
- * Created by Adam on 11/26/2016.
+ * Rating object for auto-iteration, used for driver ratings
+ *
+ * @see android.widget.RatingBar
  */
 
 public class Rating {

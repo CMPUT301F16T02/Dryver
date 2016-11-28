@@ -10,18 +10,28 @@ import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 /**
- * Created by Adam on 11/14/2016.
+ * Inflates a consistent action bar in activities for viewing the user's profile and logging out
  */
 
 public class ActivityLoggedInActionBar extends Activity {
     protected UserController userController = UserController.getInstance();
 
+    /**
+     * Inflates the actionbar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.hamburgler_menu, menu);
         return true;
     }
+
+    /**
+     * Handles button presses by starting the correct intent
+     *
+     * @param item
+     * @return
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

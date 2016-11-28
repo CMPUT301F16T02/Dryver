@@ -16,7 +16,9 @@ import java.util.ArrayList;
 
 /**
  * A custom Array Adapter for listing requests as strings properly.
- * @see Request
+ *
+ * @see ArrayAdapter
+ * @see RequestSingleton
  */
 public class RyderMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
