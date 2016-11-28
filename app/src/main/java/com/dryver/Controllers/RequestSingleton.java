@@ -287,7 +287,7 @@ public class RequestSingleton {
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText) {
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText, Context context) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
@@ -332,13 +332,15 @@ public class RequestSingleton {
             }
         }
 
-        saveRequests();
+        if(new ConnectionCheck().isConnected(context)){
+            saveRequests();
+        }
         callBack.execute();
 
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void updateRiderRequests(ICallBack callBack) {
+    public void updateRiderRequests(ICallBack callBack, Context context) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         //This is necessary as you can't remove from a list you are currently iterating through /facepalm
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
@@ -369,7 +371,9 @@ public class RequestSingleton {
                 requests.add(newRequests.get(index));
             }
         }
-        saveRequests();
+        if(new ConnectionCheck().isConnected(context)){
+            saveRequests();
+        }
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
