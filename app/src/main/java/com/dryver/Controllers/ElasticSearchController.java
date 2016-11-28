@@ -659,20 +659,20 @@ public class ElasticSearchController {
 
             Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
             String search_string = "{" +
-                                        "\"query\": {" +
-                                            "\"filtered\": {" +
-                                                "\"filter\": {" +
-                                                    "\"geo_distance\": {" +
-                                                        "\"distance\": \"10000m\"," +
-                                                        "\"doubleToCoordinates\": {" +
-                                                            "\"lat\":" + latLon[0] + "," +
-                                                            "\"lon\":" + latLon[1] +
-                                                        "}" +
-                                                    "}" +
-                                                "}" +
-                                            "}" +
-                                        "}" +
-                                    "}";
+                    "\"query\": {" +
+                    "\"filtered\": {" +
+                    "\"filter\": {" +
+                    "\"geo_distance\": {" +
+                    "\"distance\": \"10000m\"," +
+                    "\"doubleToCoordinates\": {" +
+                    "\"lat\":" + latLon[0] + "," +
+                    "\"lon\":" + latLon[1] +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}";
 
             Log.i("QUERY", search_string);
             return getRequests(search_string);
@@ -688,17 +688,17 @@ public class ElasticSearchController {
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRequestsKeywordTask.doInBackground()");
             String search_string = "{" +
-                                        "\"query\": {" +
-                                            "\"bool\": {" +
-                                                "\"should\": [" +
-                                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
-                                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
-                                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
-                                                "]," +
-                                                "\"minimum_should_match\" : 1" +
-                                            "}" +
-                                        "}" +
-                                    "}";
+                    "\"query\": {" +
+                    "\"bool\": {" +
+                    "\"should\": [" +
+                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
+                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
+                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
+                    "]," +
+                    "\"minimum_should_match\" : 1" +
+                    "}" +
+                    "}" +
+                    "}";
 
             Log.i("QUERY", search_string);
             return getRequests(search_string);
