@@ -1,37 +1,34 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Activities;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -61,24 +58,37 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.dryver.Models.ActivityDryverMainState.*;
+import static com.dryver.Models.ActivityDryverMainState.ACTIVE;
+import static com.dryver.Models.ActivityDryverMainState.ALL;
+import static com.dryver.Models.ActivityDryverMainState.COST;
+import static com.dryver.Models.ActivityDryverMainState.GEOLOCATION;
+import static com.dryver.Models.ActivityDryverMainState.KEYWORD;
+import static com.dryver.Models.ActivityDryverMainState.PENDING;
+import static com.dryver.Models.ActivityDryverMainState.RATE;
 
 
 /**
  * This activities deals with providing the driver with UI for requests.
+ * Uses Google services for some of the geolocation functionalities
+ * <p>
+ * Implements {@link ActivityLoggedInActionBar} for some of the UI features
+ *
+ * @see GoogleApiClient
+ * @see RequestSingleton
+ * @see UserController
  */
 public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
+    private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final int REQUEST_SELECT_PLACE = 0;
+    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
-
     private Button searchButton;
     private Spinner sortSpinner;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
-
     private EditText searchByEditText;
-
     private SwipeRefreshLayout swipeContainer;
 
     private UserController userController = UserController.getInstance();
@@ -86,9 +96,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     private Driver driver;
     private GoogleApiClient mClient;
-    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
-    private static final int REQUEST_SELECT_PLACE = 0;
-    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
     //You can access many information regarding the location such as address, coordinates, etc
@@ -96,9 +103,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private String searchAddress;
     private String searchName;
 
-    private Timer timer;
-    private ActivityDryverMainState state = ALL;
 
+    private ActivityDryverMainState state = ALL;
+    private Timer timer;
     private AlertDialog alertDialog;
 
 
@@ -118,26 +125,43 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         checkStatuses();
     }
 
+    /**
+     * Overriding {@link Activity} onStart and connects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     public void onStart() {
         super.onStart();
         mClient.connect();
     }
 
+    /**
+     * Overriding {@link Activity} onResume and refreshes the request list
+     * to get an updated view
+     * <p>
+     * Also sets timer for polling
+     */
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         refreshRequestList();
         setTimer();
     }
 
+    /**
+     * Overriding {@link Activity} onPause and cancels timer
+     */
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.i("trace", "ActivityDryverMain.onPause()");
         super.onPause();
         timer.cancel();
     }
 
+    /**
+     * Overriding {@link Activity} onStop and disconnects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -147,9 +171,12 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * Assigns all UI elements to the actual views
+     * Assigns all UI elements to the actual views and instantiates adapters
+     *
+     * @see DryverMainAdapter
+     * @see ArrayAdapter
      */
-    private void assignElements(){
+    private void assignElements() {
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activity_driver_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -168,9 +195,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Sets the action listeners for the long click on request list item, the click of current location
-     * button, the refresh swipe, and also does some google maps stuff **Maybe maps should be moved**
+     * button, the refresh swipe.
      */
-    private void setListeners(){
+    private void setListeners() {
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -181,7 +208,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
         searchButton.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 requestSingleton.updateDriverRequests(state, new ICallBack() {
                     @Override
                     public void execute() {
@@ -201,17 +228,27 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         });
     }
 
+    /**
+     * Gets the result from {@link PlaceAutocomplete} intent to allow the driver to select
+     * an address for searching
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * @see PlaceAutocomplete
+     * @see Place
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 searchLocation = new Location("Search Location");
                 searchLocation.setLatitude(place.getLatLng().latitude);
                 searchLocation.setLongitude(place.getLatLng().longitude);
                 searchAddress = place.getAddress().toString();
 
-                Toast.makeText(ActivityDryverMain.this,"Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
+                Toast.makeText(ActivityDryverMain.this, "Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
                         Toast.LENGTH_LONG).show();
                 searchByEditText.setText(place.getLatLng().latitude + ", " + place.getLatLng().longitude);
             }
@@ -219,10 +256,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * does some mappy type stuff
+     * Initializes {@link GoogleApiClient} instance and attempts connection and initializes
+     * {@link LocationRequest} to find the dryver's current location for searching purposes
+     *
+     * @see GoogleApiClient
+     * @see LocationRequest
      */
-    private void setMapStuff(){
-        //========== EXPERIMENTAL CODE ==============
+    private void setMapStuff() {
         initializeLocationRequest(100, 100);
         mClient = new GoogleApiClient.Builder(ActivityDryverMain.this)
                 .addApi(LocationServices.API)
@@ -231,27 +271,27 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     public void onConnected(Bundle bundle) {
                         findCurrentLocation();
                     }
+
                     @Override
                     public void onConnectionSuspended(int i) {
                     }
                 })
                 .build();
-        //==============================================
     }
 
     /**
      * Checks the statuses of the requests the driver is viewing
      */
-    public void checkStatuses(){
-        if(alertDialog != null && alertDialog.isShowing()){
+    public void checkStatuses() {
+        if (alertDialog != null && alertDialog.isShowing()) {
             return;
-        } else if(requestSingleton.getRequests().size() != 0){
-            for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED){
+        } else if (requestSingleton.getRequests().size() != 0) {
+            for (Request request : requestSingleton.getRequests()) {
+                if (request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
                     notifyPayment(request);
                     break;
-                } else if(request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
-                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())){
+                } else if (request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
+                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())) {
                     notifySelected(request);
                     break;
                 }
@@ -262,7 +302,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     /**
      * Notifies if the state of a request that the driver is a part of has payment authorized
      */
-    private void notifyPayment(final Request request){
+    private void notifyPayment(final Request request) {
         alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title)
@@ -283,9 +323,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Notifies that the driver has been choses to fulfill the user's request
+     *
      * @param request
      */
-    private void notifySelected(final Request request){
+    private void notifySelected(final Request request) {
         alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.dryver_selected_message)
                 .setTitle(R.string.dryver_selected_title)
@@ -306,6 +347,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Find the device's current location using location services
+     *
+     * @see LocationRequest
+     * @see LocationServices
+     * @see com.google.android.gms.location.FusedLocationProviderApi
      */
     public void findCurrentLocation() {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
@@ -324,6 +369,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Handles selection of various selections in the sort by spinner
+     *
      * @param parent
      * @param view
      * @param pos
@@ -334,20 +380,19 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         String sortSelection = parent.getItemAtPosition(pos).toString();
         if (sortSelection.equals("All")) {
             state = ALL;
-        }
-        else if (sortSelection.equals("Pending")) {
+        } else if (sortSelection.equals("Pending")) {
             searchByEditText.setHint(R.string.empty);
             state = PENDING;
-        } else if(sortSelection.equals("Active")){
+        } else if (sortSelection.equals("Active")) {
             searchByEditText.setHint(R.string.active);
             state = ACTIVE;
-        }else if (sortSelection.equals("Geolocation")) {
+        } else if (sortSelection.equals("Geolocation")) {
             searchByEditText.setHint(R.string.kilometers);
             state = GEOLOCATION;
             try {
                 Intent intent = new PlaceAutocomplete.IntentBuilder
                         (PlaceAutocomplete.MODE_OVERLAY)
-                        .setBoundsBias(edmontonBounds)
+                        .setBoundsBias(EDMONTON_BOUNDS)
                         .build(ActivityDryverMain.this);
                 startActivityForResult(intent, REQUEST_SELECT_PLACE);
             } catch (GooglePlayServicesNotAvailableException e) {
@@ -355,14 +400,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             } catch (GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             }
-        }
-        else if (sortSelection.equals("Keyword")) {
+        } else if (sortSelection.equals("Keyword")) {
             searchByEditText.setHint(R.string.keyword);
             state = KEYWORD;
-        } else if(sortSelection.equals("Rate")){
+        } else if (sortSelection.equals("Rate")) {
             searchByEditText.setHint(R.string.rate);
             state = RATE;
-        } else if(sortSelection.equals("Cost")){
+        } else if (sortSelection.equals("Cost")) {
             searchByEditText.setHint(R.string.cost);
             state = COST;
         }
@@ -370,26 +414,34 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * handles nothing being selected in the spinner
+     *
      * @param parent
      */
     public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto Generated method stub
     }
 
     /**
      * Initializes the location request
+     * <<<<<<< HEAD
+     *
+     * @param locationUpdates
+     * @param locationInterval  =======
      * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
+     * @param LOCATION_INTERVAL >>>>>>> 11857a4feff0ab7de35f3ca582852cc3aad50539
+     * @see LocationRequest
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         Log.i("trace", "ActivityDryverMain.initializeLocationRequest()");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**
      * Begins refreshing of the request list
+     *
      * @see ICallBack
      */
     public void beginRefresh() {
@@ -405,13 +457,16 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     /**
      * The method called after data has changed in the request list
      */
-    private void refreshRequestList(){
+    private void refreshRequestList() {
         Log.i("trace", "ActivityDryverMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         dryverMainAdapter.notifyDataSetChanged();
     }
 
-    private void setTimer(){
+    /**
+     * Function used to set timer for polling
+     */
+    private void setTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -425,5 +480,4 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             }
         }, 0, 30000);//put here time 1000 milliseconds=1 second
     }
-
 }
