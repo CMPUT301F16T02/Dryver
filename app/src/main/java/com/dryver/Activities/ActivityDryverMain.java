@@ -20,10 +20,10 @@
 package com.dryver.Activities;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -66,6 +66,13 @@ import static com.dryver.Models.ActivityDryverMainState.*;
 
 /**
  * This activities deals with providing the driver with UI for requests.
+ * Uses Google services for some of the geolocation functionalities
+ *
+ * Implements {@link ActivityLoggedInActionBar} for some of the UI features
+ *
+ * @see GoogleApiClient
+ * @see RequestSingleton
+ * @see UserController
  */
 public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
 
@@ -88,7 +95,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private GoogleApiClient mClient;
     private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
-    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
     //You can access many information regarding the location such as address, coordinates, etc
@@ -118,12 +124,22 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         checkStatuses();
     }
 
+    /**
+     * Overriding {@link Activity} onStart and connects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     public void onStart() {
         super.onStart();
         mClient.connect();
     }
 
+    /**
+     * Overriding {@link Activity} onResume and refreshes the request list
+     * to get an updated view
+     *
+     * Also sets timer for polling
+     */
     @Override
     public void onResume () {
         super.onResume();
@@ -131,6 +147,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         setTimer();
     }
 
+    /**
+     * Overriding {@link Activity} onPause and cancels timer
+     */
     @Override
     public void onPause(){
         Log.i("trace", "ActivityDryverMain.onPause()");
@@ -138,6 +157,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         timer.cancel();
     }
 
+    /**
+     * Overriding {@link Activity} onStop and disconnects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -147,7 +170,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * Assigns all UI elements to the actual views
+     * Assigns all UI elements to the actual views and instantiates adapters
+     *
+     * @see DryverMainAdapter
+     * @see ArrayAdapter
      */
     private void assignElements(){
         sortSpinner = (Spinner) findViewById(R.id.requestSortSpinner);
@@ -168,7 +194,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Sets the action listeners for the long click on request list item, the click of current location
-     * button, the refresh swipe, and also does some google maps stuff **Maybe maps should be moved**
+     * button, the refresh swipe.
      */
     private void setListeners(){
         driverListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -201,6 +227,16 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         });
     }
 
+    /**
+     * Gets the result from {@link PlaceAutocomplete} intent to allow the driver to select
+     * an address for searching
+     *
+     * @see PlaceAutocomplete
+     * @see Place
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
@@ -219,10 +255,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * does some mappy type stuff
+     * Initializes {@link GoogleApiClient} instance and attempts connection and initializes
+     * {@link LocationRequest} to find the dryver's current location for searching purposes
+     *
+     * @see GoogleApiClient
+     * @see LocationRequest
      */
     private void setMapStuff(){
-        //========== EXPERIMENTAL CODE ==============
         initializeLocationRequest(100, 100);
         mClient = new GoogleApiClient.Builder(ActivityDryverMain.this)
                 .addApi(LocationServices.API)
@@ -236,7 +275,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
                     }
                 })
                 .build();
-        //==============================================
     }
 
     /**
@@ -306,6 +344,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Find the device's current location using location services
+     *
+     * @see LocationRequest
+     * @see LocationServices
+     * @see com.google.android.gms.location.FusedLocationProviderApi
      */
     public void findCurrentLocation() {
         currentLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
@@ -373,10 +415,13 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @param parent
      */
     public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto Generated method stub
     }
 
     /**
      * Initializes the location request
+     *
+     * @see LocationRequest
      * @param LOCATION_UPDATES
      * @param LOCATION_INTERVAL
      */
@@ -411,6 +456,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         dryverMainAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Function used to set timer for polling
+     */
     private void setTimer(){
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

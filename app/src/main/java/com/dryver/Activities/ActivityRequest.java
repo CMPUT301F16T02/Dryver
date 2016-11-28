@@ -39,6 +39,10 @@ public class ActivityRequest extends Activity {
 
     private Rider rider;
 
+    /**
+     * Overrides {@link Activity} onCreate methods, sets all relevant event listeners and UI elements
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,9 @@ public class ActivityRequest extends Activity {
         });
     }
 
+    /**
+     * Overrides {@link Activity} onResume to refill UI elements with their temporary data
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -101,12 +108,18 @@ public class ActivityRequest extends Activity {
         toggleSubmitButton();
     }
 
+    /**
+     * Overrides {@link Activity} onDestroy to clear temporary request
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         requestSingleton.clearTempRequest();
     }
 
+    /**
+     * Toggles UI element submit button
+     */
     private void toggleSubmitButton() {
         if (requestSingleton.getTempRequest().hasRoute()) {
             submitRequest.setEnabled(true);

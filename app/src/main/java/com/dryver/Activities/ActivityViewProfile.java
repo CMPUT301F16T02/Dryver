@@ -18,6 +18,8 @@ import com.dryver.R;
 /**
  * This activity is responsible for handling the viewing of a profile that is not the active user's
  * Email and phone is done from here
+ *
+ * @see UserController
  */
 
 public class ActivityViewProfile extends Activity {

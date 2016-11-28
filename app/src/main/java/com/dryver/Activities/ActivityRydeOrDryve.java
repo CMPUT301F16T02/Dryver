@@ -28,6 +28,8 @@ import com.dryver.R;
 
 /**
  * Activity provides the user with a choice to choose if he'd like to be a rider or a driver.
+ *
+ * @see ActivityLoggedInActionBar
  */
 public class ActivityRydeOrDryve extends ActivityLoggedInActionBar {
     private Button dryveButton;

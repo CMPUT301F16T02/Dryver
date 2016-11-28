@@ -47,6 +47,11 @@ import java.util.TimerTask;
 /**
  * The activity that acts as the main rider activity. Lists requests, you can create requests here,
  * and select requests to inspect a request.
+ *
+ * @see ActivityLoggedInActionBar
+ * @see RequestSingleton
+ * @see UserController
+ * @see RyderMainAdapter
  */
 
 public class ActivityRyderMain extends ActivityLoggedInActionBar {
@@ -86,6 +91,9 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         super.onStart();
     }
 
+    /**
+     * Overrding {@link android.app.Activity} onResume to refresh request list and set polling timer
+     */
     @Override
     public void onResume() {
         Log.i("info", "ActivityRyderMain.onResume()");
@@ -94,6 +102,9 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         setTimer();
     }
 
+    /**
+     * Overrding {@link android.app.Activity} onPause to cancel timer
+     */
     @Override
     public void onPause(){
         Log.i("info", "ActivityRyderMain.onPause()");

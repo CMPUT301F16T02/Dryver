@@ -14,7 +14,12 @@ import com.dryver.Utility.HelpMe;
 
 import java.util.ArrayList;
 
-
+/**
+ * Custom adapter to display driver related request list
+ *
+ * @see ArrayAdapter
+ * @see RequestSingleton
+ */
 public class DryverMainAdapter extends ArrayAdapter<Request> {
     private Context mContext;
     RequestSingleton requestSingleton = RequestSingleton.getInstance();

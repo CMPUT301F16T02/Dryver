@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.UUID;
 
 /**
- * Created by drei on 2016-11-27.
+ * Ride class used for snapshotting completed rides
  */
 
 public class Ride implements Serializable {
@@ -23,6 +23,10 @@ public class Ride implements Serializable {
     private double rate = 0.70;
     private double distance = 1.00;
 
+    /**
+     * Constructor for Ride class
+     * @param request
+     */
     public Ride(Request request) {
         this.id = UUID.randomUUID().toString();
         this.riderId = request.getRiderId();

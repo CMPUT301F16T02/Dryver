@@ -14,7 +14,12 @@ import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
 
-
+/**
+ * Activity that displays all of the data relevant to the request a driver has selected
+ *
+ * @see RequestSingleton
+ * @see UserController
+ */
 public class ActivityDryverSelection extends Activity {
 
     private TextView riderIdTextView;
@@ -54,6 +59,9 @@ public class ActivityDryverSelection extends Activity {
         setDriverStatus();
     }
 
+    /**
+     *  Sets all UI (Button and textview) listeners for this activity
+     */
     private void setListeners(){
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +106,20 @@ public class ActivityDryverSelection extends Activity {
         });
     }
 
+    /**
+     * Overriding {@link Activity} onDestroy and clears {@link RequestSingleton}
+     * temporary requests
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         requestSingleton.clearTempRequest();
     }
 
+    /**
+     * Sets the driver status by checking {@link RequestSingleton} temporary request
+     * and updates the UI accordingly
+     */
     private void setDriverStatus() {
         if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId())) {
             isAcceptedButtonToggle(true);
@@ -142,6 +158,11 @@ public class ActivityDryverSelection extends Activity {
         }
     }
 
+    /**
+     * Enables accept and cancel buttons
+     *
+     * @param bool
+     */
     private void isAcceptedButtonToggle(boolean bool) {
         acceptButton.setEnabled(!bool);
         cancelButton.setEnabled(bool);
