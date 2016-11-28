@@ -20,7 +20,6 @@ import java.net.URL;
 
 public class ConnectionCheck {
 
-
     public boolean isConnected(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService

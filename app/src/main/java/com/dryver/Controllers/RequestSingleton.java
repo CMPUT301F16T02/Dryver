@@ -19,13 +19,17 @@
 
 package com.dryver.Controllers;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.Dryver;
 import com.dryver.Activities.ActivityDryverSelection;
 import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
@@ -35,6 +39,7 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
+import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,10 +63,13 @@ import java.util.Comparator;
  */
 public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
+    private static final String OFFLINE_SAV = "offline_requests.json";
     private static RequestSingleton instance = new RequestSingleton();
     private static ArrayList<Request> requests = new ArrayList<Request>();
+    private static ArrayList<Request> offlineRequests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
+    private ConnectionCheck connectionCheck = new ConnectionCheck();
 
     /**
      * The request passed on request selection or editing. Also used to make request. It is the request
@@ -87,8 +95,10 @@ public class RequestSingleton {
      * Sets the requests to all of the requests in ElasitcSearch
      */
     public void setRequestsAll() {
-        requests = ES.getAllRequests();
-//        loadRequests();
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            requests = ES.getAllRequests();
+            saveRequests();
+        } else loadRequests();
     }
 
     /**
@@ -97,7 +107,7 @@ public class RequestSingleton {
      * @return
      */
     public ArrayList<Request> getRequests() {
-//        loadRequests();
+        loadRequests();
         return requests;
     }
 
@@ -125,7 +135,6 @@ public class RequestSingleton {
 
     public void pushTempRequest(ICallBack callBack) {
         pushRequest(tempRequest, callBack);
-        saveRequests();
     }
 
 //  =========================== Opening Various Related Activities =================================
@@ -212,14 +221,25 @@ public class RequestSingleton {
      */
     public void pushRequest(Request request, ICallBack callBack) {
         Log.i("trace", "RequestSingleton.pushRequest()");
-        if (ES.updateRequest(request)) {
-            int position = requests.indexOf(request);
-            requests.remove(position);
-            requests.add(request);
-        } else if (ES.addRequest(request)) {
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            /* Pushes all local copies during offline mode to the server */
+            while(!offlineRequests.isEmpty()) {
+                for(Request request1 : offlineRequests) {
+                    ES.updateRequest(request1);
+                }
+            }
+            if (ES.updateRequest(request)) {
+                int position = requests.indexOf(request);
+                requests.remove(position);
+                requests.add(request);
+            } else if (ES.addRequest(request)) {
+            }
+            callBack.execute();
+            saveRequests();
+        } else {
+            offlineRequests.add(request);
+            saveRequests();
         }
-        callBack.execute();
-        saveRequests();
     }
 
     /**
@@ -349,7 +369,6 @@ public class RequestSingleton {
                 requests.add(newRequests.get(index));
             }
         }
-
         saveRequests();
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
@@ -421,9 +440,10 @@ public class RequestSingleton {
      * Saves the current ArrayList of requests to local storage
      */
     public void saveRequests() {
+        Toast.makeText(Dryver.getAppContext(), "Saving requests...", Toast.LENGTH_SHORT).show();
         try {
             String state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state)) {
+            if (Environment.MEDIA_MOUNTED.equals(state) && requests.size() > 0) {
                 File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
 
@@ -431,11 +451,23 @@ public class RequestSingleton {
 
                 Gson gson = new Gson();
 
-
                 gson.toJson(requests, bufferedWriter);
                 bufferedWriter.flush();
 
                 fileOutputStream.close();
+
+                File file1 = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
+                FileOutputStream fileOutputStream1 = new FileOutputStream(file1);
+
+                BufferedWriter bufferedWriter1 = new BufferedWriter(new OutputStreamWriter(fileOutputStream1));
+
+                Gson gson1 = new Gson();
+
+
+                gson1.toJson(offlineRequests, bufferedWriter);
+                bufferedWriter1.flush();
+
+                fileOutputStream1.close();
             } else {
                 throw new IOException("External storage was not available!");
             }
