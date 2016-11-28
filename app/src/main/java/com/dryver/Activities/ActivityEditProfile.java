@@ -67,6 +67,7 @@ public class ActivityEditProfile extends Activity {
         paymentSpinner = (Spinner) findViewById(R.id.profileSpinnerPaymentMethod);
         vehicleDesriptionTextView = (TextView) findViewById(R.id.activity_edit_profile_vehicle_textview);
         vehicleDescriptionEditText = (EditText) findViewById(R.id.edit_profile_vehicle_description);
+        vehicleDescriptionEditText.setText(" ");
         saveChangesButton = (Button) findViewById(R.id.save_changes);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
         ratingTextView = (TextView) findViewById(R.id.edit_profile_rating_title);
@@ -126,7 +127,9 @@ public class ActivityEditProfile extends Activity {
         if (HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText)) {
             user.setPhoneNumber(phoneEditText.getText().toString());
             user.setEmail(emailEditText.getText().toString());
-            driver.setVehicleDescription(vehicleDescriptionEditText.getText().toString());
+            if (user instanceof Driver) {
+                driver.setVehicleDescription(vehicleDescriptionEditText.getText().toString());
+            }
 
             updated = userController.updateActiveUser();
         }
