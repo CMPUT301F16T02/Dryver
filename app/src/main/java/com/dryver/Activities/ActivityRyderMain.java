@@ -30,10 +30,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.Dryver;
 import com.dryver.Adapters.RyderMainAdapter;
+import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.RequestStatus;
+import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;

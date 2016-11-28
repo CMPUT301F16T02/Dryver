@@ -39,6 +39,7 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
+import com.dryver.Models.User;
 import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
@@ -71,6 +72,7 @@ public class RequestSingleton {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
     private ConnectionCheck connectionCheck = new ConnectionCheck();
+    private boolean connectionReestablished = false;
 
     /**
      * The request passed on request selection or editing. Also used to make request. It is the request
@@ -99,16 +101,8 @@ public class RequestSingleton {
         if(connectionCheck.isConnected(Dryver.getAppContext())) {
             requests = ES.getAllRequests();
             saveRequests();
-        } else loadRequests();
-    }
-
-    public void setRequestsOpen() {
-        requests = ES.getAllRequests();
-        Iterator<Request> iterator = requests.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getAcceptedDriverID() != null) {
-                iterator.remove();
-            }
+        } else {
+            loadRequests();
         }
     }
 
@@ -118,7 +112,6 @@ public class RequestSingleton {
      * @return
      */
     public ArrayList<Request> getRequests() {
-        loadRequests();
         return requests;
     }
 
@@ -146,6 +139,7 @@ public class RequestSingleton {
 
     public void pushTempRequest(ICallBack callBack) {
         pushRequest(tempRequest, callBack);
+        saveRequests();
     }
 
 //  =========================== Opening Various Related Activities =================================
@@ -232,25 +226,17 @@ public class RequestSingleton {
      */
     public void pushRequest(Request request, ICallBack callBack) {
         Log.i("trace", "RequestSingleton.pushRequest()");
-        if(connectionCheck.isConnected(Dryver.getAppContext())) {
-            /* Pushes all local copies during offline mode to the server */
-            while(!offlineRequests.isEmpty()) {
-                for(Request request1 : offlineRequests) {
-                    ES.updateRequest(request1);
-                }
-            }
-            if (ES.updateRequest(request)) {
-                int position = requests.indexOf(request);
-                requests.remove(position);
-                requests.add(request);
-            } else if (ES.addRequest(request)) {
-            }
-            callBack.execute();
-            saveRequests();
+        if (requests.contains(request)) {
+            int position = requests.indexOf(request);
+            requests.remove(position);
+            requests.add(request);
+            ES.updateRequest(request);
         } else {
-            offlineRequests.add(request);
-            saveRequests();
+            requests.add(request);
+            ES.addRequest(request);
         }
+        saveRequests();
+        callBack.execute();
     }
 
     /**
@@ -263,19 +249,14 @@ public class RequestSingleton {
      * @see ICallBack
      */
     public void removeRequest(Request request) {
-        if (ES.deleteRequest(request)) {
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            if (ES.deleteRequest(request)) {
+                requests.remove(request);
+            }
+        } else {
             requests.remove(request);
         }
         saveRequests();
-    }
-
-    public Request getRequestById(String id, ICallBack callBack) {
-        for (Request req : requests) {
-            if (req.getId().equals(id)) {
-                return req;
-            }
-        }
-        return null;
     }
 
     /**
@@ -320,32 +301,36 @@ public class RequestSingleton {
             newRequests = ES.getRequestsCost(searchEditText.getText().toString());
         }
 
-        //Compares two lists
-        if(newRequests.size() == 0){
-            requests.clear();
-        } else{
-            for (Request newRequest : newRequests) {
-                if (!requests.contains(newRequest)) {
-                    indicesToAdd.add(newRequests.indexOf(newRequest));
-                }
-                for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest) &&
-                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
-                        indicesToRemove.add(requests.indexOf(oldRequest));
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            //Compares two lists
+            if (newRequests.size() == 0) {
+                requests.clear();
+            } else {
+                for (Request newRequest : newRequests) {
+                    if (!requests.contains(newRequest)) {
+                        indicesToAdd.add(newRequests.indexOf(newRequest));
+                    }
+                    for (Request oldRequest : requests) {
+                        if (!newRequests.contains(oldRequest) &&
+                                !indicesToRemove.contains(requests.indexOf(oldRequest))) {
+                            indicesToRemove.add(requests.indexOf(oldRequest));
+                        }
                     }
                 }
-            }
 
-            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
-                requests.remove(index);
+                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+                for (int index : indicesToRemove) {
+                    requests.remove(index);
+                }
+                for (int index : indicesToAdd) {
+                    requests.add(newRequests.get(index));
+                }
             }
-            for(int index : indicesToAdd){
-                requests.add(newRequests.get(index));
-            }
+        } else {
+            loadRequests();
         }
 
-        if(new ConnectionCheck().isConnected(context)){
+        if(connectionCheck.isConnected(context)){
             saveRequests();
         }
         callBack.execute();
@@ -359,34 +344,40 @@ public class RequestSingleton {
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
         ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            syncRiderRequests();
+            if (newRequests.size() == 0) {
+                requests.clear();
+            } else {
+                for (Request newRequest : newRequests) {
+                    if (!requests.contains(newRequest)) {
+                        indicesToAdd.add(newRequests.indexOf(newRequest));
+                    }
 
-        if(newRequests.size() == 0){
-            requests.clear();
-        } else {
-            for (Request newRequest : newRequests) {
-                if (!requests.contains(newRequest)) {
-                    indicesToAdd.add(newRequests.indexOf(newRequest));
-                }
-
-                for (Request oldRequest : requests) {
-                    if (!newRequests.contains(oldRequest) &&
-                            !indicesToRemove.contains(requests.indexOf(oldRequest))) {
-                        indicesToRemove.add(requests.indexOf(oldRequest));
+                    for (Request oldRequest : requests) {
+                        if (!newRequests.contains(oldRequest) &&
+                                !indicesToRemove.contains(requests.indexOf(oldRequest))) {
+                            indicesToRemove.add(requests.indexOf(oldRequest));
+                        }
                     }
                 }
-            }
 
-            Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
-                requests.remove(index);
+                Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
+                for (int index : indicesToRemove) {
+                    requests.remove(index);
+                }
+                for (int index : indicesToAdd) {
+                    requests.add(newRequests.get(index));
+                }
             }
-            for(int index : indicesToAdd){
-                requests.add(newRequests.get(index));
-            }
+        } else {
+            loadRequests();
         }
+
         if(new ConnectionCheck().isConnected(context)){
             saveRequests();
         }
+
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
@@ -472,19 +463,6 @@ public class RequestSingleton {
                 bufferedWriter.flush();
 
                 fileOutputStream.close();
-
-                File file1 = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
-                FileOutputStream fileOutputStream1 = new FileOutputStream(file1);
-
-                BufferedWriter bufferedWriter1 = new BufferedWriter(new OutputStreamWriter(fileOutputStream1));
-
-                Gson gson1 = new Gson();
-
-
-                gson1.toJson(offlineRequests, bufferedWriter1);
-                bufferedWriter1.flush();
-
-                fileOutputStream1.close();
             } else {
                 throw new IOException("External storage was not available!");
             }
@@ -504,45 +482,39 @@ public class RequestSingleton {
         try {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-                if(connectionCheck.isConnected(Dryver.getAppContext())) {
 
-                    File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
+                File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
 
-                    FileInputStream fileInputStream = new FileInputStream(file);
+                FileInputStream fileInputStream = new FileInputStream(file);
 
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-                    Gson gson = new Gson();
+                Gson gson = new Gson();
 
-                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-                    Type listType = new TypeToken<ArrayList<Request>>() {
-                    }.getType();
+                // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                Type listType = new TypeToken<ArrayList<Request>>() {}.getType();
 
-                    requests = gson.fromJson(bufferedReader, listType);
-                    Toast.makeText(Dryver.getAppContext(), "Loading online", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    File file = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
-
-                    FileInputStream fileInputStream = new FileInputStream(file);
-
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-
-                    Gson gson = new Gson();
-
-                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-                    Type listType = new TypeToken<ArrayList<Request>>() {
-                    }.getType();
-
-                    requests = gson.fromJson(bufferedReader, listType);
-                    Toast.makeText(Dryver.getAppContext(), "Loading offline, total results: " + requests.size(), Toast.LENGTH_SHORT).show();
-                }
+                requests = gson.fromJson(bufferedReader, listType);
+                Toast.makeText(Dryver.getAppContext(), "Loading offline, total results: " + requests.size(), Toast.LENGTH_SHORT).show();
 
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+    public void syncRiderRequests() {
+        Toast.makeText(Dryver.getAppContext(), "Syncing Rider Requests: " + requests.size(), Toast.LENGTH_SHORT).show();
+        ArrayList<Request> onlineRequests = ES.getRiderRequests(userController.getActiveUser().getId());
+        Iterator<Request> onlineIterator = onlineRequests.iterator();
+        Iterator<Request> offlineIterator = requests.iterator();
+
+        while (offlineIterator.hasNext()) {
+            ES.updateRequest(offlineIterator.next());
+        }
+
+    }
+
 
     //TODO Differentiate between Drivers/Accepted requests and Users/Requests made offline
 }
