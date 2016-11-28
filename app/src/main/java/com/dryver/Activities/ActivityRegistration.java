@@ -45,6 +45,7 @@ public class ActivityRegistration extends Activity {
     private EditText lastnameEditText;
     private EditText phoneEditText;
     private EditText emailEditText;
+
     // TODO: 2016-10-16 payment info
 
     private Button doneButton;
@@ -90,6 +91,7 @@ public class ActivityRegistration extends Activity {
                             lastnameEditText.getText().toString(),
                             phoneEditText.getText().toString(),
                             emailEditText.getText().toString());
+
 
                     if (ES.addUser(user)) {
                         Log.i("Info", "User added succesfully via ElasticSearch Controller");

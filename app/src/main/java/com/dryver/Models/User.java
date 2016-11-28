@@ -69,7 +69,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.rating = new Rating();
-        this.vehicleDescription = new String();
+        this.vehicleDescription = "No Description Provided.";
     }
 
     public float getRating() {
