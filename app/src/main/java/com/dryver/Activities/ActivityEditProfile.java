@@ -126,7 +126,7 @@ public class ActivityEditProfile extends Activity {
         if (HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText)) {
             user.setPhoneNumber(phoneEditText.getText().toString());
             user.setEmail(emailEditText.getText().toString());
-            driver.setVehicleDescription(vehicleDescriptionEditText.getText().toString());
+            userController.getActiveUser().setVehicleDescription(vehicleDescriptionEditText.getText().toString());
 
             updated = userController.updateActiveUser();
         }
