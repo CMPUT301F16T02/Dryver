@@ -37,90 +37,90 @@ import java.util.TimeZone;
 public class HelpMe extends Activity {
 
     public static final String CUSTOM_REQUEST_MAPPING =
-            "{" +
-                    "\"request\": {" +
-                    "\"properties\": {" +
-                    "\"acceptedDriverID\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"cost\": {" +
-                    "\"type\": \"double\"" +
-                    "}," +
-                    "\"date\": {" +
-                    "\"properties\": {" +
-                    "\"dayOfMonth\": {" +
-                    "\"type\": \"long\"" +
-                    "}," +
-                    "\"hourOfDay\": {" +
-                    "\"type\": \"long\"" +
-                    "}," +
-                    "\"minute\": {" +
-                    "\"type\": \"long\"" +
-                    "}," +
-                    "\"month\": {" +
-                    "\"type\": \"long\"" +
-                    "}," +
-                    "\"second\": {" +
-                    "\"type\": \"long\"" +
-                    "}," +
-                    "\"year\": {" +
-                    "\"type\": \"long\"" +
-                    "}" +
-                    "}" +
-                    "}," +
-                    "\"description\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"distance\": {" +
-                    "\"type\": \"double\"" +
-                    "}," +
-                    "\"drivers\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"encodedPolyline\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"geopointFromCoordinates\": {" +
-                    "\"type\": \"geo_point\"" +
-                    "}," +
-                    "\"geopointToCoordinates\": {" +
-                    "\"type\": \"geo_point\"" +
-                    "}," +
-                    "\"fromCoordinates\": {" +
-                    "\"properties\": {" +
-                    "\"location\": {" +
-                    "\"type\": \"double\"" +
-                    "}," +
-                    "\"locationName\": {" +
-                    "\"type\": \"string\"" +
-                    "}" +
-                    "}" +
-                    "}," +
-                    "\"id\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"rate\": {" +
-                    "\"type\": \"double\"" +
-                    "}," +
-                    "\"riderId\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"status\": {" +
-                    "\"type\": \"string\"" +
-                    "}," +
-                    "\"toCoordinates\": {" +
-                    "\"properties\": {" +
-                    "\"location\": {" +
-                    "\"type\": \"double\"" +
-                    "}," +
-                    "\"locationName\": {" +
-                    "\"type\": \"string\"" +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}";
+                                                        "{" +
+                                                            "\"request\": {" +
+                                                                "\"properties\": {" +
+                                                                    "\"acceptedDriverID\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                        "\"cost\": {" +
+                                                                        "\"type\": \"double\"" +
+                                                                    "}," +
+                                                                    "\"date\": {" +
+                                                                        "\"properties\": {" +
+                                                                            "\"dayOfMonth\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}," +
+                                                                            "\"hourOfDay\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}," +
+                                                                            "\"minute\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}," +
+                                                                            "\"month\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}," +
+                                                                            "\"second\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}," +
+                                                                            "\"year\": {" +
+                                                                                "\"type\": \"long\"" +
+                                                                            "}" +
+                                                                        "}" +
+                                                                    "}," +
+                                                                    "\"description\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"distance\": {" +
+                                                                        "\"type\": \"double\"" +
+                                                                    "}," +
+                                                                    "\"drivers\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"encodedPolyline\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"geopointFromCoordinates\": {" +
+                                                                        "\"type\": \"geo_point\"" +
+                                                                    "}," +
+                                                                    "\"geopointToCoordinates\": {" +
+                                                                        "\"type\": \"geo_point\"" +
+                                                                    "}," +
+                                                                    "\"fromCoordinates\": {" +
+                                                                        "\"properties\": {" +
+                                                                            "\"location\": {" +
+                                                                                "\"type\": \"double\"" +
+                                                                            "}," +
+                                                                            "\"locationName\": {" +
+                                                                                "\"type\": \"string\"" +
+                                                                            "}" +
+                                                                        "}" +
+                                                                    "}," +
+                                                                    "\"id\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"rate\": {" +
+                                                                        "\"type\": \"double\"" +
+                                                                    "}," +
+                                                                    "\"riderId\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"status\": {" +
+                                                                        "\"type\": \"string\"" +
+                                                                    "}," +
+                                                                    "\"toCoordinates\": {" +
+                                                                        "\"properties\": {" +
+                                                                            "\"location\": {" +
+                                                                                "\"type\": \"double\"" +
+                                                                            "}," +
+                                                                            "\"locationName\": {" +
+                                                                                "\"type\": \"string\"" +
+                                                                            "}" +
+                                                                        "}" +
+                                                                    "}" +
+                                                                "}" +
+                                                            "}" +
+                                                        "}";
 
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00");
