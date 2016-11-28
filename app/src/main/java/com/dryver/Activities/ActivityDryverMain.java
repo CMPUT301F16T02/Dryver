@@ -385,7 +385,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             searchByEditText.setHint(R.string.active);
             state = ACTIVE;
         } else if (sortSelection.equals("Geolocation")) {
-            searchByEditText.setHint(R.string.kilometers);
+            searchByEditText.setHint(R.string.latLon);
             state = GEOLOCATION;
             try {
                 Intent intent = new PlaceAutocomplete.IntentBuilder
@@ -421,18 +421,8 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Initializes the location request
-<<<<<<< HEAD
      * @param locationUpdates
      * @param locationInterval
-     *
-=======
-     * <<<<<<< HEAD
-     *
-     * @param locationUpdates
-     * @param locationInterval  =======
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL >>>>>>> 11857a4feff0ab7de35f3ca582852cc3aad50539
->>>>>>> c90655bd9b16528ffed11e9f388297e65cf3501d
      * @see LocationRequest
      */
     public void initializeLocationRequest(int locationUpdates, int locationInterval) {

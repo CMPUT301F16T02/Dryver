@@ -629,7 +629,16 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRiderRequestsTask.doInBackground()");
-            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
+            String search_string =
+                    "{" +
+                        "\"from\": 0," +
+                        "\"size\": 10000," +
+                        "\"query\": {" +
+                            "\"match\": {" +
+                                "\"riderId\": \"" + search_parameters[0] + "\"" +
+                            "}" +
+                        "}" +
+                    "}";
 
             return getRequests(search_string);
         }
@@ -642,7 +651,16 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetDriverRequestsTask.doInBackground()");
-            String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"acceptedDriverID\": \"" + search_parameters[0] + "\"}}}";
+            String search_string =
+                    "{" +
+                        "\"from\": 0," +
+                        "\"size\": 10000," +
+                        "\"query\": {" +
+                            "\"match\": {" +
+                                "\"acceptedDriverID\": \"" + search_parameters[0] + "\"" +
+                            "}" +
+                        "}" +
+                    "}";
 
             Log.i("QUERY", search_string);
             return getRequests(search_string);
@@ -658,20 +676,21 @@ public class ElasticSearchController {
             String[] latLon = search_parameters[0].split(", ");
 
             Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
-            String search_string = "{" +
-                    "\"query\": {" +
-                    "\"filtered\": {" +
-                    "\"filter\": {" +
-                    "\"geo_distance\": {" +
-                    "\"distance\": \"10000m\"," +
-                    "\"doubleToCoordinates\": {" +
-                    "\"lat\":" + latLon[0] + "," +
-                    "\"lon\":" + latLon[1] +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}" +
+            String search_string =
+                    "{" +
+                        "\"query\": {" +
+                            "\"filtered\": {" +
+                                "\"filter\": {" +
+                                    "\"geo_distance\": {" +
+                                        "\"distance\": \"10000m\"," +
+                                        "\"doubleToCoordinates\": {" +
+                                            "\"lat\":" + latLon[0] + "," +
+                                            "\"lon\":" + latLon[1] +
+                                        "}" +
+                                    "}" +
+                                "}" +
+                            "}" +
+                        "}" +
                     "}";
 
             Log.i("QUERY", search_string);
@@ -687,17 +706,18 @@ public class ElasticSearchController {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRequestsKeywordTask.doInBackground()");
-            String search_string = "{" +
-                    "\"query\": {" +
-                    "\"bool\": {" +
-                    "\"should\": [" +
-                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
-                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
-                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
-                    "]," +
-                    "\"minimum_should_match\" : 1" +
-                    "}" +
-                    "}" +
+            String search_string =
+                    "{" +
+                        "\"query\": {" +
+                            "\"bool\": {" +
+                                "\"should\": [" +
+                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
+                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
+                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
+                                "]," +
+                                    "\"minimum_should_match\" : 1" +
+                            "}" +
+                        "}" +
                     "}";
 
             Log.i("QUERY", search_string);

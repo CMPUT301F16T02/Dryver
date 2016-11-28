@@ -25,7 +25,7 @@
     <string name="dryve">Dryve</string>
     <string name="save_changes">Save</string>
     <string name="choose_driver">Accept as Driver</string>
-    <string name="kilometers">Kilometers Radius</string>
+    <string name="latLon">Latitude, Longitude</string>
     <string name="search">Search</string>
     <string name="empty">Leave Empty</string>
     <string name="keyword">Keyword</string>
