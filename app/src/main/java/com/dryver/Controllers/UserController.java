@@ -204,7 +204,6 @@ public class UserController {
 
                 Gson gson = new Gson();
                 activeUser = gson.fromJson(bufferedReader, User.class);
-                setCached(true);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -216,11 +215,10 @@ public class UserController {
      */
     public void deleteFile() {
         try {
-            boolean file = new File(ACTIVE_USER_SAV).delete();
+            boolean file = new File(Environment.getExternalStorageDirectory(),ACTIVE_USER_SAV).delete();
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-        setCached(false);
     }
 
     /**
@@ -228,11 +226,10 @@ public class UserController {
      * @return boolean - Is the user chached?
      */
     public boolean isCached() {
-        return cached;
-    }
-
-    public void setCached(boolean cached) {
-        this.cached = cached;
+        File f = new File(Environment.getExternalStorageDirectory(),ACTIVE_USER_SAV);
+        if(f.exists() && !f.isDirectory()) {
+           return true;
+        } else return false;
     }
 
     public void rateDriver(float rating, String driverID){

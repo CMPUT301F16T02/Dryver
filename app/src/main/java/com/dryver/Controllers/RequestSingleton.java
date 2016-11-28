@@ -19,13 +19,17 @@
 
 package com.dryver.Controllers;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.Dryver;
 import com.dryver.Activities.ActivityDryverSelection;
 import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
@@ -35,6 +39,7 @@ import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
+import com.dryver.Utility.ConnectionCheck;
 import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,10 +64,13 @@ import java.util.Iterator;
  */
 public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
+    private static final String OFFLINE_SAV = "offline_requests.json";
     private static RequestSingleton instance = new RequestSingleton();
     private static ArrayList<Request> requests = new ArrayList<Request>();
+    private static ArrayList<Request> offlineRequests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
+    private ConnectionCheck connectionCheck = new ConnectionCheck();
 
     /**
      * The request passed on request selection or editing. Also used to make request. It is the request
@@ -85,11 +93,13 @@ public class RequestSingleton {
     }
 
     /**
-     * Sets the requests to all of the requests in ElasitcSearch
+     * Sets the requests to all of the requests in Elastic Search
      */
     public void setRequestsAll() {
-        requests = ES.getAllRequests();
-//        loadRequests();
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            requests = ES.getAllRequests();
+            saveRequests();
+        } else loadRequests();
     }
 
     public void setRequestsOpen() {
@@ -108,7 +118,7 @@ public class RequestSingleton {
      * @return
      */
     public ArrayList<Request> getRequests() {
-//        loadRequests();
+        loadRequests();
         return requests;
     }
 
@@ -136,7 +146,6 @@ public class RequestSingleton {
 
     public void pushTempRequest(ICallBack callBack) {
         pushRequest(tempRequest, callBack);
-        saveRequests();
     }
 
 //  =========================== Opening Various Related Activities =================================
@@ -223,14 +232,25 @@ public class RequestSingleton {
      */
     public void pushRequest(Request request, ICallBack callBack) {
         Log.i("trace", "RequestSingleton.pushRequest()");
-        if (ES.updateRequest(request)) {
-            int position = requests.indexOf(request);
-            requests.remove(position);
-            requests.add(request);
-        } else if (ES.addRequest(request)) {
+        if(connectionCheck.isConnected(Dryver.getAppContext())) {
+            /* Pushes all local copies during offline mode to the server */
+            while(!offlineRequests.isEmpty()) {
+                for(Request request1 : offlineRequests) {
+                    ES.updateRequest(request1);
+                }
+            }
+            if (ES.updateRequest(request)) {
+                int position = requests.indexOf(request);
+                requests.remove(position);
+                requests.add(request);
+            } else if (ES.addRequest(request)) {
+            }
+            callBack.execute();
+            saveRequests();
+        } else {
+            offlineRequests.add(request);
+            saveRequests();
         }
-        callBack.execute();
-        saveRequests();
     }
 
     /**
@@ -278,7 +298,7 @@ public class RequestSingleton {
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText) {
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText, Context context) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
@@ -325,13 +345,15 @@ public class RequestSingleton {
             }
         }
 
-        saveRequests();
+        if(new ConnectionCheck().isConnected(context)){
+            saveRequests();
+        }
         callBack.execute();
 
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
 
-    public void updateRiderRequests(ICallBack callBack) {
+    public void updateRiderRequests(ICallBack callBack, Context context) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         //This is necessary as you can't remove from a list you are currently iterating through /facepalm
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
@@ -362,8 +384,9 @@ public class RequestSingleton {
                 requests.add(newRequests.get(index));
             }
         }
-
-        saveRequests();
+        if(new ConnectionCheck().isConnected(context)){
+            saveRequests();
+        }
         callBack.execute();
         //TODO: Implement a way of searching for requests in a certain area or something for drivers
     }
@@ -434,6 +457,7 @@ public class RequestSingleton {
      * Saves the current ArrayList of requests to local storage
      */
     public void saveRequests() {
+        Toast.makeText(Dryver.getAppContext(), "Saving requests...", Toast.LENGTH_SHORT).show();
         try {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -444,11 +468,23 @@ public class RequestSingleton {
 
                 Gson gson = new Gson();
 
-
                 gson.toJson(requests, bufferedWriter);
                 bufferedWriter.flush();
 
                 fileOutputStream.close();
+
+                File file1 = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
+                FileOutputStream fileOutputStream1 = new FileOutputStream(file1);
+
+                BufferedWriter bufferedWriter1 = new BufferedWriter(new OutputStreamWriter(fileOutputStream1));
+
+                Gson gson1 = new Gson();
+
+
+                gson1.toJson(offlineRequests, bufferedWriter1);
+                bufferedWriter1.flush();
+
+                fileOutputStream1.close();
             } else {
                 throw new IOException("External storage was not available!");
             }
@@ -456,6 +492,7 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             throw new RuntimeException();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }
@@ -467,19 +504,40 @@ public class RequestSingleton {
         try {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-                File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
+                if(connectionCheck.isConnected(Dryver.getAppContext())) {
 
-                FileInputStream fileInputStream = new FileInputStream(file);
+                    File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                    FileInputStream fileInputStream = new FileInputStream(file);
 
-                Gson gson = new Gson();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-                // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-                Type listType = new TypeToken<ArrayList<Request>>() {
-                }.getType();
+                    Gson gson = new Gson();
 
-                requests = gson.fromJson(bufferedReader, listType);
+                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                    Type listType = new TypeToken<ArrayList<Request>>() {
+                    }.getType();
+
+                    requests = gson.fromJson(bufferedReader, listType);
+                    Toast.makeText(Dryver.getAppContext(), "Loading online", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    File file = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
+
+                    FileInputStream fileInputStream = new FileInputStream(file);
+
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                    Gson gson = new Gson();
+
+                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                    Type listType = new TypeToken<ArrayList<Request>>() {
+                    }.getType();
+
+                    requests = gson.fromJson(bufferedReader, listType);
+                    Toast.makeText(Dryver.getAppContext(), "Loading offline, total results: " + requests.size(), Toast.LENGTH_SHORT).show();
+                }
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

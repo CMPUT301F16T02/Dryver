@@ -193,7 +193,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
             public void execute() {
                 refreshRequestList();
             }
-        });
+        }, ActivityRyderMain.this);
     }
 
     /**
