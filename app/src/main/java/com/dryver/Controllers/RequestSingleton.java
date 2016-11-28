@@ -92,7 +92,7 @@ public class RequestSingleton {
     }
 
     /**
-     * Sets the requests to all of the requests in ElasitcSearch
+     * Sets the requests to all of the requests in Elastic Search
      */
     public void setRequestsAll() {
         if(connectionCheck.isConnected(Dryver.getAppContext())) {
@@ -447,7 +447,7 @@ public class RequestSingleton {
         Toast.makeText(Dryver.getAppContext(), "Saving requests...", Toast.LENGTH_SHORT).show();
         try {
             String state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state) && requests.size() > 0) {
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
                 File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
 
@@ -468,7 +468,7 @@ public class RequestSingleton {
                 Gson gson1 = new Gson();
 
 
-                gson1.toJson(offlineRequests, bufferedWriter);
+                gson1.toJson(offlineRequests, bufferedWriter1);
                 bufferedWriter1.flush();
 
                 fileOutputStream1.close();
@@ -479,6 +479,7 @@ public class RequestSingleton {
         } catch (FileNotFoundException e) {
             throw new RuntimeException();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }
@@ -490,19 +491,40 @@ public class RequestSingleton {
         try {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-                File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
+                if(connectionCheck.isConnected(Dryver.getAppContext())) {
 
-                FileInputStream fileInputStream = new FileInputStream(file);
+                    File file = new File(Environment.getExternalStorageDirectory(), REQUESTS_SAV);
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                    FileInputStream fileInputStream = new FileInputStream(file);
 
-                Gson gson = new Gson();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
-                // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-                Type listType = new TypeToken<ArrayList<Request>>() {
-                }.getType();
+                    Gson gson = new Gson();
 
-                requests = gson.fromJson(bufferedReader, listType);
+                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                    Type listType = new TypeToken<ArrayList<Request>>() {
+                    }.getType();
+
+                    requests = gson.fromJson(bufferedReader, listType);
+                    Toast.makeText(Dryver.getAppContext(), "Loading online", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    File file = new File(Environment.getExternalStorageDirectory(), OFFLINE_SAV);
+
+                    FileInputStream fileInputStream = new FileInputStream(file);
+
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                    Gson gson = new Gson();
+
+                    // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+                    Type listType = new TypeToken<ArrayList<Request>>() {
+                    }.getType();
+
+                    requests = gson.fromJson(bufferedReader, listType);
+                    Toast.makeText(Dryver.getAppContext(), "Loading offline, total results: " + requests.size(), Toast.LENGTH_SHORT).show();
+                }
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
