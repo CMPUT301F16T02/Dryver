@@ -25,6 +25,7 @@ public enum ActivityDryverMainState {
     PENDING,
     ACTIVE,
     GEOLOCATION,
+    ADDRESS,
     KEYWORD,
     RATE,
     COST

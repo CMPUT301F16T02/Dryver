@@ -78,7 +78,7 @@ public class DryverListAdapter extends ArrayAdapter<String> {
         acceptDriverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestSingleton.selectDriverFromTempRequest(userController.getActiveUser().getId(), new ICallBack() {
+                requestSingleton.selectDriverFromTempRequest(driverID, new ICallBack() {
                     @Override
                     public void execute() {
                         isAccepted();

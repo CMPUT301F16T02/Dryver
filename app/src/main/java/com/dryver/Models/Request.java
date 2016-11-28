@@ -47,7 +47,7 @@ public class Request implements Serializable {
     private RequestStatus status;
 
     private SimpleCoordinates fromCoordinates;
-    private Double[] geoPointFromCoordinates;
+    private Double[] geopointFromCoordinates;
     private SimpleCoordinates toCoordinates;
     private Double[] geopointToCoordinates;
 
@@ -63,7 +63,7 @@ public class Request implements Serializable {
         this.fromCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
         this.toCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
 
-        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
+        geopointFromCoordinates = fromCoordinates.getDoubleLocation();
         geopointToCoordinates = toCoordinates.getDoubleLocation();
 
         this.drivers = new ArrayList<String>();
@@ -87,7 +87,7 @@ public class Request implements Serializable {
         this.fromCoordinates = new SimpleCoordinates(fromLocation.getLatitude(), fromLocation.getLongitude(), fromLocation.getProvider());
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
 
-        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
+        geopointFromCoordinates = fromCoordinates.getDoubleLocation();
         geopointToCoordinates = toCoordinates.getDoubleLocation();
 
         this.drivers = new ArrayList<String>();
@@ -229,7 +229,7 @@ public class Request implements Serializable {
     public void setFromLocation(Location fromLocation) {
         this.fromCoordinates.setLocation(fromLocation.getLatitude(), fromLocation.getLongitude());
         this.fromCoordinates.setLocationName(fromLocation.getProvider());
-        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
+        geopointFromCoordinates = fromCoordinates.getDoubleLocation();
     }
 
     public boolean hasRoute() {
