@@ -290,7 +290,7 @@ public class RequestSingleton {
             newRequests = ES.getPendingRequests(userController.getActiveUser().getId());
         } else if (status == ActivityDryverMainState.ACTIVE){
             newRequests = ES.getAcceptedRequests();
-        }else if (status == ActivityDryverMainState.GEOLOCATION){
+        } else if (status == ActivityDryverMainState.GEOLOCATION){
             newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD){
             newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());

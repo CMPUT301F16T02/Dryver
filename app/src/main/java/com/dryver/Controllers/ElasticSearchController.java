@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.dryver.Models.Request;
 import com.dryver.Models.User;
+import com.dryver.Utility.HelpMe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -44,6 +45,7 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.indices.CreateIndex;
+import io.searchbox.indices.mapping.PutMapping;
 
 /**
  * Used to communicate with the Elasticsearch server follows the Songleton design pattern.
@@ -120,6 +122,15 @@ public class ElasticSearchController {
 
         try {
             client.execute(new CreateIndex.Builder(INDEX).build());
+            JestResult result = client.execute(new PutMapping.Builder(
+                    INDEX,
+                    REQUEST,
+                    HelpMe.CUSTOM_REQUEST_MAPPING
+            ).build());
+
+            if(result.isSucceeded()){
+                Log.i("YAY", "WOOHOO");
+            }
         } catch (IOException e) {
             Log.d("ERROR", "Could not create index.");
             e.printStackTrace();

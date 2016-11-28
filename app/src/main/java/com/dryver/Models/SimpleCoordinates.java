@@ -5,8 +5,6 @@ import android.location.Location;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import io.searchbox.indices.template.TemplateAction;
-
 /**
  * Simplified coordinate system for cleaner serialization
  */
@@ -76,6 +74,10 @@ public class SimpleCoordinates implements Serializable {
 
     public String getLocationName() {
         return locationName;
+    }
+
+    public Double[] getDoubleLocation(){
+        return location;
     }
 
     @Override

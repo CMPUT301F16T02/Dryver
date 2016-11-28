@@ -54,6 +54,12 @@ public class ActivityDryverSelection extends Activity {
         setDriverStatus();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        requestSingleton.clearTempRequest();
+    }
+
     private void setListeners(){
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +102,6 @@ public class ActivityDryverSelection extends Activity {
                 // TODO: 2016-11-27 set a view rider option.
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        requestSingleton.clearTempRequest();
     }
 
     private void setDriverStatus() {

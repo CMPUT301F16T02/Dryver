@@ -92,7 +92,7 @@ public class ActivityRequestMap extends FragmentActivity implements
     private LocationRequest mLocationRequest;
     private Location currentLocation;
 
-    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
     private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
@@ -149,7 +149,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                 try {
                     Intent intent = new PlaceAutocomplete.IntentBuilder
                             (PlaceAutocomplete.MODE_OVERLAY)
-                            .setBoundsBias(edmontonBounds)
+                            .setBoundsBias(EDMONTON_BOUNDS)
                             .build(ActivityRequestMap.this);
                     startActivityForResult(intent, REQUEST_SELECT_PLACE);
                 } catch (GooglePlayServicesNotAvailableException e) {
@@ -288,7 +288,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Helper function used to convert {@link LatLng} to {@link Location}
      * @return ArrayList of locations
      */
-    public ArrayList<Location> mRouteToLocation() {
+    private ArrayList<Location> mRouteToLocation() {
         ArrayList<Location> returnLocationArrayList = new ArrayList<Location>();
         Location fromLocation = new Location("Start");
         Location toLocation = new Location("End");
@@ -313,16 +313,16 @@ public class ActivityRequestMap extends FragmentActivity implements
      * @see AsyncTask
      * @return ArrayList of addresses
      */
-    public ArrayList<String> mRouteToAddress() {
+    private ArrayList<String> mRouteToAddress() {
         String fromAddress = null;
         String toAddress = null;
-        getAddressTask fromAddressTask;
-        getAddressTask toAddressTask;
+        GetAddressTask fromAddressTask;
+        GetAddressTask toAddressTask;
         ArrayList<Location> toFromLocation = mRouteToLocation();
         ArrayList<String> returnAddressArrayList = new ArrayList<String>();
 
-        fromAddressTask = new getAddressTask(toFromLocation.get(0));
-        toAddressTask = new getAddressTask(toFromLocation.get(1));
+        fromAddressTask = new GetAddressTask(toFromLocation.get(0));
+        toAddressTask = new GetAddressTask(toFromLocation.get(1));
         fromAddressTask.execute();
         toAddressTask.execute();
 
@@ -349,6 +349,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * @param resultCode
      * @param data
      */
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
@@ -419,6 +420,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * @see MapUtil
      */
     private class FetchDirectionTask extends AsyncTask<Void, Void, String> {
+        @Override
         protected String doInBackground(Void... params) {
             String encodedPoly = null;
             try {
@@ -430,6 +432,7 @@ public class ActivityRequestMap extends FragmentActivity implements
             return encodedPoly;
         }
 
+        @Override
         protected void onPostExecute(String result) {
             if (result == null) {
                 return;
@@ -447,15 +450,16 @@ public class ActivityRequestMap extends FragmentActivity implements
      *
      * @see Geocoder
      */
-    private class getAddressTask extends AsyncTask<String, String, String> {
+    private class GetAddressTask extends AsyncTask<String, String, String> {
         double latitude;
         double longitude;
 
-        public getAddressTask(Location location) {
+        GetAddressTask(Location location) {
             this.latitude = location.getLatitude();
             this.longitude = location.getLongitude();
         }
 
+        @Override
         protected String doInBackground(String... params) {
             String result = "";
             Geocoder geocoder = new Geocoder(ActivityRequestMap.this, Locale.getDefault());
@@ -468,22 +472,23 @@ public class ActivityRequestMap extends FragmentActivity implements
             return result;
         }
 
+        @Override
         protected void onPostExecute(String result) {
         }
     }
 
     /**
      * Creates a new location request to automatically query the user for their current location
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
+     * @param locationUpdates
+     * @param locationInterval
      *
      * @see LocationRequest
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**

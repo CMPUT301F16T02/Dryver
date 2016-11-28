@@ -50,7 +50,9 @@ public class Request implements Serializable {
     private RequestStatus status;
 
     private SimpleCoordinates fromCoordinates;
+    private Double[] geoPointFromCoordinates;
     private SimpleCoordinates toCoordinates;
+    private Double[] geopointToCoordinates;
 
     private double cost;
     private double rate = 0.70;
@@ -63,6 +65,10 @@ public class Request implements Serializable {
         this.date = date;
         this.fromCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
         this.toCoordinates = new SimpleCoordinates(0.0, 0.0, "Not Specified");
+
+        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
+        geopointToCoordinates = toCoordinates.getDoubleLocation();
+
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
         this.cost = 0;
@@ -83,6 +89,10 @@ public class Request implements Serializable {
         this.date = date;
         this.fromCoordinates = new SimpleCoordinates(fromLocation.getLatitude(), fromLocation.getLongitude(), fromLocation.getProvider());
         this.toCoordinates = new SimpleCoordinates(toLocation.getLatitude(), toLocation.getLongitude(), toLocation.getProvider());
+
+        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
+        geopointToCoordinates = toCoordinates.getDoubleLocation();
+
         this.drivers = new ArrayList<String>();
         this.acceptedDriverID = null;
         this.cost = cost;
@@ -222,6 +232,7 @@ public class Request implements Serializable {
     public void setFromLocation(Location fromLocation) {
         this.fromCoordinates.setLocation(fromLocation.getLatitude(), fromLocation.getLongitude());
         this.fromCoordinates.setLocationName(fromLocation.getProvider());
+        geoPointFromCoordinates = fromCoordinates.getDoubleLocation();
     }
 
     public boolean hasRoute() {
@@ -255,6 +266,7 @@ public class Request implements Serializable {
     public void setToLocation(Location toLocation) {
         this.toCoordinates.setLocation(toLocation.getLatitude(), toLocation.getLongitude());
         this.toCoordinates.setLocationName(toLocation.getProvider());
+        geopointToCoordinates = toCoordinates.getDoubleLocation();
     }
 
     /**

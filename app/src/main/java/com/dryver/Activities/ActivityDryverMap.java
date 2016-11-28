@@ -146,16 +146,16 @@ public class ActivityDryverMap extends FragmentActivity implements
 
     /**
      * Creates a new location request to automatically query the user for their current location
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
+     * @param locationUpdates
+     * @param locationInterval
      *
      * @see LocationRequest
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**

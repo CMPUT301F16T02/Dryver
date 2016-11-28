@@ -23,7 +23,6 @@ package com.dryver.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -68,17 +67,17 @@ import static com.dryver.Models.ActivityDryverMainState.*;
  * This activities deals with providing the driver with UI for requests.
  */
 public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
+    private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final int REQUEST_SELECT_PLACE = 0;
+    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
-
     private Button searchButton;
     private Spinner sortSpinner;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
-
     private EditText searchByEditText;
-
     private SwipeRefreshLayout swipeContainer;
 
     private UserController userController = UserController.getInstance();
@@ -86,9 +85,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     private Driver driver;
     private GoogleApiClient mClient;
-    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
-    private static final int REQUEST_SELECT_PLACE = 0;
-    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
     //You can access many information regarding the location such as address, coordinates, etc
@@ -96,9 +92,9 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private String searchAddress;
     private String searchName;
 
-    private Timer timer;
-    private ActivityDryverMainState state = ALL;
 
+    private ActivityDryverMainState state = ALL;
+    private Timer timer;
     private AlertDialog alertDialog;
 
 
@@ -347,7 +343,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             try {
                 Intent intent = new PlaceAutocomplete.IntentBuilder
                         (PlaceAutocomplete.MODE_OVERLAY)
-                        .setBoundsBias(edmontonBounds)
+                        .setBoundsBias(EDMONTON_BOUNDS)
                         .build(ActivityDryverMain.this);
                 startActivityForResult(intent, REQUEST_SELECT_PLACE);
             } catch (GooglePlayServicesNotAvailableException e) {
@@ -377,15 +373,15 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Initializes the location request
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
+     * @param locationUpdates
+     * @param locationInterval
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         Log.i("trace", "ActivityDryverMain.initializeLocationRequest()");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**
