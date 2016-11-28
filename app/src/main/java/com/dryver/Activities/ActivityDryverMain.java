@@ -423,5 +423,4 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             }
         }, 0, 30000);//put here time 1000 milliseconds=1 second
     }
-
 }
