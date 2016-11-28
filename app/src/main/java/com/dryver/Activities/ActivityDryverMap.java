@@ -1,9 +1,24 @@
+/*
+ * Copyright (C) 2016
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
+
 package com.dryver.Activities;
 
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
 import android.support.v4.app.FragmentActivity;
 
 import com.dryver.Controllers.RequestSingleton;
@@ -12,13 +27,11 @@ import com.dryver.R;
 import com.dryver.Utility.MapUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -99,7 +112,7 @@ public class ActivityDryverMap extends FragmentActivity implements
      * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnected and finds the
      * current location of the user using {@link LocationRequest} and location services
      *
-     * @param  bundle
+     * @param bundle
      * @see com.google.android.gms.location.FusedLocationProviderApi
      * @see GoogleApiClient
      */
@@ -121,7 +134,7 @@ public class ActivityDryverMap extends FragmentActivity implements
      * route of the current request and draws it on the map. Also moves the camera to
      * that location.
      *
-     * @param  googleMap
+     * @param googleMap
      * @see OnMapReadyCallback
      * @see GoogleMap
      * @see MapUtil
@@ -136,9 +149,9 @@ public class ActivityDryverMap extends FragmentActivity implements
         mapUtil.moveMap(mMap, request.getFromLocation(), 15);
 
         mMap.addMarker(new MarkerOptions().position(fromLatLng).title(request.getFromAddress())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.addMarker(new MarkerOptions().position(toLatLng).title(request.getToAddress())
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
 
         decodedPolyline = mapUtil.decodePoly(request.getEncodedPolyline());
         mapUtil.drawRoute(mMap, decodedPolyline, polylineArrayList);
@@ -146,24 +159,23 @@ public class ActivityDryverMap extends FragmentActivity implements
 
     /**
      * Creates a new location request to automatically query the user for their current location
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
      *
+     * @param locationUpdates
+     * @param locationInterval
      * @see LocationRequest
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**
-     *Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
+     * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
      *
      * @param i
      * @see GoogleApiClient
-     *
      */
     @Override
     public void onConnectionSuspended(int i) {

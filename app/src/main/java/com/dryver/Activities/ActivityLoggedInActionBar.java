@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2016
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
+
 package com.dryver.Activities;
 
 import android.app.Activity;
@@ -10,18 +26,28 @@ import com.dryver.Controllers.UserController;
 import com.dryver.R;
 
 /**
- * Created by Adam on 11/14/2016.
+ * Inflates a consistent action bar in activities for viewing the user's profile and logging out
  */
 
 public class ActivityLoggedInActionBar extends Activity {
     protected UserController userController = UserController.getInstance();
 
+    /**
+     * Inflates the actionbar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.hamburgler_menu, menu);
         return true;
     }
+
+    /**
+     * Handles button presses by starting the correct intent
+     *
+     * @param item
+     * @return
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

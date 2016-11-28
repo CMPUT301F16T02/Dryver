@@ -1,26 +1,22 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Activities;
 
 import android.content.Intent;
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -46,7 +42,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -92,7 +87,7 @@ public class ActivityRequestMap extends FragmentActivity implements
     private LocationRequest mLocationRequest;
     private Location currentLocation;
 
-    private static final LatLngBounds edmontonBounds = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
+    private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
     private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
@@ -123,6 +118,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     /**
      * Inflates the menu used in this activity
+     *
      * @param menu
      * @return true
      */
@@ -138,6 +134,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Search: Search for a place on the map, uses google place and autocomplete
      * Delete: Deletes all markers and routes on the map
      * Forward: Sends the coordinates and route of markers to next activity
+     *
      * @param item
      * @return
      */
@@ -149,7 +146,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                 try {
                     Intent intent = new PlaceAutocomplete.IntentBuilder
                             (PlaceAutocomplete.MODE_OVERLAY)
-                            .setBoundsBias(edmontonBounds)
+                            .setBoundsBias(EDMONTON_BOUNDS)
                             .build(ActivityRequestMap.this);
                     startActivityForResult(intent, REQUEST_SELECT_PLACE);
                 } catch (GooglePlayServicesNotAvailableException e) {
@@ -235,11 +232,11 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Overriding Callback {@link OnMapReadyCallback} onMapReady and finds the
      * route of the current request and draws it on the map. Also moves the camera to
      * that location.
-     *
+     * <p>
      * Also sets on long click listeners to allow the user to set start and end locations.
      * Routes are drawn immediately after the user selects the end location.
      *
-     * @param  googleMap
+     * @param googleMap
      * @see OnMapReadyCallback
      * @see GoogleMap
      * @see MapUtil
@@ -286,9 +283,10 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     /**
      * Helper function used to convert {@link LatLng} to {@link Location}
+     *
      * @return ArrayList of locations
      */
-    public ArrayList<Location> mRouteToLocation() {
+    private ArrayList<Location> mRouteToLocation() {
         ArrayList<Location> returnLocationArrayList = new ArrayList<Location>();
         Location fromLocation = new Location("Start");
         Location toLocation = new Location("End");
@@ -309,20 +307,20 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Helper function used to convert {@link LatLng} to {@link Address}
      * This is accomplished through the use of {@link Geocoder}
      *
+     * @return ArrayList of addresses
      * @see Geocoder
      * @see AsyncTask
-     * @return ArrayList of addresses
      */
-    public ArrayList<String> mRouteToAddress() {
+    private ArrayList<String> mRouteToAddress() {
         String fromAddress = null;
         String toAddress = null;
-        getAddressTask fromAddressTask;
-        getAddressTask toAddressTask;
+        GetAddressTask fromAddressTask;
+        GetAddressTask toAddressTask;
         ArrayList<Location> toFromLocation = mRouteToLocation();
         ArrayList<String> returnAddressArrayList = new ArrayList<String>();
 
-        fromAddressTask = new getAddressTask(toFromLocation.get(0));
-        toAddressTask = new getAddressTask(toFromLocation.get(1));
+        fromAddressTask = new GetAddressTask(toFromLocation.get(0));
+        toAddressTask = new GetAddressTask(toFromLocation.get(1));
         fromAddressTask.execute();
         toAddressTask.execute();
 
@@ -344,11 +342,12 @@ public class ActivityRequestMap extends FragmentActivity implements
     /**
      * Receives the data from {@link PlaceAutocomplete} search intent and moves the map to that location
      *
-     * @see PlaceAutocomplete
      * @param requestCode
      * @param resultCode
      * @param data
+     * @see PlaceAutocomplete
      */
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
@@ -379,11 +378,11 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Opens a HTTPS request and sends the URL needed to get routes.
      * The data is saved to a string (Google direction returns a JSON object)
      *
-     * @see URL
-     * @see HttpURLConnection
      * @param directionURL
      * @return JSON object as a String
      * @throws IOException
+     * @see URL
+     * @see HttpURLConnection
      */
     public String getDataFromUrl(String directionURL) throws IOException {
         URL url = new URL(directionURL);
@@ -419,6 +418,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * @see MapUtil
      */
     private class FetchDirectionTask extends AsyncTask<Void, Void, String> {
+        @Override
         protected String doInBackground(Void... params) {
             String encodedPoly = null;
             try {
@@ -430,6 +430,7 @@ public class ActivityRequestMap extends FragmentActivity implements
             return encodedPoly;
         }
 
+        @Override
         protected void onPostExecute(String result) {
             if (result == null) {
                 return;
@@ -447,15 +448,16 @@ public class ActivityRequestMap extends FragmentActivity implements
      *
      * @see Geocoder
      */
-    private class getAddressTask extends AsyncTask<String, String, String> {
+    private class GetAddressTask extends AsyncTask<String, String, String> {
         double latitude;
         double longitude;
 
-        public getAddressTask(Location location) {
+        GetAddressTask(Location location) {
             this.latitude = location.getLatitude();
             this.longitude = location.getLongitude();
         }
 
+        @Override
         protected String doInBackground(String... params) {
             String result = "";
             Geocoder geocoder = new Geocoder(ActivityRequestMap.this, Locale.getDefault());
@@ -468,30 +470,30 @@ public class ActivityRequestMap extends FragmentActivity implements
             return result;
         }
 
+        @Override
         protected void onPostExecute(String result) {
         }
     }
 
     /**
      * Creates a new location request to automatically query the user for their current location
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
      *
+     * @param locationUpdates
+     * @param locationInterval
      * @see LocationRequest
      */
-    public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
+    public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setNumUpdates(LOCATION_UPDATES);
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setNumUpdates(locationUpdates);
+        mLocationRequest.setInterval(locationInterval);
     }
 
     /**
-     *Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
+     * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
      *
      * @param i
      * @see GoogleApiClient
-     *
      */
     @Override
     public void onConnectionSuspended(int i) {

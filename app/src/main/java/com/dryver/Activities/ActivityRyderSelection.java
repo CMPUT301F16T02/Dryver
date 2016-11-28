@@ -1,20 +1,17 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Activities;
@@ -35,6 +32,8 @@ import com.dryver.Utility.ICallBack;
 /**
  * The activity responsible for viewing a requests details more closely / inspecting a request.
  * Allows you to cancel requests, as well as view the drivers associated with a request.
+ *
+ * @see RequestSingleton
  */
 
 public class ActivityRyderSelection extends Activity {
@@ -74,13 +73,19 @@ public class ActivityRyderSelection extends Activity {
         setListeners();
     }
 
+    /**
+     * Overriding {@link Activity} onDestroy clear temporary request
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         requestSingleton.clearTempRequest();
     }
 
-    private void configureUI(){
+    /**
+     * Instantiates all UI elements and updates their view from temporary request
+     */
+    private void configureUI() {
         cancelButton.setEnabled(true);
         deleteButton.setEnabled(true);
         viewDriversButton.setEnabled(false);
@@ -88,7 +93,7 @@ public class ActivityRyderSelection extends Activity {
         ratingBar.setVisibility(View.GONE);
 
         //Clicking this opens the driver list through the controller
-        if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE){
+        if (requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE) {
             viewDriversButton.setEnabled(true);
             viewDriversButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,7 +101,7 @@ public class ActivityRyderSelection extends Activity {
                     requestSingleton.viewRequestDrivers(ActivityRyderSelection.this, requestSingleton.getTempRequest());
                 }
             });
-        } else if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
+        } else if (requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
             cancelButton.setEnabled(false);
             deleteButton.setEnabled(false);
 
@@ -115,7 +120,7 @@ public class ActivityRyderSelection extends Activity {
                     });
                 }
             });
-        } else if( requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_ACCEPTED){
+        } else if (requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_ACCEPTED) {
             ratingBar.setVisibility(View.VISIBLE);
             cancelButton.setEnabled(false);
 
@@ -138,7 +143,10 @@ public class ActivityRyderSelection extends Activity {
         }
     }
 
-    private void setListeners(){
+    /**
+     * sets all event listeners of UI elements
+     */
+    private void setListeners() {
         //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +183,10 @@ public class ActivityRyderSelection extends Activity {
         }
     }
 
-    private void setStatusTextView(){
+    /**
+     * Sets status textview
+     */
+    private void setStatusTextView() {
         statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
     }
 }
