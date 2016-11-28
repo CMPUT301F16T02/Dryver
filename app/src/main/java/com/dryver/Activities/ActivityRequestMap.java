@@ -85,7 +85,7 @@ public class ActivityRequestMap extends FragmentActivity implements
     private GoogleApiClient mClient;
     private ArrayList<Marker> mRoute;
     private LocationRequest mLocationRequest;
-    private Location currentLocation;
+    private Location currentLocation = null;
 
     private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
     private static final int REQUEST_SELECT_PLACE = 0;
@@ -213,7 +213,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        initializeLocationRequest(100, 1000);
+        initializeLocationRequest(10, 1000);
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
