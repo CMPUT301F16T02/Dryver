@@ -432,12 +432,12 @@ public class ElasticSearchController {
 
     // ==============         PUBLIC SORTING REQUESTS       ===============
 
-    public ArrayList<Request> getRequestsGeolocation(String distance) {
+    public ArrayList<Request> getRequestsGeolocation(String latLon) {
         Log.i("trace", "ElasticSearchController.getRequestsGeolocation()");
         GetRequestsGeolocationTask getTask = new GetRequestsGeolocationTask();
         ArrayList<Request> requestList = new ArrayList<Request>();
         try {
-            requestList = getTask.execute(distance).get();
+            requestList = getTask.execute(latLon).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -586,6 +586,8 @@ public class ElasticSearchController {
     private static class GetRequestsGeolocationTask extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
+            String[] latLon = search_parameters[0].split(", ");
+
             Log.i("trace", "GetRequestsGeolocationTask.doInBackground()");
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"riderId\": \"" + search_parameters[0] + "\"}}}";
 
