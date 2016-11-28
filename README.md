@@ -22,3 +22,6 @@ Tools used:
   - [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/) for UI testing
   - [JUnit](http://junit.org/junit4/) for code testing
   - [JavaDocs](http://www.oracle.com/technetwork/articles/java/index-137868.html) for the project documentation. Hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
+
+
+Download it [here](Dryver/app/build/outputs/apk/app-debug.apk)
