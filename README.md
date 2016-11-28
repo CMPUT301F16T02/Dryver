@@ -12,12 +12,6 @@ The five team members are:
   - Jiawei Wu - jwu5@ualberta.ca
 
 
-usenka
-vuk
-jwu5
-cdmacken
-jvogel
-asanche
 Tools used:
   - [Android Studio](https://developer.android.com/studio/index.html) for IDE
   - [Elasticsearch](https://www.elastic.co) for database. Available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
