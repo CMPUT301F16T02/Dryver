@@ -213,7 +213,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
                 Toast.makeText(ActivityDryverMain.this,"Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
                         Toast.LENGTH_LONG).show();
-                searchByEditText.setText(place.getName());
+                searchByEditText.setText(place.getLatLng().latitude + ", " + place.getLatLng().longitude);
             }
         }
     }
@@ -342,10 +342,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Geolocation")) {
             searchByEditText.setHint(R.string.kilometers);
             state = GEOLOCATION;
-        }
-        else if (sortSelection.equals("Keyword")) {
-            searchByEditText.setHint(R.string.keyword);
-            state = KEYWORD;
             try {
                 Intent intent = new PlaceAutocomplete.IntentBuilder
                         (PlaceAutocomplete.MODE_OVERLAY)
@@ -357,6 +353,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             } catch (GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             }
+        }
+        else if (sortSelection.equals("Keyword")) {
+            searchByEditText.setHint(R.string.keyword);
+            state = KEYWORD;
         } else if(sortSelection.equals("Rate")){
             searchByEditText.setHint(R.string.rate);
             state = RATE;
