@@ -12,12 +12,12 @@ The five team members are:
   - Jiawei Wu
 
 Tools used:
-  - Android Studio for IDE
-  - Elasticsearch for database. Available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
-  - Slack for team communication
-  - Docker for hosting Elasticsearch
-  - AWS for hosting docker.
-  - Postman for testing the results of queries on Elastic search
-  - Espresso for UI testing
-  - JUnit for code testing
-  - JavaDocs for the project documentation. Hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
+  - [Android Studio](https://developer.android.com/studio/index.html) for IDE
+  - [Elasticsearch](https://www.elastic.co) for database. Available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
+  - [Slack](https://slack.com) for team communication
+  - [Docker](https://www.docker.com) for hosting Elasticsearch
+  - [AWS](https://aws.amazon.com) for hosting docker.
+  - [Postman](https://www.getpostman.com) for testing the results of queries on Elastic search
+  - [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/) for UI testing
+  - [JUnit](http://junit.org/junit4/) for code testing
+  - [JavaDocs](http://www.oracle.com/technetwork/articles/java/index-137868.html) for the project documentation. Hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
