@@ -3,11 +3,6 @@ package com.dryver.Activities;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -15,7 +10,6 @@ import com.dryver.Adapters.DryverListAdapter;
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
 
@@ -34,8 +28,6 @@ import java.util.TimerTask;
 public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
 
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
-    private ElasticSearchController ES = ElasticSearchController.getInstance();
-    private UserController userController = UserController.getInstance();
 
     private ListView driversListView;
     private ArrayList<String> drivers;

@@ -61,17 +61,6 @@ public class ElasticSearchController {
 
     protected ElasticSearchController() {
     }
-
-    /**
-     * Slightly hacky workaround for setting an alternate instance of the ESController. Intended for setting
-     * a mock for testing purposes. Hacky workaround for mocking a singleton hehe...
-     *
-     * @param ES
-     */
-    public static void setMock(ElasticSearchController ES) {
-        instance = ES;
-    }
-
     /**
      * gets the Instance of the ElasticSearchController as it is a singleton
      *

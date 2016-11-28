@@ -31,7 +31,6 @@ import java.net.InetAddress;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -168,22 +167,6 @@ public class HelpMe extends Activity {
             editText.setError("Invalid phone number.");
         }
         return valid;
-    }
-
-    /**
-     * Cnvert a date to a consistent form that is TBC
-     * @param date
-     */
-    static public void dateToString(Date date) {
-        // TODO: 2016-10-18 implement this
-    }
-
-    /**
-     * Convert a string to a date
-     * @param stringDate
-     */
-    static public void stringToDate(String stringDate) {
-        // TODO: 2016-10-18 implement this. 
     }
 
     /**

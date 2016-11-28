@@ -60,7 +60,7 @@ import java.util.Iterator;
 public class RequestSingleton {
     private static final String REQUESTS_SAV = "requests.json";
     private static RequestSingleton instance = new RequestSingleton();
-    private static ArrayList<Request> requests = new ArrayList<Request>();
+    private  ArrayList<Request> requests = new ArrayList<Request>();
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private UserController userController = UserController.getInstance();
 
@@ -128,10 +128,6 @@ public class RequestSingleton {
 
     public Request getTempRequest() {
         return tempRequest;
-    }
-
-    public void setTempRequest(Request request) {
-        this.tempRequest = request;
     }
 
     public void pushTempRequest(ICallBack callBack) {
@@ -247,15 +243,6 @@ public class RequestSingleton {
             requests.remove(request);
         }
         saveRequests();
-    }
-
-    public Request getRequestById(String id, ICallBack callBack) {
-        for (Request req : requests) {
-            if (req.getId().equals(id)) {
-                return req;
-            }
-        }
-        return null;
     }
 
     /**

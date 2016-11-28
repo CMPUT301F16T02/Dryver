@@ -91,7 +91,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     private UserController userController = UserController.getInstance();
     private RequestSingleton requestSingleton = RequestSingleton.getInstance();
 
-    private Driver driver;
     private GoogleApiClient mClient;
 
     //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
@@ -113,8 +112,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
         requestSingleton.setRequestsAll();
 
-        driver = new Driver(userController.getActiveUser());
-        userController.setActiveUser(driver);
+        userController.setActiveUser(new Driver(userController.getActiveUser()));
 
         assignElements();
         setListeners();
@@ -418,15 +416,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     /**
      * Initializes the location request
-<<<<<<< HEAD
      * @param locationUpdates
      * @param locationInterval
-=======
      *
      * @see LocationRequest
-     * @param LOCATION_UPDATES
-     * @param LOCATION_INTERVAL
->>>>>>> 11857a4feff0ab7de35f3ca582852cc3aad50539
      */
     public void initializeLocationRequest(int locationUpdates, int locationInterval) {
         Log.i("trace", "ActivityDryverMain.initializeLocationRequest()");

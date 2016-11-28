@@ -20,7 +20,6 @@
 package com.dryver.Activities;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,11 +32,11 @@ import android.widget.ListView;
 import com.dryver.Adapters.RyderMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.RequestStatus;
-import com.dryver.Utility.ICallBack;
 import com.dryver.Models.Request;
+import com.dryver.Models.RequestStatus;
 import com.dryver.Models.Rider;
 import com.dryver.R;
+import com.dryver.Utility.ICallBack;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -65,7 +64,6 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     private SwipeRefreshLayout swipeContainer;
 
-    private Rider rider;
 
     private Timer timer;
 
@@ -77,8 +75,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ryder_main);
 
-        rider = new Rider(userController.getActiveUser());
-        userController.setActiveUser(rider);
+        userController.setActiveUser(new Rider(userController.getActiveUser()));
 
         assignElements();
         setListeners();
@@ -120,7 +117,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestSingleton.editRequest(ActivityRyderMain.this, new Request(rider.getId(), Calendar.getInstance()));
+                requestSingleton.editRequest(ActivityRyderMain.this, new Request(userController.getActiveUser().getId(), Calendar.getInstance()));
             }
         });
 
