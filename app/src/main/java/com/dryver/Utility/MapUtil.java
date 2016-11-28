@@ -19,15 +19,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jiawei on 11/26/2016.
+ * Map utility class that has helper functions used to interact with maps
+ *
+ * @see GoogleMap
+ * @see com.google.android.gms.maps.model.Marker
+ * @see Polyline
  */
 public class MapUtil {
 
+    /**
+     * Empty constructor
+     */
     public MapUtil() {
 
     }
 
-    //Code taken from http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
+    /**
+     * Function used to decode polylines
+     * Credit to http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
+     *
+     * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Decoding Polyline</a>
+     * @param encoded
+     * @return List of {@link LatLng} with all the nodes required to draw a route
+     */
     public List<LatLng> decodePoly(String encoded) {
         List<LatLng> poly = new ArrayList<>();
         int index = 0, len = encoded.length();
@@ -60,6 +74,13 @@ public class MapUtil {
         return poly;
     }
 
+    /**
+     * Helper function that parses the return JSON from Google Directions and extracts the Overview Polyline field
+     *
+     * @see JSONObject
+     * @param json
+     * @return encoded polyline String
+     */
     public String toEncodedPoly(String json) {
         String encodedPoly = null;
         try {
@@ -71,12 +92,24 @@ public class MapUtil {
         return encodedPoly;
     }
 
+    /**
+     * Helper function to move the map given a location and zoom level
+     *
+     * @param map
+     * @param location
+     * @param zoom
+     */
     public void moveMap(GoogleMap map, Location location, int zoom) {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
         map.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         map.animateCamera(CameraUpdateFactory.zoomTo(zoom));
     }
 
+    /**
+     * Helper function to remove all polylines
+     *
+     * @param polylineArrayList
+     */
     public void removePolylines(ArrayList<Polyline> polylineArrayList) {
         if (polylineArrayList.size() != 0) {
             for (Polyline polyline : polylineArrayList) {
@@ -85,6 +118,14 @@ public class MapUtil {
         }
     }
 
+    /**
+     * Helper function used to draw routes on the map given 2 locations
+     *
+     * @param mMap
+     * @param decodedPolyLine
+     * @param polylineArrayList
+     * @return
+     */
     public int drawRoute(GoogleMap mMap, List<LatLng> decodedPolyLine, ArrayList<Polyline> polylineArrayList) {
         int routeDistance = 0;
         for (int i = 0; i < (decodedPolyLine.size() - 1); i++) {

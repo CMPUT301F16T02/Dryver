@@ -20,7 +20,7 @@
 package com.dryver.Activities;
 
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -40,15 +40,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdateFactory;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -58,10 +56,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,12 +69,22 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Activity provides a user an interface for selecting the to and from destination on a map.
+ * Uses Google maps and Google geolocation services.
+ * Help from https://www.simplifiedcoding.net/android-google-maps-tutorial-google-maps-android-api/
+ * and Google's own documentation
+ *
+ * @see FragmentActivity
+ * @see GoogleApiClient
+ * @see GoogleMap
+ * @see Place
+ * @see PlaceAutocomplete
+ * @see Geocoder
  */
+
 public class ActivityRequestMap extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        PlaceSelectionListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mClient;
@@ -107,6 +111,7 @@ public class ActivityRequestMap extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Instantiate GoogleApiClient, using GEO DATA and PLACE DETECTION API
         mClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -116,6 +121,11 @@ public class ActivityRequestMap extends FragmentActivity implements
                 .build();
     }
 
+    /**
+     * Inflates the menu used in this activity
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -123,6 +133,14 @@ public class ActivityRequestMap extends FragmentActivity implements
         return true;
     }
 
+    /**
+     * Details the action taken depending on the button pressed
+     * Search: Search for a place on the map, uses google place and autocomplete
+     * Delete: Deletes all markers and routes on the map
+     * Forward: Sends the coordinates and route of markers to next activity
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -176,12 +194,20 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Overriding {@link FragmentActivity} onStart and connects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     protected void onStart() {
         mClient.connect();
         super.onStart();
     }
 
+    /**
+     * Overriding {@link FragmentActivity} onStop and disconnects
+     * {@link GoogleApiClient} client instance.
+     */
     @Override
     protected void onStop() {
         mClient.disconnect();
@@ -205,6 +231,19 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Overriding Callback {@link OnMapReadyCallback} onMapReady and finds the
+     * route of the current request and draws it on the map. Also moves the camera to
+     * that location.
+     *
+     * Also sets on long click listeners to allow the user to set start and end locations.
+     * Routes are drawn immediately after the user selects the end location.
+     *
+     * @param  googleMap
+     * @see OnMapReadyCallback
+     * @see GoogleMap
+     * @see MapUtil
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -245,6 +284,10 @@ public class ActivityRequestMap extends FragmentActivity implements
         });
     }
 
+    /**
+     * Helper function used to convert {@link LatLng} to {@link Location}
+     * @return ArrayList of locations
+     */
     public ArrayList<Location> mRouteToLocation() {
         ArrayList<Location> returnLocationArrayList = new ArrayList<Location>();
         Location fromLocation = new Location("Start");
@@ -261,6 +304,15 @@ public class ActivityRequestMap extends FragmentActivity implements
         return returnLocationArrayList;
     }
 
+
+    /**
+     * Helper function used to convert {@link LatLng} to {@link Address}
+     * This is accomplished through the use of {@link Geocoder}
+     *
+     * @see Geocoder
+     * @see AsyncTask
+     * @return ArrayList of addresses
+     */
     public ArrayList<String> mRouteToAddress() {
         String fromAddress = null;
         String toAddress = null;
@@ -289,6 +341,14 @@ public class ActivityRequestMap extends FragmentActivity implements
         return returnAddressArrayList;
     }
 
+    /**
+     * Receives the data from {@link PlaceAutocomplete} search intent and moves the map to that location
+     *
+     * @see PlaceAutocomplete
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SELECT_PLACE) {
@@ -302,6 +362,12 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Generates the URL needed to get routes using Google Directions
+     *
+     * @param fromLocation
+     * @param toLocation
+     */
     public void generateRouteURL(Location fromLocation, Location toLocation) {
         String fromLocationCoord = "" + fromLocation.getLatitude() + "," + fromLocation.getLongitude();
         String toLocationCoord = "" + toLocation.getLatitude() + "," + toLocation.getLongitude();
@@ -309,6 +375,16 @@ public class ActivityRequestMap extends FragmentActivity implements
         Log.i("REQUEST MAP: ", "URL: " + routeURL);
     }
 
+    /**
+     * Opens a HTTPS request and sends the URL needed to get routes.
+     * The data is saved to a string (Google direction returns a JSON object)
+     *
+     * @see URL
+     * @see HttpURLConnection
+     * @param directionURL
+     * @return JSON object as a String
+     * @throws IOException
+     */
     public String getDataFromUrl(String directionURL) throws IOException {
         URL url = new URL(directionURL);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -334,6 +410,14 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Async task that fetches the JSON object from Google directions given the URL.
+     * Parses the Json object to obtain the encoded overview polyline
+     * Draws the route after background task finishes executing
+     *
+     * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Decoding Polyline</a>
+     * @see MapUtil
+     */
     private class FetchDirectionTask extends AsyncTask<Void, Void, String> {
         protected String doInBackground(Void... params) {
             String encodedPoly = null;
@@ -357,6 +441,12 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Async task that gets the address of coordinates
+     * Uses {@link Geocoder}.
+     *
+     * @see Geocoder
+     */
     private class getAddressTask extends AsyncTask<String, String, String> {
         double latitude;
         double longitude;
@@ -382,6 +472,13 @@ public class ActivityRequestMap extends FragmentActivity implements
         }
     }
 
+    /**
+     * Creates a new location request to automatically query the user for their current location
+     * @param LOCATION_UPDATES
+     * @param LOCATION_INTERVAL
+     *
+     * @see LocationRequest
+     */
     public void initializeLocationRequest(int LOCATION_UPDATES, int LOCATION_INTERVAL) {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -389,23 +486,26 @@ public class ActivityRequestMap extends FragmentActivity implements
         mLocationRequest.setInterval(LOCATION_INTERVAL);
     }
 
-    @Override
-    public void onPlaceSelected(Place place) {
-
-    }
-
-    @Override
-    public void onError(Status status) {
-
-    }
-
+    /**
+     *Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
+     *
+     * @param i
+     * @see GoogleApiClient
+     *
+     */
     @Override
     public void onConnectionSuspended(int i) {
-
+        // TODO Auto-generated method stub
     }
 
+    /**
+     * Overriding Callback {@link com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener} onConnectionSuspended
+     *
+     * @param connectionResult
+     * @see GoogleApiClient
+     */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        // TODO Auto-generated method stub
     }
 }

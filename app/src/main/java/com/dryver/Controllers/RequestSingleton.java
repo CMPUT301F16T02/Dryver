@@ -52,6 +52,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * Request Singleton. Deals from providing request information to the caller.
@@ -89,6 +90,16 @@ public class RequestSingleton {
     public void setRequestsAll() {
         requests = ES.getAllRequests();
 //        loadRequests();
+    }
+
+    public void setRequestsOpen() {
+        requests = ES.getAllRequests();
+        Iterator<Request> iterator = requests.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getAcceptedDriverID() != null) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
@@ -274,10 +285,12 @@ public class RequestSingleton {
         ArrayList<Request> newRequests = new ArrayList<Request>();
 
         if(status == ActivityDryverMainState.ALL){
-            newRequests = ES.getAllRequests();
+            newRequests = ES.getOpenRequests();
         } else if (status == ActivityDryverMainState.PENDING){
-            newRequests = ES.getDriverRequests(userController.getActiveUser().getId());
-        } else if (status == ActivityDryverMainState.GEOLOCATION){
+            newRequests = ES.getPendingRequests(userController.getActiveUser().getId());
+        } else if (status == ActivityDryverMainState.ACTIVE){
+            newRequests = ES.getAcceptedRequests();
+        }else if (status == ActivityDryverMainState.GEOLOCATION){
             newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD){
             newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());

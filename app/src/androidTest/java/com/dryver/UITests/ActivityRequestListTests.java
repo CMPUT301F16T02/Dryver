@@ -50,6 +50,9 @@ public class ActivityRequestListTests {
         userController.login(testUserName);
     }
 
+    /*
+    * Tests US 03.01.01
+    */
     @Test
     public void TestOpenUserProfile() throws InterruptedException {
         openActionBarOverflowOrOptionsMenu(getTargetContext());
