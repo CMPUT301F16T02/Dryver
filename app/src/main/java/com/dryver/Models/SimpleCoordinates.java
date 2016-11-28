@@ -1,11 +1,25 @@
+/*
+ * Copyright (C) 2016
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
+
 package com.dryver.Models;
 
 import android.location.Location;
 
 import java.io.Serializable;
 import java.util.Arrays;
-
-import io.searchbox.indices.template.TemplateAction;
 
 /**
  * Simplified coordinate system for cleaner serialization
@@ -23,6 +37,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * initializes the coords
+     *
      * @param latitude
      * @param longitude
      * @param locationName
@@ -35,6 +50,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Sets the location
+     *
      * @param latitude
      * @param longitude
      */
@@ -45,6 +61,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Sets the location name
+     *
      * @param locationName
      */
     public void setLocationName(String locationName) {
@@ -53,6 +70,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Gets the latitiude
+     *
      * @return Double
      */
     public Double getLatitude() {
@@ -61,6 +79,7 @@ public class SimpleCoordinates implements Serializable {
 
     /**
      * Gets the logitude
+     *
      * @return Double
      */
     public Double getLongitude() {

@@ -1,20 +1,17 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Controllers;
@@ -131,6 +128,7 @@ public class ElasticSearchController {
 
     /**
      * Adds a user to ES
+     *
      * @param user
      * @return boolean - successfully executed
      */
@@ -145,6 +143,7 @@ public class ElasticSearchController {
 
     /**
      * Delete a user from ES
+     *
      * @param user
      * @return boolean - successfully executed
      */
@@ -159,6 +158,7 @@ public class ElasticSearchController {
 
     /**
      * Updates an existing user in ES
+     *
      * @param user
      * @return boolean - successfully executed
      */
@@ -173,6 +173,7 @@ public class ElasticSearchController {
 
     /**
      * Gets a user with the user's ID from ES. Used for signin in particular
+     *
      * @param username
      * @return User - the user fetched from ES
      */
@@ -597,7 +598,6 @@ public class ElasticSearchController {
     }
 
 
-
     /**
      * A Task that gets all requests based on a keyword
      */
@@ -606,17 +606,17 @@ public class ElasticSearchController {
         protected ArrayList<Request> doInBackground(String... search_parameters) {
             Log.i("trace", "GetRequestsKeywordTask.doInBackground()");
             String search_string = "{" +
-                                        "\"query\": {" +
-                                            "\"bool\": {" +
-                                                "\"should\": [" +
-                                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
-                                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
-                                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
-                                                "]," +
-                                                "\"minimum_should_match\" : 1" +
-                                            "}" +
-                                        "}" +
-                                    "}";
+                    "\"query\": {" +
+                    "\"bool\": {" +
+                    "\"should\": [" +
+                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
+                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
+                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
+                    "]," +
+                    "\"minimum_should_match\" : 1" +
+                    "}" +
+                    "}" +
+                    "}";
 
             Log.i("QUERY", search_string);
             return getRequests(search_string);
@@ -653,10 +653,11 @@ public class ElasticSearchController {
 
     /**
      * Gets requests with a certain search_string
+     *
      * @param search_string
      * @return
      */
-    private static ArrayList<Request> getRequests(String search_string){
+    private static ArrayList<Request> getRequests(String search_string) {
         Log.i("trace", "ElasticSearchController().getRequests()");
         verifySettings();
         Search search = new Search.Builder(search_string)
