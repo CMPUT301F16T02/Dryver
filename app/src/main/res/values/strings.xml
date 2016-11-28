@@ -34,6 +34,7 @@
     <string name="keyword">Keyword</string>
     <string name="rate">Minimum Rate($/km)</string>
     <string name="cost">Minimum Cost($)</string>
+    <string name="active">Your Active Rides</string>
 
 
     <string name="view_profile">View Profile</string>

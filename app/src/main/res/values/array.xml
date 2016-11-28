@@ -30,6 +30,7 @@
     <string-array name="activity_driver_spinner">
         <item>All</item>
         <item>Pending</item>
+        <item>Active</item>
         <item>Geolocation</item>
         <item>Keyword</item>
         <item>Rate</item>
