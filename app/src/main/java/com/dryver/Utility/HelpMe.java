@@ -80,10 +80,10 @@ public class HelpMe extends Activity {
                     "\"encodedPolyline\": {" +
                     "\"type\": \"string\"" +
                     "}," +
-                    "\"doubleFromCoordinates\": {" +
+                    "\"geopointFromCoordinates\": {" +
                     "\"type\": \"geo_point\"" +
                     "}," +
-                    "\"doubleToCoordinates\": {" +
+                    "\"geopointToCoordinates\": {" +
                     "\"type\": \"geo_point\"" +
                     "}," +
                     "\"fromCoordinates\": {" +
