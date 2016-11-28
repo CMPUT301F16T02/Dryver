@@ -1,32 +1,26 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.UITests;
 
 /**
  * UI tests for the OpeningPage Activity using Espressp
+ *
  * @see com.dryver.Activities.ActivityOpeningPage
  */
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
@@ -39,6 +33,10 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -49,7 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class ActivityOpeningPageTests{
+public class ActivityOpeningPageTests {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private String testUserName = "TestyMcTesterton";
     private User testUser = new User(testUserName, "fTest", "lTest", "5555555555", "Test@Test.com");
@@ -59,7 +57,7 @@ public class ActivityOpeningPageTests{
             ActivityOpeningPage.class);
 
     @Before
-    public void addUserToES(){
+    public void addUserToES() {
         ES.addUser(testUser);
     }
 

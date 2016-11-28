@@ -1,20 +1,17 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Activities;
@@ -103,7 +100,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Overrding {@link android.app.Activity} onPause to cancel timer
      */
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.i("info", "ActivityRyderMain.onPause()");
         super.onPause();
         timer.cancel();
@@ -113,7 +110,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
      * Sets the listeners for the add request button's click and the long click of the request list's
      * items
      */
-    public void setListeners(){
+    public void setListeners() {
         addRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +139,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Assigns the elements that are held in the UI that will be accessed or used later.
      */
-    public void assignElements(){
+    public void assignElements() {
         addRequestButton = (Button) findViewById(R.id.requestButtonNewRequest);
         requestListView = (ListView) findViewById(R.id.requestListViewRequest);
 
@@ -154,12 +151,12 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Sets correct background colors for listview items based on the status of the request.
      */
-    public void checkStatuses(){
-        if(alertDialog != null && alertDialog.isShowing()){
+    public void checkStatuses() {
+        if (alertDialog != null && alertDialog.isShowing()) {
             return;
-        } else if(requestSingleton.getRequests().size() != 0){
-            for (Request request : requestSingleton.getRequests()){
-                if(request.getStatus() == RequestStatus.DRIVERS_AVAILABLE){
+        } else if (requestSingleton.getRequests().size() != 0) {
+            for (Request request : requestSingleton.getRequests()) {
+                if (request.getStatus() == RequestStatus.DRIVERS_AVAILABLE) {
                     requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                     break;
@@ -170,9 +167,10 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     /**
      * Notifies the Rider if any drivers have accepted their request offer. Handshake request accepted
+     *
      * @param request
      */
-    private void notifyDriversAvailable(final Request request){
+    private void notifyDriversAvailable(final Request request) {
         alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
                 .setMessage(R.string.drivers_found_message)
                 .setTitle(R.string.drivers_found_title)
@@ -193,6 +191,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
 
     /**
      * Begins the refresh of the request list
+     *
      * @see ICallBack
      */
     public void beginRefresh() {
@@ -207,7 +206,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * called when request list data changes
      */
-    private void refreshRequestList(){
+    private void refreshRequestList() {
         Log.i("trace", "ActivityRyderMain.refreshRequestList()");
         swipeContainer.setRefreshing(false);
         ryderMainAdapter.notifyDataSetChanged();
@@ -217,7 +216,7 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
     /**
      * Handles the asynchronous polling of ES for requests.
      */
-    private void setTimer(){
+    private void setTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

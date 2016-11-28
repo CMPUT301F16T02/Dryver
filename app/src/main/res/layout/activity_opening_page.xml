@@ -1,26 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
-  ~ Created by: usenka, jwu5, cdmacken, jvogel, asanche
+  ~  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+  ~  This program is free software; you can redistribute it and/or modify it under the terms of the
+  ~  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+  ~  License, or (at your option) any later version.
   ~
-  ~ This program is free software; you can redistribute it and/or
-  ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
-  ~ of the License, or (at your option) any later version.
+  ~  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+  ~  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+  ~  See the GNU General Public License for more details.
   ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program; if not, write to the Free Software
-  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~ You should have received a copy of the GNU General Public License along with this program; if
+  ~ not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+  ~ 02110-1301, USA.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_opening_page"
     android:layout_width="match_parent"
@@ -38,7 +32,7 @@
         android:id="@+id/getstarted_button"
         android:layout_width="200dp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="@string/new_user"
@@ -47,14 +41,14 @@
         android:id="@+id/textView5"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_above="@+id/getstarted_button"
-        android:layout_alignStart="@+id/getstarted_button"/>
+        android:layout_alignStart="@+id/getstarted_button" />
 
     <ImageView
         android:src="@drawable/logo_full"
         android:layout_height="130dp"
         android:layout_width="250dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="@string/existing_user"
@@ -64,7 +58,7 @@
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:layout_below="@+id/getstarted_button"
         android:layout_alignStart="@+id/getstarted_button"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="35dp" />
 
     <EditText
         android:layout_width="200dp"
@@ -75,7 +69,7 @@
         android:id="@+id/username_edittext"
         android:layout_below="@+id/textView7"
         android:layout_centerHorizontal="true"
-        android:windowSoftInputMode="stateHidden"/>
+        android:windowSoftInputMode="stateHidden" />
 
     <Button
         android:layout_width="200dp"
@@ -83,5 +77,5 @@
         android:id="@+id/signin_button"
         android:text="@string/activity_openingpage_login"
         android:layout_below="@+id/username_edittext"
-        android:layout_alignStart="@+id/textView7"/>
+        android:layout_alignStart="@+id/textView7" />
 </RelativeLayout>

@@ -1,20 +1,17 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Utility;
@@ -41,92 +38,93 @@ public class HelpMe extends Activity {
 
     public static final String CUSTOM_REQUEST_MAPPING =
             "{" +
-                "\"request\": {" +
+                    "\"request\": {" +
                     "\"properties\": {" +
-                        "\"acceptedDriverID\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"cost\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"date\": {" +
-                            "\"properties\": {" +
-                                "\"dayOfMonth\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"hourOfDay\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"minute\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"month\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"second\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"year\": {" +
-                                    "\"type\": \"long\"" +
-                                "}" +
-                            "}" +
-                        "}," +
-                        "\"description\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"distance\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"drivers\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"encodedPolyline\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"doubleFromCoordinates\": {" +
-                            "\"type\": \"geo_point\"" +
-                        "}," +
-                        "\"doubleToCoordinates\": {" +
-                            "\"type\": \"geo_point\"" +
-                        "}," +
-                        "\"fromCoordinates\": {" +
-                            "\"properties\": {" +
-                                "\"location\": {" +
-                                    "\"type\": \"double\"" +
-                                "}," +
-                                "\"locationName\": {" +
-                                    "\"type\": \"string\"" +
-                                "}" +
-                            "}" +
-                        "}," +
-                        "\"id\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"rate\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"riderId\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"status\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"toCoordinates\": {" +
-                            "\"properties\": {" +
-                                "\"location\": {" +
-                                    "\"type\": \"double\"" +
-                                "}," +
-                                "\"locationName\": {" +
-                                    "\"type\": \"string\"" +
-                                "}" +
-                            "}" +
-                        "}" +
+                    "\"acceptedDriverID\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"cost\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"date\": {" +
+                    "\"properties\": {" +
+                    "\"dayOfMonth\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"hourOfDay\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"minute\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"month\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"second\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"year\": {" +
+                    "\"type\": \"long\"" +
                     "}" +
-                "}" +
-            "}";
+                    "}" +
+                    "}," +
+                    "\"description\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"distance\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"drivers\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"encodedPolyline\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"doubleFromCoordinates\": {" +
+                    "\"type\": \"geo_point\"" +
+                    "}," +
+                    "\"doubleToCoordinates\": {" +
+                    "\"type\": \"geo_point\"" +
+                    "}," +
+                    "\"fromCoordinates\": {" +
+                    "\"properties\": {" +
+                    "\"location\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"locationName\": {" +
+                    "\"type\": \"string\"" +
+                    "}" +
+                    "}" +
+                    "}," +
+                    "\"id\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"rate\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"riderId\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"status\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"toCoordinates\": {" +
+                    "\"properties\": {" +
+                    "\"location\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"locationName\": {" +
+                    "\"type\": \"string\"" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}";
 
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -143,13 +141,13 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of an email within an editText
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidEmail(EditText editText)
-    {
+    static public boolean isValidEmail(EditText editText) {
         boolean valid = android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid email. Must be of form name@domain.extension");
         }
         return valid;
@@ -157,20 +155,31 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of a phone number within an edit text
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidPhone(EditText editText)
-    {
+    static public boolean isValidPhone(EditText editText) {
         boolean valid = android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid phone number.");
         }
         return valid;
     }
 
     /**
+     * Convert a string to a date
+     *
+     * @param stringDate
+     */
+    static public void stringToDate(String stringDate) {
+        // TODO: 2016-10-18 implement this. 
+    }
+
+    /**
+>>>>>>> c90655bd9b16528ffed11e9f388297e65cf3501d
      * Checks whether the internet is connected
+     *
      * @return boolean
      */
     static public boolean isInternetConnected() {
@@ -185,6 +194,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the date
+     *
      * @param cal
      * @param datePicker
      */
@@ -194,6 +204,7 @@ public class HelpMe extends Activity {
 
     /**
      * Set Time picker
+     *
      * @param cal
      * @param timePicker
      */
@@ -204,6 +215,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the calender
+     *
      * @param cal
      * @param datePicker
      * @param timePicker

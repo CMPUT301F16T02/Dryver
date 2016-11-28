@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2016
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
+
 package com.dryver.Activities;
 
 import android.os.Bundle;
@@ -38,6 +54,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
 
     /**
      * OnCreate to generate all UI related elements
+     *
      * @param savedInstanceState
      */
     @Override
@@ -59,7 +76,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
      * Overrding {@link android.app.Activity} onResume to refresh the driver list and reset timer
      */
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         refreshDriverList();
         setTimer();
@@ -69,7 +86,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
      * Overrding {@link android.app.Activity} onPause to cancel timer
      */
     @Override
-    public void onPause(){
+    public void onPause() {
         Log.i("trace", "ActivityDryverMain.onPause()");
         super.onPause();
         timer.cancel();
@@ -78,14 +95,14 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
     /**
      * Assigns swipe element
      */
-    private void assignElements(){
+    private void assignElements() {
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainerDriver);
     }
 
     /**
      * Sets listener for swiping
      */
-    private void setListeners(){
+    private void setListeners() {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -98,7 +115,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
      * Begins the refreshing of the driver list
      */
     public void beginRefresh() {
-         requestSingleton.updateTempRequest(new ICallBack() {
+        requestSingleton.updateTempRequest(new ICallBack() {
             @Override
             public void execute() {
                 refreshDriverList();
@@ -118,7 +135,7 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
     /**
      * Sets the timer for polling
      */
-    private void setTimer(){
+    private void setTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
