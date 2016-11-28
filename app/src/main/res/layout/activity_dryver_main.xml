@@ -35,44 +35,62 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/requestSpinnerLayout">
+            android:orientation="vertical"
+            android:id="@+id/searchLayout">
 
-            <TextView
-                android:padding="20dp"
-                android:text="@string/activity_rider_request_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/requestSortText" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/requestSpinnerLayout">
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/activity_driver_spinner"
-                android:id="@+id/requestSortSpinner" />
+                <TextView
+                    android:padding="20dp"
+                    android:text="@string/activity_rider_request_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/requestSortText"
+                    android:layout_weight="1"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/activity_driver_spinner"
+                    android:id="@+id/requestSortSpinner"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/requestSpinnerLayout">
+
+                <EditText
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/searchWith"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.5"/>
+
+                <Button
+                    android:text="@string/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/searchButton"
+                    android:layout_toEndOf="@+id/searchWith"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-        <Button
-            android:text="@string/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchButton"
-            android:layout_below="@+id/requestSpinnerLayout"
-            android:layout_toEndOf="@+id/searchWith" />
-
-        <EditText
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/searchWith"
-            android:layout_below="@+id/requestSpinnerLayout"
-            android:layout_alignParentStart="true"
-            android:layout_height="48dp"
-            android:layout_width="273dp" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainerDriver"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/searchButton"
+            android:layout_below="@+id/searchLayout"
             android:layout_alignParentStart="true"
             android:paddingTop="10dp">
 
