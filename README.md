@@ -12,11 +12,12 @@ The five team members are:
   - Jiawei Wu
 
 Tools used:
-  - Android Studio
-  - Elasticsearch available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
-  - Slack
-  - Docker
-  - AWS
-  - Postman
-
-JavaDocs for the project are hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
+  - Android Studio for IDE
+  - Elasticsearch for database. Available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
+  - Slack for team communication
+  - Docker for hosting Elasticsearch
+  - AWS for hosting docker.
+  - Postman for testing the results of queries on Elastic search
+  - Espresso for UI testing
+  - JUnit for code testing
+  - JavaDocs for the project documentation. Hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
