@@ -48,8 +48,6 @@ public class ActivityRequestDriverList extends ActivityLoggedInActionBar {
         adapter = new DryverListAdapter(this, drivers);
         driversListView.setAdapter(adapter);
 
-        registerForContextMenu(driversListView);
-
         assignElements();
         setListeners();
     }
