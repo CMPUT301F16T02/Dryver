@@ -16,16 +16,13 @@
 
 package com.dryver.Controllers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityViewProfile;
-import com.dryver.Models.Driver;
 import com.dryver.Models.User;
-import com.dryver.Utility.ICallBack;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -63,7 +60,8 @@ public class UserController {
         return instance;
     }
 
-    private UserController() {}
+    private UserController() {
+    }
 
     /**
      * Gets active user.
@@ -108,10 +106,11 @@ public class UserController {
 
     /**
      * a method for viewing others' profiles
+     *
      * @param user
      * @param context
      */
-    public void viewUserProfile(User user, Context context){
+    public void viewUserProfile(User user, Context context) {
         viewedUser = user;
         Intent intent = new Intent(context, ActivityViewProfile.class);
         context.startActivity(intent);
@@ -129,7 +128,8 @@ public class UserController {
     public boolean login(String username) throws ExecutionException, InterruptedException {
         if ((activeUser = ES.getUserByString(username)) != null) {
             saveUser();
-        };
+        }
+        ;
         return (activeUser) != null;
     }
 
@@ -144,24 +144,26 @@ public class UserController {
 
     /**
      * updates the user, is called by the saveButton onclick listener in UserProfile
+     *
      * @return
      */
-    public boolean updateActiveUser(){
+    public boolean updateActiveUser() {
         return ES.updateUser(activeUser);
     }
-    public boolean updateViewedUser(){
-            return viewedUser != null && ES.updateUser(viewedUser);
+
+    public boolean updateViewedUser() {
+        return viewedUser != null && ES.updateUser(viewedUser);
     }
 
 //  ============================ Offline Serialization and Caching Stuff ===========================
 
     /**
      * Save the current active user's profile to the local storage
-     * */
+     */
     public void saveUser() {
         try {
             String state = Environment.getExternalStorageState();
-            if(Environment.MEDIA_MOUNTED.equals(state)) {
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
                 File file = new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV);
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
 
@@ -172,8 +174,7 @@ public class UserController {
                 bufferedWriter.flush();
 
                 fileOutputStream.close();
-            }
-            else {
+            } else {
                 throw new IOException("External storage was not available!");
             }
 
@@ -187,17 +188,18 @@ public class UserController {
     /**
      * Load the saved user from file
      * http://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage
+     *
      * @see User
      */
     public void loadUser() {
         try {
             String state = Environment.getExternalStorageState();
-            if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
                 File file = new File(Environment.getExternalStorageDirectory(), ACTIVE_USER_SAV);
 
                 FileInputStream fileInputStream = new FileInputStream(file);
 
-                BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(fileInputStream));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
                 Gson gson = new Gson();
                 activeUser = gson.fromJson(bufferedReader, User.class);
@@ -214,7 +216,7 @@ public class UserController {
     public void deleteFile() {
         try {
             boolean file = new File(ACTIVE_USER_SAV).delete();
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         setCached(false);
@@ -222,6 +224,7 @@ public class UserController {
 
     /**
      * Checks whether there is a cached user
+     *
      * @return boolean - Is the user chached?
      */
     public boolean isCached() {
@@ -232,7 +235,7 @@ public class UserController {
         this.cached = cached;
     }
 
-    public void rateDriver(float rating, String driverID){
+    public void rateDriver(float rating, String driverID) {
         User driverToRate = ES.getUserByString(driverID);
         driverToRate.addRating(rating);
         ES.updateUser(driverToRate);

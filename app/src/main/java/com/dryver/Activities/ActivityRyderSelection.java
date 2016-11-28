@@ -85,7 +85,7 @@ public class ActivityRyderSelection extends Activity {
     /**
      * Instantiates all UI elements and updates their view from temporary request
      */
-    private void configureUI(){
+    private void configureUI() {
         cancelButton.setEnabled(true);
         deleteButton.setEnabled(true);
         viewDriversButton.setEnabled(false);
@@ -93,7 +93,7 @@ public class ActivityRyderSelection extends Activity {
         ratingBar.setVisibility(View.GONE);
 
         //Clicking this opens the driver list through the controller
-        if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE){
+        if (requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVERS_AVAILABLE) {
             viewDriversButton.setEnabled(true);
             viewDriversButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,7 +101,7 @@ public class ActivityRyderSelection extends Activity {
                     requestSingleton.viewRequestDrivers(ActivityRyderSelection.this, requestSingleton.getTempRequest());
                 }
             });
-        } else if(requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
+        } else if (requestSingleton.getTempRequest().getStatus() == RequestStatus.DRIVER_CHOSEN) {
             cancelButton.setEnabled(false);
             deleteButton.setEnabled(false);
 
@@ -120,7 +120,7 @@ public class ActivityRyderSelection extends Activity {
                     });
                 }
             });
-        } else if( requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_ACCEPTED){
+        } else if (requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_ACCEPTED) {
             ratingBar.setVisibility(View.VISIBLE);
             cancelButton.setEnabled(false);
 
@@ -146,7 +146,7 @@ public class ActivityRyderSelection extends Activity {
     /**
      * sets all event listeners of UI elements
      */
-    private void setListeners(){
+    private void setListeners() {
         //Cancels the request
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +186,7 @@ public class ActivityRyderSelection extends Activity {
     /**
      * Sets status textview
      */
-    private void setStatusTextView(){
+    private void setStatusTextView() {
         statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
     }
 }

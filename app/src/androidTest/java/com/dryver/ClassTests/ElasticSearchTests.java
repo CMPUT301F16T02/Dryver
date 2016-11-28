@@ -36,6 +36,7 @@ import static org.junit.Assert.assertNotEquals;
 
 /**
  * Various Tests for the ElasticSearchController
+ *
  * @see ElasticSearchController
  */
 
@@ -56,6 +57,7 @@ public class ElasticSearchTests {
 
     /**
      * Tests Adding and then deleting a User from the Database
+     *
      * @throws InterruptedException
      */
     @Test
@@ -71,13 +73,14 @@ public class ElasticSearchTests {
 
     /**
      * Tests updating an existing user's values in the database
+     *
      * @throws InterruptedException
      */
     @Test
     public void testUpdateUser() throws InterruptedException {
         //This is testing US 03.01.01, 03.02.01, 03.03.01
         //by ensuring the set and get methods are communicating with elastic search
-        User user =  new User(username);
+        User user = new User(username);
 
         assertFalse(ES.updateUser(user));
         assertTrue(ES.addUser(user));

@@ -18,12 +18,9 @@ package com.dryver.UITests;
 
 /**
  * UI tests for the OpeningPage Activity using Espressp
+ *
  * @see com.dryver.Activities.ActivityOpeningPage
  */
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 import android.content.ComponentName;
 import android.support.test.espresso.assertion.ViewAssertions;
@@ -36,6 +33,10 @@ import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Models.User;
 import com.dryver.R;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -46,7 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class ActivityOpeningPageTests{
+public class ActivityOpeningPageTests {
     private ElasticSearchController ES = ElasticSearchController.getInstance();
     private String testUserName = "TestyMcTesterton";
     private User testUser = new User(testUserName, "fTest", "lTest", "5555555555", "Test@Test.com");
@@ -56,7 +57,7 @@ public class ActivityOpeningPageTests{
             ActivityOpeningPage.class);
 
     @Before
-    public void addUserToES(){
+    public void addUserToES() {
         ES.addUser(testUser);
     }
 

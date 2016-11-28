@@ -17,7 +17,6 @@
 package com.dryver.Models;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import io.searchbox.annotations.JestId;
 
@@ -26,7 +25,7 @@ import io.searchbox.annotations.JestId;
  * and a Rider.
  */
 public class User implements Serializable {
-//    @JestId
+    //    @JestId
 //    private String username;
     private String firstName;
     private String lastName;
@@ -55,7 +54,7 @@ public class User implements Serializable {
     /**
      * Instantiates a new User with unique id, first name, and last name.
      *
-     * @param id    the user id
+     * @param id        the user id
      * @param firstName the first name
      * @param lastName  the last name
      */
@@ -84,6 +83,7 @@ public class User implements Serializable {
     /**
      * Gets the driver's vehicle description
      * //TODO: Make this work properly with ES
+     *
      * @param vehicleDescription
      */
     public void setVehicleDescription(String vehicleDescription) {

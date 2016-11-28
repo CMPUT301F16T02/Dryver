@@ -302,7 +302,7 @@ public class Request implements Serializable {
     }
 
     public void setCost(Double cost) {
-        this.rate = cost/(distance/1000);
+        this.rate = cost / (distance / 1000);
         this.cost = cost;
     }
 
@@ -335,7 +335,7 @@ public class Request implements Serializable {
             return "Payment Authorized";
         } else if (status == RequestStatus.PAYMENT_ACCEPTED) {
             return "Payment Accepted!";
-        } else if(status == RequestStatus.RATED){
+        } else if (status == RequestStatus.RATED) {
             return "Rating Acknowledged";
         } else {
             return "Unknown Status String";

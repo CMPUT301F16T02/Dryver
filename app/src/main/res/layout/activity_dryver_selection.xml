@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
   ~  Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~  This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -32,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/dryverSelectionTitle"/>
+        android:id="@+id/dryverSelectionTitle" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,7 +63,7 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:id="@+id/dryverSelectionLocation"
-                android:maxLines="4"/>
+                android:maxLines="4" />
 
             <TextView
                 android:text="@string/activity_dryver_selection_Date"
@@ -74,7 +73,7 @@
                 android:paddingLeft="20dp"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:id="@+id/dryverSelectionDate"/>
+                android:id="@+id/dryverSelectionDate" />
 
             <TextView
                 android:text="@string/activity_dryver_selection_Description"
@@ -84,7 +83,7 @@
                 android:paddingLeft="20dp"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:id="@+id/dryverSelectionDescription"/>
+                android:id="@+id/dryverSelectionDescription" />
 
             <TextView
                 android:text="@string/activity_dryver_selection_Status"
@@ -94,7 +93,7 @@
                 android:paddingLeft="20dp"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:id="@+id/dryverSelectionToStatus"/>
+                android:id="@+id/dryverSelectionToStatus" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

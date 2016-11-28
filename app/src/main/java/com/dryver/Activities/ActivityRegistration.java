@@ -28,9 +28,9 @@ import android.widget.EditText;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
-import com.dryver.Utility.HelpMe;
 import com.dryver.Models.User;
 import com.dryver.R;
+import com.dryver.Utility.HelpMe;
 
 
 /**
@@ -72,7 +72,7 @@ public class ActivityRegistration extends Activity {
     /**
      * Sets the listeners for the done button's click
      */
-    public void setListeners(){
+    public void setListeners() {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,9 +96,9 @@ public class ActivityRegistration extends Activity {
                     } else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
-                } else if(!HelpMe.isValidEmail(emailEditText)) {
+                } else if (!HelpMe.isValidEmail(emailEditText)) {
                     emailEditText.setError("Invalid email. Must be of form name@domain.extension");
-                } else if(!HelpMe.isValidPhone(phoneEditText)) {
+                } else if (!HelpMe.isValidPhone(phoneEditText)) {
                     emailEditText.setError("Invalid phone number.");
                 }
             }

@@ -42,11 +42,11 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
  * UI Tests for the Registration Activity using Espress
+ *
  * @see ActivityRegistration
  */
 
@@ -74,7 +74,7 @@ public class ActivityRegistrationTests {
 
         User user = ES.getUserByString(username);
         Thread.sleep(1000);
-        if(user != null) {
+        if (user != null) {
             ES.deleteUser(user);
             Thread.sleep(1000);
         }
@@ -84,6 +84,7 @@ public class ActivityRegistrationTests {
      * Simply inputs a presumably valid string for all EditTexts and attempts to select register.
      * Uses the mock ESController, so although the strings are validated, it is not actually pushed
      * to the ES server. Registration leads to the Selection Activity.
+     *
      * @see ActivityRydeOrDryve
      */
     @Test
@@ -148,7 +149,7 @@ public class ActivityRegistrationTests {
     }
 
     @After
-    public void removeUser(){
+    public void removeUser() {
         ElasticSearchController ES = ElasticSearchController.getInstance();
         ES.deleteUser(AddedUser);
     }

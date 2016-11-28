@@ -46,7 +46,7 @@ public class ActivityRydeOrDryve extends ActivityLoggedInActionBar {
     /**
      * This sets the listeners for the driver button's click and the rider button's click
      */
-    public void setListeners(){
+    public void setListeners() {
         dryveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

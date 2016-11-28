@@ -39,92 +39,93 @@ public class HelpMe extends Activity {
 
     public static final String CUSTOM_REQUEST_MAPPING =
             "{" +
-                "\"request\": {" +
+                    "\"request\": {" +
                     "\"properties\": {" +
-                        "\"acceptedDriverID\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"cost\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"date\": {" +
-                            "\"properties\": {" +
-                                "\"dayOfMonth\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"hourOfDay\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"minute\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"month\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"second\": {" +
-                                    "\"type\": \"long\"" +
-                                "}," +
-                                "\"year\": {" +
-                                    "\"type\": \"long\"" +
-                                "}" +
-                            "}" +
-                        "}," +
-                        "\"description\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"distance\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"drivers\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"encodedPolyline\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"doubleFromCoordinates\": {" +
-                            "\"type\": \"geo_point\"" +
-                        "}," +
-                        "\"doubleToCoordinates\": {" +
-                            "\"type\": \"geo_point\"" +
-                        "}," +
-                        "\"fromCoordinates\": {" +
-                            "\"properties\": {" +
-                                "\"location\": {" +
-                                    "\"type\": \"double\"" +
-                                "}," +
-                                "\"locationName\": {" +
-                                    "\"type\": \"string\"" +
-                                "}" +
-                            "}" +
-                        "}," +
-                        "\"id\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"rate\": {" +
-                            "\"type\": \"double\"" +
-                        "}," +
-                        "\"riderId\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"status\": {" +
-                            "\"type\": \"string\"" +
-                        "}," +
-                        "\"toCoordinates\": {" +
-                            "\"properties\": {" +
-                                "\"location\": {" +
-                                    "\"type\": \"double\"" +
-                                "}," +
-                                "\"locationName\": {" +
-                                    "\"type\": \"string\"" +
-                                "}" +
-                            "}" +
-                        "}" +
+                    "\"acceptedDriverID\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"cost\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"date\": {" +
+                    "\"properties\": {" +
+                    "\"dayOfMonth\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"hourOfDay\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"minute\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"month\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"second\": {" +
+                    "\"type\": \"long\"" +
+                    "}," +
+                    "\"year\": {" +
+                    "\"type\": \"long\"" +
                     "}" +
-                "}" +
-            "}";
+                    "}" +
+                    "}," +
+                    "\"description\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"distance\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"drivers\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"encodedPolyline\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"doubleFromCoordinates\": {" +
+                    "\"type\": \"geo_point\"" +
+                    "}," +
+                    "\"doubleToCoordinates\": {" +
+                    "\"type\": \"geo_point\"" +
+                    "}," +
+                    "\"fromCoordinates\": {" +
+                    "\"properties\": {" +
+                    "\"location\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"locationName\": {" +
+                    "\"type\": \"string\"" +
+                    "}" +
+                    "}" +
+                    "}," +
+                    "\"id\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"rate\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"riderId\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"status\": {" +
+                    "\"type\": \"string\"" +
+                    "}," +
+                    "\"toCoordinates\": {" +
+                    "\"properties\": {" +
+                    "\"location\": {" +
+                    "\"type\": \"double\"" +
+                    "}," +
+                    "\"locationName\": {" +
+                    "\"type\": \"string\"" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}" +
+                    "}";
 
     private static String DATABASE_URL = "http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080/";
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00");
+
     /**
      * Helper method for providing a generic error to an EditText field if it's required and was left empty.
      *
@@ -141,13 +142,13 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of an email within an editText
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidEmail(EditText editText)
-    {
+    static public boolean isValidEmail(EditText editText) {
         boolean valid = android.util.Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid email. Must be of form name@domain.extension");
         }
         return valid;
@@ -155,13 +156,13 @@ public class HelpMe extends Activity {
 
     /**
      * Checks the validity of a phone number within an edit text
+     *
      * @param editText
      * @return boolean
      */
-    static public boolean isValidPhone(EditText editText)
-    {
+    static public boolean isValidPhone(EditText editText) {
         boolean valid = android.util.Patterns.PHONE.matcher(editText.getText().toString()).matches();
-        if(!valid){
+        if (!valid) {
             editText.setError("Invalid phone number.");
         }
         return valid;
@@ -169,6 +170,7 @@ public class HelpMe extends Activity {
 
     /**
      * Cnvert a date to a consistent form that is TBC
+     *
      * @param date
      */
     static public void dateToString(Date date) {
@@ -177,6 +179,7 @@ public class HelpMe extends Activity {
 
     /**
      * Convert a string to a date
+     *
      * @param stringDate
      */
     static public void stringToDate(String stringDate) {
@@ -185,6 +188,7 @@ public class HelpMe extends Activity {
 
     /**
      * Checks whether the internet is connected
+     *
      * @return boolean
      */
     static public boolean isInternetConnected() {
@@ -199,6 +203,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the date
+     *
      * @param cal
      * @param datePicker
      */
@@ -208,6 +213,7 @@ public class HelpMe extends Activity {
 
     /**
      * Set Time picker
+     *
      * @param cal
      * @param timePicker
      */
@@ -218,6 +224,7 @@ public class HelpMe extends Activity {
 
     /**
      * Sets the calender
+     *
      * @param cal
      * @param datePicker
      * @param timePicker

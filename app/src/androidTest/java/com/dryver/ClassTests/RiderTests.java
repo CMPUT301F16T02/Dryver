@@ -21,10 +21,12 @@ import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * All Tests for the Rider Class.
+ *
  * @see Rider
  */
 

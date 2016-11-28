@@ -20,11 +20,13 @@ package com.dryver.ClassTests;
 import com.dryver.Models.Driver;
 import com.dryver.Models.User;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * All Tests for the Driver Class.
+ *
  * @see Driver
  */
 

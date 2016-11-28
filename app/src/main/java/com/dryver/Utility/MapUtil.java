@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
 
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -30,7 +29,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,9 +52,9 @@ public class MapUtil {
      * Function used to decode polylines
      * Credit to http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
      *
-     * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Decoding Polyline</a>
      * @param encoded
      * @return List of {@link LatLng} with all the nodes required to draw a route
+     * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">Decoding Polyline</a>
      */
     public List<LatLng> decodePoly(String encoded) {
         List<LatLng> poly = new ArrayList<>();
@@ -93,9 +91,9 @@ public class MapUtil {
     /**
      * Helper function that parses the return JSON from Google Directions and extracts the Overview Polyline field
      *
-     * @see JSONObject
      * @param json
      * @return encoded polyline String
+     * @see JSONObject
      */
     public String toEncodedPoly(String json) {
         String encodedPoly = null;

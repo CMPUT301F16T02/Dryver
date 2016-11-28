@@ -19,7 +19,6 @@ package com.dryver.Activities;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
 import android.support.v4.app.FragmentActivity;
 
 import com.dryver.Controllers.RequestSingleton;
@@ -28,13 +27,11 @@ import com.dryver.R;
 import com.dryver.Utility.MapUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -115,7 +112,7 @@ public class ActivityDryverMap extends FragmentActivity implements
      * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnected and finds the
      * current location of the user using {@link LocationRequest} and location services
      *
-     * @param  bundle
+     * @param bundle
      * @see com.google.android.gms.location.FusedLocationProviderApi
      * @see GoogleApiClient
      */
@@ -137,7 +134,7 @@ public class ActivityDryverMap extends FragmentActivity implements
      * route of the current request and draws it on the map. Also moves the camera to
      * that location.
      *
-     * @param  googleMap
+     * @param googleMap
      * @see OnMapReadyCallback
      * @see GoogleMap
      * @see MapUtil
@@ -152,9 +149,9 @@ public class ActivityDryverMap extends FragmentActivity implements
         mapUtil.moveMap(mMap, request.getFromLocation(), 15);
 
         mMap.addMarker(new MarkerOptions().position(fromLatLng).title(request.getFromAddress())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMap.addMarker(new MarkerOptions().position(toLatLng).title(request.getToAddress())
-        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
 
         decodedPolyline = mapUtil.decodePoly(request.getEncodedPolyline());
         mapUtil.drawRoute(mMap, decodedPolyline, polylineArrayList);
@@ -162,9 +159,9 @@ public class ActivityDryverMap extends FragmentActivity implements
 
     /**
      * Creates a new location request to automatically query the user for their current location
+     *
      * @param locationUpdates
      * @param locationInterval
-     *
      * @see LocationRequest
      */
     public void initializeLocationRequest(int locationUpdates, int locationInterval) {
@@ -175,11 +172,10 @@ public class ActivityDryverMap extends FragmentActivity implements
     }
 
     /**
-     *Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
+     * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
      *
      * @param i
      * @see GoogleApiClient
-     *
      */
     @Override
     public void onConnectionSuspended(int i) {

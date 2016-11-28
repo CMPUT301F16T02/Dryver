@@ -19,6 +19,7 @@ package com.dryver.ClassTests;
 
 import android.location.Location;
 import android.support.test.runner.AndroidJUnit4;
+
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.Rider;
@@ -29,7 +30,8 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * All Tests for the Request Class.

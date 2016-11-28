@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
   ~  Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~  This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -15,8 +14,10 @@
   ~ 02110-1301, USA.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/viewTheirProfile"
-          android:title="@string/view_profile" />
-    <item android:id="@+id/chooseDriver"
-          android:title="@string/choose_driver" />
+    <item
+        android:id="@+id/viewTheirProfile"
+        android:title="@string/view_profile" />
+    <item
+        android:id="@+id/chooseDriver"
+        android:title="@string/choose_driver" />
 </menu>

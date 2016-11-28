@@ -70,7 +70,7 @@ public class RyderMainAdapter extends ArrayAdapter<Request> {
         locationTextView.setText(HelpMe.formatLocation(request));
 
         requestStatus.setText("Status: " + request.statusCodeToString());
-        requestDate.setText("Date: "+ HelpMe.getDateString(request.getDate()));
+        requestDate.setText("Date: " + HelpMe.getDateString(request.getDate()));
         requestCost.setText("Total Cost: " + HelpMe.formatCurrencyToString(request.getCost()));
         requestRate.setText("Rate: " + HelpMe.formatCurrencyToString(request.getRate()) + "/km");
 

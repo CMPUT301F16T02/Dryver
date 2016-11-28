@@ -17,7 +17,6 @@
 package com.dryver.Models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -41,6 +40,7 @@ public class Ride implements Serializable {
 
     /**
      * Constructor for Ride class
+     *
      * @param request
      */
     public Ride(Request request) {

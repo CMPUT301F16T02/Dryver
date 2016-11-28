@@ -21,8 +21,8 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.dryver.Activities.ActivityDryverMain;
 import com.dryver.Activities.ActivityEditProfile;
-import com.dryver.Activities.ActivityRyderMain;
 import com.dryver.Activities.ActivityRydeOrDryve;
+import com.dryver.Activities.ActivityRyderMain;
 import com.dryver.Controllers.UserController;
 import com.dryver.Models.User;
 
@@ -35,11 +35,11 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Tests the UI for the Role Selection Activity using Espresso
+ *
  * @see ActivityRydeOrDryve
  */
 
@@ -52,7 +52,7 @@ public class ActivitySelectionTests {
             ActivityRydeOrDryve.class);
 
     @Test
-    public void TestOpenUserProfile(){
+    public void TestOpenUserProfile() {
         userController.setActiveUser(user);
         openActionBarOverflowOrOptionsMenu(getTargetContext());
         onView(withText("View Profile")).perform(click());
@@ -62,14 +62,14 @@ public class ActivitySelectionTests {
 
     //TODO: These tests fail... Not sure why...
     @Test
-    public void TestSelectDryver(){
+    public void TestSelectDryver() {
         onView(withText("Dryve")).perform(click());
 
         intended(hasComponent(new ComponentName(getTargetContext(), ActivityDryverMain.class)));
     }
 
     @Test
-    public void TestSelectRyder(){
+    public void TestSelectRyder() {
         onView(withText("Ryde")).perform(click());
 
         intended(hasComponent(new ComponentName(getTargetContext(), ActivityRyderMain.class)));

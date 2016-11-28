@@ -18,12 +18,15 @@ package com.dryver.ClassTests;
 
 
 import com.dryver.Models.User;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
  * Test Suite for the User Class.
+ *
  * @see User
  */
 public class UserTests {

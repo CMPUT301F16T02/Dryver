@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016
   ~  Created by: usenka, jwu5, cdmacken, jvogel, asanche
   ~  This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -38,14 +37,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:text="@string/activity_request_selection_RequestDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:id="@+id/requestSelectionTitle"/>
+                    android:id="@+id/requestSelectionTitle" />
 
                 <TextView
                     android:text="@string/activity_request_selection_location"
@@ -56,7 +55,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:id="@+id/requestSelectionLocation"
-                    android:maxLines="4"/>
+                    android:maxLines="4" />
 
                 <TextView
                     android:text="@string/activity_request_selection_Date"
@@ -66,7 +65,7 @@
                     android:paddingLeft="20dp"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:id="@+id/requestSelectionDate"/>
+                    android:id="@+id/requestSelectionDate" />
 
                 <TextView
                     android:text="@string/activity_request_selection_Status"
@@ -76,7 +75,7 @@
                     android:paddingLeft="20dp"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:id="@+id/requestSelectionToStatus"/>
+                    android:id="@+id/requestSelectionToStatus" />
             </LinearLayout>
         </ScrollView>
 
@@ -115,7 +114,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/ratingBar2"
         android:stepSize="0.1"
-        android:numStars="5"/><![CDATA[
+        android:numStars="5" /><![CDATA[
 
     ;
         android:layout_above="@+id/requestSelectionButtonViewList"

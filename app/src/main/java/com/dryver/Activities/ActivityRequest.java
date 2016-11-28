@@ -23,10 +23,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
@@ -57,6 +55,7 @@ public class ActivityRequest extends Activity {
 
     /**
      * Overrides {@link Activity} onCreate methods, sets all relevant event listeners and UI elements
+     *
      * @param savedInstanceState
      */
     @Override
@@ -93,9 +92,9 @@ public class ActivityRequest extends Activity {
                     requestSingleton.getTempRequest().setCost(cost);
                     requestSingleton.getTempRequest().setDate(calendar);
                     requestSingleton.getTempRequest().setDescription(requestDescription.getText().toString());
-                    requestSingleton.pushTempRequest(new ICallBack(){
+                    requestSingleton.pushTempRequest(new ICallBack() {
                         @Override
-                        public void execute(){
+                        public void execute() {
                             Log.i("CALLBACK", "Make Request");
                             finish();
                         }

@@ -17,7 +17,6 @@
 package com.dryver.Activities;
 
 import android.content.Intent;
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -43,7 +42,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -120,6 +118,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     /**
      * Inflates the menu used in this activity
+     *
      * @param menu
      * @return true
      */
@@ -135,6 +134,7 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Search: Search for a place on the map, uses google place and autocomplete
      * Delete: Deletes all markers and routes on the map
      * Forward: Sends the coordinates and route of markers to next activity
+     *
      * @param item
      * @return
      */
@@ -232,11 +232,11 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Overriding Callback {@link OnMapReadyCallback} onMapReady and finds the
      * route of the current request and draws it on the map. Also moves the camera to
      * that location.
-     *
+     * <p>
      * Also sets on long click listeners to allow the user to set start and end locations.
      * Routes are drawn immediately after the user selects the end location.
      *
-     * @param  googleMap
+     * @param googleMap
      * @see OnMapReadyCallback
      * @see GoogleMap
      * @see MapUtil
@@ -283,6 +283,7 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     /**
      * Helper function used to convert {@link LatLng} to {@link Location}
+     *
      * @return ArrayList of locations
      */
     private ArrayList<Location> mRouteToLocation() {
@@ -306,9 +307,9 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Helper function used to convert {@link LatLng} to {@link Address}
      * This is accomplished through the use of {@link Geocoder}
      *
+     * @return ArrayList of addresses
      * @see Geocoder
      * @see AsyncTask
-     * @return ArrayList of addresses
      */
     private ArrayList<String> mRouteToAddress() {
         String fromAddress = null;
@@ -341,10 +342,10 @@ public class ActivityRequestMap extends FragmentActivity implements
     /**
      * Receives the data from {@link PlaceAutocomplete} search intent and moves the map to that location
      *
-     * @see PlaceAutocomplete
      * @param requestCode
      * @param resultCode
      * @param data
+     * @see PlaceAutocomplete
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -377,11 +378,11 @@ public class ActivityRequestMap extends FragmentActivity implements
      * Opens a HTTPS request and sends the URL needed to get routes.
      * The data is saved to a string (Google direction returns a JSON object)
      *
-     * @see URL
-     * @see HttpURLConnection
      * @param directionURL
      * @return JSON object as a String
      * @throws IOException
+     * @see URL
+     * @see HttpURLConnection
      */
     public String getDataFromUrl(String directionURL) throws IOException {
         URL url = new URL(directionURL);
@@ -476,9 +477,9 @@ public class ActivityRequestMap extends FragmentActivity implements
 
     /**
      * Creates a new location request to automatically query the user for their current location
+     *
      * @param locationUpdates
      * @param locationInterval
-     *
      * @see LocationRequest
      */
     public void initializeLocationRequest(int locationUpdates, int locationInterval) {
@@ -489,11 +490,10 @@ public class ActivityRequestMap extends FragmentActivity implements
     }
 
     /**
-     *Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
+     * Overriding Callback {@link GoogleApiClient.ConnectionCallbacks} onConnectionSuspended
      *
      * @param i
      * @see GoogleApiClient
-     *
      */
     @Override
     public void onConnectionSuspended(int i) {

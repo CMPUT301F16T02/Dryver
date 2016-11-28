@@ -86,9 +86,9 @@ public class ActivityDryverSelection extends Activity {
     }
 
     /**
-     *  Sets all UI (Button and textview) listeners for this activity
+     * Sets all UI (Button and textview) listeners for this activity
      */
-    private void setListeners(){
+    private void setListeners() {
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +183,7 @@ public class ActivityDryverSelection extends Activity {
         acceptButton.setEnabled(!bool);
         cancelButton.setEnabled(bool);
     }
-        // TODO: 2016-11-27 should be a new class.
+    // TODO: 2016-11-27 should be a new class.
 //        if (requestSingleton.getTempRequest().hasDriver(userController.getActiveUser().getId()) &&
 //                requestSingleton.getTempRequest().getStatus().equals(RequestStatus.DRIVER_CHOSEN)) {
 //            isAcceptedButtonToggle(true);

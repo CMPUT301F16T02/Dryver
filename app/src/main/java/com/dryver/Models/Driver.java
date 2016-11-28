@@ -31,7 +31,7 @@ public class Driver extends User {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getId();
     }
 }
