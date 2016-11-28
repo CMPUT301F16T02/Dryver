@@ -78,9 +78,6 @@ import static com.dryver.Models.ActivityDryverMainState.RATE;
  * @see UserController
  */
 public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnItemSelectedListener {
-    private static final LatLngBounds EDMONTON_BOUNDS = new LatLngBounds(new LatLng(53.420980, -113.686921), new LatLng(53.657243, -113.330552));
-    private static final int REQUEST_SELECT_PLACE = 0;
-    private static final String API_KEY = "AIzaSyCqP3QKEmHTVQ7Tq1NFPNS5Ex28xZSuG2o";
 
     private ListView driverListView;
     private DryverMainAdapter dryverMainAdapter;
@@ -96,17 +93,11 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
 
     private GoogleApiClient mClient;
 
-    //11-27-2016 These 2 variables hold the search results for searching by keywords, please decide what to do with them
-    //You can access many information regarding the location such as address, coordinates, etc
-    private Location searchLocation;
-    private String searchAddress;
-    private String searchName;
-
-
     private ActivityDryverMainState state = ALL;
     private Timer timer;
     private AlertDialog alertDialog;
 
+    private int distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,12 +198,21 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         searchButton.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (state == GEOLOCATION) {
+                    String text = searchByEditText.getText().toString();
+                    try {
+                        distance = Integer.parseInt(text);
+                    } catch (NumberFormatException e) {
+                        Log.i("",text+" is not a number");
+                        return;
+                    }
+                }
                 requestSingleton.updateDriverRequests(state, new ICallBack() {
                     @Override
                     public void execute() {
                         refreshRequestList();
                     }
-                }, searchByEditText);
+                }, searchByEditText, currentLocation, distance);
             }
         });
 
@@ -227,33 +227,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
     }
 
     /**
-     * Gets the result from {@link PlaceAutocomplete} intent to allow the driver to select
-     * an address for searching
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @see PlaceAutocomplete
-     * @see Place
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_SELECT_PLACE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                searchLocation = new Location("Search Location");
-                searchLocation.setLatitude(place.getLatLng().latitude);
-                searchLocation.setLongitude(place.getLatLng().longitude);
-                searchAddress = place.getAddress().toString();
-
-                Toast.makeText(ActivityDryverMain.this, "Address: " + searchAddress + " Lat/Long: " + searchLocation.getLatitude() + " " + searchLocation.getLongitude(),
-                        Toast.LENGTH_LONG).show();
-                searchByEditText.setText(place.getLatLng().latitude + ", " + place.getLatLng().longitude);
-            }
-        }
-    }
-
-    /**
      * Initializes {@link GoogleApiClient} instance and attempts connection and initializes
      * {@link LocationRequest} to find the dryver's current location for searching purposes
      *
@@ -261,7 +234,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
      * @see LocationRequest
      */
     private void setMapStuff() {
-        initializeLocationRequest(100, 100);
+        initializeLocationRequest(10, 1000);
         mClient = new GoogleApiClient.Builder(ActivityDryverMain.this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -358,6 +331,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                currentLocation = location;
                 Log.i("ActivityDryverMain: ", "NEW LOCATION: " + location);
             }
         });
@@ -387,17 +361,6 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         } else if (sortSelection.equals("Geolocation")) {
             searchByEditText.setHint(R.string.latLon);
             state = GEOLOCATION;
-            try {
-                Intent intent = new PlaceAutocomplete.IntentBuilder
-                        (PlaceAutocomplete.MODE_OVERLAY)
-                        .setBoundsBias(EDMONTON_BOUNDS)
-                        .build(ActivityDryverMain.this);
-                startActivityForResult(intent, REQUEST_SELECT_PLACE);
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            }
         } else if (sortSelection.equals("Keyword")) {
             searchByEditText.setHint(R.string.keyword);
             state = KEYWORD;
@@ -445,7 +408,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             public void execute() {
                 refreshRequestList();
             }
-        }, searchByEditText);
+        }, searchByEditText, currentLocation, distance);
     }
 
     /**

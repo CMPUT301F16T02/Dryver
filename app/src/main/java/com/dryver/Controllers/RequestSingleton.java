@@ -263,7 +263,7 @@ public class RequestSingleton {
      * @sxee ICallBack
      * @see ElasticSearchController
      */
-    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText) {
+    public void updateDriverRequests(ActivityDryverMainState status, ICallBack callBack, EditText searchEditText, Location currentLocation, int distance) {
         Log.i("info", "RequestSingleton updateDriverRequests()");
         ArrayList<Integer> indicesToRemove = new ArrayList<Integer>();
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
@@ -276,7 +276,20 @@ public class RequestSingleton {
         } else if (status == ActivityDryverMainState.ACTIVE) {
             newRequests = ES.getAcceptedRequests();
         } else if (status == ActivityDryverMainState.GEOLOCATION) {
-            newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
+            if (currentLocation != null) {
+                Log.i("GEOLOCATION SEARCH: ", "VALID");
+                ArrayList<Request> tempRequest = ES.getOpenRequests();
+                for (Request request : tempRequest) {
+                    if (request.getFromLocation().distanceTo(currentLocation) < distance) {
+                        newRequests.add(request);
+                    }
+                }
+                Log.i("GEOLOCATION SEARCH: ", "ARRAYSIZE: " + newRequests.size());
+            } else {
+                Log.i("GEOLOCATION SEARCH: ", "INVALID CURRENT LOCATION");
+                newRequests = ES.getAllRequests();
+            }
+            //newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.KEYWORD) {
             newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());
         } else if (status == ActivityDryverMainState.RATE) {
