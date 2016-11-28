@@ -338,8 +338,10 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         else if (sortSelection.equals("Pending")) {
             searchByEditText.setHint(R.string.empty);
             state = PENDING;
-        }
-        else if (sortSelection.equals("Geolocation")) {
+        } else if(sortSelection.equals("Active")){
+            searchByEditText.setHint(R.string.active);
+            state = ACTIVE;
+        }else if (sortSelection.equals("Geolocation")) {
             searchByEditText.setHint(R.string.kilometers);
             state = GEOLOCATION;
             try {

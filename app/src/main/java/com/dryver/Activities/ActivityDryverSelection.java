@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dryver.Controllers.RequestSingleton;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 import com.dryver.Utility.ICallBack;
@@ -111,6 +112,34 @@ public class ActivityDryverSelection extends Activity {
             isAcceptedButtonToggle(false);
             statusTextView.setText("Status: Can accept ride.");
         }
+
+        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId())) {
+            acceptButton.setText("Accept Payment");
+            acceptButton.setOnClickListener(null);
+            cancelButton.setVisibility(View.INVISIBLE);
+            statusTextView.setText("Status: You are the driver.");
+
+            if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.DRIVER_CHOSEN)) {
+
+            } else if (requestSingleton.getTempRequest().getStatus().equals(RequestStatus.PAYMENT_AUTHORIZED)) {
+                acceptButton.setEnabled(true);
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        requestSingleton.acceptPayment(new ICallBack() {
+                            @Override
+                            public void execute() {
+                                finish();
+                            }
+                        });
+                    }
+                });
+            }
+        } else if (requestSingleton.getTempRequest().getAcceptedDriverID() != null) {
+            acceptButton.setVisibility(View.INVISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
+            statusTextView.setText("Status: Ride has a driver.");
+        }
     }
 
     private void isAcceptedButtonToggle(boolean bool) {
@@ -127,24 +156,6 @@ public class ActivityDryverSelection extends Activity {
 //        }
 ////        statusTextView.setText("Status: " + requestSingleton.getTempRequest().statusCodeToString());
 //
-//        if (requestSingleton.getTempRequest().isAcceptedDriver(userController.getActiveUser().getId()) &&
-//                requestSingleton.getTempRequest().getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
-//            acceptButton.setText("Accept Payment");
-//            acceptButton.setEnabled(true);
-//            acceptButton.setOnClickListener(null);
-//            cancelButton.setVisibility(View.INVISIBLE);
 //
-//            acceptButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    requestSingleton.acceptPayment(new ICallBack() {
-//                        @Override
-//                        public void execute() {
-//                            finish();
-//                        }
-//                    });
-//                }
-//            });
-//        }
 
 }

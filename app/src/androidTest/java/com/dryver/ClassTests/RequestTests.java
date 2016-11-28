@@ -65,6 +65,8 @@ public class RequestTests {
      */
     @Test
     public void testRequestInit() {
+        //Tests US 01.01.01, 01.02.01
+        //A test for initializing a reuqest between rider and driver
         DEFAULT_FROM_ADDRESS.setLatitude(53.523869);
         DEFAULT_FROM_ADDRESS.setLongitude(-113.526146);
         DEFAULT_TO_ADDRESS.setLatitude(53.548623);
@@ -87,6 +89,8 @@ public class RequestTests {
      */
     @Test
     public void testAddDriver() {
+        //This test is needed for everything in US 01.XX.XX
+        //Makes sure handling our drivers works
         Request request = new Request(DEFAULT_RIDER.getId(), date, DEFAULT_FROM_ADDRESS, DEFAULT_TO_ADDRESS, rate);
         Driver driver = new Driver(user1);
 
@@ -102,7 +106,7 @@ public class RequestTests {
     }
 
     /**
-     * Test accept offer.
+     * Test accept offer. US 01.08.01, 01.03.01, 02.01.01
      */
     @Test
     public void testAcceptOffer() {

@@ -7,6 +7,7 @@ package com.dryver.Models;
 public enum ActivityDryverMainState {
     ALL,
     PENDING,
+    ACTIVE,
     GEOLOCATION,
     KEYWORD,
     RATE,

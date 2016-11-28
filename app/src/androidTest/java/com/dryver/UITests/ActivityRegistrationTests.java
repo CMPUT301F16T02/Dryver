@@ -158,5 +158,5 @@ public class ActivityRegistrationTests {
 
 
     //TODO: Test Actually adding a user to ES. Duplicates. Etc...
-    //TODO: Test Clicking register. Will probably need a teardown that delets the thing from ES, or a **mock
+    //TODO: Test Clicking register. Will probably need a teardown that deletes the thing from ES, or a **mock
 }

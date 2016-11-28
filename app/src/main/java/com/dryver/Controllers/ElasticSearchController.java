@@ -32,6 +32,7 @@ import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -383,26 +384,68 @@ public class ElasticSearchController {
     }
 
     /**
-     * gets All requests for a given rider using acceptedDriverID
+     * Gets users pending requests that user accepted to drive.
      *
-     * @param driverID
      * @return ArrayList<Request>
-     * @see GetDriverRequestsTask
+     * @see GetAllRequestsTask
      * @see Request
-     * @see com.dryver.Models.Rider
      */
-    public ArrayList<Request> getDriverRequests(String driverID) {
-        Log.i("trace", "ElasticSearchController.getDriverRequests()");
-        GetDriverRequestsTask getTask = new GetDriverRequestsTask();
-        ArrayList<Request> requestList = new ArrayList<Request>();
+    public ArrayList<Request> getPendingRequests(String user) {
+        Log.i("trace", "ElasticSearchController.getOpenRequests()");
+        GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
+        getAllRequestsTask.execute();
+
+        ArrayList<Request> requests = new ArrayList<Request>();
+
         try {
-            requestList = getTask.execute(driverID).get();
+            requests = getAllRequestsTask.get();
+            Iterator<Request> iterator = requests.iterator();
+            while (iterator.hasNext()) {
+                if (!iterator.next().hasDriver(user)) {
+                    iterator.remove();
+                }
+                if (iterator.next().getAcceptedDriverID() != null) {
+                    iterator.remove();
+                }
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        } finally {
+            return requests;
         }
-        return requestList;
+    }
+
+    /**
+     * Gets requests that doesn't have an accepted driver.
+     *
+     * @return ArrayList<Request>
+     * @see GetAllRequestsTask
+     * @see Request
+     */
+    public ArrayList<Request> getOpenRequests() {
+        Log.i("trace", "ElasticSearchController.getOpenRequests()");
+        GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
+        getAllRequestsTask.execute();
+
+        ArrayList<Request> requests = new ArrayList<Request>();
+
+        try {
+            requests = getAllRequestsTask.get();
+            Iterator<Request> iterator = requests.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next().getAcceptedDriverID() != null) {
+                    iterator.remove();
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            return requests;
+        }
     }
 
     /**
@@ -421,6 +464,31 @@ public class ElasticSearchController {
 
         try {
             requests = getAllRequestsTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            return requests;
+        }
+    }
+
+    public ArrayList<Request> getAcceptedRequests() {
+        Log.i("trace", "ElasticSearchController.getAcceptedRequests()");
+        GetAllRequestsTask getAllRequestsTask = new GetAllRequestsTask();
+        getAllRequestsTask.execute();
+
+        ArrayList<Request> requests = new ArrayList<Request>();
+
+
+        try {
+            requests = getAllRequestsTask.get();
+            Iterator<Request> iterator = requests.iterator();
+            while (iterator.hasNext()) {
+                if (!iterator.next().isAcceptedDriver(UserController.getInstance().getActiveUser().getId())) {
+                    iterator.remove();
+                }
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
