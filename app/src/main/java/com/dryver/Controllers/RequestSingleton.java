@@ -1,20 +1,17 @@
 /*
  * Copyright (C) 2016
- * Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  Created by: usenka, jwu5, cdmacken, jvogel, asanche
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the
+ *  GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ *  License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+ *  See the GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  */
 
 package com.dryver.Controllers;
@@ -27,10 +24,10 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.dryver.Activities.ActivityDryverSelection;
-import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRequest;
-import com.dryver.Models.ActivityDryverMainState;
+import com.dryver.Activities.ActivityRequestDriverList;
 import com.dryver.Activities.ActivityRyderSelection;
+import com.dryver.Models.ActivityDryverMainState;
 import com.dryver.Models.Driver;
 import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
@@ -121,7 +118,6 @@ public class RequestSingleton {
      */
 
 //  ================================== tempRequest Stuff ===========================================
-
     public void clearTempRequest() {
         tempRequest = null;
     }
@@ -148,11 +144,11 @@ public class RequestSingleton {
      * @param request
      */
     public void viewRequest(Context context, Request request) {
-        if(userController.getActiveUser() instanceof Rider){
+        if (userController.getActiveUser() instanceof Rider) {
             tempRequest = request;
             Intent intent = new Intent(context, ActivityRyderSelection.class);
             context.startActivity(intent);
-        } else if(userController.getActiveUser() instanceof Driver){
+        } else if (userController.getActiveUser() instanceof Driver) {
             tempRequest = request;
             Intent intent = new Intent(context, ActivityDryverSelection.class);
             context.startActivity(intent);
@@ -187,6 +183,7 @@ public class RequestSingleton {
 //  ==================================== Request State Changes =====================================
 
     //Push request pushes new request with NO_DRIVERS state
+
     /**
      * A Function for a Rider selecting a Driver and updating the request in ES
      *
@@ -209,7 +206,7 @@ public class RequestSingleton {
         callBack.execute();
     }
 
-    public void sendRating(ICallBack callBack, float rating){
+    public void sendRating(ICallBack callBack, float rating) {
         tempRequest.setStatus(RequestStatus.RATED);
         ES.updateRequest(tempRequest);
         userController.rateDriver(rating, tempRequest.getAcceptedDriverID());
@@ -274,6 +271,7 @@ public class RequestSingleton {
     /**
      * A simple method for fetching an updated request list via Elastic Search. Executes callback after
      * Do not change thse huge things please!
+     *
      * @param callBack
      * @sxee ICallBack
      * @see ElasticSearchController
@@ -284,26 +282,26 @@ public class RequestSingleton {
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
         ArrayList<Request> newRequests = new ArrayList<Request>();
 
-        if(status == ActivityDryverMainState.ALL){
+        if (status == ActivityDryverMainState.ALL) {
             newRequests = ES.getOpenRequests();
-        } else if (status == ActivityDryverMainState.PENDING){
+        } else if (status == ActivityDryverMainState.PENDING) {
             newRequests = ES.getPendingRequests(userController.getActiveUser().getId());
-        } else if (status == ActivityDryverMainState.ACTIVE){
+        } else if (status == ActivityDryverMainState.ACTIVE) {
             newRequests = ES.getAcceptedRequests();
-        } else if (status == ActivityDryverMainState.GEOLOCATION){
+        } else if (status == ActivityDryverMainState.GEOLOCATION) {
             newRequests = ES.getRequestsGeolocation(searchEditText.getText().toString());
-        } else if (status == ActivityDryverMainState.KEYWORD){
+        } else if (status == ActivityDryverMainState.KEYWORD) {
             newRequests = ES.getRequestsKeyword(searchEditText.getText().toString());
-        } else if (status == ActivityDryverMainState.RATE){
+        } else if (status == ActivityDryverMainState.RATE) {
             newRequests = ES.getRequestsRate(searchEditText.getText().toString());
-        } else if (status == ActivityDryverMainState.COST){
+        } else if (status == ActivityDryverMainState.COST) {
             newRequests = ES.getRequestsCost(searchEditText.getText().toString());
         }
 
         //Compares two lists
-        if(newRequests.size() == 0){
+        if (newRequests.size() == 0) {
             requests.clear();
-        } else{
+        } else {
             for (Request newRequest : newRequests) {
                 if (!requests.contains(newRequest)) {
                     indicesToAdd.add(newRequests.indexOf(newRequest));
@@ -317,10 +315,10 @@ public class RequestSingleton {
             }
 
             Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
+            for (int index : indicesToRemove) {
                 requests.remove(index);
             }
-            for(int index : indicesToAdd){
+            for (int index : indicesToAdd) {
                 requests.add(newRequests.get(index));
             }
         }
@@ -338,7 +336,7 @@ public class RequestSingleton {
         ArrayList<Integer> indicesToAdd = new ArrayList<Integer>();
         ArrayList<Request> newRequests = ES.getRiderRequests(userController.getActiveUser().getId());
 
-        if(newRequests.size() == 0){
+        if (newRequests.size() == 0) {
             requests.clear();
         } else {
             for (Request newRequest : newRequests) {
@@ -355,10 +353,10 @@ public class RequestSingleton {
             }
 
             Collections.sort(indicesToRemove, Collections.<Integer>reverseOrder());
-            for(int index : indicesToRemove){
+            for (int index : indicesToRemove) {
                 requests.remove(index);
             }
-            for(int index : indicesToAdd){
+            for (int index : indicesToAdd) {
                 requests.add(newRequests.get(index));
             }
         }
