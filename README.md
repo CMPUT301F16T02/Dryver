@@ -5,12 +5,19 @@
 The purpose of this project is to, in teams of 5, create an Ride-sharing Android app similar to that of Uber or Lyft. This project was created to apply good practices, effective design techniques, and development tools within a team project to create an application with a graphical user interface.
 
 The five team members are:
-  - Cole Mackenzie
-  - Adam Sanche
-  - Andrei Usenka
-  - Jordan Vogel
-  - Jiawei Wu
+  - Cole Mackenzie - cdmacken@ualberta.ca
+  - Adam Sanche - asanche@ualberta.ca
+  - Andrei Usenka - usenka@ualberta.ca
+  - Jordan Vogel - jvogel@ualberta.ca
+  - Jiawei Wu - jwu5@ualberta.ca
 
+
+usenka
+vuk
+jwu5
+cdmacken
+jvogel
+asanche
 Tools used:
   - [Android Studio](https://developer.android.com/studio/index.html) for IDE
   - [Elasticsearch](https://www.elastic.co) for database. Available at http://ec2-35-160-201-101.us-west-2.compute.amazonaws.com:8080
