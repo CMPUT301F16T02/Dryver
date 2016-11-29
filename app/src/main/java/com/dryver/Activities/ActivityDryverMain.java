@@ -20,7 +20,6 @@ package com.dryver.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,7 +32,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.dryver.Adapters.DryverMainAdapter;
 import com.dryver.Controllers.RequestSingleton;
@@ -44,16 +42,10 @@ import com.dryver.Models.Request;
 import com.dryver.Models.RequestStatus;
 import com.dryver.R;
 import com.dryver.Utility.ICallBack;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -258,13 +250,15 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             return;
         } else if (requestSingleton.getRequests().size() != 0) {
             for (Request request : requestSingleton.getRequests()) {
-                if (request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
-                    notifyPayment(request);
-                    break;
-                } else if (request.getStatus() == RequestStatus.DRIVER_CHOSEN &&
-                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())) {
-                    notifySelected(request);
-                    break;
+                if(request.getAcceptedDriverID() != null &&
+                        request.equals(userController.getActiveUser().getId())){
+                    if (request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
+                        notifyPayment(request);
+                        break;
+                    } else if (request.getStatus() == RequestStatus.DRIVER_CHOSEN) {
+                        notifySelected(request);
+                        break;
+                    }
                 }
             }
         }

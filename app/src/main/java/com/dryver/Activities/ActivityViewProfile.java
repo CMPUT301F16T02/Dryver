@@ -21,14 +21,13 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Rider;
-import com.dryver.Models.User;
 import com.dryver.R;
 
 /**
@@ -50,14 +49,11 @@ public class ActivityViewProfile extends Activity {
     //TODO: How to represent ratings?? Is there a 5 star widget?
 
     private UserController userController = UserController.getInstance();
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
-
-        user = userController.getViewedUser();
 
         titleTextView = (TextView) findViewById(R.id.profile_title);
         phoneTextView = (TextView) findViewById(R.id.driver_profile_phone);
@@ -67,10 +63,11 @@ public class ActivityViewProfile extends Activity {
         ratingsTitleTextView = (TextView) findViewById(R.id.ratings_title);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-        titleTextView.setText(user.getId() + "'s Profile");
-        emailTextView.setText(user.getEmail());
-        phoneTextView.setText(user.getPhoneNumber());
+        titleTextView.setText(userController.getViewedUser().getId() + "'s Profile");
+        emailTextView.setText(userController.getViewedUser().getEmail());
+        phoneTextView.setText(userController.getViewedUser().getPhoneNumber());
 
+        Log.i("DEBUG", userController.getActiveUser().getVehicleDescription());
         checkUserType();
         setListeners();
     }
@@ -79,23 +76,22 @@ public class ActivityViewProfile extends Activity {
      * Checks whether the user is a rider or driver and display or hide appropriate UI elements
      */
     public void checkUserType() {
-        if (user instanceof Rider) {
+        if (userController.getViewedUser() instanceof Rider) {
             vehicleInfoTitleTextView.setVisibility(View.GONE);
             vehicleInfoTextView.setVisibility(View.GONE);
             ratingsTitleTextView.setVisibility(View.GONE);
             ratingBar.setVisibility(View.GONE);
-        } else if (user instanceof Driver) {
-            vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
-            vehicleInfoTextView.setVisibility(View.VISIBLE);
-            ratingsTitleTextView.setVisibility(View.VISIBLE);
-            ratingBar.setVisibility(View.VISIBLE);
-            vehicleInfoTextView.setText(user.getVehicleDescription());
-            ratingBar.setRating(user.getRating());
         } else {
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
-            vehicleInfoTextView.setVisibility(View.GONE);
-            ratingsTitleTextView.setVisibility(View.GONE);
-            ratingBar.setVisibility(View.GONE);
+            vehicleInfoTextView.setVisibility(View.VISIBLE);
+            vehicleInfoTextView.setText(userController.getViewedUser().getVehicleDescription());
+
+            Log.i("Lol", userController.getActiveUser().getVehicleDescription());
+
+            ratingsTitleTextView.setVisibility(View.VISIBLE);
+            ratingsTitleTextView.setText("Average Rating: " + Float.toString(userController.getViewedUser().getRating()) + "/5");
+            ratingBar.setVisibility(View.VISIBLE);
+            ratingBar.setRating(userController.getViewedUser().getRating());
         }
     }
 
@@ -116,8 +112,8 @@ public class ActivityViewProfile extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:" + user.getEmail()));
-                Intent chooser = intent.createChooser(intent, "Send Email to " + user.getEmail());
+                intent.setData(Uri.parse("mailto:" + userController.getViewedUser().getEmail()));
+                Intent chooser = intent.createChooser(intent, "Send Email to " + userController.getViewedUser().getEmail());
 
                 ComponentName emailApp = intent.resolveActivity(getPackageManager());
                 ComponentName unsupportedAction = ComponentName.unflattenFromString("com.android.fallback/.Fallback");

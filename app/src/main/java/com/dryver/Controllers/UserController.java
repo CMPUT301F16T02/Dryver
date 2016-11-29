@@ -22,6 +22,8 @@ import android.os.Environment;
 
 import com.dryver.Activities.ActivityEditProfile;
 import com.dryver.Activities.ActivityViewProfile;
+import com.dryver.Models.Driver;
+import com.dryver.Models.Rider;
 import com.dryver.Models.User;
 import com.google.gson.Gson;
 
@@ -111,7 +113,13 @@ public class UserController {
      * @param context
      */
     public void viewUserProfile(User user, Context context) {
-        viewedUser = user;
+
+        if(activeUser instanceof Rider){
+            viewedUser = new Driver(user);
+        } else if(activeUser instanceof Driver){
+            viewedUser = new Rider(user);
+        }
+
         Intent intent = new Intent(context, ActivityViewProfile.class);
         context.startActivity(intent);
     }

@@ -115,7 +115,7 @@ public class ElasticSearchController {
             ).build());
 
             if (result.isSucceeded()) {
-                Log.i("YAY", "WOOHOO");
+                //DO SOMETHING MAYBE
             }
         } catch (IOException e) {
             Log.d("ERROR", "Could not create index.");
@@ -164,9 +164,9 @@ public class ElasticSearchController {
      * @return boolean - successfully executed
      */
     public boolean updateUser(User user) {
+        Log.i("info", "Updating User: " + user.getId());
         if (getUserByString(user.getId()) != null) {
-            AddUserTask addTask = new AddUserTask();
-            addTask.execute(user);
+            new AddUserTask().execute(user);
             return true;
         }
         return false;
@@ -206,7 +206,7 @@ public class ElasticSearchController {
             verifySettings();
 
             boolean addable = false;
-            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).build();
+            Index index = new Index.Builder(search_parameters[0]).index(INDEX).type(USER).id(search_parameters[0].getId()).build();
 
             try {
                 DocumentResult result = client.execute(index);
@@ -708,9 +708,9 @@ public class ElasticSearchController {
                         "\"query\": {" +
                             "\"bool\": {" +
                                 "\"should\": [" +
-                                    "{\"term\": {\"riderId\": \"" + search_parameters[0] + "\"}}," +
-                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0] + "\"}}," +
-                                    "{\"term\": {\"description\": \"" + search_parameters[0] + "\"}}" +
+                                    "{\"term\": {\"riderId\": \"" + search_parameters[0].toLowerCase() + "\"}}," +
+                                    "{\"term\": {\"acceptedDriverId\": \"" + search_parameters[0].toLowerCase() + "\"}}," +
+                                    "{\"term\": {\"description\": \"" + search_parameters[0].toLowerCase() + "\"}}" +
                                 "]," +
                                     "\"minimum_should_match\" : 1" +
                             "}" +

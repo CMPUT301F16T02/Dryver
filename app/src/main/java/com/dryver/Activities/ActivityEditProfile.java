@@ -26,9 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Rider;
-import com.dryver.Models.User;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
 
@@ -38,8 +36,6 @@ import com.dryver.Utility.HelpMe;
  */
 public class ActivityEditProfile extends Activity {
     private UserController userController = UserController.getInstance();
-    private User user;
-    private Driver driver;
     private TextView titleTextView;
     private EditText emailEditText;
     private EditText phoneEditText;
@@ -55,11 +51,8 @@ public class ActivityEditProfile extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
-        user = userController.getViewedUser();
-
         titleTextView = (TextView) findViewById(R.id.profile_name);
-        titleTextView.setText(user.getId() + "'s Profile");
+        titleTextView.setText(userController.getActiveUser().getId() + "'s Profile");
 
         emailEditText = (EditText) findViewById(R.id.profileEditTextEmail);
         phoneEditText = (EditText) findViewById(R.id.profileEditTextPhoneNumber);
@@ -71,8 +64,8 @@ public class ActivityEditProfile extends Activity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
         ratingTextView = (TextView) findViewById(R.id.edit_profile_rating_title);
 
-        emailEditText.setText(user.getEmail());
-        phoneEditText.setText(user.getPhoneNumber());
+        emailEditText.setText(userController.getActiveUser().getEmail());
+        phoneEditText.setText(userController.getActiveUser().getPhoneNumber());
 
         checkUserType();
         setListeners();
@@ -82,19 +75,18 @@ public class ActivityEditProfile extends Activity {
      * checks whether the user is a rider or driver, and displays and hides the appropriate UI elements
      */
     public void checkUserType() {
-        if (user instanceof Rider) {
+        if (userController.getActiveUser() instanceof Rider) {
             vehicleDesriptionTextView.setVisibility(View.GONE);
             vehicleDescriptionEditText.setVisibility(View.GONE);
             ratingBar.setVisibility(View.GONE);
             ratingTextView.setVisibility(View.GONE);
-        } else if (user instanceof Driver) {
-            driver = (Driver) userController.getViewedUser();
+        } else {
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
-            vehicleDescriptionEditText.setText(user.getVehicleDescription());
+            vehicleDescriptionEditText.setText(userController.getActiveUser().getVehicleDescription());
             ratingBar.setVisibility(View.VISIBLE);
             ratingTextView.setVisibility(View.VISIBLE);
-            ratingBar.setRating(user.getRating());
+            ratingBar.setRating(userController.getActiveUser().getRating());
         }
     }
 
@@ -120,12 +112,10 @@ public class ActivityEditProfile extends Activity {
      * @return boolean to check whether or not the profile has been updated
      */
     private boolean updateUserProfile() {
-        user = userController.getActiveUser();
-
         boolean updated = false;
         if (HelpMe.isValidPhone(phoneEditText) && HelpMe.isValidEmail(emailEditText)) {
-            user.setPhoneNumber(phoneEditText.getText().toString());
-            user.setEmail(emailEditText.getText().toString());
+            userController.getActiveUser().setPhoneNumber(phoneEditText.getText().toString());
+            userController.getActiveUser().setEmail(emailEditText.getText().toString());
             userController.getActiveUser().setVehicleDescription(vehicleDescriptionEditText.getText().toString());
 
             updated = userController.updateActiveUser();

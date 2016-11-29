@@ -140,6 +140,11 @@ public class ActivityRyderSelection extends Activity {
                     }, ratingBar.getRating());
                 }
             });
+        } else if(requestSingleton.getTempRequest().getStatus() == RequestStatus.RATED){
+            ratingBar.setVisibility(View.VISIBLE);
+            ratingBar.setEnabled(false);
+            cancelButton.setEnabled(false);
+            viewDriversButton.setEnabled(false);
         }
     }
 

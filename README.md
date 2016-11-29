@@ -24,4 +24,4 @@ Tools used:
   - [JavaDocs](http://www.oracle.com/technetwork/articles/java/index-137868.html) for the project documentation. Hosted on Github Pages : https://cmput301f16t02.github.io/Dryver
 
 
-Download it [here](Dryver/app/build/outputs/apk/app-debug.apk)
+Download it [here](app/build/outputs/apk/app-debug.apk)
