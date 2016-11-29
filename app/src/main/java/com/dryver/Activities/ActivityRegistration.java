@@ -97,6 +97,7 @@ public class ActivityRegistration extends Activity {
                         userController.setActiveUser(user);
                         Intent intent = new Intent(ActivityRegistration.this, ActivityRydeOrDryve.class);
                         ActivityRegistration.this.startActivity(intent);
+                        finish();
                     } else {
                         usernameEditText.setError("Username is taken. Try something else.");
                     }
