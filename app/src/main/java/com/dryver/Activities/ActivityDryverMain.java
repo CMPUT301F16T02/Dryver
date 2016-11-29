@@ -251,7 +251,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         } else if (requestSingleton.getRequests().size() != 0) {
             for (Request request : requestSingleton.getRequests()) {
                 if(request.getAcceptedDriverID() != null &&
-                        request.equals(userController.getActiveUser().getId())){
+                        request.getAcceptedDriverID().equals(userController.getActiveUser().getId())){
                     if (request.getStatus() == RequestStatus.PAYMENT_AUTHORIZED) {
                         notifyPayment(request);
                         break;
