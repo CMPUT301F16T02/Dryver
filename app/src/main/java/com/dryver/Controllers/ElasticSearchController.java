@@ -402,7 +402,7 @@ public class ElasticSearchController {
             requests = getAllRequestsTask.get();
             Iterator<Request> iterator = requests.iterator();
             while (iterator.hasNext()) {
-                if (!iterator.next().hasDriver(user)) {
+                if (!iterator.next().hasDriver(user) && iterator.next().getAcceptedDriverID() != null) {
                     iterator.remove();
                 }
             }
