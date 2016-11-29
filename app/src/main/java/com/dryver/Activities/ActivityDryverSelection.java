@@ -167,7 +167,7 @@ public class ActivityDryverSelection extends Activity {
                     }
                 });
             }
-        } else if (requestSingleton.getTempRequest().getAcceptedDriverID() != null) {
+        } else if (!requestSingleton.getTempRequest().getAcceptedDriverID().equals("")) {
             acceptButton.setVisibility(View.INVISIBLE);
             cancelButton.setVisibility(View.INVISIBLE);
             statusTextView.setText("Status: Ride has a driver.");

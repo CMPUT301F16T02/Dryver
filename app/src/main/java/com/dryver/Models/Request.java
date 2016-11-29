@@ -67,7 +67,7 @@ public class Request implements Serializable {
         geopointToCoordinates = toCoordinates.getDoubleLocation();
 
         this.drivers = new ArrayList<String>();
-        this.acceptedDriverID = null;
+        this.acceptedDriverID = "";
         this.cost = 0;
         this.status = RequestStatus.NO_DRIVERS;
         this.id = UUID.randomUUID().toString();
@@ -91,7 +91,7 @@ public class Request implements Serializable {
         geopointToCoordinates = toCoordinates.getDoubleLocation();
 
         this.drivers = new ArrayList<String>();
-        this.acceptedDriverID = null;
+        this.acceptedDriverID = "";
         this.cost = cost;
         this.status = RequestStatus.NO_DRIVERS;
         this.id = UUID.randomUUID().toString();

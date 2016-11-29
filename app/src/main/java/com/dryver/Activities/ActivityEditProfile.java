@@ -102,6 +102,14 @@ public class ActivityEditProfile extends Activity {
                 }
             }
         });
+
+
+        vehicleDescriptionEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vehicleDescriptionEditText.setText("");
+            }
+        });
     }
 
     //TODO: Default Payment Method
