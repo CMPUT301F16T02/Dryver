@@ -271,7 +271,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.complete_message)
                 .setTitle(R.string.complete_title)
-                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.view_request, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         requestSingleton.viewRequest(ActivityDryverMain.this, request);
                     }
@@ -295,7 +295,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
         alertDialog = new AlertDialog.Builder(ActivityDryverMain.this)
                 .setMessage(R.string.dryver_selected_message)
                 .setTitle(R.string.dryver_selected_title)
-                .setPositiveButton(R.string.dryver_selected_view, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.view_request, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         requestSingleton.viewRequest(ActivityDryverMain.this, request);
                     }

@@ -160,6 +160,9 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
                     requestListView.getChildAt(ryderMainAdapter.getPosition(request));
                     notifyDriversAvailable(request);
                     break;
+                } else if(request.getStatus() == RequestStatus.PAYMENT_ACCEPTED){
+                    requestListView.getChildAt(ryderMainAdapter.getPosition(request));
+                    notifyComplete(request);
                 }
             }
         }
@@ -177,6 +180,25 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
                 .setPositiveButton(R.string.drivers_found_view, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         requestSingleton.viewRequestDrivers(ActivityRyderMain.this, request);
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+        alertDialog.show();
+    }
+
+    private void notifyComplete(final Request request) {
+        alertDialog = new AlertDialog.Builder(ActivityRyderMain.this)
+                .setMessage(R.string.rating_message)
+                .setTitle(R.string.complete_title)
+                .setPositiveButton(R.string.view_request, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestSingleton.viewRequest(ActivityRyderMain.this, request);
                     }
                 })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
