@@ -58,15 +58,16 @@ public class User implements Serializable {
      * @param firstName the first name
      * @param lastName  the last name
      */
-    public User(String id, String firstName, String lastName, String phoneNumber, String email) {
+    public User(String id, String firstName, String lastName, String phoneNumber, String email, Rating rating, String vehicleDescription) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.rating = new Rating();
-        this.vehicleDescription = new String();
+        this.rating = rating;
+        this.vehicleDescription = vehicleDescription;
     }
+
 
     public float getRating() {
         return rating.getAverage();
@@ -201,5 +202,9 @@ public class User implements Serializable {
 
     public String returnRole() {
         return "unknown";
+    }
+
+    public Rating getRatingObj() {
+        return rating;
     }
 }

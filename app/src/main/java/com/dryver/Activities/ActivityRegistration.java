@@ -28,6 +28,7 @@ import android.widget.EditText;
 
 import com.dryver.Controllers.ElasticSearchController;
 import com.dryver.Controllers.UserController;
+import com.dryver.Models.Rating;
 import com.dryver.Models.User;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -86,7 +87,10 @@ public class ActivityRegistration extends Activity {
                             firstnameEditText.getText().toString(),
                             lastnameEditText.getText().toString(),
                             phoneEditText.getText().toString(),
-                            emailEditText.getText().toString());
+                            emailEditText.getText().toString(),
+                            new Rating(),
+                            "No vehicle description."
+                            );
 
                     if (ES.addUser(user)) {
                         Log.i("Info", "User added succesfully via ElasticSearch Controller");

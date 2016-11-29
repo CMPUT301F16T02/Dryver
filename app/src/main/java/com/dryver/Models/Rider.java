@@ -27,6 +27,8 @@ public class Rider extends User {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhoneNumber(),
-                user.getEmail());
+                user.getEmail(),
+                user.getRatingObj(),
+                user.getVehicleDescription());
     }
 }
