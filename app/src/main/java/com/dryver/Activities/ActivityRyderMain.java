@@ -121,8 +121,10 @@ public class ActivityRyderMain extends ActivityLoggedInActionBar {
         requestListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                requestSingleton.editRequest(ActivityRyderMain.this, (Request) requestListView.getItemAtPosition(position));
-                return true;
+                if(((Request)requestListView.getItemAtPosition(position)).getStatus() == RequestStatus.NO_DRIVERS) {
+                    requestSingleton.editRequest(ActivityRyderMain.this, (Request) requestListView.getItemAtPosition(position));
+                    return true;
+                } else return false;
             }
         });
 

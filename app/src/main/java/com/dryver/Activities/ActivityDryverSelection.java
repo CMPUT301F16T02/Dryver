@@ -171,6 +171,8 @@ public class ActivityDryverSelection extends Activity {
             acceptButton.setVisibility(View.INVISIBLE);
             cancelButton.setVisibility(View.INVISIBLE);
             statusTextView.setText("Status: Ride has a driver.");
+        } else if (requestSingleton.getTempRequest().getStatus() == RequestStatus.RATED){
+            statusTextView.setText("Request Complete! Rating Received!");
         }
     }
 
