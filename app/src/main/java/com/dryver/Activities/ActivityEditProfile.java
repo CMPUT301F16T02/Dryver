@@ -26,7 +26,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dryver.Controllers.UserController;
-import com.dryver.Models.Driver;
 import com.dryver.Models.Rider;
 import com.dryver.R;
 import com.dryver.Utility.HelpMe;
@@ -81,7 +80,7 @@ public class ActivityEditProfile extends Activity {
             vehicleDescriptionEditText.setVisibility(View.GONE);
             ratingBar.setVisibility(View.GONE);
             ratingTextView.setVisibility(View.GONE);
-        } else if (userController.getActiveUser() instanceof Driver) {
+        } else {
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setText(userController.getActiveUser().getVehicleDescription());
