@@ -353,7 +353,7 @@ public class ActivityDryverMain extends ActivityLoggedInActionBar implements OnI
             searchByEditText.setHint(R.string.active);
             state = ACTIVE;
         } else if (sortSelection.equals("Geolocation")) {
-            searchByEditText.setHint(R.string.latLon);
+            searchByEditText.setHint(R.string.meters);
             state = GEOLOCATION;
         } else if (sortSelection.equals("Keyword")) {
             searchByEditText.setHint(R.string.keyword);
