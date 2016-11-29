@@ -21,6 +21,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.dryver.Controllers.ElasticSearchController;
+import com.dryver.Models.Rating;
 import com.dryver.Models.Request;
 import com.dryver.Models.User;
 
@@ -45,7 +46,7 @@ public class ElasticSearchTests {
 
     // USERS
     private final static String username = "ESTestUser";
-    private final static User testUser = new User(username, "testFirst", "testLast", "7805555555", "test@test.com");
+    private final static User testUser = new User(username, "testFirst", "testLast", "7805555555", "test@test.com", new Rating(), "info");
 
     // REQUESTS
     private final static Calendar calendar = Calendar.getInstance();

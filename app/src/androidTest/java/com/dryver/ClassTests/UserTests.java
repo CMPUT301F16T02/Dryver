@@ -17,6 +17,7 @@
 package com.dryver.ClassTests;
 
 
+import com.dryver.Models.Rating;
 import com.dryver.Models.User;
 
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class UserTests {
         String last = "Smith";
         String phone = "5555555555";
         String email = "jsmith@gmail.com";
-        User user = new User(DEFAULT_USER_ID, first, last, phone, email);
+        User user = new User(DEFAULT_USER_ID, first, last, phone, email, new Rating(), "info");
         assertEquals(first, user.getFirstName());
         assertEquals(last, user.getLastName());
     }
