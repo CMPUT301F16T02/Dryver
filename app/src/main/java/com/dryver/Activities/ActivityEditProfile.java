@@ -66,6 +66,8 @@ public class ActivityEditProfile extends Activity {
 
         emailEditText.setText(userController.getActiveUser().getEmail());
         phoneEditText.setText(userController.getActiveUser().getPhoneNumber());
+        vehicleDescriptionEditText.setText(userController.getActiveUser().getVehicleDescription());
+        ratingBar.setRating(userController.getActiveUser().getRating());
 
         checkUserType();
         setListeners();
@@ -83,10 +85,8 @@ public class ActivityEditProfile extends Activity {
         } else {
             vehicleDesriptionTextView.setVisibility(View.VISIBLE);
             vehicleDescriptionEditText.setVisibility(View.VISIBLE);
-            vehicleDescriptionEditText.setText(userController.getActiveUser().getVehicleDescription());
             ratingBar.setVisibility(View.VISIBLE);
             ratingTextView.setVisibility(View.VISIBLE);
-            ratingBar.setRating(userController.getActiveUser().getRating());
         }
     }
 

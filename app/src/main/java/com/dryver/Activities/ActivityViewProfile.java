@@ -66,6 +66,9 @@ public class ActivityViewProfile extends Activity {
         titleTextView.setText(userController.getViewedUser().getId() + "'s Profile");
         emailTextView.setText(userController.getViewedUser().getEmail());
         phoneTextView.setText(userController.getViewedUser().getPhoneNumber());
+        vehicleInfoTextView.setText(userController.getViewedUser().getVehicleDescription());
+        ratingsTitleTextView.setText("Average Rating: " + Float.toString(userController.getViewedUser().getRating()) + "/5");
+        ratingBar.setRating(userController.getViewedUser().getRating());
 
         Log.i("DEBUG", userController.getActiveUser().getVehicleDescription());
         checkUserType();
@@ -84,14 +87,11 @@ public class ActivityViewProfile extends Activity {
         } else {
             vehicleInfoTitleTextView.setVisibility(View.VISIBLE);
             vehicleInfoTextView.setVisibility(View.VISIBLE);
-            vehicleInfoTextView.setText(userController.getViewedUser().getVehicleDescription());
-
-            Log.i("Lol", userController.getActiveUser().getVehicleDescription());
 
             ratingsTitleTextView.setVisibility(View.VISIBLE);
-            ratingsTitleTextView.setText("Average Rating: " + Float.toString(userController.getViewedUser().getRating()) + "/5");
+
             ratingBar.setVisibility(View.VISIBLE);
-            ratingBar.setRating(userController.getViewedUser().getRating());
+
         }
     }
 
