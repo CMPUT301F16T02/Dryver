@@ -175,7 +175,7 @@ public class ActivityRequestMap extends FragmentActivity implements
                     requestSingleton.getTempRequest().setFromAddress(addresses.get(0));
                     requestSingleton.getTempRequest().setToAddress(addresses.get(1));
                     requestSingleton.getTempRequest().setEncodedPolyline(encodedPolyline);
-                    Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this.getApplicationContext(), "Set distance to: " + routeDistance, Toast.LENGTH_SHORT).show();
 
                     mMap.clear();
                     mRoute.clear();
